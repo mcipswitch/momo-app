@@ -13,6 +13,8 @@
 		93519F5724E8CF640095DA38 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5624E8CF640095DA38 /* Preview Assets.xcassets */; };
 		93519F5F24E8D0090095DA38 /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5E24E8D0090095DA38 /* Blob.swift */; };
 		93519F6124E8D42B0095DA38 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F6024E8D42B0095DA38 /* GradientView.swift */; };
+		938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */; };
+		938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E537024E983F3002653F0 /* UIColor + Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		93519F5824E8CF640095DA38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93519F5E24E8D0090095DA38 /* Blob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blob.swift; sourceTree = "<group>"; };
 		93519F6024E8D42B0095DA38 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath + Extension.swift"; sourceTree = "<group>"; };
+		938E537024E983F3002653F0 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,7 @@
 				93519F5124E8CF630095DA38 /* ContentView.swift */,
 				93519F6024E8D42B0095DA38 /* GradientView.swift */,
 				93519F5E24E8D0090095DA38 /* Blob.swift */,
+				938E537324E983F8002653F0 /* Extensions */,
 				93519F5324E8CF640095DA38 /* Assets.xcassets */,
 				93519F5824E8CF640095DA38 /* Info.plist */,
 				93519F5524E8CF640095DA38 /* Preview Content */,
@@ -73,6 +78,15 @@
 				93519F5624E8CF640095DA38 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		938E537324E983F8002653F0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */,
+				938E537024E983F3002653F0 /* UIColor + Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,7 +159,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				93519F5F24E8D0090095DA38 /* Blob.swift in Sources */,
+				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,
+				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
 				93519F6124E8D42B0095DA38 /* GradientView.swift in Sources */,
 				93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */,
 			);

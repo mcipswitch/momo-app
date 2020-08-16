@@ -8,19 +8,23 @@
 import SwiftUI
 
 struct Blob: Shape {
+    let bezier: UIBezierPath
+    let pathBounds: CGRect
     func path(in rect: CGRect) -> Path {
-        Path { path in
-            path.move(to: CGPoint(x: rect.size.width/2, y: 0))
-            path.addQuadCurve(to: CGPoint(x: rect.size.width/2, y: rect.size.height), control: CGPoint(x: rect.size.width, y: rect.size.height))
-            path.addQuadCurve(to: CGPoint(x: rect.size.width/2, y: 0), control: CGPoint(x: 0, y: rect.size.height))
-        }
+        let pointScale = (rect.width >= rect.height) ?
+            max(pathBounds.height, pathBounds.width) :
+            min(pathBounds.height, pathBounds.width)
+        let pointTransform = CGAffineTransform(scaleX: 1/pointScale, y: 1/pointScale)
+        let path = Path(bezier.cgPath).applying(pointTransform)
+        let multiplier = min(rect.width, rect.height)
+        let transform = CGAffineTransform(scaleX: multiplier, y: multiplier)
+        return path.applying(transform)
     }
 }
 
 struct Blob_Previews: PreviewProvider {
     static var previews: some View {
-        Blob()
-            .fill(LinearGradient(gradient: Gradient(colors: [.white, .blue]), startPoint: .topLeading, endPoint: .bottom))
-            .frame(width: 200, height: 200)
+        Blob(bezier: .blob1, pathBounds: UIBezierPath.calculateBounds(paths: [.blob1]))
+            .frame(width: 100, height: 100)
     }
 }
