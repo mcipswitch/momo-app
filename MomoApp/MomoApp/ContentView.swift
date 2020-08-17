@@ -17,8 +17,9 @@ struct ContentView: View {
             ZStack {
                 Image("background")
                     .resizable()
+                    .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
-                VStack(spacing: 80) {
+                VStack(spacing: 64) {
                     ZStack(alignment: .center) {
                         if text.isEmpty {
                             Text("My day in a word")
@@ -37,11 +38,11 @@ struct ContentView: View {
                     }
                     .frame(width: 220, height: 100)
                     
-                    Blob(bezier: .blob4, pathBounds: pathBounds)
-                        .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.6549019608, green: 0.4392156863, blue: 0.937254902, alpha: 1)), Color(#colorLiteral(red: 0.2039215686, green: 0.5803921569, blue: 0.9019607843, alpha: 1))]), startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .position(CGPoint(x: frameSize, y: frameSize))
-                        .frame(width: frameSize, height: frameSize * pathBounds.height/pathBounds.width)
-                        .shadow(color: Color.black.opacity(0.2), radius: 20, x: 20, y: 20)
+                    ZStack {
+                        BlobView()
+                            .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: -1)
+                            .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
+                    }
                     
                     ZStack {
                         ArcView()
@@ -63,10 +64,16 @@ struct ContentView_Previews: PreviewProvider {
 
 struct ArcView: View {
     var body: some View {
-        Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 180), clockwise: true)
-            .scale(1.1)
-            .stroke(Color(#colorLiteral(red: 0.2196078431, green: 0.1568627451, blue: 0.4117647059, alpha: 1)), lineWidth: 12)
-            .background(Color.black.opacity(0.2))
+        ZStack {
+            Circle()
+                .trim(from: 0.5, to: 1)
+                .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
+                .scaleEffect(1.1)
+            Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 180), clockwise: true)
+                .stroke(Color(#colorLiteral(red: 0.2196078431, green: 0.1568627451, blue: 0.4117647059, alpha: 1)), lineWidth: 12)
+        }
+        .scaleEffect(1.1)
+        .background(Color.orange.opacity(1))
     }
 }
 
