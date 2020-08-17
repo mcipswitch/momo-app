@@ -19,7 +19,9 @@ struct ContentView: View {
                         .fill(Color.orange)
                         .position(CGPoint(x: frameSize, y: frameSize))
                         .frame(width: frameSize, height: frameSize * pathBounds.height/pathBounds.width)
-                    CircleButton()
+                    ZStack {
+                        CircleButton()
+                    }
                     
                     
                     
@@ -45,18 +47,27 @@ struct CircleButton: View {
     @State var tap = false
     @State var press = false
     @State var animate = false
+    @State var fade: Double = 0.3
     
     var body: some View {
-        
-            ZStack {
-                Circle().fill(Color(#colorLiteral(red: 0.3529411765, green: 0.6549019608, blue: 0.5294117647, alpha: 1)).opacity(animate ? 0.3 : 1)).frame(width: 80, height: 80).scaleEffect(self.animate ? 1.05: 1)
-                Circle().fill(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)).opacity(animate ? 0.3 : 1)).frame(width: 65, height: 65).scaleEffect(self.animate ? 1.05: 1)
-                Circle().fill(Color(#colorLiteral(red: 0, green: 1, blue: 0.7137254902, alpha: 1))).frame(width: 50, height: 50)
-            }
-            .onAppear { self.animate = true }
-            .animation(Animation.easeInOut(duration: 2).repeatForever(autoreverses: true))
-        //.frame(width: 80, height: 80)
-        //.clipShape(Circle())
-        //.shadow(color: Color.black.opacity(0.3), radius: 20, x: 20, y: 20)
+        ZStack {
+            Circle()
+                .fill(Color(#colorLiteral(red: 0.3529411765, green: 0.6549019608, blue: 0.5294117647, alpha: 1)).opacity(animate ? 1 : fade))
+                .frame(width: 60, height: 60)
+                .scaleEffect(self.animate ? 1.3: 1)
+            Circle()
+                .fill(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)).opacity(animate ? 1 : fade))
+                .frame(width: 60, height: 60)
+                .scaleEffect(self.animate ? 1.3: 1)
+                .animation(Animation.easeInOut(duration: 1.2)
+                            .repeatForever(autoreverses: true).delay(0.3))
+            Circle()
+                .fill(Color(#colorLiteral(red: 0, green: 1, blue: 0.7137254902, alpha: 1))).opacity(self.animate ? fade : 1)
+                .frame(width: 50, height: 50)
+        }
+        .onAppear { self.animate = true }
+        .animation(Animation.easeInOut(duration: 1.2)
+                    .repeatForever(autoreverses: true))
+        .shadow(color: Color.black.opacity(0.1), radius: 20, x: 20, y: 20)
     }
 }
