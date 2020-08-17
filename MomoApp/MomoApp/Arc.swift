@@ -7,27 +7,25 @@
 
 import SwiftUI
 
-struct Arc: View {
-    var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                Path { path in
-                    path.addArc(
-                        center: CGPoint(x: geometry.size.width/2, y: geometry.size.width/2),
-                        radius: geometry.size.width/2,
-                        startAngle: Angle(degrees: 0),
-                        endAngle: Angle(degrees: 90),
-                        clockwise: true
-                    )
-                }
-                .stroke(Color.blue, lineWidth: 2)
-            }
-        }
+struct Arc: Shape {
+    var startAngle: Angle
+    var endAngle: Angle
+    var clockwise: Bool
+    
+    func path(in rect: CGRect) -> Path {
+//        let rotationAdjustment = Angle.degrees(90)
+//        let modifiedStart = startAngle - rotationAdjustment
+//        let modifiedEnd = endAngle - rotationAdjustment
+        
+        var path = Path()
+        path.addArc(center: CGPoint(x: rect.midX, y: rect.maxY), radius: rect.width/2, startAngle: startAngle, endAngle: endAngle, clockwise: clockwise)
+        return path
     }
 }
 
 struct Arc_Previews: PreviewProvider {
     static var previews: some View {
-        Arc()
+        Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 180), clockwise: true)
+            .stroke(Color.blue, lineWidth: 10)
     }
 }
