@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct BlobView: View {
-    let frameSize: CGFloat = 250
+    let frameSize: CGFloat = 300
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
     
     var body: some View {
-        ZStack {
+        VStack {
             Blob(bezier: .blob3, pathBounds: pathBounds)
                 .fill(RadialGradient(
                         gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
@@ -20,7 +20,8 @@ struct BlobView: View {
                         startRadius: 0,
                         endRadius: pathBounds.width * 1.5)
                 )
-                .frame(width: frameSize, height: frameSize * pathBounds.height / pathBounds.width)
+                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
         }
     }
 }

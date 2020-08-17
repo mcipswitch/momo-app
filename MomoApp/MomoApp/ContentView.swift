@@ -21,7 +21,8 @@ struct ContentView: View {
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
             }
-            VStack(spacing: 64) {
+            VStack {
+                Spacer(minLength: 16)
                 ZStack(alignment: .center) {
                     if text.isEmpty {
                         Text("My day in a word")
@@ -38,15 +39,20 @@ struct ContentView: View {
                         .frame(height: 4)
                         .padding(.top, 64)
                 }
-                .frame(width: 250)
+                .frame(width: 220)
                 
                 BlobView()
-                    .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: -1)
-                    .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
+                    .padding(64)
                 
-                ArcView()
+                GeometryReader { geometry in
+                    ZStack(alignment: .top) {
+                        ArcView()
+                        CircleButton()
+                            .padding(.top, 48)
+                    }
+                    .frame(height: geometry.size.width/2)
+                }
             }
-            
         }
     }
 }
@@ -60,7 +66,7 @@ struct ContentView_Previews: PreviewProvider {
 struct ArcView: View {
     let lineWidth: CGFloat = 12
     var body: some View {
-        ZStack {
+        GeometryReader { geometry in
             ZStack {
                 Arc()
                     .stroke(Color.black.opacity(0.2), lineWidth: lineWidth)
@@ -68,8 +74,8 @@ struct ArcView: View {
                     .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
                     .offset(y: lineWidth/2)
             }
-            .scaleEffect(1.05)
-            CircleButton()
+            .frame(height: geometry.size.width/2)
+            .scaleEffect(1.1)
         }
     }
 }
@@ -99,7 +105,7 @@ struct CircleButton: View {
         .onAppear { self.animate = true }
         .animation(Animation.easeInOut(duration: 1.2)
                     .repeatForever(autoreverses: true))
-        .shadow(color: Color.black.opacity(0.2), radius: 20, x: 20, y: 20)
+        .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
         .scaleEffect(tap ? 1.2 : 1)
         .gesture(
             LongPressGesture().updating($tap) { currentState, gestureState, transaction in
