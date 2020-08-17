@@ -15,8 +15,10 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                GradientView()
-                VStack(spacing: 64) {
+                Image("background")
+                    .resizable()
+                    .edgesIgnoringSafeArea(.all)
+                VStack(spacing: 80) {
                     ZStack(alignment: .center) {
                         if text.isEmpty {
                             Text("My day in a word")
@@ -42,10 +44,9 @@ struct ContentView: View {
                         .shadow(color: Color.black.opacity(0.2), radius: 20, x: 20, y: 20)
                     
                     ZStack {
-                        Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 180), clockwise: true)
-                            .stroke(Color.blue, lineWidth: 12)
+                        ArcView()
                         CircleButton()
-                            .offset(y: geometry.size.width/8)
+                            .offset(y: geometry.size.width/8 - geometry.size.width/8)
                     }
                 }
                 
@@ -60,31 +61,49 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+struct ArcView: View {
+    var body: some View {
+        Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 180), clockwise: true)
+            .scale(1.1)
+            .stroke(Color(#colorLiteral(red: 0.2196078431, green: 0.1568627451, blue: 0.4117647059, alpha: 1)), lineWidth: 12)
+            .background(Color.black.opacity(0.2))
+    }
+}
+
 struct CircleButton: View {
-    @State var tap = false
+    @GestureState var tap = false
     @State var press = false
     @State var animate = false
-    @State var fade: Double = 0.3
+    @State var fade: Double = 0.5
     
     var body: some View {
         ZStack {
             Circle()
                 .fill(Color(#colorLiteral(red: 0.3529411765, green: 0.6549019608, blue: 0.5294117647, alpha: 1)).opacity(animate ? 1 : fade))
-                .frame(width: 60, height: 60)
+                .frame(width: 70, height: 70)
                 .scaleEffect(self.animate ? 1.3: 1)
             Circle()
                 .fill(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)).opacity(animate ? 1 : fade))
-                .frame(width: 60, height: 60)
-                .scaleEffect(self.animate ? 1.3: 1)
+                .frame(width: 70, height: 70)
+                .scaleEffect(self.animate ? 1.3 : 1)
                 .animation(Animation.easeInOut(duration: 1.2)
-                            .repeatForever(autoreverses: true).delay(0.3))
+                            .repeatForever(autoreverses: true).delay(0.2))
             Circle()
-                .fill(Color(#colorLiteral(red: 0, green: 1, blue: 0.7137254902, alpha: 1))).opacity(self.animate ? fade : 1)
-                .frame(width: 50, height: 50)
+                .fill(Color(#colorLiteral(red: 0, green: 1, blue: 0.7137254902, alpha: 1)).opacity(self.animate ? fade : 1))
+                .frame(width: 60, height: 60)
         }
         .onAppear { self.animate = true }
         .animation(Animation.easeInOut(duration: 1.2)
                     .repeatForever(autoreverses: true))
-        .shadow(color: Color.black.opacity(0.1), radius: 20, x: 20, y: 20)
+        .shadow(color: Color.black.opacity(0.2), radius: 20, x: 20, y: 20)
+        .scaleEffect(tap ? 1.2 : 1)
+        .gesture(
+            LongPressGesture().updating($tap) { currentState, gestureState, transaction in
+                gestureState = currentState
+            }
+            .onEnded { value in
+                self.press.toggle()
+            }
+        )
     }
 }
