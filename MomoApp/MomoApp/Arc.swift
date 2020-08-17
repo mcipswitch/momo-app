@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct Arc: Shape {
-    var startAngle: Angle
-    var endAngle: Angle
-    var clockwise: Bool
+    var startAngle: Angle = Angle(degrees: 0)
+    var endAngle: Angle = Angle(degrees: 180)
+    var clockwise: Bool = true
     
     func path(in rect: CGRect) -> Path {
 //        let rotationAdjustment = Angle.degrees(90)
@@ -26,6 +26,5 @@ struct Arc: Shape {
 struct Arc_Previews: PreviewProvider {
     static var previews: some View {
         Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 180), clockwise: true)
-            .stroke(Color.blue, lineWidth: 10)
     }
 }

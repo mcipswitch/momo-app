@@ -11,47 +11,43 @@ struct ContentView: View {
     @State private var text: String = ""
     
     let frameSize: CGFloat = 250
-    let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1, .blob2, .blob3, .blob4])
+    let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1])
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                Image("background")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .edgesIgnoringSafeArea(.all)
-                VStack(spacing: 64) {
-                    ZStack(alignment: .center) {
-                        if text.isEmpty {
-                            Text("My day in a word")
-                                .font(.title)
-                                .foregroundColor(Color.black.opacity(0.2))
-                        }
-                        TextField("", text: $text)
+        ZStack {
+            Image("background")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .edgesIgnoringSafeArea(.all)
+            VStack(spacing: 64) {
+                Spacer()
+                ZStack(alignment: .center) {
+                    if text.isEmpty {
+                        Text("My day in a word")
                             .font(.title)
-                            .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
-                            .multilineTextAlignment(.center)
-                            .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
-                        Rectangle()
-                            .fill(Color.white)
-                            .frame(height: 4)
-                            .padding(.top, 64)
+                            .foregroundColor(Color.black.opacity(0.2))
                     }
-                    .frame(width: 220, height: 100)
-                    
-                    ZStack {
-                        BlobView()
-                            .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: -1)
-                            .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
-                    }
-                    
-                    ZStack {
-                        ArcView()
-                        CircleButton()
-                            .offset(y: geometry.size.width/8 - geometry.size.width/8)
-                    }
+                    TextField("", text: $text)
+                        .font(.title)
+                        .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
+                        .multilineTextAlignment(.center)
+                        .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
+                    Rectangle()
+                        .fill(Color.white)
+                        .frame(height: 4)
+                        .padding(.top, 64)
                 }
+                .frame(width: 220, height: 100)
                 
+                BlobView()
+                    .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: -1)
+                    .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
+                
+                ZStack {
+                    ArcView()
+                    CircleButton()
+                }
             }
+            
         }
     }
 }
@@ -63,17 +59,23 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct ArcView: View {
+    let lineWidth: CGFloat = 12
     var body: some View {
-        ZStack {
-            Circle()
-                .trim(from: 0.5, to: 1)
-                .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
-                .scaleEffect(1.1)
-            Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 180), clockwise: true)
-                .stroke(Color(#colorLiteral(red: 0.2196078431, green: 0.1568627451, blue: 0.4117647059, alpha: 1)), lineWidth: 12)
+        GeometryReader { geometry in
+            ZStack {
+                Arc()
+                    .stroke(Color.black.opacity(0.2), lineWidth: lineWidth)
+                    .overlay(
+                        Circle()
+                            .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
+                            .frame(width: geometry.size.width, height: geometry.size.width)
+                            .offset(y: lineWidth/2)
+                    )
+                    .offset(y: geometry.size.width / 4)
+            }
+            .scaleEffect(1.1)
+            //            .frame(width: geometry.size.width)
         }
-        .scaleEffect(1.1)
-        .background(Color.orange.opacity(1))
     }
 }
 
