@@ -8,12 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
-    let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1, .blob2])
+    let frameSize: CGFloat = 250
+    //let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1, .blob2, .blob3, .blob4])
     var body: some View {
-        ZStack {
-            GradientView()
-            Blob(bezier: .blob1, pathBounds: pathBounds)
-                .frame(width: 200, height: 200 * pathBounds.height/pathBounds.width)
+        GeometryReader { geometry in
+            ZStack {
+                GradientView()
+                ZStack {
+                    Blob(bezier: .blob4)
+                        .fill(Color.orange)
+                        .position(CGPoint(x: frameSize, y: frameSize))
+                        .frame(width: frameSize, height: frameSize, alignment: .center)
+                        .background(Color.white.opacity(0.3))
+                }
+//                .frame(width: frameSize, height: frameSize * pathBounds.height/pathBounds.width)
+            }
         }
     }
 }
