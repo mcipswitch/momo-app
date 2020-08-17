@@ -11,6 +11,7 @@ struct Arc: Shape {
     var startAngle: Angle = Angle(degrees: 0)
     var endAngle: Angle = Angle(degrees: 180)
     var clockwise: Bool = true
+    var lineWidth: CGFloat = 12
     
     func path(in rect: CGRect) -> Path {
 //        let rotationAdjustment = Angle.degrees(90)
@@ -18,13 +19,13 @@ struct Arc: Shape {
 //        let modifiedEnd = endAngle - rotationAdjustment
         
         var path = Path()
-        path.addArc(center: CGPoint(x: rect.midX, y: rect.midY), radius: rect.width/2, startAngle: startAngle, endAngle: endAngle, clockwise: clockwise)
+        path.addArc(center: CGPoint(x: rect.midX, y: rect.minY + rect.width/2 + lineWidth/2), radius: rect.width/2, startAngle: startAngle, endAngle: endAngle, clockwise: clockwise)
         return path
     }
 }
 
 struct Arc_Previews: PreviewProvider {
     static var previews: some View {
-        Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 180), clockwise: true)
+        Arc()
     }
 }

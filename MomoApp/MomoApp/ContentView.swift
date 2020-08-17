@@ -14,17 +14,19 @@ struct ContentView: View {
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1])
     var body: some View {
         ZStack {
-            Image("background")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .edgesIgnoringSafeArea(.all)
+            GeometryReader { geometry in
+                Image("background")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width)
+                    .edgesIgnoringSafeArea(.all)
+            }
             VStack(spacing: 64) {
-                Spacer()
                 ZStack(alignment: .center) {
                     if text.isEmpty {
                         Text("My day in a word")
                             .font(.title)
-                            .foregroundColor(Color.black.opacity(0.2))
+                            .foregroundColor(Color.white.opacity(0.2))
                     }
                     TextField("", text: $text)
                         .font(.title)
@@ -36,16 +38,13 @@ struct ContentView: View {
                         .frame(height: 4)
                         .padding(.top, 64)
                 }
-                .frame(width: 220, height: 100)
+                .frame(width: 250)
                 
                 BlobView()
                     .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: -1)
                     .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
                 
-                ZStack {
-                    ArcView()
-                    CircleButton()
-                }
+                ArcView()
             }
             
         }
@@ -61,20 +60,16 @@ struct ContentView_Previews: PreviewProvider {
 struct ArcView: View {
     let lineWidth: CGFloat = 12
     var body: some View {
-        GeometryReader { geometry in
+        ZStack {
             ZStack {
                 Arc()
                     .stroke(Color.black.opacity(0.2), lineWidth: lineWidth)
-                    .overlay(
-                        Circle()
-                            .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
-                            .frame(width: geometry.size.width, height: geometry.size.width)
-                            .offset(y: lineWidth/2)
-                    )
-                    .offset(y: geometry.size.width / 4)
+                Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 360), clockwise: true)
+                    .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
+                    .offset(y: lineWidth/2)
             }
-            .scaleEffect(1.1)
-            //            .frame(width: geometry.size.width)
+            .scaleEffect(1.05)
+            CircleButton()
         }
     }
 }
