@@ -11,6 +11,7 @@ struct AddMoodView: View {
     @State private var text: String = ""
     @GestureState var longPressTap = false
     @State var isPressed = false
+    @State var isTapped = false
     
     let frameSize: CGFloat = 250
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1])
@@ -28,7 +29,7 @@ struct AddMoodView: View {
                     if text.isEmpty {
                         Text("My day in a word")
                             .font(.title).fontWeight(.semibold)
-                            .foregroundColor(Color.white.opacity(0.3))
+                            .foregroundColor(Color.white.opacity(0.5))
                     }
                     TextField("", text: $text)
                         .font(Font.system(size: 32, weight: .semibold))
@@ -37,8 +38,8 @@ struct AddMoodView: View {
                         .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
                     Rectangle()
                         .fill(Color.white)
-                        .frame(height: 4)
-                        .padding(.top, 64)
+                        .frame(height: 2)
+                        .padding(.top, 48)
                 }
                 .frame(width: 230)
                 .padding(.top, 32)
@@ -66,23 +67,24 @@ struct AddMoodView: View {
                                         Angle(degrees: 180),
                                         axis: (x: 0, y: 1, z: 0)
                                     )
-                                    .animation(.easeInOut(duration: 1.0))
+                                    .animation(.linear(duration: 1.0))
                             }
                             .frame(height: geometry.size.width/2 + 6)
                             //.background(Color.orange)
                             .scaleEffect(1.1)
                             
-                            CircleButton()
+                            CircleButton(isTapped: $isTapped)
                                 .padding(.top, 50)
-                                .scaleEffect(longPressTap ? 1.2 : 1)
+                                .scaleEffect(longPressTap ? 1.1 : 1)
                                 .gesture(
-                                    LongPressGesture(minimumDuration: 1.0)
+                                    LongPressGesture(minimumDuration: 10.0)
                                         .updating($longPressTap) { currentState, gestureState, transaction in
                                         gestureState = currentState
-                                                print(gestureState)
+                                            self.isTapped = true
                                     }
                                     .onEnded { value in
                                         self.isPressed.toggle()
+                                        self.isTapped = false
                                     }
                                 )
                         }
@@ -95,37 +97,46 @@ struct AddMoodView: View {
     }
 }
 
+// MARK: - Views
+
 struct CircleButton: View {
     @GestureState var longPressTap = false
-    @State var animate = false
+    @State var isAnimating = false
     @State var fade: Double = 0.5
+    @Binding var isTapped: Bool
     
     var body: some View {
         ZStack {
             Circle()
-                .fill(Color(#colorLiteral(red: 0.3529411765, green: 0.6549019608, blue: 0.5294117647, alpha: 1)).opacity(animate ? 1 : fade))
-                .frame(width: 70, height: 70)
-                .scaleEffect(self.animate ? 1.3: 1)
-            Circle()
-                .fill(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)).opacity(animate ? 1 : fade))
-                .frame(width: 70, height: 70)
-                .scaleEffect(self.animate ? 1.3 : 1)
-                .animation(Animation.easeInOut(duration: 1.2)
-                            .repeatForever(autoreverses: true).delay(0.2))
-            Circle()
-                .fill(Color(#colorLiteral(red: 0, green: 1, blue: 0.7137254902, alpha: 1)).opacity(self.animate ? fade : 1))
+                .fill(Color(#colorLiteral(red: 0.3529411765, green: 0.6549019608, blue: 0.5294117647, alpha: 1)))
                 .frame(width: 60, height: 60)
+                .scaleEffect(self.isAnimating ? 1.4: 1)
+                .animation(
+                    Animation
+                        .easeInOut(duration: 1.2)
+                        .repeatForever(autoreverses: true)
+                )
+            Circle()
+                .fill(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
+                .frame(width: 60, height: 60)
+                .scaleEffect(self.isAnimating ? 1.2 : 1)
+                .animation(
+                    Animation
+                        .easeInOut(duration: 1.2)
+                        .repeatForever(autoreverses: true).delay(0.2))
+            
+            Circle()
+                .fill(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+                .scaleEffect(self.isAnimating ? 1 : 1.1)
+                .frame(width: 50, height: 50)
+                .animation(
+                    Animation
+                        .easeInOut(duration: 1.2)
+                        .repeatForever(autoreverses: true)
+                )
         }
-        .onAppear { self.animate = true }
-        .animation(Animation.easeInOut(duration: 1.2)
-                    .repeatForever(autoreverses: true))
+        .onAppear { self.isAnimating = true }
         .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
-    }
-}
-
-struct AddMoodProfile_Previews: PreviewProvider {
-    static var previews: some View {
-        AddMoodView()
     }
 }
 
@@ -133,16 +144,24 @@ struct NextButton: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .fill(Color(#colorLiteral(red: 0, green: 1, blue: 0.7137254902, alpha: 1)))
-                .frame(width: 100, height: 40)
+                .fill(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+                .frame(width: 90, height: 34)
                 .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
                 .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 5)
             HStack {
                 Text("Next")
-                    .font(.body).fontWeight(.bold)
+                    .font(Font.system(size: 15, weight: .bold))
                 Image(systemName: "arrow.right")
-                    .font(Font.system(size: 15, weight: .heavy))
+                    .font(Font.system(size: 14, weight: .heavy))
             }
         }
+    }
+}
+
+// MARK: - Previews
+
+struct AddMoodProfile_Previews: PreviewProvider {
+    static var previews: some View {
+        AddMoodView()
     }
 }
