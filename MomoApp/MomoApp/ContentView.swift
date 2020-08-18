@@ -13,46 +13,65 @@ struct ContentView: View {
     let frameSize: CGFloat = 250
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1])
     var body: some View {
-        ZStack {
-            GeometryReader { geometry in
-                Image("background")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: geometry.size.width)
-                    .edgesIgnoringSafeArea(.all)
-            }
-            VStack {
-                Spacer(minLength: 16)
-                ZStack(alignment: .center) {
-                    if text.isEmpty {
-                        Text("My day in a word")
-                            .font(.title)
-                            .foregroundColor(Color.white.opacity(0.2))
-                    }
-                    TextField("", text: $text)
-                        .font(.title)
-                        .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
-                        .multilineTextAlignment(.center)
-                        .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
-                    Rectangle()
-                        .fill(Color.white)
-                        .frame(height: 4)
-                        .padding(.top, 64)
-                }
-                .frame(width: 220)
-                
-                BlobView()
-                    .padding(64)
-                
+        NavigationView {
+            ZStack {
                 GeometryReader { geometry in
-                    ZStack(alignment: .top) {
-                        ArcView()
-                        CircleButton()
-                            .padding(.top, 48)
+                    Image("background")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: geometry.size.width)
+                        .edgesIgnoringSafeArea(.all)
+                }
+                VStack(spacing: 64) {
+                    ZStack(alignment: .center) {
+                        if text.isEmpty {
+                            Text("My day in a word")
+                                .font(.title)
+                                .foregroundColor(Color.white.opacity(0.2))
+                        }
+                        TextField("", text: $text)
+                            .font(.title)
+                            .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
+                            .multilineTextAlignment(.center)
+                            .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
+                        Rectangle()
+                            .fill(Color.white)
+                            .frame(height: 4)
+                            .padding(.top, 64)
                     }
-                    .frame(height: geometry.size.width/2)
+                    .frame(width: 220)
+                    
+                    BlobView()
+
+                    GeometryReader { geometry in
+                        VStack {
+                            Spacer()
+                            
+                            ZStack(alignment: .top) {
+                                ZStack {
+                                    Arc()
+                                        .stroke(Color.black.opacity(0.2), lineWidth: 12)
+                                    Rectangle()
+                                        .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
+                                        .clipShape(
+                                            Arc().offset(y: 6)
+                                        )
+                                }
+                                .frame(height: geometry.size.width/2 + 6)
+                                //.background(Color.orange)
+                                .scaleEffect(1.1)
+
+                                CircleButton()
+                                    .padding(.top, 48)
+                            }
+                        }
+                        .edgesIgnoringSafeArea(.bottom)
+                        
+                    }
                 }
             }
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
         }
     }
 }
@@ -63,22 +82,22 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct ArcView: View {
-    let lineWidth: CGFloat = 12
-    var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                Arc()
-                    .stroke(Color.black.opacity(0.2), lineWidth: lineWidth)
-                Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 360), clockwise: true)
-                    .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
-                    .offset(y: lineWidth/2)
-            }
-            .frame(height: geometry.size.width/2)
-            .scaleEffect(1.1)
-        }
-    }
-}
+//struct ArcView: View {
+//    let lineWidth: CGFloat = 12
+//    var body: some View {
+//        GeometryReader { geometry in
+//            ZStack {
+//                Arc()
+//                    .stroke(Color.black.opacity(0.2), lineWidth: lineWidth)
+//                Arc(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 360), clockwise: true)
+//                    .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
+//                    .offset(y: lineWidth/2)
+//            }
+//            .frame(height: geometry.size.width/2)
+//            .scaleEffect(1.05)
+//        }
+//    }
+//}
 
 struct CircleButton: View {
     @GestureState var tap = false

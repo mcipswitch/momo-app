@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BlobView: View {
-    let frameSize: CGFloat = 300
+    let frameSize: CGFloat = 250
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
     
     var body: some View {
