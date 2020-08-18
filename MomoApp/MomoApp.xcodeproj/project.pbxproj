@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9305EBF224EB694E00E1DB0F /* AddMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9305EBF124EB694E00E1DB0F /* AddMoodView.swift */; };
 		93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F4F24E8CF630095DA38 /* MomoAppApp.swift */; };
 		93519F5224E8CF630095DA38 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5124E8CF630095DA38 /* ContentView.swift */; };
 		93519F5424E8CF640095DA38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5324E8CF640095DA38 /* Assets.xcassets */; };
@@ -17,9 +18,11 @@
 		937D049624EA063C00D74041 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937D049524EA063C00D74041 /* Animator.swift */; };
 		938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */; };
 		938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E537024E983F3002653F0 /* UIColor + Extension.swift */; };
+		93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93976DE624EB6ABF0018C667 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9305EBF124EB694E00E1DB0F /* AddMoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoodView.swift; sourceTree = "<group>"; };
 		93519F4C24E8CF630095DA38 /* MomoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93519F4F24E8CF630095DA38 /* MomoAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoAppApp.swift; sourceTree = "<group>"; };
 		93519F5124E8CF630095DA38 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -32,6 +35,7 @@
 		937D049524EA063C00D74041 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath + Extension.swift"; sourceTree = "<group>"; };
 		938E537024E983F3002653F0 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
+		93976DE624EB6ABF0018C667 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +49,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9305EBF324EB69DB00E1DB0F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9305EBF124EB694E00E1DB0F /* AddMoodView.swift */,
+				93976DE624EB6ABF0018C667 /* HomeView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		93519F4324E8CF630095DA38 = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +79,7 @@
 			children = (
 				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
 				93519F5124E8CF630095DA38 /* ContentView.swift */,
+				9305EBF324EB69DB00E1DB0F /* Views */,
 				93519F6024E8D42B0095DA38 /* GradientView.swift */,
 				93519F5E24E8D0090095DA38 /* Blob.swift */,
 				935FD32E24EA2E23008568FA /* Arc.swift */,
@@ -166,6 +180,8 @@
 			files = (
 				93519F5F24E8D0090095DA38 /* Blob.swift in Sources */,
 				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
+				9305EBF224EB694E00E1DB0F /* AddMoodView.swift in Sources */,
+				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
 				935FD32F24EA2E23008568FA /* Arc.swift in Sources */,
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,
 				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
