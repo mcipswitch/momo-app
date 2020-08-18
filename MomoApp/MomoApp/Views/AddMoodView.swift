@@ -13,80 +13,71 @@ struct AddMoodView: View {
     let frameSize: CGFloat = 250
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1])
     var body: some View {
-        NavigationView {
-            ZStack {
-                GeometryReader { geometry in
-                    Image("background")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: geometry.size.width)
-                        .edgesIgnoringSafeArea(.all)
+        ZStack {
+            GeometryReader { geometry in
+                Image("background")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width)
+                    .edgesIgnoringSafeArea(.all)
+            }
+            VStack(spacing: 64) {
+                ZStack(alignment: .center) {
+                    if text.isEmpty {
+                        Text("My day in a word")
+                            .font(.title).fontWeight(.semibold)
+                            .foregroundColor(Color.white.opacity(0.3))
+                    }
+                    TextField("", text: $text)
+                        .font(Font.system(size: 32, weight: .semibold))
+                        .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
+                        .multilineTextAlignment(.center)
+                        .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
+                    Rectangle()
+                        .fill(Color.white)
+                        .frame(height: 4)
+                        .padding(.top, 64)
                 }
-                VStack(spacing: 64) {
-                    ZStack(alignment: .center) {
-                        if text.isEmpty {
-                            Text("My day in a word")
-                                .font(.title).fontWeight(.semibold)
-                                .foregroundColor(Color.white.opacity(0.3))
-                        }
-                        TextField("", text: $text)
-                            .font(Font.system(size: 32, weight: .semibold))
-                            .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
-                            .multilineTextAlignment(.center)
-                            .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
-                        Rectangle()
-                            .fill(Color.white)
-                            .frame(height: 4)
-                            .padding(.top, 64)
-                    }
-                    .frame(width: 230)
-                    
-                    BlobView()
-                    
-                    GeometryReader { geometry in
-                        VStack {
-                            Spacer()
-                            
-                            ZStack(alignment: .top) {
-                                ZStack {
-                                    Arc()
-                                        .stroke(Color.black.opacity(0.2), lineWidth: 12)
-                                    Rectangle()
-                                        .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
-                                        .clipShape(
-                                            Arc().offset(y: 6)
-                                        )
-                                }
-                                .frame(height: geometry.size.width/2 + 6)
-                                //.background(Color.orange)
-                                .scaleEffect(1.1)
-                                
-                                CircleButton()
-                                    .padding(.top, 50)
+                .frame(width: 230)
+                .padding(.top, 32)
+                
+                BlobView()
+                
+                GeometryReader { geometry in
+                    VStack {
+                        Spacer()
+                        
+                        ZStack(alignment: .top) {
+                            ZStack {
+                                Rectangle()
+                                    .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
+                                    .clipShape(
+                                        Arc().offset(y: 6)
+                                    )
+                                Arc()
+                                    .stroke(Color.black.opacity(0.2), lineWidth: 12)
+                                Arc()
+                                    .trim(from: 0.0, to: 0.5)
+                                    .stroke(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.1882352941, green: 0.8039215686, blue: 0.6156862745, alpha: 1)), Color(#colorLiteral(red: 0.6039215686, green: 0.9411764706, blue: 0.8823529412, alpha: 1))]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                                    .shadow(color: Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), radius: 5, x: 0, y: 0)
+                                    .rotation3DEffect(
+                                        Angle(degrees: 180),
+                                        axis: (x: 0, y: 1, z: 0)
+                                    )
                             }
+                            .frame(height: geometry.size.width/2 + 6)
+                            //.background(Color.orange)
+                            .scaleEffect(1.1)
+                            
+                            CircleButton()
+                                .padding(.top, 50)
                         }
-                        .edgesIgnoringSafeArea(.bottom)
                     }
+                    .edgesIgnoringSafeArea(.bottom)
                 }
             }
-            .toolbar(items: {
-                ToolbarItem {
-                    ZStack {
-                        Rectangle()
-                            .fill(Color(#colorLiteral(red: 0, green: 1, blue: 0.7137254902, alpha: 1)))
-                            .frame(width: 100, height: 40)
-                            .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
-                            .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 5)
-                        HStack {
-                            Text("Next")
-                                .font(.body).fontWeight(.bold)
-                            Image(systemName: "arrow.right")
-                                .font(Font.system(size: 15, weight: .heavy))
-                        }
-                    }
-                }
-            })
         }
+        .navigationBarItems(trailing: NextButton())
     }
 }
 
@@ -131,5 +122,23 @@ struct CircleButton: View {
 struct AddMoodProfile_Previews: PreviewProvider {
     static var previews: some View {
         AddMoodView()
+    }
+}
+
+struct NextButton: View {
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .fill(Color(#colorLiteral(red: 0, green: 1, blue: 0.7137254902, alpha: 1)))
+                .frame(width: 100, height: 40)
+                .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
+                .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 5)
+            HStack {
+                Text("Next")
+                    .font(.body).fontWeight(.bold)
+                Image(systemName: "arrow.right")
+                    .font(Font.system(size: 15, weight: .heavy))
+            }
+        }
     }
 }
