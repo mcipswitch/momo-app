@@ -27,10 +27,10 @@ struct AddMoodView: View {
                         if text.isEmpty {
                             Text("My day in a word")
                                 .font(.title).fontWeight(.semibold)
-                                .foregroundColor(Color.white.opacity(0.5))
+                                .foregroundColor(Color.white.opacity(0.3))
                         }
                         TextField("", text: $text)
-                            .font(.title)
+                            .font(Font.system(size: 32, weight: .semibold))
                             .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
                             .multilineTextAlignment(.center)
                             .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
@@ -39,10 +39,10 @@ struct AddMoodView: View {
                             .frame(height: 4)
                             .padding(.top, 64)
                     }
-                    .frame(width: 220)
+                    .frame(width: 230)
                     
                     BlobView()
-
+                    
                     GeometryReader { geometry in
                         VStack {
                             Spacer()
@@ -60,18 +60,32 @@ struct AddMoodView: View {
                                 .frame(height: geometry.size.width/2 + 6)
                                 //.background(Color.orange)
                                 .scaleEffect(1.1)
-
+                                
                                 CircleButton()
                                     .padding(.top, 50)
                             }
                         }
                         .edgesIgnoringSafeArea(.bottom)
-                        
                     }
                 }
             }
-            .navigationBarTitle("")
-            .navigationBarHidden(true)
+            .toolbar(items: {
+                ToolbarItem {
+                    ZStack {
+                        Rectangle()
+                            .fill(Color(#colorLiteral(red: 0, green: 1, blue: 0.7137254902, alpha: 1)))
+                            .frame(width: 100, height: 40)
+                            .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
+                            .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 5)
+                        HStack {
+                            Text("Next")
+                                .font(.body).fontWeight(.bold)
+                            Image(systemName: "arrow.right")
+                                .font(Font.system(size: 15, weight: .heavy))
+                        }
+                    }
+                }
+            })
         }
     }
 }
