@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AddMoodView: View {
     @State private var text: String = ""
+    @GestureState var longPressTap = false
+    @State var isPressed = false
     
     let frameSize: CGFloat = 250
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1])
@@ -57,13 +59,14 @@ struct AddMoodView: View {
                                 Arc()
                                     .stroke(Color.black.opacity(0.2), lineWidth: 12)
                                 Arc()
-                                    .trim(from: 0.0, to: 0.5)
+                                    .trim(from: 0, to: longPressTap ? 1 : 0.001)
                                     .stroke(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.1882352941, green: 0.8039215686, blue: 0.6156862745, alpha: 1)), Color(#colorLiteral(red: 0.6039215686, green: 0.9411764706, blue: 0.8823529412, alpha: 1))]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 12, lineCap: .round))
                                     .shadow(color: Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), radius: 5, x: 0, y: 0)
                                     .rotation3DEffect(
                                         Angle(degrees: 180),
                                         axis: (x: 0, y: 1, z: 0)
                                     )
+                                    .animation(.easeInOut(duration: 1.0))
                             }
                             .frame(height: geometry.size.width/2 + 6)
                             //.background(Color.orange)
@@ -71,6 +74,17 @@ struct AddMoodView: View {
                             
                             CircleButton()
                                 .padding(.top, 50)
+                                .scaleEffect(longPressTap ? 1.2 : 1)
+                                .gesture(
+                                    LongPressGesture(minimumDuration: 1.0)
+                                        .updating($longPressTap) { currentState, gestureState, transaction in
+                                        gestureState = currentState
+                                                print(gestureState)
+                                    }
+                                    .onEnded { value in
+                                        self.isPressed.toggle()
+                                    }
+                                )
                         }
                     }
                     .edgesIgnoringSafeArea(.bottom)
@@ -82,8 +96,7 @@ struct AddMoodView: View {
 }
 
 struct CircleButton: View {
-    @GestureState var tap = false
-    @State var press = false
+    @GestureState var longPressTap = false
     @State var animate = false
     @State var fade: Double = 0.5
     
@@ -107,15 +120,6 @@ struct CircleButton: View {
         .animation(Animation.easeInOut(duration: 1.2)
                     .repeatForever(autoreverses: true))
         .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
-        .scaleEffect(tap ? 1.2 : 1)
-        .gesture(
-            LongPressGesture().updating($tap) { currentState, gestureState, transaction in
-                gestureState = currentState
-            }
-            .onEnded { value in
-                self.press.toggle()
-            }
-        )
     }
 }
 
