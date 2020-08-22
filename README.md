@@ -4,9 +4,7 @@ A SwiftUI app to log your daily mood.
 
 Built using XCode 12.0 beta 3 (SwiftUI 2.0)
 
-Code by [Priscilla Ip](https://www.prsclla.com)
-
-Design by: [Naomi Fontaine](https://www.behance.net/naomifontaine)
+Code by [Priscilla Ip](https://www.prsclla.com) | Design by: [Naomi Fontaine](https://www.behance.net/naomifontaine)
 
 [https://github.com/mcipswitch](https://github.com/mcipswitch)
 
