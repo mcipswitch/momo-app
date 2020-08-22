@@ -58,6 +58,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		933B150324F1B30C004E9F1C /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				93519F5124E8CF630095DA38 /* ContentView.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
 		93519F4324E8CF630095DA38 = {
 			isa = PBXGroup;
 			children = (
@@ -78,7 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
-				93519F5124E8CF630095DA38 /* ContentView.swift */,
+				933B150324F1B30C004E9F1C /* Navigation */,
 				9305EBF324EB69DB00E1DB0F /* Views */,
 				93519F6024E8D42B0095DA38 /* GradientView.swift */,
 				93519F5E24E8D0090095DA38 /* Blob.swift */,
