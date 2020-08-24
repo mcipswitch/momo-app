@@ -9,6 +9,8 @@ import SwiftUI
 import Combine
 
 struct AddMoodView: View {
+    let universalSize = UIScreen.main.bounds
+    
     @State private var text: String = ""
     @GestureState var longPressTap = false
     @State var isPressed = false

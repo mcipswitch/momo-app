@@ -90,4 +90,25 @@ extension UIBezierPath {
         return shape
     }
     
+    
+    
+//    static func blob(_ delta: CGFloat) -> UIBezierPath {
+//        let shape = UIBezierPath()
+//        shape.move(to: CGPoint(x: 44.5, y: -76.1))
+//        shape.addCurve(to: CGPoint(x: 80 + delta, y: -46 + delta), controlPoint1: CGPoint(x: 58.8 + delta, y: -69 + delta), controlPoint2: CGPoint(x: 72 + delta, y: -59.1 + delta))
+//        shape.addCurve(to: CGPoint(x: 89.8 + delta, y: -0.5 + delta), controlPoint1: CGPoint(x: 88 + delta, y: -32.8 + delta), controlPoint2: CGPoint(x: 90.6 + delta, y: -16.4 + delta))
+//        shape.addCurve(to: CGPoint(x: 77.3 + delta, y: 45.2 + delta), controlPoint1: CGPoint(x: 88.9 + delta, y: 15.4 + delta), controlPoint2: CGPoint(x: 84.5 + delta, y: 30.9 + delta))
+//        shape.addCurve(to: CGPoint(x: 46.4 + delta, y: 79.8 + delta), controlPoint1: CGPoint(x: 70 + delta, y: 59.5 + delta), controlPoint2: CGPoint(x: 59.8 + delta, y: 72.7 + delta))
+//        shape.addCurve(to: CGPoint(x: 0.2 + delta, y: 87.5 + delta), controlPoint1: CGPoint(x: 33.1 + delta, y: 86.9 + delta), controlPoint2: CGPoint(x: 16.5, y: 87.8))
+//        shape.addCurve(to: CGPoint(x: -45.2 + delta, y: 78.2 + delta), controlPoint1: CGPoint(x: -16.2 + delta, y: 87.2 + delta), controlPoint2: CGPoint(x: -32.3 + delta, y: 85.6 + delta))
+//        shape.addCurve(to: CGPoint(x: -75.9 + delta, y: 43.8 + delta), controlPoint1: CGPoint(x: -58.1 + delta, y: 70.9 + delta), controlPoint2: CGPoint(x: -67.7 + delta, y: 57.8 + delta))
+//        shape.addCurve(to: CGPoint(x: -91.8 + delta, y: -0.6 + delta), controlPoint1: CGPoint(x: -84.1 + delta, y: 29.8 + delta), controlPoint2: CGPoint(x: -90.8 + delta, y: 14.9 + delta))
+//        shape.addCurve(to: CGPoint(x: -79.6 + delta, y: -45.4 + delta), controlPoint1: CGPoint(x: -92.8 + delta, y: -16.1 + delta), controlPoint2: CGPoint(x: -88.2, y: -32.2))
+//        shape.addCurve(to: CGPoint(x: -44.5 + delta, y: -76.3 + delta), controlPoint1: CGPoint(x: -71 + delta, y: -58.6 + delta), controlPoint2: CGPoint(x: -58.4 + delta, y: -69.1 + delta))
+//        shape.addCurve(to: CGPoint(x: -0.1 + delta, y: -87.7 + delta), controlPoint1: CGPoint(x: -30.6 + delta, y: -83.6 + delta), controlPoint2: CGPoint(x: -15.3 + delta, y: -87.8 + delta))
+//        shape.addCurve(to: CGPoint(x: 44.5 + delta, y: -76.1 + delta), controlPoint1: CGPoint(x: 15.2 + delta, y: -87.5 + delta), controlPoint2: CGPoint(x: 30.3 + delta, y: -83.2 + delta))
+//        shape.close()
+//        return shape
+//    }
+    
 }
