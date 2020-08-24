@@ -19,6 +19,7 @@
 		938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */; };
 		938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E537024E983F3002653F0 /* UIColor + Extension.swift */; };
 		93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93976DE624EB6ABF0018C667 /* HomeView.swift */; };
+		93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F075FF24F1D9BC000B6449 /* TextLimiter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath + Extension.swift"; sourceTree = "<group>"; };
 		938E537024E983F3002653F0 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		93976DE624EB6ABF0018C667 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		93F075FF24F1D9BC000B6449 /* TextLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLimiter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
+				93F075FF24F1D9BC000B6449 /* TextLimiter.swift */,
 				933B150324F1B30C004E9F1C /* Navigation */,
 				9305EBF324EB69DB00E1DB0F /* Views */,
 				93519F6024E8D42B0095DA38 /* GradientView.swift */,
@@ -194,6 +197,7 @@
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,
 				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
 				93519F6124E8D42B0095DA38 /* GradientView.swift in Sources */,
+				93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */,
 				937D049624EA063C00D74041 /* Animator.swift in Sources */,
 				93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */,
 			);

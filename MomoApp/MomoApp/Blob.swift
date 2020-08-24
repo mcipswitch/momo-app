@@ -7,8 +7,15 @@
 
 import SwiftUI
 
+/*
+ Inspired by Code Disciple post...
+ http://www.code-disciple.com/creating-smooth-animation-like-headspace-app/
+ and Stewart Lynch YouTube video:
+ https://www.youtube.com/watch?v=IUpN7sIwaqc
+ */
+
 struct BlobView: View {
-    let frameSize: CGFloat = 280
+    let frameSize: CGFloat = 250
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
     
     var body: some View {
@@ -30,14 +37,18 @@ struct Blob: Shape {
     let bezier: UIBezierPath
     let pathBounds: CGRect
     func path(in rect: CGRect) -> Path {
-        let centerPoint = CGPoint(x: rect.midX, y: rect.midY)
+        
+        // Scale down points to between 0 - 1
         let pointScale = (rect.width >= rect.height) ?
             max(pathBounds.height, pathBounds.width) :
             min(pathBounds.height, pathBounds.width)
         let pointTransform = CGAffineTransform(scaleX: 1/pointScale, y: 1/pointScale)
         let path = Path(bezier.cgPath).applying(pointTransform)
+        // Ensure path will fit inside the rectangle that shape is contained in
         let multiplier = min(rect.width, rect.height)
         let transform = CGAffineTransform(scaleX: multiplier, y: multiplier)
+        // Center the blob inside the rectangle
+        let centerPoint = CGPoint(x: rect.midX, y: rect.midY)
         let offsetTransform = CGAffineTransform(translationX: centerPoint.x, y: centerPoint.y)
         return path.applying(transform).applying(offsetTransform)
     }

@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
 struct AddMoodView: View {
     @State private var text: String = ""
     @GestureState var longPressTap = false
     @State var isPressed = false
     @State var isTapped = false
+    @ObservedObject var input = TextLimiter(limit: 5)
     
     let frameSize: CGFloat = 250
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1])
@@ -31,11 +33,19 @@ struct AddMoodView: View {
                             .font(.title).fontWeight(.semibold)
                             .foregroundColor(Color.white.opacity(0.5))
                     }
-                    TextField("", text: $text)
+                    TextField("", text: $input.text)
+//                        .onReceive(text.publisher.collect()) {
+//                            self.text = String($0.prefix(5))
+//                        }
+                        
+                        
+                    
+
                         .font(Font.system(size: 32, weight: .semibold))
                         .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
                         .multilineTextAlignment(.center)
                         .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
+                        .minimumScaleFactor(0.5)
                     Rectangle()
                         .fill(Color.white)
                         .frame(height: 2)
