@@ -17,33 +17,24 @@
 import SwiftUI
 
 struct BlobEffect: GeometryEffect {
-    var animatableData: AnimatablePair<CGFloat, CGFloat> {
-        get { AnimatablePair(CGFloat(skewValue), CGFloat(pct)) }
+    var skewValue: CGFloat
+    var rotateState: CGFloat
+    var angle: Double
+    var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
+    
+    var animatableData: AnimatablePair<CGFloat, Double> {
+        get { AnimatablePair(CGFloat(skewValue), Double(angle)) }
         set {
             skewValue = newValue.first
-            pct = newValue.second
+            angle = newValue.second
         }
     }
-
-    var skewValue: CGFloat
-    var pct: CGFloat
     
-    
-    var angle: Double = 0
-    let axis: (x: CGFloat, y: CGFloat)
-    
-    var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
-    var skew: CGFloat { cos(skewValue + .pi / 2) * 0.05 }
-    
-    // Called continuously during interpolation
     func effectValue(size: CGSize) -> ProjectionTransform {
-        var skewV: CGFloat
+        var skew: CGFloat
         
-        if pct == 0 {
-            skewV = 0
-        } else {
-            skewV = cos(skewValue + .pi / 2) * 0.05
-        }
+        // Match end frame with start frame to loop indefinitely
+        skew = rotateState == 0 ? 0 : cos(skewValue + .pi / 2) * 0.05
         
         
         
@@ -52,16 +43,14 @@ struct BlobEffect: GeometryEffect {
         transform3d.m34 = -1 / max(size.width, size.height)
         
         // Transform: Rotate
-        //transform3d = CATransform3DRotate(transform3d, a, axis.x, axis.y, 1)
-            
-        
+        transform3d = CATransform3DRotate(transform3d, a, 0, 0, 1)
         
         // The default anchor point is at the top leading corner.
         // Transform: Shifts anchor of rotation
         transform3d = CATransform3DTranslate(transform3d, -size.width/2.0, -size.height/2.0, 0)
         // Transform: Skew
         let skewTransform = ProjectionTransform(
-            CGAffineTransform(a: 1, b: 0, c: skewV, d: 1, tx: 0, ty: 0)
+            CGAffineTransform(a: 1, b: 0, c: skew, d: 1, tx: 0, ty: 0)
         )
         // Transform: Shifts back to center
         let affineTransform = ProjectionTransform(CGAffineTransform(translationX: size.width/2.0, y: size.height / 2.0))
@@ -79,36 +68,38 @@ struct BlobView: View {
     
     var body: some View {
         ZStack {
+            // Shadow Layer
             Blob(bezier: .blob2, pathBounds: pathBounds)
-                .fill(RadialGradient(
-                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
-                        center: .topLeading,
-                        startRadius: 0,
-                        endRadius: pathBounds.width * 1.5)
-                )
+                .fill(Color.clear)
                 .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
+            
+            // Blob Layer
+            Blob(bezier: .blob2, pathBounds: pathBounds)
+                .fill(Color.orange)
+//                .fill(RadialGradient(
+//                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
+//                        center: .topLeading,
+//                        startRadius: 0,
+//                        endRadius: pathBounds.width * 1.5)
+//                )
                 .modifier(BlobEffect(
-                            skewValue: isAnimating ? skewValue : 0,
-                            pct: CGFloat(rotateState),
-                            angle: isAnimating ? 360 : 0,
-                            axis: (x: 0, y: 0)))
-                .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                .gesture(RotationGesture()
-                            .onChanged { value in
-                                rotateState = value.degrees
-                            }
+                    skewValue: isAnimating ? skewValue : 0,
+                    rotateState: isAnimating ? CGFloat(rotateState) : 0,
+                    angle: isAnimating ? 360 : 0
+                ))
+                .background(
+                    Color.clear
+                        .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
+                        .gesture(RotationGesture()
+                                    .onChanged { value in
+                                        rotateState = value.degrees
+                                    }
+                        )
                 )
-                
-                
-                
-        
-        
-                
-                .animation(Animation.linear(duration: 4).repeatForever(autoreverses: false))
+                .animation(Animation.linear(duration: 2.0).repeatForever(autoreverses: false))
                 .onAppear { isAnimating.toggle() }
         }
         .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
-        
     }
 }
 
