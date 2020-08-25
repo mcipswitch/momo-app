@@ -32,29 +32,19 @@ struct BlobEffect: GeometryEffect {
     
     func effectValue(size: CGSize) -> ProjectionTransform {
         var skew: CGFloat
-        
         // Match end frame with start frame to loop indefinitely
         skew = rotateState == 0 ? 0 : cos(skewValue + .pi / 2) * 0.05
-        
-        
-        
         // m34: sets the perspective parameter
         var transform3d = CATransform3DIdentity;
         transform3d.m34 = -1 / max(size.width, size.height)
-        
         // Transform: Rotate
         transform3d = CATransform3DRotate(transform3d, a, 0, 0, 1)
-        
-        // The default anchor point is at the top leading corner.
-        // Transform: Shifts anchor of rotation
+        // Transform: Shifts anchor point of rotation (from top leading corner to centrer)
         transform3d = CATransform3DTranslate(transform3d, -size.width/2.0, -size.height/2.0, 0)
         // Transform: Skew
-        let skewTransform = ProjectionTransform(
-            CGAffineTransform(a: 1, b: 0, c: skew, d: 1, tx: 0, ty: 0)
-        )
+        let skewTransform = ProjectionTransform(CGAffineTransform(a: 1, b: 0, c: skew, d: 1, tx: 0, ty: 0))
         // Transform: Shifts back to center
         let affineTransform = ProjectionTransform(CGAffineTransform(translationX: size.width/2.0, y: size.height / 2.0))
-        
         return ProjectionTransform(transform3d).concatenating(skewTransform).concatenating(affineTransform)
     }
 }
@@ -69,37 +59,61 @@ struct BlobView: View {
     var body: some View {
         ZStack {
             // Shadow Layer
-            Blob(bezier: .blob2, pathBounds: pathBounds)
+            Blob(bezier: .blob3, pathBounds: pathBounds)
                 .fill(Color.clear)
                 .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
-            
-            // Blob Layer
-            Blob(bezier: .blob2, pathBounds: pathBounds)
-                .fill(Color.orange)
-//                .fill(RadialGradient(
-//                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
-//                        center: .topLeading,
-//                        startRadius: 0,
-//                        endRadius: pathBounds.width * 1.5)
-//                )
-                .modifier(BlobEffect(
-                    skewValue: isAnimating ? skewValue : 0,
-                    rotateState: isAnimating ? CGFloat(rotateState) : 0,
-                    angle: isAnimating ? 360 : 0
-                ))
-                .background(
-                    Color.clear
-                        .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                        .gesture(RotationGesture()
-                                    .onChanged { value in
-                                        rotateState = value.degrees
-                                    }
-                        )
+                
+                // Store rotate state in degrees
+                .background(Color.clear
+                                .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
+                                .gesture(RotationGesture()
+                                            .onChanged { value in
+                                                rotateState = value.degrees
+                                            }
+                                )
                 )
-                .animation(Animation.linear(duration: 2.0).repeatForever(autoreverses: false))
-                .onAppear { isAnimating.toggle() }
+                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+                .animation(Animation.linear(duration: 20).repeatForever(autoreverses: false))
+            
+            Blob(bezier: .blob3, pathBounds: pathBounds)
+                .fill(Color.black)
+                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+                .mask(
+                    Blob(bezier: .blob3, pathBounds: pathBounds)
+                        .fill(style: FillStyle(eoFill: true))
+                        .modifier(BlobEffect(
+                            skewValue: isAnimating ? skewValue : 0,
+                            rotateState: isAnimating ? CGFloat(rotateState) : 0,
+                            angle: isAnimating ? 360 : 0
+                        ))
+                        .animation(Animation.linear(duration: 20).repeatForever(autoreverses: false))
+                )
+            
+            
+            
+            
+            // Gradient Layer
+            Rectangle()
+                .fill(RadialGradient(
+                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
+                        center: .topLeading,
+                        startRadius: 0,
+                        endRadius: pathBounds.width * 1.5)
+                )
+                // Remove mask clipping
+                .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
+                .mask(
+                    Blob(bezier: .blob3, pathBounds: pathBounds)
+                        .modifier(BlobEffect(
+                            skewValue: isAnimating ? skewValue : 0,
+                            rotateState: isAnimating ? CGFloat(rotateState) : 0,
+                            angle: isAnimating ? 360 : 0
+                        ))
+                        .animation(Animation.linear(duration: 20).repeatForever(autoreverses: false))
+                )
+                .onAppear { isAnimating = true }
+                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
         }
-        .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
     }
 }
 
