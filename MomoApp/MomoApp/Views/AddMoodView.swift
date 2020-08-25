@@ -39,6 +39,7 @@ struct AddMoodView: View {
 //                        .onReceive(text.publisher.collect()) {
 //                            self.text = String($0.prefix(5))
 //                        }
+                        .border(Color.red, width: input.hasReachedLimit ? 1 : 0)
                         
                         
                     
