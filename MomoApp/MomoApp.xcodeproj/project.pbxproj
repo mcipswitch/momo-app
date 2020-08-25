@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9305EBF224EB694E00E1DB0F /* AddMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9305EBF124EB694E00E1DB0F /* AddMoodView.swift */; };
+		931476A624F574980031D913 /* CustomTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931476A524F574980031D913 /* CustomTextFieldStyle.swift */; };
 		93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F4F24E8CF630095DA38 /* MomoAppApp.swift */; };
 		93519F5224E8CF630095DA38 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5124E8CF630095DA38 /* ContentView.swift */; };
 		93519F5424E8CF640095DA38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5324E8CF640095DA38 /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		9305EBF124EB694E00E1DB0F /* AddMoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoodView.swift; sourceTree = "<group>"; };
+		931476A524F574980031D913 /* CustomTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldStyle.swift; sourceTree = "<group>"; };
 		93519F4C24E8CF630095DA38 /* MomoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93519F4F24E8CF630095DA38 /* MomoAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoAppApp.swift; sourceTree = "<group>"; };
 		93519F5124E8CF630095DA38 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 			children = (
 				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
 				93F075FF24F1D9BC000B6449 /* TextLimiter.swift */,
+				931476A524F574980031D913 /* CustomTextFieldStyle.swift */,
 				933B150324F1B30C004E9F1C /* Navigation */,
 				9305EBF324EB69DB00E1DB0F /* Views */,
 				93519F6024E8D42B0095DA38 /* GradientView.swift */,
@@ -191,6 +194,7 @@
 			files = (
 				93519F5F24E8D0090095DA38 /* Blob.swift in Sources */,
 				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
+				931476A624F574980031D913 /* CustomTextFieldStyle.swift in Sources */,
 				9305EBF224EB694E00E1DB0F /* AddMoodView.swift in Sources */,
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,

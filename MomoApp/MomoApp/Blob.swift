@@ -51,7 +51,7 @@ struct BlobEffect: GeometryEffect {
 
 struct BlobView: View {
     @State var isAnimating = false
-    let frameSize: CGFloat = 250
+    let frameSize: CGFloat
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
     var skewValue: CGFloat = 36
     @State var rotateState: Double = 0
@@ -74,30 +74,12 @@ struct BlobView: View {
                 )
                 .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
                 .animation(Animation.linear(duration: 20).repeatForever(autoreverses: false))
-            
-            Blob(bezier: .blob3, pathBounds: pathBounds)
-                .fill(Color.black)
-                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
-                .mask(
-                    Blob(bezier: .blob3, pathBounds: pathBounds)
-                        .fill(style: FillStyle(eoFill: true))
-                        .modifier(BlobEffect(
-                            skewValue: isAnimating ? skewValue : 0,
-                            rotateState: isAnimating ? CGFloat(rotateState) : 0,
-                            angle: isAnimating ? 360 : 0
-                        ))
-                        .animation(Animation.linear(duration: 20).repeatForever(autoreverses: false))
-                )
-            
-            
-            
-            
             // Gradient Layer
             Rectangle()
                 .fill(RadialGradient(
                         gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
                         center: .topLeading,
-                        startRadius: 0,
+                        startRadius: 120,
                         endRadius: pathBounds.width * 1.5)
                 )
                 // Remove mask clipping
@@ -109,7 +91,7 @@ struct BlobView: View {
                             rotateState: isAnimating ? CGFloat(rotateState) : 0,
                             angle: isAnimating ? 360 : 0
                         ))
-                        .animation(Animation.linear(duration: 20).repeatForever(autoreverses: false))
+                        .animation(Animation.linear(duration: 32).repeatForever(autoreverses: false))
                 )
                 .onAppear { isAnimating = true }
                 .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
@@ -143,6 +125,6 @@ struct Blob: Shape {
 
 struct Blob_Previews: PreviewProvider {
     static var previews: some View {
-        BlobView()
+        BlobView(frameSize: 250)
     }
 }

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 class TextLimiter: ObservableObject {
     private let limit: Int
@@ -15,15 +14,16 @@ class TextLimiter: ObservableObject {
         self.limit = limit
     }
     
-    @Published var text = "" {
+    @Published var hasReachedLimit = false
+    
+    @Published var userInput = "" {
         didSet {
-            if text.count > limit && oldValue.count <= limit {
-                text = String(text.prefix(limit))
-                self.hasReachedLimit = true
+            if userInput.count > limit && oldValue.count <= limit {
+                userInput = String(userInput.prefix(limit))
+                hasReachedLimit = true
             } else {
-                self.hasReachedLimit = false
+                hasReachedLimit = false
             }
         }
     }
-    @Published var hasReachedLimit = false
 }

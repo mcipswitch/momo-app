@@ -6,19 +6,14 @@
 //
 
 import SwiftUI
-import Combine
 
 struct AddMoodView: View {
     let universalSize = UIScreen.main.bounds
-    
-    @State private var text: String = ""
+    @ObservedObject var textLimiter = TextLimiter(limit: 5)
     @GestureState var longPressTap = false
     @State var isPressed = false
     @State var isTapped = false
-    @ObservedObject var input = TextLimiter(limit: 5)
-    
-    let frameSize: CGFloat = 250
-    let pathBounds = UIBezierPath.calculateBounds(paths: [.blob1])
+
     var body: some View {
         ZStack {
             GeometryReader { geometry in
@@ -27,39 +22,26 @@ struct AddMoodView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
-            }
-            VStack(spacing: 64) {
-                ZStack(alignment: .center) {
-                    if text.isEmpty {
-                        Text("My day in a word")
-                            .font(.title).fontWeight(.semibold)
-                            .foregroundColor(Color.white.opacity(0.5))
+                VStack(spacing: 64) {
+                    ZStack(alignment: .center) {
+                        if textLimiter.userInput.isEmpty {
+                            Text("My day in a word")
+                                .font(.title).fontWeight(.semibold)
+                                .foregroundColor(Color.white.opacity(0.7))
+                                .blur(radius: 0.5)
+                        }
+                        TextField("", text: $textLimiter.userInput)
+                            .textFieldStyle(CustomTextFieldStyle())
+                        Rectangle()
+                            .fill(Color.white)
+                            .frame(height: 2)
+                            .padding(.top, 48)
                     }
-                    TextField("", text: $input.text)
-//                        .onReceive(text.publisher.collect()) {
-//                            self.text = String($0.prefix(5))
-//                        }
-                        .border(Color.red, width: input.hasReachedLimit ? 1 : 0)
-                        
-                        
+                    .frame(width: 230)
+                    .padding(.top, 32)
                     
-
-                        .font(Font.system(size: 32, weight: .semibold))
-                        .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
-                        .multilineTextAlignment(.center)
-                        .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
-                        .minimumScaleFactor(0.5)
-                    Rectangle()
-                        .fill(Color.white)
-                        .frame(height: 2)
-                        .padding(.top, 48)
-                }
-                .frame(width: 230)
-                .padding(.top, 32)
-                
-                BlobView()
-                
-                GeometryReader { geometry in
+                    BlobView(frameSize: geometry.size.width * 0.7)
+                    
                     VStack {
                         Spacer()
                         
@@ -92,13 +74,13 @@ struct AddMoodView: View {
                                 .gesture(
                                     LongPressGesture(minimumDuration: 10.0)
                                         .updating($longPressTap) { currentState, gestureState, transaction in
-                                        gestureState = currentState
+                                            gestureState = currentState
                                             self.isTapped = true
-                                    }
-                                    .onEnded { value in
-                                        self.isPressed.toggle()
-                                        self.isTapped = false
-                                    }
+                                        }
+                                        .onEnded { value in
+                                            self.isPressed.toggle()
+                                            self.isTapped = false
+                                        }
                                 )
                         }
                     }
