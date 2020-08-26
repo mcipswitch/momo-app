@@ -91,38 +91,36 @@ struct AddMoodView: View {
                             
                             CircleButton(isTapped: $isTapped)
                                 .padding(.top, 50)
-                                .onTapGesture {
-                                    // Reset
-                                    if !isLongPressing && counter != 0 {
-                                        counter = 0
-                                        self.isResetting = true
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                            self.isResetting = false
+                                .gesture(
+                                    LongPressGesture(minimumDuration: 0.2)
+                                        .updating($isLongPressed) { currentState, gestureState, transaction in
+                                            gestureState = currentState
                                         }
-                                    }
-                                    self.isLongPressing.toggle()
-                                }
+                                )
+                                .simultaneousGesture(
+                                    DragGesture(minimumDistance: 0)
+                                        .onChanged { value in
+                                            print("Start:", value.time)
+                                            // Reset
+                                            if !isLongPressing && counter != 0 {
+                                                counter = 0
+                                                self.isResetting = true
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                    self.isResetting = false
+                                                }
+                                            }
+                                            self.isLongPressing = true
+                                        }.onEnded { value in
+                                            print("End:", value.time)
+                                            self.isLongPressing = false
+                                        }
+                                )
                                 .onReceive(timer) { _ in
                                     if isLongPressing {
                                         guard counter < (8 - 0.01) else { return }
                                         counter += 0.01
                                     }
                                 }
-                            
-                            
-                            
-                            
-//                                .simultaneousGesture(
-//                                    LongPressGesture(minimumDuration: 5.0)
-//                                        .updating($isLongPressed) { currentState, gestureState, transaction in
-//                                            gestureState = currentState
-//                                        }.onEnded { value in
-//                                            print("ended")
-//                                        }.onChanged { _ in
-//                                            self.isLongPressing = true
-//                                        }
-//                                )
-//
                         }
                     }
                     .edgesIgnoringSafeArea(.bottom)
