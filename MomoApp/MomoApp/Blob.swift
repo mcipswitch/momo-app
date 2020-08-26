@@ -91,7 +91,7 @@ struct BlobView: View {
                             rotateState: isAnimating ? CGFloat(rotateState) : 0,
                             angle: isAnimating ? 360 : 0
                         ))
-                        .animation(Animation.linear(duration: 32).repeatForever(autoreverses: false))
+                        .animation(Animation.linear(duration: 24).repeatForever(autoreverses: false))
                 )
                 .onAppear { isAnimating = true }
                 .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)

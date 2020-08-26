@@ -10,11 +10,27 @@ import SwiftUI
 struct AddMoodView: View {
     let universalSize = UIScreen.main.bounds
     @ObservedObject var textLimiter = TextLimiter(limit: 5)
-    @GestureState var longPressTap = false
-    @State var isPressed = false
+    
+    @GestureState var isLongPressed = false
+    
+    
+    @State var isLongPressing = false
+    
     @State var isTapped = false
+    
+    @State private var doneLongPress = false
+    
+    @State var counter: CGFloat = 0
+    
+    
+    
+    
+    
+    let timer = Timer.publish(every: 0.01, on: RunLoop.main, in: .common).autoconnect()
 
     var body: some View {
+        let pct = counter / 8
+        
         ZStack {
             GeometryReader { geometry in
                 Image("background")
@@ -26,7 +42,7 @@ struct AddMoodView: View {
                     ZStack(alignment: .center) {
                         if textLimiter.userInput.isEmpty {
                             Text("My day in a word")
-                                .font(.title).fontWeight(.semibold)
+                                .font(Font.system(size: 28, weight: .semibold))
                                 .foregroundColor(Color.white.opacity(0.7))
                                 .blur(radius: 0.5)
                         }
@@ -40,7 +56,10 @@ struct AddMoodView: View {
                     .frame(width: 230)
                     .padding(.top, 32)
                     
-                    BlobView(frameSize: geometry.size.width * 0.7)
+                    ZStack {
+                        BlobView(frameSize: geometry.size.width * 0.7)
+                        Text("\(pct)")
+                    }
                     
                     VStack {
                         Spacer()
@@ -52,36 +71,56 @@ struct AddMoodView: View {
                                     .clipShape(
                                         ArcShape().offset(y: 6)
                                     )
+                                // Arc: Track Layer
                                 ArcShape()
                                     .stroke(Color.black.opacity(0.2), lineWidth: 12)
+                                // Arc: Progress Layer
                                 ArcShape()
-                                    .trim(from: 0, to: longPressTap ? 1 : 0.001)
+                                    //.trim(from: 0, to: isLongPressing ? 1 : pct)
+                                    .trim(from: 0, to: pct)
                                     .stroke(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.6039215686, green: 0.9411764706, blue: 0.8823529412, alpha: 1)), Color(#colorLiteral(red: 0.1882352941, green: 0.8039215686, blue: 0.6156862745, alpha: 1))]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 12, lineCap: .round))
                                     .shadow(color: Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), radius: 5, x: 0, y: 0)
                                     .rotation3DEffect(
                                         Angle(degrees: 180),
                                         axis: (x: 0, y: 1, z: 0)
                                     )
-                                    .animation(.linear(duration: 1.0))
+                                    .animation(Animation.easeOut(duration: 8))
                             }
                             .frame(height: geometry.size.width/2 + 6)
-                            //.background(Color.orange)
-                            .scaleEffect(1.1)
+                            .scaleEffect(1.05)
                             
                             CircleButton(isTapped: $isTapped)
                                 .padding(.top, 50)
-                                .scaleEffect(longPressTap ? 1.1 : 1)
-                                .gesture(
-                                    LongPressGesture(minimumDuration: 10.0)
-                                        .updating($longPressTap) { currentState, gestureState, transaction in
-                                            gestureState = currentState
-                                            self.isTapped = true
-                                        }
-                                        .onEnded { value in
-                                            self.isPressed.toggle()
-                                            self.isTapped = false
-                                        }
-                                )
+                                .onTapGesture {
+                                    // Reset
+                                    if !isLongPressing && counter != 0 {
+                                        counter = 0
+                                    }
+                                    
+                                    self.isLongPressing.toggle()
+                                    print(isLongPressing)
+                                }
+                                .onReceive(timer) { _ in
+                                    if isLongPressing {
+                                        guard counter < (8 - 0.01) else { return }
+                                        counter += 0.01
+                                    }
+                                }
+                            
+                            
+                            
+                            
+//                                .simultaneousGesture(
+//                                    LongPressGesture(minimumDuration: 5.0)
+//                                        .updating($isLongPressed) { currentState, gestureState, transaction in
+//                                            gestureState = currentState
+//                                        }.onEnded { value in
+//                                            print("ended")
+//                                        }.onChanged { _ in
+//                                            self.isLongPressing = true
+//                                        }
+//                                )
+//
                         }
                     }
                     .edgesIgnoringSafeArea(.bottom)
@@ -95,7 +134,6 @@ struct AddMoodView: View {
 // MARK: - Views
 
 struct CircleButton: View {
-    @GestureState var longPressTap = false
     @State var isAnimating = false
     @State var fade: Double = 0.5
     @Binding var isTapped: Bool
@@ -119,7 +157,7 @@ struct CircleButton: View {
                     Animation
                         .easeInOut(duration: 1.2)
                         .repeatForever(autoreverses: true).delay(0.2))
-            
+            // Center
             Circle()
                 .fill(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
                 .scaleEffect(self.isAnimating ? 1 : 1.1)
