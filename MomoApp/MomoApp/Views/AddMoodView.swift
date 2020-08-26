@@ -24,12 +24,12 @@ struct AddMoodView: View {
     
     
     
-    
+    @State var isResetting = false
     
     let timer = Timer.publish(every: 0.01, on: RunLoop.main, in: .common).autoconnect()
 
     var body: some View {
-        let pct = counter / 8
+        var pct = counter / 8
         
         ZStack {
             GeometryReader { geometry in
@@ -77,14 +77,14 @@ struct AddMoodView: View {
                                 // Arc: Progress Layer
                                 ArcShape()
                                     //.trim(from: 0, to: isLongPressing ? 1 : pct)
-                                    .trim(from: 0, to: pct)
+                                    .trim(from: 0, to: isResetting ? 0 : pct)
                                     .stroke(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.6039215686, green: 0.9411764706, blue: 0.8823529412, alpha: 1)), Color(#colorLiteral(red: 0.1882352941, green: 0.8039215686, blue: 0.6156862745, alpha: 1))]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 12, lineCap: .round))
                                     .shadow(color: Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), radius: 5, x: 0, y: 0)
                                     .rotation3DEffect(
                                         Angle(degrees: 180),
                                         axis: (x: 0, y: 1, z: 0)
                                     )
-                                    .animation(Animation.easeOut(duration: 8))
+                                    .animation(Animation.easeOut(duration: isResetting ? 0.2 : 8))
                             }
                             .frame(height: geometry.size.width/2 + 6)
                             .scaleEffect(1.05)
@@ -95,10 +95,12 @@ struct AddMoodView: View {
                                     // Reset
                                     if !isLongPressing && counter != 0 {
                                         counter = 0
+                                        self.isResetting = true
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                            self.isResetting = false
+                                        }
                                     }
-                                    
                                     self.isLongPressing.toggle()
-                                    print(isLongPressing)
                                 }
                                 .onReceive(timer) { _ in
                                     if isLongPressing {
