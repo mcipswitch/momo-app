@@ -17,28 +17,30 @@
 import SwiftUI
 
 struct BlobEffect: GeometryEffect {
-    
-    var rotateState: CGFloat
-    
-    
+    var rotateState: Double
     var skewValue: CGFloat
     var angle: Double
     private var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
     
     var animatableData: AnimatablePair<CGFloat, Double> {
-        get { AnimatablePair(CGFloat(skewValue), Double(angle)) }
+        get {
+//            let pair2 = AnimatablePair(Double(angle), Double(rotateState))
+//            return AnimatablePair(CGFloat(skewValue), pair2)
+            return AnimatablePair(CGFloat(skewValue), Double(angle))
+        }
         set {
             skewValue = newValue.first
-            angle = newValue.second
+            angle = newValue.second//.first
+            //rotateState = newValue.second.second
         }
     }
     
     func effectValue(size: CGSize) -> ProjectionTransform {
         var skew: CGFloat
-        // Match end frame with start frame to loop indefinitely
+        var rotate: Double
         
-        #warning("Keep rotate state updating")        
-        //skew = rotateState == 0 ? 0 : cos(skewValue + .pi / 2) * 0.1
+        // Match end frame with start frame to loop indefinitely
+        rotate = (rotateState * 10).rounded()/10
         skew = cos(skewValue + .pi / 2) * 0.1
         
         // m34: sets the perspective parameter
@@ -60,60 +62,83 @@ struct BlobView: View {
     @State var isAnimating = false
     let frameSize: CGFloat
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
-    var skewValue: CGFloat = 36
-    var duration: Double = 2
+    var skewValue: CGFloat = 1000 * 60 // min: 1000
+    var duration: Double = 1000 // min: 1000
     
-    @State var rotateState: Double = 0
+    @State private var rotateState: Double = 0
     
     var body: some View {
+        
+        let timer = Timer.publish(every: 1, on: RunLoop.main, in: .common).autoconnect()
+        
+        
+        
+        
+        
         ZStack {
             // Shadow Layer
             BlobShape(bezier: .blob3, pathBounds: pathBounds)
                 .fill(Color.clear)
                 .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
                 .modifier(BlobEffect(
-                    rotateState: 0,
+                    rotateState: isAnimating ? rotateState : 0,
                     skewValue: isAnimating ? skewValue : 0,
                     angle: 0
                 ))
                 .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
-                // Store rotate state in degrees
-                .background(Color.clear
-                                .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                                .gesture(RotationGesture().onChanged { value in
-                                    rotateState = value.degrees
-                                })
-                )
                 .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
-                
-            
-            
             
             // Gradient Layer
-//            Rectangle()
-//                .fill(RadialGradient(
-//                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
-//                        center: .topLeading,
-//                        startRadius: 120,
-//                        endRadius: pathBounds.width * 1.5)
-//                )
-//                // Remove mask clipping
-//                .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
-//                .mask(
-//                    BlobShape(bezier: .blob3, pathBounds: pathBounds)
-//                        .modifier(BlobEffect(
-//                            rotateState: isAnimating ? CGFloat(rotateState) : 0,
-//                            skewValue: isAnimating ? skewValue : 0,
-//                            angle: isAnimating ? 360 : 0
-//                        ))
-//                        .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
-//                )
-//                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+            Rectangle()
+                .fill(RadialGradient(
+                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
+                        center: .topLeading,
+                        startRadius: 120,
+                        endRadius: pathBounds.width * 1.5)
+                )
+                // Remove mask clipping
+                .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
+                .mask(
+                    BlobShape(bezier: .blob3, pathBounds: pathBounds)
+                        .modifier(BlobEffect(
+                            rotateState: isAnimating ? rotateState : 0,
+                            skewValue: isAnimating ? skewValue : 0,
+                            angle: isAnimating ? 360 : 0
+                        ))
+                        .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
+                    
+                        
+
+                        .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
+                        .animation(Animation.linear(duration: duration/20/10).repeatForever(autoreverses: false))
+                    
+                )
+                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+            
+            
+            
+//            Text("\((rotateState * 10).rounded()/10)")
+//                .padding(.top, 32)
             
             
             
         }
         .onAppear { isAnimating = true }
+        
+        // Store rotate state in degrees
+        .onReceive(timer) { time in
+            if rotateState < duration {
+                self.rotateState += 1
+            } else {
+                rotateState = 1
+            }
+        }
+        
+        .scaleEffect(isAnimating ? 1.05 : 1)
+        .animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
+        
+        
+        
     }
 }
 
