@@ -13,7 +13,7 @@
 		93519F5224E8CF630095DA38 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5124E8CF630095DA38 /* ContentView.swift */; };
 		93519F5424E8CF640095DA38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5324E8CF640095DA38 /* Assets.xcassets */; };
 		93519F5724E8CF640095DA38 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5624E8CF640095DA38 /* Preview Assets.xcassets */; };
-		93519F5F24E8D0090095DA38 /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5E24E8D0090095DA38 /* Blob.swift */; };
+		93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5E24E8D0090095DA38 /* BlobShape.swift */; };
 		93519F6124E8D42B0095DA38 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F6024E8D42B0095DA38 /* GradientView.swift */; };
 		935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935FD32E24EA2E23008568FA /* ArcShape.swift */; };
 		937D049624EA063C00D74041 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937D049524EA063C00D74041 /* Animator.swift */; };
@@ -33,7 +33,7 @@
 		93519F5324E8CF640095DA38 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		93519F5624E8CF640095DA38 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		93519F5824E8CF640095DA38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		93519F5E24E8D0090095DA38 /* Blob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blob.swift; sourceTree = "<group>"; };
+		93519F5E24E8D0090095DA38 /* BlobShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobShape.swift; sourceTree = "<group>"; };
 		93519F6024E8D42B0095DA38 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		935FD32E24EA2E23008568FA /* ArcShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcShape.swift; sourceTree = "<group>"; };
 		937D049524EA063C00D74041 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
@@ -98,7 +98,7 @@
 				933B150324F1B30C004E9F1C /* Navigation */,
 				9305EBF324EB69DB00E1DB0F /* Views */,
 				93519F6024E8D42B0095DA38 /* GradientView.swift */,
-				93519F5E24E8D0090095DA38 /* Blob.swift */,
+				93519F5E24E8D0090095DA38 /* BlobShape.swift */,
 				935FD32E24EA2E23008568FA /* ArcShape.swift */,
 				937D049524EA063C00D74041 /* Animator.swift */,
 				938E537324E983F8002653F0 /* Extensions */,
@@ -196,7 +196,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93A0ABB124F6055900E3AFE8 /* TapView.swift in Sources */,
-				93519F5F24E8D0090095DA38 /* Blob.swift in Sources */,
+				93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */,
 				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
 				931476A624F574980031D913 /* CustomTextFieldStyle.swift in Sources */,
 				9305EBF224EB694E00E1DB0F /* AddMoodView.swift in Sources */,

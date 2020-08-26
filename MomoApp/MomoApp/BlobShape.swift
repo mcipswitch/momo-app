@@ -17,16 +17,19 @@
 import SwiftUI
 
 struct BlobEffect: GeometryEffect {
-    var skewValue: CGFloat
-    var rotateState: CGFloat
-    var angle: Double
-    var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
     
-    var animatableData: AnimatablePair<CGFloat, CGFloat> {
-        get { AnimatablePair(CGFloat(skewValue), CGFloat(rotateState)) }
+    var rotateState: CGFloat
+    
+    
+    var skewValue: CGFloat
+    var angle: Double
+    private var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
+    
+    var animatableData: AnimatablePair<CGFloat, Double> {
+        get { AnimatablePair(CGFloat(skewValue), Double(angle)) }
         set {
             skewValue = newValue.first
-            rotateState = newValue.second
+            angle = newValue.second
         }
     }
     
@@ -34,10 +37,9 @@ struct BlobEffect: GeometryEffect {
         var skew: CGFloat
         // Match end frame with start frame to loop indefinitely
         
-        #warning("Keep rotate state updating")
-        
-        skew = rotateState == 0 ? 0 : cos(skewValue + .pi / 2) * 0.1
-        //skew = cos(skewValue + .pi / 2) * 0.1
+        #warning("Keep rotate state updating")        
+        //skew = rotateState == 0 ? 0 : cos(skewValue + .pi / 2) * 0.1
+        skew = cos(skewValue + .pi / 2) * 0.1
         
         // m34: sets the perspective parameter
         var transform3d = CATransform3DIdentity;
@@ -66,51 +68,56 @@ struct BlobView: View {
     var body: some View {
         ZStack {
             // Shadow Layer
-            ZStack {
-                BlobShape(bezier: .blob3, pathBounds: pathBounds)
-                    .fill(Color.clear)
-                    .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
-                    .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
-            }
-            .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
-            // Store rotate state in degrees
-            .background(Color.clear
-                            .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                            .gesture(RotationGesture().onChanged { value in
-                                            rotateState = value.degrees
-                                        }
-                            )
-            )
-            
-            
-            
+            BlobShape(bezier: .blob3, pathBounds: pathBounds)
+                .fill(Color.clear)
+                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
+                .modifier(BlobEffect(
+                    rotateState: 0,
+                    skewValue: isAnimating ? skewValue : 0,
+                    angle: 0
+                ))
+                .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
+                // Store rotate state in degrees
+                .background(Color.clear
+                                .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
+                                .gesture(RotationGesture().onChanged { value in
+                                    rotateState = value.degrees
+                                })
+                )
+                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+                
             
             
             
             // Gradient Layer
-            Rectangle()
-                .fill(RadialGradient(
-                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
-                        center: .topLeading,
-                        startRadius: 120,
-                        endRadius: pathBounds.width * 1.5)
-                )
-                // Remove mask clipping
-                .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
-                .mask(
-                    BlobShape(bezier: .blob3, pathBounds: pathBounds)
-                        .modifier(BlobEffect(
-                            skewValue: isAnimating ? skewValue : 0,
-                            rotateState: isAnimating ? CGFloat(rotateState) : 0,
-                            angle: isAnimating ? 360 : 0
-                        ))
-                        .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
-                )
-                .onAppear { isAnimating = true }
-                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+//            Rectangle()
+//                .fill(RadialGradient(
+//                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
+//                        center: .topLeading,
+//                        startRadius: 120,
+//                        endRadius: pathBounds.width * 1.5)
+//                )
+//                // Remove mask clipping
+//                .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
+//                .mask(
+//                    BlobShape(bezier: .blob3, pathBounds: pathBounds)
+//                        .modifier(BlobEffect(
+//                            rotateState: isAnimating ? CGFloat(rotateState) : 0,
+//                            skewValue: isAnimating ? skewValue : 0,
+//                            angle: isAnimating ? 360 : 0
+//                        ))
+//                        .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
+//                )
+//                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+            
+            
+            
         }
+        .onAppear { isAnimating = true }
     }
 }
+
+// MARK: - Blob Shape
 
 struct BlobShape: Shape {
     let bezier: UIBezierPath

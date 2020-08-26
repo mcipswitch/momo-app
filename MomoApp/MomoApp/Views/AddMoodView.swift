@@ -8,28 +8,19 @@
 import SwiftUI
 
 struct AddMoodView: View {
+    
+    // MARK: - Properties and Variables
     let universalSize = UIScreen.main.bounds
-    @ObservedObject var textLimiter = TextLimiter(limit: 5)
-    
     @GestureState var isLongPressed = false
-    
-    
     @State var isLongPressing = false
-    
-    @State var isTapped = false
-    
-    @State private var doneLongPress = false
-    
     @State var counter: CGFloat = 0
-    
-    
-    
     @State var isResetting = false
-    
     let timer = Timer.publish(every: 0.01, on: RunLoop.main, in: .common).autoconnect()
+    
+    // MARK: - Body
 
     var body: some View {
-        var pct = counter / 8
+        let pct = counter / 8
         
         ZStack {
             GeometryReader { geometry in
@@ -39,22 +30,7 @@ struct AddMoodView: View {
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
                 VStack(spacing: 64) {
-                    ZStack(alignment: .center) {
-                        if textLimiter.userInput.isEmpty {
-                            Text("My day in a word")
-                                .font(Font.system(size: 28, weight: .semibold))
-                                .foregroundColor(Color.white.opacity(0.7))
-                                .blur(radius: 0.5)
-                        }
-                        TextField("", text: $textLimiter.userInput)
-                            .textFieldStyle(CustomTextFieldStyle())
-                        Rectangle()
-                            .fill(Color.white)
-                            .frame(height: 2)
-                            .padding(.top, 48)
-                    }
-                    .frame(width: 230)
-                    .padding(.top, 32)
+                    WordTextField()
                     
                     ZStack {
                         BlobView(frameSize: geometry.size.width * 0.7)
@@ -89,7 +65,7 @@ struct AddMoodView: View {
                             .frame(height: geometry.size.width/2 + 6)
                             .scaleEffect(1.05)
                             
-                            CircleButton(isTapped: $isTapped)
+                            CircleButton()
                                 .padding(.top, 50)
                                 .gesture(
                                     LongPressGesture(minimumDuration: 0.2)
@@ -101,7 +77,6 @@ struct AddMoodView: View {
                                     DragGesture(minimumDistance: 0)
                                         .onChanged { value in
                                             print("Start:", value.time)
-                                            // Reset
                                             if !isLongPressing && counter != 0 {
                                                 counter = 0
                                                 self.isResetting = true
@@ -136,8 +111,7 @@ struct AddMoodView: View {
 struct CircleButton: View {
     @State var isAnimating = false
     @State var fade: Double = 0.5
-    @Binding var isTapped: Bool
-    
+
     var body: some View {
         ZStack {
             Circle()
@@ -188,6 +162,29 @@ struct NextButton: View {
                     .font(Font.system(size: 14, weight: .heavy))
             }
         }
+    }
+}
+
+struct WordTextField: View {
+    @ObservedObject var textLimiter = TextLimiter(limit: 5)
+    
+    var body: some View {
+        ZStack(alignment: .center) {
+            if textLimiter.userInput.isEmpty {
+                Text("My day in a word")
+                    .font(Font.system(size: 28, weight: .semibold))
+                    .foregroundColor(Color.white.opacity(0.7))
+                    .blur(radius: 0.5)
+            }
+            TextField("", text: $textLimiter.userInput)
+                .textFieldStyle(CustomTextFieldStyle())
+            Rectangle()
+                .fill(Color.white)
+                .frame(height: 2)
+                .padding(.top, 48)
+        }
+        .frame(width: 230)
+        .padding(.top, 32)
     }
 }
 
