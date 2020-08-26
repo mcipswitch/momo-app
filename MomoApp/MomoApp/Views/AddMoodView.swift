@@ -88,6 +88,7 @@ struct AddMoodView: View {
                                         }.onEnded { value in
                                             print("End:", value.time)
                                             self.isLongPressing = false
+                                            counter -= 0.02
                                         }
                                 )
                                 .onReceive(timer) { _ in

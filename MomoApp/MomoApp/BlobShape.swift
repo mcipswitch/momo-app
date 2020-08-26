@@ -62,7 +62,7 @@ struct BlobView: View {
     @State var isAnimating = false
     let frameSize: CGFloat
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
-    var skewValue: CGFloat = 1000 * 60 // min: 1000
+    var skewValue: CGFloat = 1000 // min: 1000, max: 1000 * 60
     var duration: Double = 1000 // min: 1000
     
     @State private var rotateState: Double = 0
@@ -110,7 +110,7 @@ struct BlobView: View {
                         
 
                         .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                        .animation(Animation.linear(duration: duration/20/10).repeatForever(autoreverses: false))
+                        .animation(Animation.linear(duration: duration/20).repeatForever(autoreverses: false)) //duration/20/10
                     
                 )
                 .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
@@ -134,11 +134,9 @@ struct BlobView: View {
             }
         }
         
-        .scaleEffect(isAnimating ? 1.05 : 1)
-        .animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
-        
-        
-        
+        // Animate Scale Effect only if it's at the fastest
+//        .scaleEffect(isAnimating ? 1.05 : 1)
+//        .animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
     }
 }
 
