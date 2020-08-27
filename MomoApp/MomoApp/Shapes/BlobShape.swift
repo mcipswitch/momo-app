@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct BlobEffect: GeometryEffect {
-    var rotateState: Double
     var skewValue: CGFloat
     var angle: Double
     private var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
@@ -52,24 +51,44 @@ struct BlobView: View {
     @State var isAnimating = false
     let frameSize: CGFloat
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
-    var skewValue: CGFloat = 1000 // min: 1000, max: 1000 * 60
-    var duration: Double = 1000 // min: 1000
+    var duration: Double = 1000
     
-    @State private var rotateState: Double = 0
+    
+    
+    
+    
+    @Binding var pct: CGFloat
+    @Binding var isSelecting: Bool
+
+    var speedMin: Double = 360
+    var speedMax: Double = 360 * 50
+    var speed: Double {
+        return (Double(pct) * (speedMax - speedMin)) + speedMin
+    }
+    var skewValueMin: CGFloat = 1000
+    var skewValueMax: CGFloat = 60000
+    var intensity: CGFloat {
+        return (pct * (skewValueMax - skewValueMin)) + skewValueMin
+    }
+    
     
     var body: some View {
+        //let scaleFactor = (pct * (1.2 - 1)) + 1
+        
+        
+        
+        
         ZStack {
             // Shadow Layer
-            BlobShape(bezier: .blob3, pathBounds: pathBounds)
-                .fill(Color.clear)
-                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
-                .modifier(BlobEffect(
-                    rotateState: isAnimating ? rotateState : 0,
-                    skewValue: isAnimating ? skewValue : 0,
-                    angle: 0
-                ))
-                .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
-                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+//            BlobShape(bezier: .blob3, pathBounds: pathBounds)
+//                .fill(Color.clear)
+//                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
+//                .modifier(BlobEffect(
+//                    skewValue: isAnimating ? intensity : 0,
+//                    angle: 0
+//                ))
+//                .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
+//                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
             
             // Gradient Layer
             Rectangle()
@@ -84,25 +103,46 @@ struct BlobView: View {
                 .mask(
                     BlobShape(bezier: .blob3, pathBounds: pathBounds)
                         .modifier(BlobEffect(
-                            rotateState: isAnimating ? rotateState : 0,
-                            skewValue: isAnimating ? skewValue : 0,
-                            angle: isAnimating ? 360 : 0
+                            skewValue: isAnimating ? (isSelecting ? skewValueMin : intensity) : 0,
+                            angle: isAnimating ? (isSelecting ? speedMin : speed) : 0
                         ))
-                        .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
+                        .animation(Animation.linear(duration: isSelecting ? 0 : duration).repeatForever(autoreverses: false))
                         
                         // Rotate
                         .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                        .animation(Animation.linear(duration: 50).repeatForever(autoreverses: false))
+                        .animation(Animation
+                                    .linear(duration: 50)
+                                    .repeatForever(autoreverses: false)
+                        )
                     
-                    //duration: 50 / 10
                 )
                 .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+            
+            
+            
+            
+                
+            
+            
+            
+            
+            
+            
+            
+            VStack {
+                Text("Percentage: \(pct)")
+                Text("Intensity: \(intensity)")
+                Text("Speed: \(speed)")
+                Text(isSelecting ? "Yes" : "No")
+            }
+            
+                
+            
         }
         .onAppear { isAnimating = true }
-        
-        // Animate Scale Effect only if it's at the fastest
-//        .scaleEffect(isAnimating ? CGFloat.random(in: 1.01...1.09) : 1)
-//        .animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
+        // Throb Effect
+        //.scaleEffect(isAnimating ? scaleFactor : 1)
+        //.animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
     }
 }
 
@@ -133,9 +173,9 @@ struct BlobShape: Shape {
 }
 
 // MARK: - Previews
-
-struct Blob_Previews: PreviewProvider {
-    static var previews: some View {
-        BlobView(frameSize: 250)
-    }
-}
+//
+//struct Blob_Previews: PreviewProvider {
+//    static var previews: some View {
+//        //BlobView(frameSize: 250, pct: 0.1, isSelecting: .constant(true), intensity: <#CGFloat#>)
+//    }
+//}
