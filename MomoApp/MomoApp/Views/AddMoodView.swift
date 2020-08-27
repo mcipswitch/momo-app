@@ -13,21 +13,16 @@ struct AddMoodView: View {
     // MARK: - Properties and Variables
     let universalSize = UIScreen.main.bounds
     @GestureState var isLongPressed = false
-    @State var isLongPressing = false
+    @State var isSelecting = false
+    @State var isReset = false
+    @State var pct: CGFloat = 0
     @State var counter: CGFloat = 0 {
-        didSet {
-            pct = counter / CGFloat(duration)
-        }
+        didSet { pct = counter / CGFloat(duration) }
     }
-    @State var isResetting = false
-    let timer = Timer.publish(every: 0.01, on: RunLoop.main, in: .common).autoconnect()
     @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     @State private var text = ""
-    private var duration: Double = 6
-    @State var isSelecting = false
-    
-    
-    @State var pct: CGFloat = 0
+    private var duration: Double = 2
+    let timer = Timer.publish(every: 0.01, on: RunLoop.main, in: .common).autoconnect()
     
     // MARK: - Body
     var body: some View {
@@ -65,11 +60,11 @@ struct AddMoodView: View {
                     
                     
                     ZStack {
-                        BlobView(frameSize: geometry.size.width * 0.7, pct: $pct, isSelecting: $isSelecting)
+                        BlobView(frameSize: geometry.size.width * 0.7, pct: $pct, isSelecting: $isSelecting, isReset: $isReset)
                         VStack {
-                            //Text("Counter: \(counter)")
+                            Text("Counter: \(counter)")
                         }
-                        .padding(.bottom, 100)
+                        .padding(.bottom, 150)
                     }
                     
                     
@@ -90,14 +85,14 @@ struct AddMoodView: View {
                                     .stroke(Color.black.opacity(0.2), lineWidth: 12)
                                 // Arc: Progress Layer
                                 ArcShape()
-                                    .trim(from: 0, to: isResetting ? 0 : pct)
+                                    .trim(from: 0, to: pct)
                                     .stroke(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.6039215686, green: 0.9411764706, blue: 0.8823529412, alpha: 1)), Color(#colorLiteral(red: 0.1882352941, green: 0.8039215686, blue: 0.6156862745, alpha: 1))]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 12, lineCap: .round))
                                     .shadow(color: Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), radius: 5, x: 0, y: 0)
                                     .rotation3DEffect(
                                         Angle(degrees: 180),
                                         axis: (x: 0, y: 1, z: 0)
                                     )
-                                    .animation(Animation.easeOut(duration: isResetting ? 0.2 : duration))
+                                    .animation(Animation.easeOut(duration: duration))
                             }
                             .frame(height: geometry.size.width/2 + 6)
                             .scaleEffect(1.05)
@@ -105,35 +100,42 @@ struct AddMoodView: View {
                             CircleButton()
                                 .padding(.top, 50)
                                 .gesture(
-                                    LongPressGesture(minimumDuration: 0.2)
+                                    LongPressGesture(minimumDuration: 0.1)
                                         .updating($isLongPressed) { currentState, gestureState, transaction in
                                             gestureState = currentState
-                                        }.onEnded { value in
+                                        }.onChanged { _ in
+                                            // Reset Selection
+                                            if !isSelecting && counter != 0 {
+                                                self.isReset = true
+                                                self.counter = 0
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                    self.counter = 0
+                                                }
+                                            }
+                                            
+                                            
+                                            if self.isReset {
+                                                print("Reset selection")
+                                            } else {
+                                                print("Start selection...")
+                                                self.isReset = false
+                                            }
+                                            
+                                            
+                                            
+                                            self.isSelecting = true
                                         }
                                 )
                                 .simultaneousGesture(
                                     DragGesture(minimumDistance: 0)
-                                        .onChanged { value in
-                                            print("Start:", value.time)
-                                            if !isLongPressing && counter != 0 {
-                                                self.isResetting = true
-                                                self.counter = 0
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                                    self.counter = 0
-                                                    self.isResetting = false
-                                                }
-                                            }
-                                            self.isLongPressing = true
-                                            self.isSelecting = true
-                                        }.onEnded { value in
-                                            print("End:", value.time)
-                                            self.isLongPressing = false
+                                        //.onChanged { _ in print("...dragging...") }
+                                        .onEnded { value in
+                                            print("[END GESTURE]")
                                             self.isSelecting = false
-                                            self.counter -= 0.02
                                         }
                                 )
                                 .onReceive(timer) { _ in
-                                    if self.isLongPressing {
+                                    if self.isSelecting {
                                         guard self.counter < (CGFloat(duration) - 0.01) else { return }
                                         self.counter += 0.01
                                     }

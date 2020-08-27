@@ -52,13 +52,10 @@ struct BlobView: View {
     let frameSize: CGFloat
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
     var duration: Double = 1000
-    
-    
-    
-    
-    
+
     @Binding var pct: CGFloat
     @Binding var isSelecting: Bool
+    @Binding var isReset: Bool
 
     var speedMin: Double = 360
     var speedMax: Double = 360 * 50
@@ -67,13 +64,13 @@ struct BlobView: View {
     }
     var skewValueMin: CGFloat = 1000
     var skewValueMax: CGFloat = 60000
-    var intensity: CGFloat {
+    var skewValue: CGFloat {
         return (pct * (skewValueMax - skewValueMin)) + skewValueMin
     }
     var scaleMin: CGFloat = 1
-    var scaleMax: CGFloat = 1.2
+    var scaleMax: CGFloat = 1.1
     var scaleFactor: CGFloat {
-        return (pct * (scaleMax - scaleMin)) + 1
+        return (pct * (scaleMax - scaleMin)) + scaleMin
     }
     
     var body: some View {
@@ -102,46 +99,44 @@ struct BlobView: View {
                 .mask(
                     BlobShape(bezier: .blob3, pathBounds: pathBounds)
                         .modifier(BlobEffect(
-                            skewValue: isAnimating ? (isSelecting ? skewValueMin : intensity) : 0,
+                            skewValue: isAnimating ? (isSelecting ? skewValueMin : skewValue) : 0,
                             angle: isAnimating ? (isSelecting ? speedMin : speed) : 0
                         ))
-                        .animation(Animation.linear(duration: isSelecting ? 0 : duration).repeatForever(autoreverses: false))
-                        // Rotate
+                        .animation(Animation
+                                    .linear(
+                                        duration: isSelecting ? 0 : duration)
+//                                        duration: isSelecting
+//                                                ? pow(duration, 2)/2 * Double(pct)
+//                                                : reset ? 0 : duration)
+                                    .repeatForever(autoreverses: false)
+                        )
+                        
+                        // Throb Effect
+                        .scaleEffect(isAnimating ? (isSelecting ? (isReset ? 1 : 1) : scaleFactor) : 1)
+                        .animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
+                        
+                        // Rotate Effect (no dynamic animation)
                         .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
                         .animation(Animation.linear(duration: 50).repeatForever(autoreverses: false))
-                    
-                    
-                        // Throb Effect
-                        .scaleEffect(isSelecting ? 1 : scaleFactor)
-                        .animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
                 )
                 .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
             
             
             
-            
-                
-            
-            
-            
-            
-            
-            
-            
             VStack {
                 Text("Percentage: \(pct)")
-                Text("Intensity: \(intensity)")
+                Text("Intensity: \(skewValue)")
                 Text("Speed: \(speed)")
                 Text("Scale: \(scaleFactor)")
-                Text(isSelecting ? "Yes" : "No")
+                Text(isSelecting ? "Selected: Yes" : "Selected: No")
+                Text(isReset ? "Reset: Yes" : "Reset: No")
             }
+            .font(.system(size: 12.0))
             
                 
             
         }
         .onAppear { isAnimating = true }
-        
-        
     }
 }
 
@@ -172,9 +167,9 @@ struct BlobShape: Shape {
 }
 
 // MARK: - Previews
-//
+
 //struct Blob_Previews: PreviewProvider {
 //    static var previews: some View {
-//        //BlobView(frameSize: 250, pct: 0.1, isSelecting: .constant(true), intensity: <#CGFloat#>)
+//        BlobView(frameSize: 250, pct: .constant(0.1), isSelecting: .constant(true))
 //    }
 //}
