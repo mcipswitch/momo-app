@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct AddMoodView: View {
     
@@ -16,6 +17,8 @@ struct AddMoodView: View {
     @State var counter: CGFloat = 0
     @State var isResetting = false
     let timer = Timer.publish(every: 0.01, on: RunLoop.main, in: .common).autoconnect()
+    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
+    @State private var text = ""
     
     // MARK: - Body
 
@@ -30,7 +33,27 @@ struct AddMoodView: View {
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
                 VStack(spacing: 64) {
-                    WordTextField()
+                    
+                    // Word Text Field
+                    ZStack(alignment: .center) {
+                        if text.isEmpty {
+                            Text("My day in a word")
+                                .font(Font.system(size: 28, weight: .semibold))
+                                .foregroundColor(Color.white.opacity(0.6))
+                                .blur(radius: 0.5)
+                        }
+                        TextField("", text: $text)
+                            .textFieldStyle(CustomTextFieldStyle())
+                            .onReceive(textLimiter.userInput.publisher.collect()) { characters in
+                                self.text = String(text.prefix(20))
+                            }
+                        Rectangle()
+                            .fill(Color.white)
+                            .frame(height: 2)
+                            .padding(.top, 48)
+                    }
+                    .frame(width: 230)
+                    .padding(.top, 32)
                     
                     ZStack {
                         BlobView(frameSize: geometry.size.width * 0.7)
@@ -163,29 +186,6 @@ struct NextButton: View {
                     .font(Font.system(size: 14, weight: .heavy))
             }
         }
-    }
-}
-
-struct WordTextField: View {
-    @ObservedObject var textLimiter = TextLimiter(limit: 5)
-    
-    var body: some View {
-        ZStack(alignment: .center) {
-            if textLimiter.userInput.isEmpty {
-                Text("My day in a word")
-                    .font(Font.system(size: 28, weight: .semibold))
-                    .foregroundColor(Color.white.opacity(0.7))
-                    .blur(radius: 0.5)
-            }
-            TextField("", text: $textLimiter.userInput)
-                .textFieldStyle(CustomTextFieldStyle())
-            Rectangle()
-                .fill(Color.white)
-                .frame(height: 2)
-                .padding(.top, 48)
-        }
-        .frame(width: 230)
-        .padding(.top, 32)
     }
 }
 

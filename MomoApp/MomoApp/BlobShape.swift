@@ -23,25 +23,15 @@ struct BlobEffect: GeometryEffect {
     private var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
     
     var animatableData: AnimatablePair<CGFloat, Double> {
-        get {
-//            let pair2 = AnimatablePair(Double(angle), Double(rotateState))
-//            return AnimatablePair(CGFloat(skewValue), pair2)
-            return AnimatablePair(CGFloat(skewValue), Double(angle))
-        }
+        get { AnimatablePair(CGFloat(skewValue), Double(angle)) }
         set {
             skewValue = newValue.first
-            angle = newValue.second//.first
-            //rotateState = newValue.second.second
+            angle = newValue.second
         }
     }
     
     func effectValue(size: CGSize) -> ProjectionTransform {
-        var skew: CGFloat
-        var rotate: Double
-        
-        // Match end frame with start frame to loop indefinitely
-        rotate = (rotateState * 10).rounded()/10
-        skew = cos(skewValue + .pi / 2) * 0.1
+        var skew: CGFloat { cos(skewValue + .pi / 2) * 0.1 }
         
         // m34: sets the perspective parameter
         var transform3d = CATransform3DIdentity;
@@ -68,13 +58,6 @@ struct BlobView: View {
     @State private var rotateState: Double = 0
     
     var body: some View {
-        
-        let timer = Timer.publish(every: 1, on: RunLoop.main, in: .common).autoconnect()
-        
-        
-        
-        
-        
         ZStack {
             // Shadow Layer
             BlobShape(bezier: .blob3, pathBounds: pathBounds)
@@ -106,36 +89,19 @@ struct BlobView: View {
                             angle: isAnimating ? 360 : 0
                         ))
                         .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
-                    
                         
-
+                        // Rotate
                         .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                        .animation(Animation.linear(duration: duration/20).repeatForever(autoreverses: false)) //duration/20/10
+                        .animation(Animation.linear(duration: 50).repeatForever(autoreverses: false))
                     
+                    //duration: 50 / 10
                 )
                 .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
-            
-            
-            
-//            Text("\((rotateState * 10).rounded()/10)")
-//                .padding(.top, 32)
-            
-            
-            
         }
         .onAppear { isAnimating = true }
         
-        // Store rotate state in degrees
-        .onReceive(timer) { time in
-            if rotateState < duration {
-                self.rotateState += 1
-            } else {
-                rotateState = 1
-            }
-        }
-        
         // Animate Scale Effect only if it's at the fastest
-//        .scaleEffect(isAnimating ? 1.05 : 1)
+//        .scaleEffect(isAnimating ? CGFloat.random(in: 1.01...1.09) : 1)
 //        .animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
     }
 }
