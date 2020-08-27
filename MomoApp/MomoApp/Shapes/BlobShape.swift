@@ -70,14 +70,13 @@ struct BlobView: View {
     var intensity: CGFloat {
         return (pct * (skewValueMax - skewValueMin)) + skewValueMin
     }
-    
+    var scaleMin: CGFloat = 1
+    var scaleMax: CGFloat = 1.2
+    var scaleFactor: CGFloat {
+        return (pct * (scaleMax - scaleMin)) + 1
+    }
     
     var body: some View {
-        //let scaleFactor = (pct * (1.2 - 1)) + 1
-        
-        
-        
-        
         ZStack {
             // Shadow Layer
 //            BlobShape(bezier: .blob3, pathBounds: pathBounds)
@@ -107,14 +106,14 @@ struct BlobView: View {
                             angle: isAnimating ? (isSelecting ? speedMin : speed) : 0
                         ))
                         .animation(Animation.linear(duration: isSelecting ? 0 : duration).repeatForever(autoreverses: false))
-                        
                         // Rotate
                         .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                        .animation(Animation
-                                    .linear(duration: 50)
-                                    .repeatForever(autoreverses: false)
-                        )
+                        .animation(Animation.linear(duration: 50).repeatForever(autoreverses: false))
                     
+                    
+                        // Throb Effect
+                        .scaleEffect(isSelecting ? 1 : scaleFactor)
+                        .animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
                 )
                 .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
             
@@ -133,6 +132,7 @@ struct BlobView: View {
                 Text("Percentage: \(pct)")
                 Text("Intensity: \(intensity)")
                 Text("Speed: \(speed)")
+                Text("Scale: \(scaleFactor)")
                 Text(isSelecting ? "Yes" : "No")
             }
             
@@ -140,9 +140,8 @@ struct BlobView: View {
             
         }
         .onAppear { isAnimating = true }
-        // Throb Effect
-        //.scaleEffect(isAnimating ? scaleFactor : 1)
-        //.animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
+        
+        
     }
 }
 

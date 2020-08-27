@@ -67,7 +67,7 @@ struct AddMoodView: View {
                     ZStack {
                         BlobView(frameSize: geometry.size.width * 0.7, pct: $pct, isSelecting: $isSelecting)
                         VStack {
-                            Text("Counter: \(counter)")
+                            //Text("Counter: \(counter)")
                         }
                         .padding(.bottom, 100)
                     }
