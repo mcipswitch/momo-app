@@ -19,13 +19,15 @@ import SwiftUI
 struct BlobEffect: GeometryEffect {
     var skewValue: CGFloat
     var angle: Double
+    var scaleFactor: CGFloat
     private var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
     
-    var animatableData: AnimatablePair<CGFloat, Double> {
-        get { AnimatablePair(CGFloat(skewValue), Double(angle)) }
+    var animatableData: AnimatablePair<CGFloat, AnimatablePair<Double, CGFloat>> {
+        get { AnimatablePair(CGFloat(skewValue), AnimatablePair(Double(angle), CGFloat(scaleFactor))) }
         set {
             skewValue = newValue.first
-            angle = newValue.second
+            angle = newValue.second.first
+            scaleFactor = newValue.second.second
         }
     }
     
@@ -37,6 +39,8 @@ struct BlobEffect: GeometryEffect {
         transform3d.m34 = -1 / max(size.width, size.height)
         // Transform: Rotate
         transform3d = CATransform3DRotate(transform3d, a, 0, 0, 1)
+        // Transform: Scale
+        transform3d = CATransform3DScale(transform3d, 1, 1, 0)
         // Transform: Shifts anchor point of rotation (from top leading corner to centrer)
         transform3d = CATransform3DTranslate(transform3d, -size.width/2.0, -size.height/2.0, 0)
         // Transform: Skew
@@ -56,6 +60,7 @@ struct BlobView: View {
     @Binding var pct: CGFloat
     @Binding var isSelecting: Bool
     @Binding var isReset: Bool
+    @Binding var isResetting: Bool
 
     var speedMin: Double = 360
     var speedMax: Double = 360 * 50
@@ -100,26 +105,43 @@ struct BlobView: View {
                     BlobShape(bezier: .blob3, pathBounds: pathBounds)
                         .modifier(BlobEffect(
                             skewValue: isAnimating ? (isSelecting ? skewValueMin : skewValue) : 0,
-                            angle: isAnimating ? (isSelecting ? speedMin : speed) : 0
+                            angle: isAnimating ? (isSelecting ? speedMin : speed) : 0,
+                            scaleFactor: isAnimating ? (isSelecting ? scaleMin : scaleFactor) : 1
                         ))
-                        .animation(Animation
-                                    .linear(
-                                        duration: isSelecting ? 0 : duration)
-//                                        duration: isSelecting
-//                                                ? pow(duration, 2)/2 * Double(pct)
-//                                                : reset ? 0 : duration)
-                                    .repeatForever(autoreverses: false)
+                        .animation(
+                            isResetting
+                                ? Animation.linear(duration: 0).repeatForever(autoreverses: false)
+                                : Animation.linear(duration: duration).repeatForever(autoreverses: false)
                         )
                         
+                        
                         // Throb Effect
-                        .scaleEffect(isAnimating ? (isSelecting ? (isReset ? 1 : 1) : scaleFactor) : 1)
-                        .animation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true))
+                        .scaleEffect(isAnimating ? (isSelecting ? scaleMin : scaleFactor) : 1)
+                        .animation(
+                            isReset
+                                ? Animation.easeInOut(duration: 0).repeatForever(autoreverses: false)
+                                : Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: false)
+                        )
+                    
+                    
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         
                         // Rotate Effect (no dynamic animation)
-                        .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                        .animation(Animation.linear(duration: 50).repeatForever(autoreverses: false))
+                        //.rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
+                        //.animation(Animation.linear(duration: 50).repeatForever(autoreverses: false))
                 )
-                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+                .frame(width: frameSize, height: frameSize * (pathBounds.width / pathBounds.height))
+            
+            
+            
+            
             
             
             
