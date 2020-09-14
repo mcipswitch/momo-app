@@ -155,15 +155,14 @@ struct BlobView: View {
             
             // - TEXT - //
             VStack {
-                Text("Percentage: \(animator.pct)")
-                Text("Intensity: \(animator.skewValue)")
-                Text("Speed: \(animator.speed)")
-                //Text("Scale: \(scaleFactor)")
-                Text(isSelecting ? "Selected: Yes" : "Selected: No")
-                Text(isReset ? "Reset: Yes" : "Reset: No")
+                //Text("Percentage: \(animator.pct)")
+                //Text("Intensity: \(animator.skewValue)")
+                //Text("Speed: \(animator.speed)")
+                //Text(isSelecting ? "Selected: Yes" : "Selected: No")
+                //Text(isReset ? "Reset: Yes" : "Reset: No")
             }
-            .font(.system(size: 12.0))
-            // - TEXT - //
+            
+
         }
         .onAppear {
             isAnimating = true

@@ -16,7 +16,9 @@ struct AddMoodView: View {
     @State var isSelecting = false
     @State var isReset = true
     @State var isResetting = false
-//    @State var pct: CGFloat = 0
+    
+    
+    
 //    @State var counter: CGFloat = 0 {
 //        didSet { pct = counter / CGFloat(duration) }
 //    }
@@ -28,6 +30,10 @@ struct AddMoodView: View {
     
     
     
+    
+    @State var forceValue: CGFloat = 0.0
+    @State var maxForceValue: CGFloat = 0.0
+    @State var pct: CGFloat = 0
     
     // MARK: - Body
     var body: some View {
@@ -67,15 +73,16 @@ struct AddMoodView: View {
                     ZStack {
                         BlobView(frameSize: geometry.size.width * 0.7, isSelecting: $isSelecting, isReset: $isReset, isResetting: $isResetting, speed: $animator.speed, skewValue: $animator.skewValue)
                         
-                        
-                        
-                        
-                        
                         VStack {
-                            Text("Counter: \(animator.counter)")
-                            Text("Pct: \(animator.pct)")
-                            Text(isResetting ? "Resetting" : "...")
+                            Text("Force Touch Value")
+                            Text("\(pct)")
+                                .onChange(of: self.forceValue) { value in
+                                    if value != 0.0 {
+                                        self.pct = (value * 100) / self.maxForceValue
+                                    }
+                                }
                         }
+                        .font(Font.system(size: 14))
                         .padding(.bottom, 150)
                     }
                     
@@ -109,41 +116,45 @@ struct AddMoodView: View {
                             .frame(height: geometry.size.width/2 + 6)
                             .scaleEffect(1.05)
                             
-                            CircleButton()
+                            CircleButton(forceValue: $forceValue, maxForceValue: $maxForceValue)
                                 .padding(.top, 50)
-                                .gesture(
-                                    LongPressGesture(minimumDuration: 0.2, maximumDistance: 100)
-                                        .onChanged { _ in
-                                            if !isSelecting && !isReset {
-                                                print("Resetting...")
-                                                self.animator.counter = 0
-                                                self.isResetting = true
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                                    self.animator.counter = 0
-                                                    self.isResetting = false
-                                                }
-                                            }
-                                            self.isReset.toggle()
-                                            self.isSelecting = true
-                                        }.onEnded { value in
-                                            if isReset {
-                                                self.isReset.toggle()
-                                            }
-                                        }
-                                )
-                                .simultaneousGesture(
-                                    DragGesture(minimumDistance: 0)
-                                        .onEnded { value in
-                                            self.animator.counter -= 0.02
-                                            self.isSelecting = false
-                                        }
-                                )
-                                .onReceive(timer) { _ in
-                                    if self.isSelecting {
-                                        guard self.animator.counter < (CGFloat(duration)) else { return }
-                                        self.animator.counter += 0.01
-                                    }
-                                }
+                            
+                            
+                            
+                            
+//                                .gesture(
+//                                    LongPressGesture(minimumDuration: 0.2, maximumDistance: 100)
+//                                        .onChanged { _ in
+//                                            if !isSelecting && !isReset {
+//                                                print("Resetting...")
+//                                                self.animator.counter = 0
+//                                                self.isResetting = true
+//                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//                                                    self.animator.counter = 0
+//                                                    self.isResetting = false
+//                                                }
+//                                            }
+//                                            self.isReset.toggle()
+//                                            self.isSelecting = true
+//                                        }.onEnded { value in
+//                                            if isReset {
+//                                                self.isReset.toggle()
+//                                            }
+//                                        }
+//                                )
+//                                .simultaneousGesture(
+//                                    DragGesture(minimumDistance: 0)
+//                                        .onEnded { value in
+//                                            self.animator.counter -= 0.02
+//                                            self.isSelecting = false
+//                                        }
+//                                )
+//                                .onReceive(timer) { _ in
+//                                    if self.isSelecting {
+//                                        guard self.animator.counter < (CGFloat(duration)) else { return }
+//                                        self.animator.counter += 0.01
+//                                    }
+//                                }
                         }
                     }
                     .edgesIgnoringSafeArea(.bottom)
@@ -162,7 +173,10 @@ struct AddMoodView: View {
 struct CircleButton: View {
     @State var isAnimating = false
     @State var fade: Double = 0.5
-
+    
+    @Binding var forceValue: CGFloat
+    @Binding var maxForceValue: CGFloat
+    
     var body: some View {
         ZStack {
             Circle()
@@ -181,12 +195,13 @@ struct CircleButton: View {
                 .animation(
                     Animation
                         .easeInOut(duration: 1.2)
-                        .repeatForever(autoreverses: true).delay(0.2))
-            // Center
-            Circle()
-                .fill(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
-                .scaleEffect(self.isAnimating ? 1 : 1.1)
+                        .repeatForever(autoreverses: true).delay(0.2)
+                )
+            CustomView(tappedForceValue: $forceValue, maxForceValue: $maxForceValue)
+                .background(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
                 .frame(width: 50, height: 50)
+                .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
+                .scaleEffect(self.isAnimating ? 1 : 1.1)
                 .animation(
                     Animation
                         .easeInOut(duration: 1.2)

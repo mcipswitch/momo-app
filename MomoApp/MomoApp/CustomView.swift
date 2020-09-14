@@ -1,5 +1,5 @@
 //
-//  TouchButton.swift
+//  CustomView.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-08-28.
@@ -9,38 +9,36 @@ import UIKit
 import SwiftUI
 
 struct CustomView: UIViewRepresentable {
+    @Binding var tappedForceValue: CGFloat
+    @Binding var maxForceValue: CGFloat
+    
     func makeUIView(context: Context) -> ForceButton {
-        let forceButton = ForceButton(type: .roundedRect)
-//        let longPressGesture = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleLongPress(sender:)))
-//        longPressGesture.delegate = context.coordinator
-//        forceButton.addGestureRecognizer(longPressGesture)
+        let forceButton = ForceButton()
+        forceButton.addTarget(
+            context.coordinator,
+            action: #selector(Coordinator.handleLongPress(sender:)),
+            for: .allTouchEvents
+        )
         return forceButton
     }
     
-    func updateUIView(_ uiView: ForceButton, context: Context) {
+    func updateUIView(_ forceButton: ForceButton, context: Context) {
+        forceButton.forceVal = tappedForceValue
     }
 
-    // MARK: - Coordinator
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    final class Coordinator: NSObject, UIGestureRecognizerDelegate {
-        var parent: UIView
-        init(_ parent: UIView) {
-            self.parent = parent
+    final class Coordinator: NSObject {
+        var customView: CustomView
+        init(_ customView: CustomView) {
+            self.customView = customView
         }
         
-//        @objc func handleLongPress(sender: UIView) {
-//            print("long press")
-//        }
+        @objc func handleLongPress(sender: ForceButton) {
+            customView.tappedForceValue = sender.forceVal
+            customView.maxForceValue = sender.maxForceVal
+        }
     }
-}
-
-
-struct TouchButton_Previews: PreviewProvider {
-    static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
     }
 }
