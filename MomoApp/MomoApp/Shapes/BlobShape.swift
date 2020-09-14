@@ -15,6 +15,7 @@
  */
 
 import SwiftUI
+import Combine
 
 struct BlobEffect: GeometryEffect {
     var skewValue: CGFloat
@@ -32,7 +33,8 @@ struct BlobEffect: GeometryEffect {
     }
     
     func effectValue(size: CGSize) -> ProjectionTransform {
-        var skew: CGFloat { cos(skewValue + .pi / 2) * 0.1 }
+        //var skew: CGFloat { cos(skewValue + .pi / 2) * 0.1 }
+        var skew: CGFloat { skewValue * 0.03 }
         
         // m34: sets the perspective parameter
         var transform3d = CATransform3DIdentity;
@@ -52,32 +54,38 @@ struct BlobEffect: GeometryEffect {
 }
 
 struct BlobView: View {
+    @ObservedObject private var animator = Animator()
+
     @State var isAnimating = false
     let frameSize: CGFloat
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
-    var duration: Double = 1000
+    var duration: Double = 1
 
-    @Binding var pct: CGFloat
+    //@Binding var pct: CGFloat
     @Binding var isSelecting: Bool
     @Binding var isReset: Bool
     @Binding var isResetting: Bool
 
-    var speedMin: Double = 360
-    var speedMax: Double = 360 * 50
-    var speed: Double {
-        return (Double(pct) * (speedMax - speedMin)) + speedMin
-    }
-    var skewValueMin: CGFloat = 1000
-    var skewValueMax: CGFloat = 60000
-    var skewValue: CGFloat {
-        return (pct * (skewValueMax - skewValueMin)) + skewValueMin
-    }
+//    var speedMin: Double = 1 //360
+//    var speedMax: Double = 24 //360 * 50
+//    var speed: Double {
+//        return (Double(animator.pct) * (speedMax - speedMin)) + speedMin
+//    }
+//    var skewValueMin: CGFloat = 1000
+//    var skewValueMax: CGFloat = 60000
+//    var skewValue: CGFloat {
+//        return (animator.pct * (skewValueMax - skewValueMin)) + skewValueMin
+//    }
+    
+    @Binding var speed: Double
+    @Binding var skewValue: CGFloat
+
     var scaleMin: CGFloat = 1
     var scaleMax: CGFloat = 1.1
     var scaleFactor: CGFloat {
-        return (pct * (scaleMax - scaleMin)) + scaleMin
+        return (animator.pct * (scaleMax - scaleMin)) + scaleMin
     }
-    
+
     var body: some View {
         ZStack {
             // Shadow Layer
@@ -104,26 +112,26 @@ struct BlobView: View {
                 .mask(
                     BlobShape(bezier: .blob3, pathBounds: pathBounds)
                         .modifier(BlobEffect(
-                            skewValue: isAnimating ? (isSelecting ? skewValueMin : skewValue) : 0,
-                            angle: isAnimating ? (isSelecting ? speedMin : speed) : 0,
-                            scaleFactor: isAnimating ? (isSelecting ? scaleMin : scaleFactor) : 1
+                            skewValue: isAnimating ? animator.skewValue : 0,
+                            angle: 0,
+                            scaleFactor: 1
                         ))
                         .animation(
-                            isResetting
-                                ? Animation.linear(duration: 0).repeatForever(autoreverses: false)
-                                : Animation.linear(duration: duration).repeatForever(autoreverses: false)
+                            Animation.easeInOut(duration: duration).repeat(while: isSelecting)
+                                .speed(speed)
                         )
-                        
                         
                         // Throb Effect
-                        .scaleEffect(isAnimating ? (isSelecting ? scaleMin : scaleFactor) : 1)
-                        .animation(
-                            isReset
-                                ? Animation.easeInOut(duration: 0).repeatForever(autoreverses: false)
-                                : Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: false)
-                        )
+//                        .scaleEffect(isAnimating ? scaleFactor : 1)
+//                        .animation(
+//                                isReset
+//                                    ? Animation.linear(duration: 0).repeat(while: isResetting)
+//                                    : Animation.linear(duration: 0.2).repeatForever(autoreverses: false)
+//                        )
                     
                     
+                        
+                        
                         
                         
                         
@@ -134,31 +142,33 @@ struct BlobView: View {
                         
                         
                         // Rotate Effect (no dynamic animation)
-                        //.rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                        //.animation(Animation.linear(duration: 50).repeatForever(autoreverses: false))
+                        .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
+                        .animation(Animation.linear(duration: 50).repeatForever(autoreverses: false))
                 )
                 .frame(width: frameSize, height: frameSize * (pathBounds.width / pathBounds.height))
             
+                
             
             
             
             
             
-            
+            // - TEXT - //
             VStack {
-                Text("Percentage: \(pct)")
-                Text("Intensity: \(skewValue)")
-                Text("Speed: \(speed)")
-                Text("Scale: \(scaleFactor)")
+                Text("Percentage: \(animator.pct)")
+                Text("Intensity: \(animator.skewValue)")
+                Text("Speed: \(animator.speed)")
+                //Text("Scale: \(scaleFactor)")
                 Text(isSelecting ? "Selected: Yes" : "Selected: No")
                 Text(isReset ? "Reset: Yes" : "Reset: No")
             }
             .font(.system(size: 12.0))
-            
-                
-            
+            // - TEXT - //
         }
-        .onAppear { isAnimating = true }
+        .onAppear {
+            isAnimating = true
+            animator.pct = 0
+        }
     }
 }
 

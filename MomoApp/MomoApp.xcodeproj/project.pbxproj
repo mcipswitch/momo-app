@@ -9,13 +9,16 @@
 /* Begin PBXBuildFile section */
 		9305EBF224EB694E00E1DB0F /* AddMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9305EBF124EB694E00E1DB0F /* AddMoodView.swift */; };
 		931476A624F574980031D913 /* CustomTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931476A524F574980031D913 /* CustomTextFieldStyle.swift */; };
+		9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9331230724F94C17008B6DD2 /* Animation + Extension.swift */; };
+		93388BE0250FAAA700766633 /* ForceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93388BDF250FAAA700766633 /* ForceButton.swift */; };
 		93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F4F24E8CF630095DA38 /* MomoAppApp.swift */; };
 		93519F5224E8CF630095DA38 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5124E8CF630095DA38 /* ContentView.swift */; };
 		93519F5424E8CF640095DA38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5324E8CF640095DA38 /* Assets.xcassets */; };
 		93519F5724E8CF640095DA38 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5624E8CF640095DA38 /* Preview Assets.xcassets */; };
 		93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5E24E8D0090095DA38 /* BlobShape.swift */; };
-		93519F6124E8D42B0095DA38 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F6024E8D42B0095DA38 /* GradientView.swift */; };
 		935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935FD32E24EA2E23008568FA /* ArcShape.swift */; };
+		937688DD24F987E400CC0B10 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937688DC24F987E400CC0B10 /* Animator.swift */; };
+		937688E124F98E9500CC0B10 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937688E024F98E9500CC0B10 /* CustomView.swift */; };
 		938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */; };
 		938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E537024E983F3002653F0 /* UIColor + Extension.swift */; };
 		93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93976DE624EB6ABF0018C667 /* HomeView.swift */; };
@@ -25,6 +28,8 @@
 /* Begin PBXFileReference section */
 		9305EBF124EB694E00E1DB0F /* AddMoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoodView.swift; sourceTree = "<group>"; };
 		931476A524F574980031D913 /* CustomTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldStyle.swift; sourceTree = "<group>"; };
+		9331230724F94C17008B6DD2 /* Animation + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation + Extension.swift"; sourceTree = "<group>"; };
+		93388BDF250FAAA700766633 /* ForceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceButton.swift; sourceTree = "<group>"; };
 		93519F4C24E8CF630095DA38 /* MomoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93519F4F24E8CF630095DA38 /* MomoAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoAppApp.swift; sourceTree = "<group>"; };
 		93519F5124E8CF630095DA38 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -32,8 +37,9 @@
 		93519F5624E8CF640095DA38 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		93519F5824E8CF640095DA38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93519F5E24E8D0090095DA38 /* BlobShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobShape.swift; sourceTree = "<group>"; };
-		93519F6024E8D42B0095DA38 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		935FD32E24EA2E23008568FA /* ArcShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcShape.swift; sourceTree = "<group>"; };
+		937688DC24F987E400CC0B10 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		937688E024F98E9500CC0B10 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath + Extension.swift"; sourceTree = "<group>"; };
 		938E537024E983F3002653F0 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		93976DE624EB6ABF0018C667 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -89,10 +95,12 @@
 			children = (
 				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
 				93F075FF24F1D9BC000B6449 /* TextLimiter.swift */,
+				93388BDF250FAAA700766633 /* ForceButton.swift */,
+				937688E024F98E9500CC0B10 /* CustomView.swift */,
+				937688DC24F987E400CC0B10 /* Animator.swift */,
 				931476A524F574980031D913 /* CustomTextFieldStyle.swift */,
 				933B150324F1B30C004E9F1C /* Navigation */,
 				9305EBF324EB69DB00E1DB0F /* Views */,
-				93519F6024E8D42B0095DA38 /* GradientView.swift */,
 				93722F3724F7E43B00274E9F /* Shapes */,
 				938E537324E983F8002653F0 /* Extensions */,
 				93519F5324E8CF640095DA38 /* Assets.xcassets */,
@@ -123,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */,
+				9331230724F94C17008B6DD2 /* Animation + Extension.swift */,
 				938E537024E983F3002653F0 /* UIColor + Extension.swift */,
 			);
 			path = Extensions;
@@ -203,11 +212,14 @@
 				9305EBF224EB694E00E1DB0F /* AddMoodView.swift in Sources */,
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
+				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,
+				937688DD24F987E400CC0B10 /* Animator.swift in Sources */,
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,
 				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
-				93519F6124E8D42B0095DA38 /* GradientView.swift in Sources */,
 				93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */,
 				93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */,
+				937688E124F98E9500CC0B10 /* CustomView.swift in Sources */,
+				93388BE0250FAAA700766633 /* ForceButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
