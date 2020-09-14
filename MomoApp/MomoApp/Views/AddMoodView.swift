@@ -17,23 +17,17 @@ struct AddMoodView: View {
     @State var isReset = true
     @State var isResetting = false
     
-    
-    
-//    @State var counter: CGFloat = 0 {
-//        didSet { pct = counter / CGFloat(duration) }
-//    }
 //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     @State private var text = ""
-    private var duration: Double = 6
     let timer = Timer.publish(every: 0.01, on: RunLoop.main, in: .common).autoconnect()
-    
-    
-    
-    
     
     @State var forceValue: CGFloat = 0.0
     @State var maxForceValue: CGFloat = 0.0
-    @State var pct: CGFloat = 0
+    @State var pct: Double = 0
+    
+    
+    @State private var intensity: Double = 0
+    
     
     // MARK: - Body
     var body: some View {
@@ -45,8 +39,6 @@ struct AddMoodView: View {
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
                 VStack(spacing: 64) {
-                    
-                    // Word Text Field
                     ZStack(alignment: .center) {
                         if text.isEmpty {
                             Text("My day in a word")
@@ -71,23 +63,23 @@ struct AddMoodView: View {
                     
                     
                     ZStack {
-                        BlobView(frameSize: geometry.size.width * 0.7, isSelecting: $isSelecting, isReset: $isReset, isResetting: $isResetting, speed: $animator.speed, skewValue: $animator.skewValue)
+                        BlobView(frameSize: geometry.size.width * 0.7, speed: $animator.speed, skewValue: $animator.skewValue)
                         
                         VStack {
-                            Text("Force Touch Value")
-                            Text("\(pct)")
-                                .onChange(of: self.forceValue) { value in
-                                    if value != 0.0 {
-                                        self.pct = (value * 100) / self.maxForceValue
-                                    }
-                                }
+//                            Text("Force Touch Value")
+//                            Text("\(pct)")
+//                                .onChange(of: self.forceValue) { value in
+//                                    if value != 0.0 {
+//                                        self.pct = (value * 100) / self.maxForceValue
+//                                    }
+//                                }
+                            Text("Intensity: \(intensity)")
                         }
-                        .font(Font.system(size: 14))
-                        .padding(.bottom, 150)
                     }
                     
-                    
-                    
+                    CustomSlider(percentage: $intensity)
+                        .padding(.horizontal, 40)
+                        .frame(height: 80)
                     
                     VStack {
                         Spacer()
@@ -104,14 +96,14 @@ struct AddMoodView: View {
                                     .stroke(Color.black.opacity(0.2), lineWidth: 12)
                                 // Arc: Progress Layer
                                 ArcShape()
-                                    .trim(from: 0, to: animator.pct)
+                                    .trim(from: 0, to: 1)
                                     .stroke(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.6039215686, green: 0.9411764706, blue: 0.8823529412, alpha: 1)), Color(#colorLiteral(red: 0.1882352941, green: 0.8039215686, blue: 0.6156862745, alpha: 1))]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 12, lineCap: .round))
                                     .shadow(color: Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), radius: 5, x: 0, y: 0)
                                     .rotation3DEffect(
                                         Angle(degrees: 180),
                                         axis: (x: 0, y: 1, z: 0)
                                     )
-                                    .animation(Animation.linear(duration: isResetting ? 1 : duration))
+                                    .animation(Animation.easeOut(duration: 0.2))
                             }
                             .frame(height: geometry.size.width/2 + 6)
                             .scaleEffect(1.05)
@@ -162,9 +154,6 @@ struct AddMoodView: View {
             }
         }
         .navigationBarItems(trailing: NextButton())
-        .onAppear {
-            animator.pct = 0
-        }
     }
 }
 

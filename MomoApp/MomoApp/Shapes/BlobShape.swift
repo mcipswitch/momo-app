@@ -61,11 +61,6 @@ struct BlobView: View {
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
     var duration: Double = 1
 
-    //@Binding var pct: CGFloat
-    @Binding var isSelecting: Bool
-    @Binding var isReset: Bool
-    @Binding var isResetting: Bool
-
 //    var speedMin: Double = 1 //360
 //    var speedMax: Double = 24 //360 * 50
 //    var speed: Double {
@@ -99,6 +94,8 @@ struct BlobView: View {
 //                .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
 //                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
             
+            
+            
             // Gradient Layer
             Rectangle()
                 .fill(RadialGradient(
@@ -112,12 +109,12 @@ struct BlobView: View {
                 .mask(
                     BlobShape(bezier: .blob3, pathBounds: pathBounds)
                         .modifier(BlobEffect(
-                            skewValue: isAnimating ? animator.skewValue : 0,
+                            skewValue: isAnimating ? 1 : 0,
                             angle: 0,
                             scaleFactor: 1
                         ))
                         .animation(
-                            Animation.easeInOut(duration: duration).repeat(while: isSelecting)
+                            Animation.easeInOut(duration: duration).repeat(while: isAnimating)
                                 .speed(speed)
                         )
                         
@@ -138,10 +135,7 @@ struct BlobView: View {
                         
                         
                         
-                        
-                        
-                        
-                        // Rotate Effect (no dynamic animation)
+                        // Rotate Effect
                         .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
                         .animation(Animation.linear(duration: 50).repeatForever(autoreverses: false))
                 )
