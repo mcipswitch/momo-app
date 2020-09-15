@@ -28,16 +28,13 @@ struct AnimatableGradient: AnimatableModifier {
         }
         
         return Rectangle()
-//            .fill(LinearGradient(gradient: Gradient(colors: gColors),
-//                                 startPoint: UnitPoint(x: 0, y: 0),
-//                                 endPoint: UnitPoint(x: 1, y: 1)))
             .fill(RadialGradient(gradient: Gradient(colors: gColors),
                                  center: .topLeading,
                                  startRadius: startRadius,
                                  endRadius: endRadius))
     }
     
-    // Basic implementation of a color interpolation between two values
+    // Basic color interpolation between two values
     func colorMixer(c1: UIColor, c2: UIColor, pct: CGFloat) -> Color {
         guard let cc1 = c1.cgColor.components else { return Color(c1) }
         guard let cc2 = c2.cgColor.components else { return Color(c2) }

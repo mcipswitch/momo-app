@@ -19,17 +19,11 @@ import Combine
 
 struct BlobEffect: GeometryEffect {
     var skewValue: CGFloat
-    var angle: Double
-    var scaleFactor: CGFloat
-    private var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
+    //private var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
     
-    var animatableData: AnimatablePair<CGFloat, AnimatablePair<Double, CGFloat>> {
-        get { AnimatablePair(CGFloat(skewValue), AnimatablePair(Double(angle), CGFloat(scaleFactor))) }
-        set {
-            skewValue = newValue.first
-            angle = newValue.second.first
-            scaleFactor = newValue.second.second
-        }
+    var animatableData: CGFloat {
+        get { skewValue }
+        set { skewValue = newValue }
     }
     
     func effectValue(size: CGSize) -> ProjectionTransform {
@@ -61,111 +55,102 @@ struct BlobView: View {
     var duration: Double = 1
     
     @Binding var pct: CGFloat
-    @Binding var isDragging: Bool
+    @State var percentage: CGFloat = 0
+    @State var firstHalf = true
     
-    var speedMin: Double = 1
-    var speedMax: Double = 24
-    @State var speed: Double = 1
+    //    var speedMin: Double = 1
+    //    var speedMax: Double = 24
+    //    @State var speed: Double = 1
+    //
+    //    var skewValueMin: CGFloat = 2
+    //    var skewValueMax: CGFloat = 8
+    //    @State var skewValue: CGFloat = 0
+    //
+    //    var scaleMin: CGFloat = 1
+    //    var scaleMax: CGFloat = 1.05
+    //    @State var scaleFactor: CGFloat = 1
     
-    var skewValueMin: CGFloat = 2
-    var skewValueMax: CGFloat = 8
-    @State var skewValue: CGFloat = 0
-    
-    var scaleMin: CGFloat = 1
-    var scaleMax: CGFloat = 1.05
-    @State var scaleFactor: CGFloat = 1
     
     
     
-    //let timer = Timer.publish(every: 1, on: RunLoop.main, in: .common).autoconnect()
-    //@State var counter: Int = 0
-    @State var isActive: Bool = true
+    
     
     let gradient1: [UIColor] = [#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1), #colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1), #colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1)]
+    //let gradient2: [UIColor] = [#colorLiteral(red: 0.8352941176, green: 1, blue: 0.8196078431, alpha: 1), #colorLiteral(red: 0.7411764706, green: 1, blue: 0.5411764706, alpha: 1), #colorLiteral(red: 0.4823529412, green: 0.8156862745, blue: 0.2039215686, alpha: 1)]
     let gradient2: [UIColor] = [#colorLiteral(red: 1, green: 0.9019607843, blue: 0.8196078431, alpha: 1), #colorLiteral(red: 1, green: 0.6705882353, blue: 0.5411764706, alpha: 1), #colorLiteral(red: 0.9843137255, green: 0.431372549, blue: 0.4588235294, alpha: 1)]
+    let gradient3: [UIColor] = [#colorLiteral(red: 0.9921568627, green: 0.9960784314, blue: 0.8, alpha: 1), #colorLiteral(red: 0.9960784314, green: 0.4745098039, blue: 0.6078431373, alpha: 1), #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.2862745098, alpha: 1)]
     
     var body: some View {
         ZStack {
             // Blob: Shadow Layer
-            //            BlobShape(bezier: .blob3, pathBounds: pathBounds)
-            //                .fill(Color.clear)
-            //                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
-            //                .modifier(BlobEffect(
-            //                    skewValue: isAnimating ? intensity : 0,
-            //                    angle: 0
-            //                ))
-            //                .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
-            //                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
-
-            
-            
-            
+            BlobShape(bezier: .blob3, pathBounds: pathBounds)
+                .fill(Color.clear)
+                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
+                .modifier(BlobEffect(
+                    skewValue: isAnimating ? 1 : 0
+                ))
+                // Skew Effect
+                .animation(Animation
+                            .easeInOut(duration: duration)
+                            .repeat(while: isAnimating)
+                )
+                // Breathe Effect
+                .scaleEffect(isAnimating ? 1.05 : 1)
+                .animation(Animation
+                            .timingCurve(0.4, 0, 0.4, 1, duration: 4)
+                            .repeat(while: isAnimating)
+                )
             // Blob: Gradient Layer
-            Rectangle()
-                .modifier(AnimatableGradient(from: gradient1, to: gradient2, pct: pct, startRadius: 120, endRadius: pathBounds.width * 1.5))
-                            
-//                .fill(RadialGradient(
-//                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
-//                        center: .topLeading,
-//                        startRadius: 120,
-//                        endRadius: pathBounds.width * 1.5)
-//                )
-                
-                .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
-                .mask(
-                    BlobShape(bezier: .blob3, pathBounds: pathBounds)
-                        .modifier(BlobEffect(
-                            skewValue: isAnimating ? 1 : 0,
-                            angle: 0,
-                            scaleFactor: 1
-                        ))
-                        .animation(
-                            Animation
+            ZStack {
+                Rectangle()
+                    .modifier(AnimatableGradient(from: gradient2, to: gradient3, pct: percentage, startRadius: 120, endRadius: pathBounds.width * 1.5))
+                Rectangle()
+                    .modifier(AnimatableGradient(from: gradient1, to: gradient2, pct: percentage, startRadius: 120, endRadius: pathBounds.width * 1.5))
+                    .opacity(firstHalf ? 1 : 0)
+            }
+            .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
+            .mask(
+                BlobShape(bezier: .blob3, pathBounds: pathBounds)
+                    .modifier(BlobEffect(
+                        skewValue: isAnimating ? 1 : 0
+                    ))
+                    // Skew Effect
+                    .animation(Animation
                                 .easeInOut(duration: duration)
                                 .repeat(while: isAnimating)
-                        )
-                        // Breathe Effect
-                        .scaleEffect(isAnimating ? 1.05 : 1)
-                        .animation(
-                            Animation
+                    )
+                    // Breathe Effect
+                    .scaleEffect(isAnimating ? 1.05 : 1)
+                    .animation(Animation
                                 .timingCurve(0.4, 0, 0.4, 1, duration: 4)
                                 .repeat(while: isAnimating)
-                        )
-                        // Rotate Effect
-                        .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                        .animation(
-                            Animation
+                    )
+                    // Rotate Effect
+                    .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
+                    .animation(Animation
                                 .linear(duration: 50)
                                 .repeatForever(autoreverses: false)
-                        )
-                )
-                .frame(width: frameSize, height: frameSize * (pathBounds.width / pathBounds.height))
-            
-            
-            
-            
-            
-            
-            
+                    )
+            )
             
             VStack {
-                Text(isDragging ? "Yes" : "No")
-                Text("Skew: \(skewValue)")
-                Text("Speed: \(speed)")
-                Text("Scale: \(scaleFactor)")
-                Text(isActive ? "Active" : "Inactive")
+                Text("\(percentage)")
             }
+            .padding(.bottom, 50)
+            
         }
+        .frame(width: frameSize, height: frameSize * (pathBounds.width / pathBounds.height))
         .onAppear {
             isAnimating = true
-            isActive = true
         }
         .onChange(of: self.pct) { value in
-            self.speed = Double(pct) * (speedMax - speedMin) + speedMin
-            self.skewValue = pct * (skewValueMax - skewValueMin) + skewValueMin
-            self.scaleFactor = pct * (scaleMax - scaleMin) + scaleMin
-            
-            self.isActive = false
+            if value <= 0.5 {
+                self.firstHalf = true
+                self.percentage = pct * 2
+            } else {
+                self.firstHalf = false
+                self.percentage = pct * 2 - 1
+            }
         }
     }
 }
@@ -200,6 +185,6 @@ struct BlobShape: Shape {
 
 struct Blob_Previews: PreviewProvider {
     static var previews: some View {
-        BlobView(frameSize: 250, pct: .constant(0.1), isDragging: .constant(false))
+        BlobView(frameSize: 250, pct: .constant(0.1))
     }
 }

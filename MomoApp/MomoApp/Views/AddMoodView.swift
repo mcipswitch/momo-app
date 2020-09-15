@@ -26,7 +26,6 @@ struct AddMoodView: View {
     
     
     @State private var intensity: CGFloat = 0
-    @State var isDragging = false
     
     // MARK: - Body
     var body: some View {
@@ -62,7 +61,7 @@ struct AddMoodView: View {
                     
                     
                     ZStack {
-                        BlobView(frameSize: geometry.size.width * 0.7, pct: $intensity, isDragging: $isDragging)
+                        BlobView(frameSize: geometry.size.width * 0.7, pct: $intensity)
                         
                         VStack {
 //                            Text("Force Touch Value: \(pct)")
@@ -73,14 +72,13 @@ struct AddMoodView: View {
 //                                }
                             Text("Percentage: \(intensity)")
                         }
-                        .padding(.bottom, 200)
                     }
                     
                     
                     
-                    CustomSlider(percentage: $intensity, isDragging: $isDragging)
+                    CustomSlider(percentage: $intensity)
                         .padding(.horizontal, 40)
-                        .frame(height: 80)
+                        .frame(height: 40)
                     
                     
                     
