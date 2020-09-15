@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct CustomSlider: View {
-    @Binding var percentage: Double
+    @Binding var percentage: CGFloat
+    @Binding var isDragging: Bool
     
     let trackGradient = LinearGradient(
         gradient: Gradient(colors: [Color(#colorLiteral(red: 0.1882352941, green: 0.8039215686, blue: 0.6156862745, alpha: 1)), Color(#colorLiteral(red: 0.6039215686, green: 0.9411764706, blue: 0.8823529412, alpha: 1))]),
@@ -26,25 +27,27 @@ struct CustomSlider: View {
                         .background(trackGradient)
                         .mask(
                             Rectangle()
-                                .padding(.trailing, geometry.size.width * CGFloat(1 - self.percentage / 100))
-                                
+                                .padding(.trailing, geometry.size.width * CGFloat(1 - self.percentage))
+                                .shadow(color: Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), radius: 5, x: 0, y: 0)  
                         )
-                    
-                    //.frame(width: geometry.size.width * CGFloat(self.percentage / 100))
-                    
                 }
                 .cornerRadius(20)
-                .animation(Animation.easeOut(duration: 0.5))
                 .gesture(DragGesture(minimumDistance: 0)
-                    .onChanged({ value in
-                        self.percentage = min(max(0, Double(value.location.x / geometry.size.width * 100)), 100)
-                    }))
+                    .onChanged { value in
+                        self.isDragging = true
+                        self.percentage = min(max(0, CGFloat(value.location.x / geometry.size.width)), 1)
+                    }
+                            .onEnded { value in
+                                self.isDragging = false
+                            }
+                )
+                .animation(Animation.easeInOut(duration: 0.5))
             }
         }
 }
 
 struct CustomSlider_Previews: PreviewProvider {
     static var previews: some View {
-        CustomSlider(percentage: .constant(50))
+        CustomSlider(percentage: .constant(50), isDragging: .constant(false))
     }
 }

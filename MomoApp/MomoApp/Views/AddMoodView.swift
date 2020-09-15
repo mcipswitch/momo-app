@@ -9,7 +9,6 @@ import SwiftUI
 import Combine
 
 struct AddMoodView: View {
-    @ObservedObject private var animator = Animator()
     
     // MARK: - Properties and Variables
     @GestureState var isLongPressed = false
@@ -23,11 +22,11 @@ struct AddMoodView: View {
     
     @State var forceValue: CGFloat = 0.0
     @State var maxForceValue: CGFloat = 0.0
-    @State var pct: Double = 0
     
     
-    @State private var intensity: Double = 0
     
+    @State private var intensity: CGFloat = 0
+    @State var isDragging = false
     
     // MARK: - Body
     var body: some View {
@@ -63,23 +62,29 @@ struct AddMoodView: View {
                     
                     
                     ZStack {
-                        BlobView(frameSize: geometry.size.width * 0.7, speed: $animator.speed, skewValue: $animator.skewValue)
+                        BlobView(frameSize: geometry.size.width * 0.7, pct: $intensity, isDragging: $isDragging)
                         
                         VStack {
-//                            Text("Force Touch Value")
-//                            Text("\(pct)")
+//                            Text("Force Touch Value: \(pct)")
 //                                .onChange(of: self.forceValue) { value in
 //                                    if value != 0.0 {
 //                                        self.pct = (value * 100) / self.maxForceValue
 //                                    }
 //                                }
-                            Text("Intensity: \(intensity)")
+                            Text("Percentage: \(intensity)")
                         }
+                        .padding(.bottom, 200)
                     }
                     
-                    CustomSlider(percentage: $intensity)
+                    
+                    
+                    CustomSlider(percentage: $intensity, isDragging: $isDragging)
                         .padding(.horizontal, 40)
                         .frame(height: 80)
+                    
+                    
+                    
+                    
                     
                     VStack {
                         Spacer()
@@ -96,7 +101,7 @@ struct AddMoodView: View {
                                     .stroke(Color.black.opacity(0.2), lineWidth: 12)
                                 // Arc: Progress Layer
                                 ArcShape()
-                                    .trim(from: 0, to: 1)
+                                    .trim(from: 0, to: isLongPressed ? 0.001 : intensity)
                                     .stroke(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.6039215686, green: 0.9411764706, blue: 0.8823529412, alpha: 1)), Color(#colorLiteral(red: 0.1882352941, green: 0.8039215686, blue: 0.6156862745, alpha: 1))]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 12, lineCap: .round))
                                     .shadow(color: Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), radius: 5, x: 0, y: 0)
                                     .rotation3DEffect(
@@ -110,7 +115,6 @@ struct AddMoodView: View {
                             
                             CircleButton(forceValue: $forceValue, maxForceValue: $maxForceValue)
                                 .padding(.top, 50)
-                            
                             
                             
                             
@@ -147,6 +151,8 @@ struct AddMoodView: View {
 //                                        self.animator.counter += 0.01
 //                                    }
 //                                }
+                            
+                            
                         }
                     }
                     .edgesIgnoringSafeArea(.bottom)

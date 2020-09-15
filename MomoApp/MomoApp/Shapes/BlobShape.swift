@@ -40,9 +40,9 @@ struct BlobEffect: GeometryEffect {
         var transform3d = CATransform3DIdentity;
         transform3d.m34 = -1 / max(size.width, size.height)
         // Transform: Rotate
-        transform3d = CATransform3DRotate(transform3d, a, 0, 0, 1)
+        //transform3d = CATransform3DRotate(transform3d, a, 0, 0, 1)
         // Transform: Scale
-        transform3d = CATransform3DScale(transform3d, 1, 1, 0)
+        //transform3d = CATransform3DScale(transform3d, scaleFactor, 1, 0)
         // Transform: Shifts anchor point of rotation (from top leading corner to centrer)
         transform3d = CATransform3DTranslate(transform3d, -size.width/2.0, -size.height/2.0, 0)
         // Transform: Skew
@@ -54,57 +54,63 @@ struct BlobEffect: GeometryEffect {
 }
 
 struct BlobView: View {
-    @ObservedObject private var animator = Animator()
-
     @State var isAnimating = false
+    
     let frameSize: CGFloat
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
     var duration: Double = 1
-
-//    var speedMin: Double = 1 //360
-//    var speedMax: Double = 24 //360 * 50
-//    var speed: Double {
-//        return (Double(animator.pct) * (speedMax - speedMin)) + speedMin
-//    }
-//    var skewValueMin: CGFloat = 1000
-//    var skewValueMax: CGFloat = 60000
-//    var skewValue: CGFloat {
-//        return (animator.pct * (skewValueMax - skewValueMin)) + skewValueMin
-//    }
     
-    @Binding var speed: Double
-    @Binding var skewValue: CGFloat
-
+    @Binding var pct: CGFloat
+    @Binding var isDragging: Bool
+    
+    var speedMin: Double = 1
+    var speedMax: Double = 24
+    @State var speed: Double = 1
+    
+    var skewValueMin: CGFloat = 2
+    var skewValueMax: CGFloat = 8
+    @State var skewValue: CGFloat = 0
+    
     var scaleMin: CGFloat = 1
-    var scaleMax: CGFloat = 1.1
-    var scaleFactor: CGFloat {
-        return (animator.pct * (scaleMax - scaleMin)) + scaleMin
-    }
-
+    var scaleMax: CGFloat = 1.05
+    @State var scaleFactor: CGFloat = 1
+    
+    
+    
+    //let timer = Timer.publish(every: 1, on: RunLoop.main, in: .common).autoconnect()
+    //@State var counter: Int = 0
+    @State var isActive: Bool = true
+    
+    let gradient1: [UIColor] = [#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1), #colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1), #colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1)]
+    let gradient2: [UIColor] = [#colorLiteral(red: 1, green: 0.9019607843, blue: 0.8196078431, alpha: 1), #colorLiteral(red: 1, green: 0.6705882353, blue: 0.5411764706, alpha: 1), #colorLiteral(red: 0.9843137255, green: 0.431372549, blue: 0.4588235294, alpha: 1)]
+    
     var body: some View {
         ZStack {
-            // Shadow Layer
-//            BlobShape(bezier: .blob3, pathBounds: pathBounds)
-//                .fill(Color.clear)
-//                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
-//                .modifier(BlobEffect(
-//                    skewValue: isAnimating ? intensity : 0,
-//                    angle: 0
-//                ))
-//                .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
-//                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+            // Blob: Shadow Layer
+            //            BlobShape(bezier: .blob3, pathBounds: pathBounds)
+            //                .fill(Color.clear)
+            //                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
+            //                .modifier(BlobEffect(
+            //                    skewValue: isAnimating ? intensity : 0,
+            //                    angle: 0
+            //                ))
+            //                .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false))
+            //                .frame(width: frameSize, height: frameSize * pathBounds.width / pathBounds.height)
+
             
             
             
-            // Gradient Layer
+            // Blob: Gradient Layer
             Rectangle()
-                .fill(RadialGradient(
-                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
-                        center: .topLeading,
-                        startRadius: 120,
-                        endRadius: pathBounds.width * 1.5)
-                )
-                // Remove mask clipping
+                .modifier(AnimatableGradient(from: gradient1, to: gradient2, pct: pct, startRadius: 120, endRadius: pathBounds.width * 1.5))
+                            
+//                .fill(RadialGradient(
+//                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),  Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))]),
+//                        center: .topLeading,
+//                        startRadius: 120,
+//                        endRadius: pathBounds.width * 1.5)
+//                )
+                
                 .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
                 .mask(
                     BlobShape(bezier: .blob3, pathBounds: pathBounds)
@@ -114,53 +120,52 @@ struct BlobView: View {
                             scaleFactor: 1
                         ))
                         .animation(
-                            Animation.easeInOut(duration: duration).repeat(while: isAnimating)
-                                .speed(speed)
+                            Animation
+                                .easeInOut(duration: duration)
+                                .repeat(while: isAnimating)
                         )
-                        
-                        // Throb Effect
-//                        .scaleEffect(isAnimating ? scaleFactor : 1)
-//                        .animation(
-//                                isReset
-//                                    ? Animation.linear(duration: 0).repeat(while: isResetting)
-//                                    : Animation.linear(duration: 0.2).repeatForever(autoreverses: false)
-//                        )
-                    
-                    
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+                        // Breathe Effect
+                        .scaleEffect(isAnimating ? 1.05 : 1)
+                        .animation(
+                            Animation
+                                .timingCurve(0.4, 0, 0.4, 1, duration: 4)
+                                .repeat(while: isAnimating)
+                        )
                         // Rotate Effect
                         .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                        .animation(Animation.linear(duration: 50).repeatForever(autoreverses: false))
+                        .animation(
+                            Animation
+                                .linear(duration: 50)
+                                .repeatForever(autoreverses: false)
+                        )
                 )
                 .frame(width: frameSize, height: frameSize * (pathBounds.width / pathBounds.height))
             
-                
             
             
             
             
             
-            // - TEXT - //
+            
+            
             VStack {
-                //Text("Percentage: \(animator.pct)")
-                //Text("Intensity: \(animator.skewValue)")
-                //Text("Speed: \(animator.speed)")
-                //Text(isSelecting ? "Selected: Yes" : "Selected: No")
-                //Text(isReset ? "Reset: Yes" : "Reset: No")
+                Text(isDragging ? "Yes" : "No")
+                Text("Skew: \(skewValue)")
+                Text("Speed: \(speed)")
+                Text("Scale: \(scaleFactor)")
+                Text(isActive ? "Active" : "Inactive")
             }
-            
-
         }
         .onAppear {
             isAnimating = true
-            animator.pct = 0
+            isActive = true
+        }
+        .onChange(of: self.pct) { value in
+            self.speed = Double(pct) * (speedMax - speedMin) + speedMin
+            self.skewValue = pct * (skewValueMax - skewValueMin) + skewValueMin
+            self.scaleFactor = pct * (scaleMax - scaleMin) + scaleMin
+            
+            self.isActive = false
         }
     }
 }
@@ -193,8 +198,8 @@ struct BlobShape: Shape {
 
 // MARK: - Previews
 
-//struct Blob_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BlobView(frameSize: 250, pct: .constant(0.1), isSelecting: .constant(true))
-//    }
-//}
+struct Blob_Previews: PreviewProvider {
+    static var previews: some View {
+        BlobView(frameSize: 250, pct: .constant(0.1), isDragging: .constant(false))
+    }
+}
