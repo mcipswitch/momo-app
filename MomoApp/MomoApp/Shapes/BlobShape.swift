@@ -133,10 +133,10 @@ struct BlobView: View {
                     )
             )
             
-            VStack {
-                Text("\(percentage)")
-            }
-            .padding(.bottom, 50)
+//            VStack {
+//                Text("\(percentage)")
+//            }
+//            .padding(.bottom, 50)
             
         }
         .frame(width: frameSize, height: frameSize * (pathBounds.width / pathBounds.height))

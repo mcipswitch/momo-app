@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 
 struct AddMoodView: View {
+    
     // MARK: - Properties and Variables
     @GestureState var isLongPressed = false
     
@@ -19,6 +20,11 @@ struct AddMoodView: View {
     @State var maxForceValue: CGFloat = 0.0
 
     @State private var intensity: CGFloat = 0
+    
+    @State private var offset = CGSize.zero
+    @State private var originalPos = CGPoint(x: 0, y: 0)
+    @State private var position = CGPoint(x: 0, y: 0)
+    private var maxDistance: CGFloat = 30
     
     // MARK: - Body
     var body: some View {
@@ -50,24 +56,51 @@ struct AddMoodView: View {
                     .frame(width: 230)
                     .padding(.top, 32)
                     
-                    
-                    
-                    
                     ZStack {
                         BlobView(frameSize: geometry.size.width * 0.7, pct: $intensity)
-                        
                         VStack {
-                            Text("Percentage: \(intensity)")
+                            Text("Percentage: \(Int(intensity))")
+                            Text("Current Pos: x:\(Int(position.x)), y:\(Int(position.y))")
+                            Text("Offset: w: \(Int(offset.width)), h:\(Int(offset.height))")
                         }
                     }
-                    
-                    
                     
                     CustomSlider(percentage: $intensity)
                         .padding(.horizontal, 40)
                         .frame(height: 40)
                     
+                    Spacer()
+                    
                     CircleButton(forceValue: $forceValue, maxForceValue: $maxForceValue)
+                        .position(self.position)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { gesture in
+                                    let currentLocation = gesture.location
+                                    let distance = originalPos.distance(to: currentLocation)
+                                    if distance > maxDistance {
+                                        let k = maxDistance / distance
+                                        let locationX = ((currentLocation.x - originalPos.x) * k) + originalPos.x
+                                        let locationY = ((currentLocation.y - originalPos.y) * k) + originalPos.y
+                                        self.position = CGPoint(x: locationX, y: locationY)
+                                    } else {
+                                        self.position = gesture.location
+                                    }
+                                    self.offset.width = abs(position.x - originalPos.x)
+                                    self.offset.height = abs(position.y - originalPos.y)
+                                }
+                                .onEnded { gesture in
+                                    self.position = self.originalPos
+                                    self.offset = .zero
+                                }
+                        )
+                        .animation(Animation.interpolatingSpring(stiffness: 90, damping: 11))
+                        .onAppear {
+                            self.originalPos = CGPoint(x: geometry.size.width / 2, y: 0)
+                            self.position = self.originalPos
+                        }
+                    
+                    Spacer()
                 }
             }
         }
@@ -79,8 +112,6 @@ struct AddMoodView: View {
 
 struct CircleButton: View {
     @State var isAnimating = false
-    @State var fade: Double = 0.5
-    
     @Binding var forceValue: CGFloat
     @Binding var maxForceValue: CGFloat
     
@@ -104,18 +135,30 @@ struct CircleButton: View {
                         .easeInOut(duration: 1.2)
                         .repeatForever(autoreverses: true).delay(0.2)
                 )
-            CustomView(tappedForceValue: $forceValue, maxForceValue: $maxForceValue)
-                .background(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+            Circle()
+                .fill(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
                 .frame(width: 50, height: 50)
-                .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
                 .scaleEffect(self.isAnimating ? 1 : 1.1)
                 .animation(
                     Animation
                         .easeInOut(duration: 1.2)
                         .repeatForever(autoreverses: true)
                 )
+            
+//            CustomView(tappedForceValue: $forceValue, maxForceValue: $maxForceValue)
+//                .background(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+//                .frame(width: 50, height: 50)
+//                .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
+//                .scaleEffect(self.isAnimating ? 1 : 1.1)
+//                .animation(
+//                    Animation
+//                        .easeInOut(duration: 1.2)
+//                        .repeatForever(autoreverses: true)
+//                )
         }
-        .onAppear { self.isAnimating = true }
+        .onAppear {
+            self.isAnimating = true
+        }
         .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
     }
 }
