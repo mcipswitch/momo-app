@@ -14,12 +14,10 @@ struct AddMoodView: View {
     // MARK: - Properties and Variables
     @State private var originalPos = CGPoint(x: UIScreen.screenWidth / 2, y: 0)
     @State private var location = CGPoint(x: UIScreen.screenWidth / 2, y: 0)
-    
     @GestureState private var fingerLocation: CGPoint? = nil
     @GestureState private var startLocation: CGPoint? = nil
-    
     @State private var text = ""
-    @State private var intensity: CGFloat = 0
+    @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
     @State private var isDragging: Bool = false
     private var maxDistance: CGFloat = 36
@@ -45,6 +43,7 @@ struct AddMoodView: View {
                 }
                 self.isDragging = true
                 self.degrees = location.angle(to: startLocation ?? location)
+                self.pct = degrees / 360
             }.updating($startLocation) { value, startLocation, transaction in
                 // Set startLocation to current rectangle position
                 // It will reset once the gesture ends
@@ -93,19 +92,15 @@ struct AddMoodView: View {
                     .padding(.top, 32)
                     
                     ZStack {
-                        BlobView(frameSize: geometry.size.width * 0.7, pct: $intensity)
+                        BlobView(frameSize: geometry.size.width * 0.7, pct: $pct)
                         VStack {
-                            Text("Percentage: \(Int(intensity))")
+                            Text("Pct: \(pct)")
                             Text("Current Pos: x:\(Int(location.x)), y:\(Int(location.y))")
                             Text("Angle: \(Int(degrees))")
                             Text(isDragging ? "dragging..." : "")
                         }
                     }
-                    
-                    CustomSlider(percentage: $intensity)
-                        .padding(.horizontal, 40)
-                        .frame(height: 40)
-                    
+
                     Spacer()
                     
                     ZStack {
