@@ -9,22 +9,15 @@ import SwiftUI
 import Combine
 
 struct AddMoodView: View {
-    
     // MARK: - Properties and Variables
     @GestureState var isLongPressed = false
-    @State var isSelecting = false
-    @State var isReset = true
-    @State var isResetting = false
     
 //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     @State private var text = ""
-    let timer = Timer.publish(every: 0.01, on: RunLoop.main, in: .common).autoconnect()
     
     @State var forceValue: CGFloat = 0.0
     @State var maxForceValue: CGFloat = 0.0
-    
-    
-    
+
     @State private var intensity: CGFloat = 0
     
     // MARK: - Body
@@ -64,12 +57,6 @@ struct AddMoodView: View {
                         BlobView(frameSize: geometry.size.width * 0.7, pct: $intensity)
                         
                         VStack {
-//                            Text("Force Touch Value: \(pct)")
-//                                .onChange(of: self.forceValue) { value in
-//                                    if value != 0.0 {
-//                                        self.pct = (value * 100) / self.maxForceValue
-//                                    }
-//                                }
                             Text("Percentage: \(intensity)")
                         }
                     }
@@ -80,80 +67,7 @@ struct AddMoodView: View {
                         .padding(.horizontal, 40)
                         .frame(height: 40)
                     
-                    
-                    
-                    
-                    
-                    VStack {
-                        Spacer()
-                        
-                        ZStack(alignment: .top) {
-                            ZStack {
-                                Rectangle()
-                                    .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.2549019608, green: 0.2039215686, blue: 0.4823529412, alpha: 1)), Color(#colorLiteral(red: 0.01568627451, green: 0.01176470588, blue: 0.07058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
-                                    .clipShape(
-                                        ArcShape().offset(y: 6)
-                                    )
-                                // Arc: Track Layer
-                                ArcShape()
-                                    .stroke(Color.black.opacity(0.2), lineWidth: 12)
-                                // Arc: Progress Layer
-                                ArcShape()
-                                    .trim(from: 0, to: isLongPressed ? 0.001 : intensity)
-                                    .stroke(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.6039215686, green: 0.9411764706, blue: 0.8823529412, alpha: 1)), Color(#colorLiteral(red: 0.1882352941, green: 0.8039215686, blue: 0.6156862745, alpha: 1))]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 12, lineCap: .round))
-                                    .shadow(color: Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), radius: 5, x: 0, y: 0)
-                                    .rotation3DEffect(
-                                        Angle(degrees: 180),
-                                        axis: (x: 0, y: 1, z: 0)
-                                    )
-                                    .animation(Animation.easeOut(duration: 0.2))
-                            }
-                            .frame(height: geometry.size.width/2 + 6)
-                            .scaleEffect(1.05)
-                            
-                            CircleButton(forceValue: $forceValue, maxForceValue: $maxForceValue)
-                                .padding(.top, 50)
-                            
-                            
-                            
-//                                .gesture(
-//                                    LongPressGesture(minimumDuration: 0.2, maximumDistance: 100)
-//                                        .onChanged { _ in
-//                                            if !isSelecting && !isReset {
-//                                                print("Resetting...")
-//                                                self.animator.counter = 0
-//                                                self.isResetting = true
-//                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-//                                                    self.animator.counter = 0
-//                                                    self.isResetting = false
-//                                                }
-//                                            }
-//                                            self.isReset.toggle()
-//                                            self.isSelecting = true
-//                                        }.onEnded { value in
-//                                            if isReset {
-//                                                self.isReset.toggle()
-//                                            }
-//                                        }
-//                                )
-//                                .simultaneousGesture(
-//                                    DragGesture(minimumDistance: 0)
-//                                        .onEnded { value in
-//                                            self.animator.counter -= 0.02
-//                                            self.isSelecting = false
-//                                        }
-//                                )
-//                                .onReceive(timer) { _ in
-//                                    if self.isSelecting {
-//                                        guard self.animator.counter < (CGFloat(duration)) else { return }
-//                                        self.animator.counter += 0.01
-//                                    }
-//                                }
-                            
-                            
-                        }
-                    }
-                    .edgesIgnoringSafeArea(.bottom)
+                    CircleButton(forceValue: $forceValue, maxForceValue: $maxForceValue)
                 }
             }
         }

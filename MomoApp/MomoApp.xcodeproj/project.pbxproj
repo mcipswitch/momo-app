@@ -127,6 +127,7 @@
 		936C6CD425112E1B00650D4A /* Old */ = {
 			isa = PBXGroup;
 			children = (
+				935FD32E24EA2E23008568FA /* ArcShape.swift */,
 				937688DC24F987E400CC0B10 /* Animator.swift */,
 				93388BDF250FAAA700766633 /* ForceButton.swift */,
 				937688E024F98E9500CC0B10 /* CustomView.swift */,
@@ -138,7 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				93519F5E24E8D0090095DA38 /* BlobShape.swift */,
-				935FD32E24EA2E23008568FA /* ArcShape.swift */,
 			);
 			path = Shapes;
 			sourceTree = "<group>";
