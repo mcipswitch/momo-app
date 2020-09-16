@@ -12,4 +12,8 @@ extension CGFloat {
         let result = ((self - from.lowerBound) / (from.upperBound - from.lowerBound)) * (to.upperBound - to.lowerBound) + to.lowerBound
         return result
     }
+    
+    var degrees: CGFloat {
+        return self * CGFloat(180 / Double.pi)
+    }
 }

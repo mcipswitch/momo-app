@@ -21,9 +21,9 @@ struct AddMoodView: View {
 
     @State private var intensity: CGFloat = 0
     
-    @State private var offset = CGSize.zero
     @State private var originalPos = CGPoint(x: 0, y: 0)
     @State private var position = CGPoint(x: 0, y: 0)
+    @State private var degrees: CGFloat = 0
     private var maxDistance: CGFloat = 30
     
     // MARK: - Body
@@ -61,7 +61,7 @@ struct AddMoodView: View {
                         VStack {
                             Text("Percentage: \(Int(intensity))")
                             Text("Current Pos: x:\(Int(position.x)), y:\(Int(position.y))")
-                            Text("Offset: w: \(Int(offset.width)), h:\(Int(offset.height))")
+                            Text("Angle: \(degrees)")
                         }
                     }
                     
@@ -86,12 +86,10 @@ struct AddMoodView: View {
                                     } else {
                                         self.position = gesture.location
                                     }
-                                    self.offset.width = abs(position.x - originalPos.x)
-                                    self.offset.height = abs(position.y - originalPos.y)
+                                    self.degrees = position.angle(to: originalPos)
                                 }
-                                .onEnded { gesture in
+                                .onEnded { _ in
                                     self.position = self.originalPos
-                                    self.offset = .zero
                                 }
                         )
                         .animation(Animation.interpolatingSpring(stiffness: 90, damping: 11))

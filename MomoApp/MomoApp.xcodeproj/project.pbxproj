@@ -151,8 +151,8 @@
 				938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */,
 				9331230724F94C17008B6DD2 /* Animation + Extension.swift */,
 				938E537024E983F3002653F0 /* UIColor + Extension.swift */,
-				93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */,
 				937615852511D22300AEF59C /* CGPoint + Extension.swift */,
+				93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
