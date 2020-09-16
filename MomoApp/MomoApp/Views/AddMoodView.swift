@@ -13,16 +13,16 @@ struct AddMoodView: View {
     // MARK: - Properties and Variables
     @GestureState var isLongPressed = false
     
-//    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
+    //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     @State private var text = ""
     
     @State var forceValue: CGFloat = 0.0
     @State var maxForceValue: CGFloat = 0.0
-
+    
     @State private var intensity: CGFloat = 0
     
-    @State private var originalPos = CGPoint(x: 0, y: 0)
-    @State private var position = CGPoint(x: 0, y: 0)
+    @State private var originalPos = CGPoint.zero
+    @State private var position = CGPoint(x: UIScreen.screenWidth / 2, y: 0)
     @State private var degrees: CGFloat = 0
     private var maxDistance: CGFloat = 30
     
@@ -61,7 +61,7 @@ struct AddMoodView: View {
                         VStack {
                             Text("Percentage: \(Int(intensity))")
                             Text("Current Pos: x:\(Int(position.x)), y:\(Int(position.y))")
-                            Text("Angle: \(degrees)")
+                            Text("Angle: \(Int(degrees))")
                         }
                     }
                     
@@ -143,16 +143,16 @@ struct CircleButton: View {
                         .repeatForever(autoreverses: true)
                 )
             
-//            CustomView(tappedForceValue: $forceValue, maxForceValue: $maxForceValue)
-//                .background(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
-//                .frame(width: 50, height: 50)
-//                .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
-//                .scaleEffect(self.isAnimating ? 1 : 1.1)
-//                .animation(
-//                    Animation
-//                        .easeInOut(duration: 1.2)
-//                        .repeatForever(autoreverses: true)
-//                )
+            //            CustomView(tappedForceValue: $forceValue, maxForceValue: $maxForceValue)
+            //                .background(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+            //                .frame(width: 50, height: 50)
+            //                .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
+            //                .scaleEffect(self.isAnimating ? 1 : 1.1)
+            //                .animation(
+            //                    Animation
+            //                        .easeInOut(duration: 1.2)
+            //                        .repeatForever(autoreverses: true)
+            //                )
         }
         .onAppear {
             self.isAnimating = true
