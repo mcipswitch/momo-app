@@ -12,7 +12,7 @@ struct AddMoodView: View {
     //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     
     // MARK: - Properties and Variables
-    @State private var originalPos = CGPoint(x: UIScreen.screenWidth / 2, y: 0)
+    @State private var originalPos = CGPoint.zero
     @State private var location = CGPoint(x: UIScreen.screenWidth / 2, y: 0)
     @GestureState private var fingerLocation: CGPoint? = nil
     @GestureState private var startLocation: CGPoint? = nil
@@ -61,8 +61,16 @@ struct AddMoodView: View {
             }
     }
     
+    
+    
+    
+    
     // MARK: - Body
     var body: some View {
+        let spectrum = Gradient(colors: [.red, .orange, .yellow, .green, .blue, .purple, .red])
+        let conic = AngularGradient(gradient: spectrum,
+                                    center: .center,
+                                    angle: .degrees(180))
         ZStack {
             GeometryReader { geometry in
                 Image("background")
@@ -100,29 +108,35 @@ struct AddMoodView: View {
                             Text(isDragging ? "dragging..." : "")
                         }
                     }
-
-                    Spacer()
                     
                     ZStack {
-                        CircleButton(isDragging: $isDragging)
-                            .position(self.location)
-                            .gesture(
-                                simpleDrag.simultaneously(with: fingerDrag)
-                            )
-                            .animation(Animation.interpolatingSpring(stiffness: 120, damping: 12))
-                            .onAppear {
-                                self.originalPos = CGPoint(x: geometry.size.width / 2, y: 0)
-                                self.location = self.originalPos
-                            }
-                        if let fingerLocation = fingerLocation {
+                        GeometryReader { geometry in
                             Circle()
-                                .stroke(Color.green, lineWidth: 2)
-                                .frame(width: 20, height: 20)
-                                .position(fingerLocation)
+                                .trim(from: 0.0, to: 0.1)
+                                .stroke(conic, lineWidth: 2)
+                                .frame(width: 180)
+                                .position(CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2))
+                            
+                            CircleButton(isDragging: $isDragging)
+                                .position(self.location)
+                                .gesture(
+                                    simpleDrag.simultaneously(with: fingerDrag)
+                                )
+                                .animation(Animation.interpolatingSpring(stiffness: 120, damping: 12))
+                                .onAppear {
+                                    self.originalPos = CGPoint(
+                                        x: geometry.size.width / 2,
+                                        y: geometry.size.height / 2)
+                                    self.location = self.originalPos
+                                }
+                            if let fingerLocation = fingerLocation {
+                                Circle()
+                                    .stroke(Color.green, lineWidth: 2)
+                                    .frame(width: 20, height: 20)
+                                    .position(fingerLocation)
+                            }
                         }
                     }
-                    
-                    Spacer()
                 }
             }
         }

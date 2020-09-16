@@ -70,7 +70,7 @@ struct BlobView: View {
                 .fill(Color.clear)
                 .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
                 .modifier(BlobEffect(
-                    skewValue: isAnimating ? 1 : 0
+                    skewValue: isAnimating ? 2 : 0
                 ))
                 // Skew Effect
                 .animation(Animation
@@ -92,7 +92,7 @@ struct BlobView: View {
             .mask(
                 BlobShape(bezier: .blob3, pathBounds: pathBounds)
                     .modifier(BlobEffect(
-                        skewValue: isAnimating ? 1 : 0
+                        skewValue: isAnimating ? 2 : 0
                     ))
                     // Skew Effect
                     .animation(Animation
