@@ -39,8 +39,10 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             NavigationLink(destination: AddMoodView()) {
-                Text("Add Mood")
-            }
+                Text("Add today's emotion")
+            }.buttonStyle(
+                MomoButton(width: 250, height: 60)
+            )
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarHidden(true)
         }

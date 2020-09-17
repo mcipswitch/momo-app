@@ -11,6 +11,9 @@ import Combine
 struct AddMoodView: View {
     //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     
+    @State private var showHome: Bool = true
+    
+    
     // MARK: - Properties and Variables
     @State private var originalPos = CGPoint.zero
     @State private var location = CGPoint(x: UIScreen.screenWidth / 2, y: 0)
@@ -28,18 +31,27 @@ struct AddMoodView: View {
     
     @State private var rainbowIsActive: Bool = false
     @State private var rainbowDegrees: Double = 0
+    @State private var counter: Int = 0
     
     // MARK: - Drag Gestures
     var simpleDrag: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { value in
+                self.isDragging = true
+                self.degrees = location.angle(to: originalPos)
+                self.pct = degrees / 360
+                
                 if let startLocation = startLocation {
                     var newLocation = startLocation
                     newLocation.x += value.translation.width
                     newLocation.y += value.translation.height
                     let distance = startLocation.distance(to: newLocation)
                     if distance > maxDistance {
-                        self.rainbowIsActive = true
+                        
+                        if distance > maxDistance * 1.5 {
+                            self.rainbowIsActive = true
+                        }
+                        
                         let k = maxDistance / distance
                         let locationX = ((newLocation.x - originalPos.x) * k) + originalPos.x
                         let locationY = ((newLocation.y - originalPos.y) * k) + originalPos.y
@@ -47,9 +59,6 @@ struct AddMoodView: View {
                     } else {
                         self.location = newLocation
                     }
-                    self.isDragging = true
-                    self.degrees = location.angle(to: originalPos)
-                    self.pct = degrees / 360
                 }
             }.updating($startLocation) { value, startLocation, transaction in
                 // Set startLocation to current rectangle position
@@ -59,6 +68,7 @@ struct AddMoodView: View {
                 self.location = self.originalPos
                 self.isDragging = false
                 self.rainbowIsActive = false
+                self.counter = 0
             }
     }
     
@@ -82,9 +92,8 @@ struct AddMoodView: View {
                     ZStack(alignment: .center) {
                         if text.isEmpty {
                             Text("My day in a word")
-                                .font(Font.system(size: 28, weight: .semibold))
+                                .font(Font.system(size: 22, weight: .bold))
                                 .foregroundColor(Color.white.opacity(0.6))
-                                .blur(radius: 0.5)
                         }
                         TextField("", text: $text)
                             .textFieldStyle(CustomTextFieldStyle())
@@ -94,9 +103,9 @@ struct AddMoodView: View {
                         Rectangle()
                             .fill(Color.white)
                             .frame(height: 2)
-                            .padding(.top, 48)
+                            .padding(.top, 36)
                     }
-                    .frame(width: 230)
+                    .frame(width: 180)
                     .padding(.top, 32)
                     
                     ZStack {
@@ -107,30 +116,47 @@ struct AddMoodView: View {
                             Text("Current Pos: x:\(Int(location.x)), y:\(Int(location.y))")
                             Text("Angle: \(Int(degrees))")
                             Text(isDragging ? "dragging..." : "")
+                            Text(rainbowIsActive ? "rainbow..." : "")
+                            Text("Counter: \(counter)")
                         }
                         .font(Font.system(size: 16))
                     }
                     
                     ZStack {
                         GeometryReader { geometry in
-                            RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
-                                .position(CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2))
                             
-                            CircleButton(isDragging: $isDragging)
-                                .position(self.location)
-                                .gesture(
-                                    simpleDrag.simultaneously(with: fingerDrag)
-                                )
-                                .animation(Animation.interpolatingSpring(stiffness: 120, damping: 12))
-                                .onAppear {
-                                    self.originalPos = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                                    self.location = self.originalPos
+                            if self.showHome {
+                                
+                                VStack(alignment: .center) {
+                                    Button(action: {
+                                        self.showHome = false
+                                    }) {
+                                        Text("Add today's emotion")
+                                    }.buttonStyle(MomoButton(width: 250, height: 60))
                                 }
-                            if let fingerLocation = fingerLocation {
-                                Circle()
-                                    .stroke(Color.green, lineWidth: 2)
-                                    .frame(width: 20, height: 20)
-                                    .position(fingerLocation)
+                                
+                                
+                                
+                            
+                            } else {
+                                
+                                RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
+                                    .position(CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2))
+                                
+                                CircleButton(isDragging: $isDragging)
+                                    .position(self.location)
+                                    .gesture(simpleDrag.simultaneously(with: fingerDrag))
+                                    .animation(Animation.interpolatingSpring(stiffness: 120, damping: 12))
+                                    .onAppear {
+                                        self.originalPos = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                                        self.location = self.originalPos
+                                    }
+                                if let fingerLocation = fingerLocation {
+                                    Circle()
+                                        .stroke(Color.green, lineWidth: 2)
+                                        .frame(width: 20, height: 20)
+                                        .position(fingerLocation)
+                                }
                             }
                         }
                     }
@@ -145,7 +171,20 @@ struct AddMoodView: View {
             default: rainbowDegrees = 0
             }
         }
-        .navigationBarItems(trailing: NextButton())
+        .navigationBarItems(trailing:
+                                Button(action: {
+                                    print("next pressed...")
+                                }, label: {
+                                    HStack {
+                                        Text("Next")
+                                            //.font(Font.system(size: 15, weight: .bold))
+                                        Image(systemName: "arrow.right")
+                                            //.font(Font.system(size: 14, weight: .heavy))
+                                    }
+                                }).buttonStyle(
+                                    MomoButton(width: 90, height: 34)
+                                )
+        )
     }
 }
 

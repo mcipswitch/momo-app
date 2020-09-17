@@ -18,9 +18,11 @@ struct RainbowRing: View {
                                     angle: .degrees(180))
         
         Circle()
-            .stroke(conic, lineWidth: 40)
+            .stroke(conic, lineWidth: 50)
             .opacity(isActive ? 1 : 0)
-            .animation(.easeInOut(duration: 1))
+            .animation(Animation
+                        .easeInOut(duration: 1.5)
+            )
             .mask(
                 Circle()
                     .trim(from: 0.0, to: 1/3)
@@ -28,7 +30,7 @@ struct RainbowRing: View {
                     .rotationEffect(Angle(degrees: 210))
                     .rotationEffect(Angle(degrees: degrees))
             )
-            .blur(radius: 40)
+            .blur(radius: 50)
             .frame(width: 180)
     }
 }

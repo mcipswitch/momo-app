@@ -12,8 +12,8 @@ struct CustomTextFieldStyle: TextFieldStyle {
         configuration
             .autocapitalization(.none)
             .disableAutocorrection(true)
-            .font(Font.system(size: 28, weight: .semibold))
-            .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
+            .font(Font.system(size: 22, weight: .bold))
+            .foregroundColor(.white)
             .multilineTextAlignment(.center)
             .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
             .minimumScaleFactor(0.7)

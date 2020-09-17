@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NextButton: View {
+struct MomoButton: View {
     var body: some View {
         ZStack {
             Rectangle()
@@ -22,5 +22,39 @@ struct NextButton: View {
                     .font(Font.system(size: 14, weight: .heavy))
             }
         }
+    }
+}
+
+
+
+//
+//struct MomoButton: View {
+//    @State var width: CGFloat = 250
+//    @State var height: CGFloat = 60
+//    @State var text: String = "Add today's emotion"
+//
+//    var body: some View {
+//        ZStack {
+//            Rectangle()
+//                .fill(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+//                .frame(width: width, height: height)
+//                .clipShape(RoundedRectangle(cornerRadius: height / 2, style: .continuous))
+//            HStack {
+//                Text(text)
+//                    .font(Font.system(size: 14, weight: .bold))
+//            }
+//        }
+//    }
+//}
+
+
+
+
+// See all entries
+// DMSans bold, 16
+
+struct NextButton_Previews: PreviewProvider {
+    static var previews: some View {
+        MomoButton()
     }
 }
