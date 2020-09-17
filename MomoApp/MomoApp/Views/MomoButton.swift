@@ -22,10 +22,3 @@ struct MomoButton: ButtonStyle {
             )
     }
 }
-
-
-
-
-
-// See all entries
-// DMSans bold, 16

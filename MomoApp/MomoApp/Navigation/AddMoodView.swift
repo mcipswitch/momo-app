@@ -78,6 +78,15 @@ struct AddMoodView: View {
                 fingerLocation = value.location
             }
     }
+    
+    static let dateFormat: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E, MMM d"
+        return formatter
+    }()
+    
+    var date = Date()
+    
 
     // MARK: - Body
     var body: some View {
@@ -88,25 +97,53 @@ struct AddMoodView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
+                
                 VStack(spacing: 64) {
-                    ZStack(alignment: .center) {
-                        if text.isEmpty {
-                            Text("My day in a word")
-                                .font(Font.system(size: 22, weight: .bold))
-                                .foregroundColor(Color.white.opacity(0.6))
-                        }
-                        TextField("", text: $text)
-                            .textFieldStyle(CustomTextFieldStyle())
-                            .onReceive(text.publisher.collect()) { characters in
-                                self.text = String(text.prefix(20))
+
+                    VStack {
+                        Text(date, formatter: Self.dateFormat)
+                            .font(Font.system(size: 16, weight: .medium))
+                            .foregroundColor(Color.white.opacity(0.6))
+                            .opacity(showHome ? 1 : 0)
+                        
+                        ZStack(alignment: .center) {
+                            if self.showHome {
+                                Text("Hi, how are you feeling today?")
+                                    .font(Font.system(size: 22, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .lineSpacing(4)
+                            } else {
+                                if text.isEmpty {
+                                    Text("My day in a word")
+                                        .font(Font.system(size: 22, weight: .bold))
+                                        .foregroundColor(Color.white.opacity(0.6))
+                                }
+                                TextField("", text: $text)
+                                    .textFieldStyle(CustomTextFieldStyle())
+                                    .onReceive(text.publisher.collect()) { characters in
+                                        self.text = String(text.prefix(20))
+                                    }
+                                Rectangle()
+                                    .fill(Color.white)
+                                    .frame(height: 2)
+                                    .padding(.top, 36)
                             }
-                        Rectangle()
-                            .fill(Color.white)
-                            .frame(height: 2)
-                            .padding(.top, 36)
+                        }
+                        .frame(width: 180)
+                        .padding(.top, 32)
                     }
-                    .frame(width: 180)
-                    .padding(.top, 32)
+                        
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     
                     ZStack {
                         BlobView(frameSize: geometry.size.width * 0.7, pct: $pct)
@@ -122,18 +159,33 @@ struct AddMoodView: View {
                         .font(Font.system(size: 16))
                     }
                     
+                    Spacer()
+                    
                     ZStack {
                         GeometryReader { geometry in
                             
                             if self.showHome {
-                                
-                                VStack(alignment: .center) {
-                                    Button(action: {
-                                        self.showHome = false
-                                    }) {
-                                        Text("Add today's emotion")
-                                    }.buttonStyle(MomoButton(width: 250, height: 60))
+                                VStack(spacing: 30) {
+                                    HStack {
+                                        Spacer()
+                                        Button(action: {
+                                            self.showHome = false
+                                        }) {
+                                            Text("Add today's emotion")
+                                        }.buttonStyle(MomoButton(width: 250, height: 60))
+                                        Spacer()
+                                    }
+                                    Text("See all entries")
+                                        .font(Font.system(size: 16, weight: .bold))
+                                        .foregroundColor(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+                                        .underline()
                                 }
+                                
+                                
+                                
+                                
+                                
+
                                 
                                 
                                 
@@ -171,20 +223,20 @@ struct AddMoodView: View {
             default: rainbowDegrees = 0
             }
         }
-        .navigationBarItems(trailing:
-                                Button(action: {
-                                    print("next pressed...")
-                                }, label: {
-                                    HStack {
-                                        Text("Next")
-                                            //.font(Font.system(size: 15, weight: .bold))
-                                        Image(systemName: "arrow.right")
-                                            //.font(Font.system(size: 14, weight: .heavy))
-                                    }
-                                }).buttonStyle(
-                                    MomoButton(width: 90, height: 34)
-                                )
-        )
+//        .navigationBarItems(trailing:
+//                                Button(action: {
+//                                    print("next pressed...")
+//                                }, label: {
+//                                    HStack {
+//                                        Text("Next")
+//                                            //.font(Font.system(size: 15, weight: .bold))
+//                                        Image(systemName: "arrow.right")
+//                                            //.font(Font.system(size: 14, weight: .heavy))
+//                                    }
+//                                }).buttonStyle(
+//                                    MomoButton(width: 90, height: 34)
+//                                )
+//        )
     }
 }
 
