@@ -78,15 +78,6 @@ struct AddMoodView: View {
                 fingerLocation = value.location
             }
     }
-    
-    static let dateFormat: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E, MMM d"
-        return formatter
-    }()
-    
-    var date = Date()
-    
 
     // MARK: - Body
     var body: some View {
@@ -100,12 +91,12 @@ struct AddMoodView: View {
                 
                 VStack(spacing: 64) {
 
-                    VStack {
-                        Text(date, formatter: Self.dateFormat)
+                    VStack(spacing: 16) {
+                        Text(Date(), formatter: dateFormat)
                             .font(Font.system(size: 16, weight: .medium))
                             .foregroundColor(Color.white.opacity(0.6))
                             .opacity(showHome ? 1 : 0)
-                        
+                            .padding(.top, 16)
                         ZStack(alignment: .center) {
                             if self.showHome {
                                 Text("Hi, how are you feeling today?")
@@ -129,9 +120,18 @@ struct AddMoodView: View {
                                     .frame(height: 2)
                                     .padding(.top, 36)
                             }
+                            
+                            // TEMP BUTTON
+                            Button(action: {
+                                self.showHome.toggle()
+                            }) {
+                                Image(systemName: "arrow.left")
+                                    .font(Font.system(size: 22, weight: .bold))
+                                    .foregroundColor(.white)
+                            }
+                            
                         }
-                        .frame(width: 180)
-                        .padding(.top, 32)
+                        .frame(width: 180, height: 80)
                     }
                         
                     
