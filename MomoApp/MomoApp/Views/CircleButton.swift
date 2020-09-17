@@ -55,7 +55,7 @@ struct CircleButton: View {
                 self.isAnimating = value ? false : true
             }
         }
-        .shadow(color: Color.black.opacity(0.3), radius: 50, x: 10, y: 10)
+        .shadow(color: Color.black.opacity(0.2), radius: 50, x: 10, y: 10)
     }
 }
 

@@ -16,7 +16,7 @@ extension CGPoint {
         let originX = point.x - self.x
         let originY = point.y - self.y
         let bearingRadians = atan2f(Float(originY), Float(originX))
-        var bearingDegrees = CGFloat(bearingRadians).degrees - 90
+        var bearingDegrees = CGFloat(bearingRadians).degrees - 30
         while bearingDegrees < 0 {
             bearingDegrees += 360
         }

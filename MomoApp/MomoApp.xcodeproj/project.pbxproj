@@ -17,6 +17,7 @@
 		93519F5724E8CF640095DA38 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5624E8CF640095DA38 /* Preview Assets.xcassets */; };
 		93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5E24E8D0090095DA38 /* BlobShape.swift */; };
 		935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935FD32E24EA2E23008568FA /* ArcShape.swift */; };
+		9363153A2513A6B6005E20EA /* RainbowRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936315392513A6B6005E20EA /* RainbowRing.swift */; };
 		936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936C6CD525112E6A00650D4A /* AnimatableGradient.swift */; };
 		937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615852511D22300AEF59C /* CGPoint + Extension.swift */; };
 		937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615872512527100AEF59C /* UIScreen + Extension.swift */; };
@@ -45,6 +46,7 @@
 		93519F5824E8CF640095DA38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93519F5E24E8D0090095DA38 /* BlobShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobShape.swift; sourceTree = "<group>"; };
 		935FD32E24EA2E23008568FA /* ArcShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcShape.swift; sourceTree = "<group>"; };
+		936315392513A6B6005E20EA /* RainbowRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RainbowRing.swift; sourceTree = "<group>"; };
 		936C6CD525112E6A00650D4A /* AnimatableGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableGradient.swift; sourceTree = "<group>"; };
 		937615852511D22300AEF59C /* CGPoint + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint + Extension.swift"; sourceTree = "<group>"; };
 		937615872512527100AEF59C /* UIScreen + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen + Extension.swift"; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				9376158B2512580300AEF59C /* CircleButton.swift */,
+				936315392513A6B6005E20EA /* RainbowRing.swift */,
 				9376158D2512581A00AEF59C /* NextButton.swift */,
 			);
 			path = Views;
@@ -251,6 +254,7 @@
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,
 				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
 				93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */,
+				9363153A2513A6B6005E20EA /* RainbowRing.swift in Sources */,
 				93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */,
 				93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */,
 				937688E124F98E9500CC0B10 /* CustomView.swift in Sources */,

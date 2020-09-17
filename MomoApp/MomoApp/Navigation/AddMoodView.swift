@@ -16,11 +16,18 @@ struct AddMoodView: View {
     @State private var location = CGPoint(x: UIScreen.screenWidth / 2, y: 0)
     @GestureState private var fingerLocation: CGPoint? = nil
     @GestureState private var startLocation: CGPoint? = nil
+    
+    @GestureState private var currentLocation: CGPoint? = nil
+    
     @State private var text = ""
     @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
     @State private var isDragging: Bool = false
+    
     private var maxDistance: CGFloat = 36
+    
+    @State private var rainbowIsActive: Bool = false
+    @State private var rainbowDegrees: Double = 0
     
     // MARK: - Drag Gestures
     var simpleDrag: some Gesture {
@@ -30,9 +37,9 @@ struct AddMoodView: View {
                     var newLocation = startLocation
                     newLocation.x += value.translation.width
                     newLocation.y += value.translation.height
-                    
                     let distance = startLocation.distance(to: newLocation)
                     if distance > maxDistance {
+                        self.rainbowIsActive = true
                         let k = maxDistance / distance
                         let locationX = ((newLocation.x - originalPos.x) * k) + originalPos.x
                         let locationY = ((newLocation.y - originalPos.y) * k) + originalPos.y
@@ -40,10 +47,10 @@ struct AddMoodView: View {
                     } else {
                         self.location = newLocation
                     }
+                    self.isDragging = true
+                    self.degrees = location.angle(to: originalPos)
+                    self.pct = degrees / 360
                 }
-                self.isDragging = true
-                self.degrees = location.angle(to: startLocation ?? location)
-                self.pct = degrees / 360
             }.updating($startLocation) { value, startLocation, transaction in
                 // Set startLocation to current rectangle position
                 // It will reset once the gesture ends
@@ -51,6 +58,7 @@ struct AddMoodView: View {
             }.onEnded { _ in
                 self.location = self.originalPos
                 self.isDragging = false
+                self.rainbowIsActive = false
             }
     }
     
@@ -60,17 +68,9 @@ struct AddMoodView: View {
                 fingerLocation = value.location
             }
     }
-    
-    
-    
-    
-    
+
     // MARK: - Body
     var body: some View {
-        let spectrum = Gradient(colors: [.red, .orange, .yellow, .green, .blue, .purple, .red])
-        let conic = AngularGradient(gradient: spectrum,
-                                    center: .center,
-                                    angle: .degrees(180))
         ZStack {
             GeometryReader { geometry in
                 Image("background")
@@ -103,18 +103,17 @@ struct AddMoodView: View {
                         BlobView(frameSize: geometry.size.width * 0.7, pct: $pct)
                         VStack {
                             Text("Pct: \(pct)")
+                            Text("Original Pos: x:\(Int(originalPos.x)), y:\(Int(originalPos.y))")
                             Text("Current Pos: x:\(Int(location.x)), y:\(Int(location.y))")
                             Text("Angle: \(Int(degrees))")
                             Text(isDragging ? "dragging..." : "")
                         }
+                        .font(Font.system(size: 16))
                     }
                     
                     ZStack {
                         GeometryReader { geometry in
-                            Circle()
-                                .trim(from: 0.0, to: 0.1)
-                                .stroke(conic, lineWidth: 2)
-                                .frame(width: 180)
+                            RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
                                 .position(CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2))
                             
                             CircleButton(isDragging: $isDragging)
@@ -124,9 +123,7 @@ struct AddMoodView: View {
                                 )
                                 .animation(Animation.interpolatingSpring(stiffness: 120, damping: 12))
                                 .onAppear {
-                                    self.originalPos = CGPoint(
-                                        x: geometry.size.width / 2,
-                                        y: geometry.size.height / 2)
+                                    self.originalPos = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
                                     self.location = self.originalPos
                                 }
                             if let fingerLocation = fingerLocation {
@@ -138,6 +135,14 @@ struct AddMoodView: View {
                         }
                     }
                 }
+            }
+        }
+        .onChange(of: degrees) { value in
+            switch value {
+            case 0..<120: rainbowDegrees = 0
+            case 120..<240: rainbowDegrees = 120
+            case 240..<360: rainbowDegrees = 240
+            default: rainbowDegrees = 0
             }
         }
         .navigationBarItems(trailing: NextButton())
