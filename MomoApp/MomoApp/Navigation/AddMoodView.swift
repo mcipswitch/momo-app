@@ -32,6 +32,8 @@ struct AddMoodView: View {
     @State private var rainbowDegrees: Double = 0
     @State private var counter: Int = 0
     
+    @State private var textFieldIsFocused: Bool = false
+    
     // MARK: - Drag Gestures
     var simpleDrag: some Gesture {
         DragGesture(minimumDistance: 0)
@@ -92,20 +94,16 @@ struct AddMoodView: View {
 
                     VStack(spacing: 16) {
                         Text(Date(), formatter: dateFormat)
-                            .font(Font.system(size: 16, weight: .medium))
-                            .foregroundColor(Color.white.opacity(0.6))
-                            .opacity(showHome ? 1 : 0)
-                            .padding(.top, 16)
-                            
+                            .dateText()
                             .opacity(showHome ? 1 : 0)
                             .offset(x: showHome ? 0 : -geometry.size.width)
                             .animation(Animation
                                         .easeInOut(duration: 0.5)
                             )
+                            .padding(.top, 16)
                         
                         // Text Field
                         ZStack(alignment: .center) {
-                            
                                 Text("Hi, how are you feeling today?")
                                     .momoText()
                                     .opacity(showHome ? 1 : 0)
@@ -113,25 +111,29 @@ struct AddMoodView: View {
                                     .animation(Animation
                                                 .easeInOut(duration: 0.5)
                                     )
-                            
                             ZStack {
-                                
                                 if text.isEmpty {
                                     Text("My day in a word")
                                         .momoText(opacity: 0.6)
                                 }
-                                TextField("", text: $text)
-                                    .textFieldStyle(CustomTextFieldStyle())
-                                    .onReceive(text.publisher.collect()) { characters in
-                                        self.text = String(text.prefix(20))
-                                    }
+                                TextField("", text: $text, onEditingChanged: { editingChanged in
+                                    textFieldIsFocused = editingChanged ? true : false
+                                })
+                                .textFieldStyle(CustomTextFieldStyle())
+                                .onReceive(text.publisher.collect()) { characters in
+                                    self.text = String(text.prefix(20))
+                                }
                                 Rectangle()
-                                    .fill(Color.white)
+                                    .fill(Color(textFieldIsFocused ? #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
                                     .frame(height: 2)
                                     .padding(.top, 36)
                                 
                             }
                             .opacity(showHome ? 0 : 1)
+                            
+                            
+                            
+                            
                             
                             
                             // TEMP BUTTON
@@ -185,13 +187,11 @@ struct AddMoodView: View {
                                             self.showHome = false
                                         }) {
                                             Text("Add today's emotion")
-                                        }.buttonStyle(MomoButton(width: 250, height: 60))
+                                        }.buttonStyle(MomoButton(width: 230, height: 60))
                                         Spacer()
                                     }
                                     Text("See all entries")
-                                        .font(Font.system(size: 16, weight: .bold))
-                                        .foregroundColor(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
-                                        .underline()
+                                        .underlineText()
                                 }
                                 
                                 
