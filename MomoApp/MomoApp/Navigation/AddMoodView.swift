@@ -90,20 +90,50 @@ struct AddMoodView: View {
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
                 
+                
+                HStack {
+                    // Back
+                    Button(action: {
+                        self.showHome.toggle()
+                    }) {Image(systemName: "arrow.left")
+                        .momoText()
+                    }
+                    
+                    Spacer()
+                    
+                    // Next
+                    Button(action: {
+                        print("Next...")
+                    }) {
+                        HStack {
+                            Text("Next")
+                            Image(systemName: "arrow.right")
+                        }
+                    }.buttonStyle(MomoButton(width: 90, height: 34))
+                }
+                .padding(16)
+                
+
+                
+                
+                
+                
+                
+                
+                
+                
                 VStack(spacing: 64) {
 
-                    VStack(spacing: 16) {
+                    VStack(spacing: 32) {
                         Text(Date(), formatter: dateFormat)
                             .dateText()
                             .opacity(showHome ? 1 : 0)
                             .offset(x: showHome ? 0 : -geometry.size.width)
-                            .animation(Animation
-                                        .easeInOut(duration: 0.5)
-                            )
+                            .animation(.easeInOut(duration: 0.5))
                             .padding(.top, 16)
                         
                         // Text Field
-                        ZStack(alignment: .center) {
+                        ZStack(alignment: .top) {
                                 Text("Hi, how are you feeling today?")
                                     .momoText()
                                     .opacity(showHome ? 1 : 0)
@@ -111,10 +141,12 @@ struct AddMoodView: View {
                                     .animation(Animation
                                                 .easeInOut(duration: 0.5)
                                     )
-                            ZStack {
+                            ZStack(alignment: .top) {
                                 if text.isEmpty {
                                     Text("My day in a word")
                                         .momoText(opacity: 0.6)
+//                                        .opacity(showHome ? 0 : 1)
+//                                        .animation(Animation.easeInOut(duration: 0.5).delay(0.5))
                                 }
                                 TextField("", text: $text, onEditingChanged: { editingChanged in
                                     textFieldIsFocused = editingChanged ? true : false
@@ -123,28 +155,19 @@ struct AddMoodView: View {
                                 .onReceive(text.publisher.collect()) { characters in
                                     self.text = String(text.prefix(20))
                                 }
-                                Rectangle()
-                                    .fill(Color(textFieldIsFocused ? #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
-                                    .frame(height: 2)
-                                    .padding(.top, 36)
-                                
                             }
-                            .opacity(showHome ? 0 : 1)
+                            .offset(x: showHome ? geometry.size.width : 0)
+                            .animation(.easeInOut(duration: 0.5))
                             
-                            
-                            
-                            
-                            
-                            
-                            // TEMP BUTTON
-                            Button(action: {
-                                self.showHome.toggle()
-                            }) {
-                                Image(systemName: "arrow.left")
-                                    .font(Font.system(size: 22, weight: .bold))
-                                    .foregroundColor(.white)
-                            }
-                            
+                            RoundedRectangle(cornerRadius: 1)
+                                .fill(Color(textFieldIsFocused ? #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
+                                .frame(height: 2)
+                                .offset(y: 32)
+                                .frame(width: showHome ? 0 : 180)
+                                .animation(showHome ? .default : Animation
+                                            .interpolatingSpring(stiffness: 180, damping: 12)
+                                            .delay(showHome ? 0 : 0.2)
+                                )
                         }
                         .frame(width: 180, height: 80)
                     }
@@ -236,6 +259,7 @@ struct AddMoodView: View {
             default: rainbowDegrees = 0
             }
         }
+//        .navigationBarTitle("", displayMode: .inline)
 //        .navigationBarItems(trailing:
 //                                Button(action: {
 //                                    print("next pressed...")

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9301058F2513F8A1007F0E7A /* Date + Extensions.swift */; };
 		930105922514E0B9007F0E7A /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930105912514E0B9007F0E7A /* Modifiers.swift */; };
-		9305EBF224EB694E00E1DB0F /* AddMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9305EBF124EB694E00E1DB0F /* AddMoodView.swift */; };
 		931476A624F574980031D913 /* CustomTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931476A524F574980031D913 /* CustomTextFieldStyle.swift */; };
 		9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9331230724F94C17008B6DD2 /* Animation + Extension.swift */; };
 		93388BE0250FAAA700766633 /* ForceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93388BDF250FAAA700766633 /* ForceButton.swift */; };
@@ -40,12 +39,12 @@
 		93A65BFC250FDF1600BF756A /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFB250FDF1600BF756A /* CustomSlider.swift */; };
 		93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */; };
 		93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F075FF24F1D9BC000B6449 /* TextLimiter.swift */; };
+		93FAEB9B2514FCDC00C057AC /* AddMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FAEB9A2514FCDB00C057AC /* AddMoodView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9301058F2513F8A1007F0E7A /* Date + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extensions.swift"; sourceTree = "<group>"; };
 		930105912514E0B9007F0E7A /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
-		9305EBF124EB694E00E1DB0F /* AddMoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoodView.swift; sourceTree = "<group>"; };
 		931476A524F574980031D913 /* CustomTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldStyle.swift; sourceTree = "<group>"; };
 		9331230724F94C17008B6DD2 /* Animation + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation + Extension.swift"; sourceTree = "<group>"; };
 		93388BDF250FAAA700766633 /* ForceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceButton.swift; sourceTree = "<group>"; };
@@ -78,6 +77,7 @@
 		93A65BFB250FDF1600BF756A /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat + Extension.swift"; sourceTree = "<group>"; };
 		93F075FF24F1D9BC000B6449 /* TextLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLimiter.swift; sourceTree = "<group>"; };
+		93FAEB9A2514FCDB00C057AC /* AddMoodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMoodView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,8 +112,8 @@
 		933B150324F1B30C004E9F1C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				93FAEB9A2514FCDB00C057AC /* AddMoodView.swift */,
 				93976DE624EB6ABF0018C667 /* HomeView.swift */,
-				9305EBF124EB694E00E1DB0F /* AddMoodView.swift */,
 				93519F5124E8CF630095DA38 /* ContentView.swift */,
 			);
 			path = Navigation;
@@ -295,7 +295,7 @@
 				930105922514E0B9007F0E7A /* Modifiers.swift in Sources */,
 				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
 				931476A624F574980031D913 /* CustomTextFieldStyle.swift in Sources */,
-				9305EBF224EB694E00E1DB0F /* AddMoodView.swift in Sources */,
+				93FAEB9B2514FCDC00C057AC /* AddMoodView.swift in Sources */,
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
 				937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */,
