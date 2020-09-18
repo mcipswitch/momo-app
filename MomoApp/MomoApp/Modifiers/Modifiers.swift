@@ -18,6 +18,7 @@ struct MomoText: ViewModifier {
     }
 }
 
+// MARK: - View + Extensions
 extension View {
     func momoText(opacity: Double = 1) -> some View {
         return self.modifier(MomoText(opacity: opacity))
