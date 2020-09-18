@@ -13,7 +13,6 @@ struct AddMoodView: View {
     
     @State private var showHome: Bool = true
     
-    
     // MARK: - Properties and Variables
     @State private var originalPos = CGPoint.zero
     @State private var location = CGPoint(x: UIScreen.screenWidth / 2, y: 0)
@@ -97,18 +96,29 @@ struct AddMoodView: View {
                             .foregroundColor(Color.white.opacity(0.6))
                             .opacity(showHome ? 1 : 0)
                             .padding(.top, 16)
+                            
+                            .opacity(showHome ? 1 : 0)
+                            .offset(x: showHome ? 0 : -geometry.size.width)
+                            .animation(Animation
+                                        .easeInOut(duration: 0.5)
+                            )
+                        
+                        // Text Field
                         ZStack(alignment: .center) {
-                            if self.showHome {
+                            
                                 Text("Hi, how are you feeling today?")
-                                    .font(Font.system(size: 22, weight: .bold))
-                                    .foregroundColor(.white)
-                                    .multilineTextAlignment(.center)
-                                    .lineSpacing(4)
-                            } else {
+                                    .momoText()
+                                    .opacity(showHome ? 1 : 0)
+                                    .offset(x: showHome ? 0 : -geometry.size.width)
+                                    .animation(Animation
+                                                .easeInOut(duration: 0.5)
+                                    )
+                            
+                            ZStack {
+                                
                                 if text.isEmpty {
                                     Text("My day in a word")
-                                        .font(Font.system(size: 22, weight: .bold))
-                                        .foregroundColor(Color.white.opacity(0.6))
+                                        .momoText(opacity: 0.6)
                                 }
                                 TextField("", text: $text)
                                     .textFieldStyle(CustomTextFieldStyle())
@@ -119,7 +129,10 @@ struct AddMoodView: View {
                                     .fill(Color.white)
                                     .frame(height: 2)
                                     .padding(.top, 36)
+                                
                             }
+                            .opacity(showHome ? 0 : 1)
+                            
                             
                             // TEMP BUTTON
                             Button(action: {

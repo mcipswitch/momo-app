@@ -86,7 +86,7 @@ struct BlobView: View {
             // Blob: Gradient Layer
             ZStack {
                 Rectangle()
-                    .modifier(AnimatableGradient(from: gradient1, to: gradient2, pct: pct, startRadius: 120, endRadius: pathBounds.width * 1.5))
+                    .modifier(AnimatableGradient(from: gradient1, to: gradient2, pct: pct, startRadius: 100, endRadius: pathBounds.width * 1.3)) // 120 * 1.5
             }
             .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
             .mask(
