@@ -92,7 +92,7 @@ struct AddMoodView: View {
                 
                 
                 HStack {
-                    // Back
+                    // Back Button
                     Button(action: {
                         self.showHome.toggle()
                     }) {Image(systemName: "arrow.left")
@@ -101,7 +101,7 @@ struct AddMoodView: View {
                     
                     Spacer()
                     
-                    // Next
+                    // Next Button
                     Button(action: {
                         print("Next...")
                     }) {
@@ -111,7 +111,15 @@ struct AddMoodView: View {
                         }
                     }.buttonStyle(MomoButton(width: 90, height: 34))
                 }
+                .offset(x: showHome ? 24 : 0)
+                .opacity(showHome ? 0 : 1)
+                .animation(Animation
+                            .easeInOut(duration: 0.5)
+                            //.delay(showHome ? 0 : 0.2)
+                )
                 .padding(16)
+                
+                
                 
 
                 
@@ -138,9 +146,7 @@ struct AddMoodView: View {
                                     .momoText()
                                     .opacity(showHome ? 1 : 0)
                                     .offset(x: showHome ? 0 : -geometry.size.width)
-                                    .animation(Animation
-                                                .easeInOut(duration: 0.5)
-                                    )
+                                    .animation(.easeInOut(duration: 0.5))
                             ZStack(alignment: .top) {
                                 if text.isEmpty {
                                     Text("My day in a word")
@@ -259,21 +265,6 @@ struct AddMoodView: View {
             default: rainbowDegrees = 0
             }
         }
-//        .navigationBarTitle("", displayMode: .inline)
-//        .navigationBarItems(trailing:
-//                                Button(action: {
-//                                    print("next pressed...")
-//                                }, label: {
-//                                    HStack {
-//                                        Text("Next")
-//                                            //.font(Font.system(size: 15, weight: .bold))
-//                                        Image(systemName: "arrow.right")
-//                                            //.font(Font.system(size: 14, weight: .heavy))
-//                                    }
-//                                }).buttonStyle(
-//                                    MomoButton(width: 90, height: 34)
-//                                )
-//        )
     }
 }
 
