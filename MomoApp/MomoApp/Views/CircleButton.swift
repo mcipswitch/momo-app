@@ -14,15 +14,15 @@ struct CircleButton: View {
     var body: some View {
         ZStack {
             // Dragging Heartbeat
-            Circle()
-                .fill(Color(#colorLiteral(red: 0.6274509804, green: 0.7176470588, blue: 0.8117647059, alpha: 1)))
-                .frame(width: 60, height: 60)
-                .scaleEffect(isDragging ? 1.6: 1.4)
-                .opacity(isDragging ? 1 : 0)
-                .animation(Animation
-                            .easeInOut(duration: 1.2)
-                            .delay(0.2)
-                )
+//            Circle()
+//                .fill(Color(#colorLiteral(red: 0.6274509804, green: 0.7176470588, blue: 0.8117647059, alpha: 1)))
+//                .frame(width: 60, height: 60)
+//                .scaleEffect(isDragging ? 1.6: 1.4)
+//                .opacity(isDragging ? 1 : 0)
+//                .animation(Animation
+//                            .easeInOut(duration: 1.2)
+//                            .delay(0.2)
+//                )
                 
             
             
@@ -56,8 +56,10 @@ struct CircleButton: View {
                 )
         }
         .onAppear {
-            self.isAnimating = true
-            self.isDragging = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.isAnimating = true
+                self.isDragging = false
+            }
         }
         .onChange(of: isDragging) { value in
             self.isAnimating = value ? false : true

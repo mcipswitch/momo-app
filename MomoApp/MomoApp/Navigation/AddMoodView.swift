@@ -33,6 +33,7 @@ struct AddMoodView: View {
     @State private var counter: Int = 0
     
     @State private var textFieldIsFocused: Bool = false
+    @Namespace private var namespace
     
     // MARK: - Drag Gestures
     var simpleDrag: some Gesture {
@@ -79,7 +80,7 @@ struct AddMoodView: View {
                 fingerLocation = value.location
             }
     }
-
+    
     // MARK: - Body
     var body: some View {
         ZStack {
@@ -95,7 +96,7 @@ struct AddMoodView: View {
                     // Back Button
                     Button(action: {
                         self.showHome.toggle()
-                    }) {Image(systemName: "arrow.left")
+                    }) {Image(systemName: "chevron.backward")
                         .momoText()
                     }
                     
@@ -109,19 +110,18 @@ struct AddMoodView: View {
                             Text("Next")
                             Image(systemName: "arrow.right")
                         }
-                    }.buttonStyle(MomoButton(width: 90, height: 34))
+                    }.buttonStyle(MomoButton(w: 90, h: 34))
                 }
-                .offset(x: showHome ? 24 : 0)
+                .offset(y: showHome ? -5 : 0)
                 .opacity(showHome ? 0 : 1)
                 .animation(Animation
-                            .easeInOut(duration: 0.5)
-                            //.delay(showHome ? 0 : 0.2)
+                            .easeInOut(duration: 0.2)
+                            .delay(showHome ? 0 : 0.5)
                 )
                 .padding(16)
                 
                 
                 
-
                 
                 
                 
@@ -130,29 +130,32 @@ struct AddMoodView: View {
                 
                 
                 
-                VStack(spacing: 64) {
-
-                    VStack(spacing: 32) {
+                
+                VStack(spacing: 48) {
+                    
+                    VStack(spacing: 36) {
                         Text(Date(), formatter: dateFormat)
                             .dateText()
                             .opacity(showHome ? 1 : 0)
-                            .offset(x: showHome ? 0 : -geometry.size.width)
-                            .animation(.easeInOut(duration: 0.5))
+                            .offset(y: showHome ? 0 : 5)
+                            .animation(Animation
+                                        .easeInOut(duration: 0.2)
+                                        .delay(showHome ? 0.5 : 0)
+                            )
                             .padding(.top, 16)
-                        
-                        // Text Field
                         ZStack(alignment: .top) {
-                                Text("Hi, how are you feeling today?")
-                                    .momoText()
-                                    .opacity(showHome ? 1 : 0)
-                                    .offset(x: showHome ? 0 : -geometry.size.width)
-                                    .animation(.easeInOut(duration: 0.5))
+                            Text("Hi, how are you feeling today?")
+                                .momoText()
+                                .opacity(showHome ? 1 : 0)
+                                .offset(y: showHome ? 0 : 5)
+                                .animation(Animation
+                                            .easeInOut(duration: 0.2)
+                                            .delay(showHome ? 0.5 : 0)
+                                )
                             ZStack(alignment: .top) {
                                 if text.isEmpty {
                                     Text("My day in a word")
                                         .momoText(opacity: 0.6)
-//                                        .opacity(showHome ? 0 : 1)
-//                                        .animation(Animation.easeInOut(duration: 0.5).delay(0.5))
                                 }
                                 TextField("", text: $text, onEditingChanged: { editingChanged in
                                     textFieldIsFocused = editingChanged ? true : false
@@ -162,22 +165,28 @@ struct AddMoodView: View {
                                     self.text = String(text.prefix(20))
                                 }
                             }
-                            .offset(x: showHome ? geometry.size.width : 0)
-                            .animation(.easeInOut(duration: 0.5))
-                            
+                            .opacity(showHome ? 0 : 1)
+                            .offset(y: showHome ? -5 : 0)
+                            .animation(Animation
+                                        .easeInOut(duration: 0.2)
+                                        .delay(showHome ? 0 : 0.5)
+                            )
                             RoundedRectangle(cornerRadius: 1)
                                 .fill(Color(textFieldIsFocused ? #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
                                 .frame(height: 2)
                                 .offset(y: 32)
+                                .opacity(showHome ? 0 : 1)
+                                //.offset(y: showHome ? -10 : 0)
                                 .frame(width: showHome ? 0 : 180)
-                                .animation(showHome ? .default : Animation
-                                            .interpolatingSpring(stiffness: 180, damping: 12)
-                                            .delay(showHome ? 0 : 0.2)
+                                .animation(showHome ? nil : Animation
+                                            //.easeInOut(duration: 0.2)
+                                            .interpolatingSpring(stiffness: 180, damping: 16)
+                                            .delay(0.6)
                                 )
                         }
                         .frame(width: 180, height: 80)
                     }
-                        
+                    
                     
                     
                     
@@ -203,57 +212,95 @@ struct AddMoodView: View {
                         .font(Font.system(size: 16))
                     }
                     
-                    Spacer()
-                    
                     ZStack {
                         GeometryReader { geometry in
                             
-                            if self.showHome {
+                            
+                                
                                 VStack(spacing: 30) {
                                     HStack {
                                         Spacer()
-                                        Button(action: {
-                                            self.showHome = false
-                                        }) {
-                                            Text("Add today's emotion")
-                                        }.buttonStyle(MomoButton(width: 230, height: 60))
+                                        
+                                        ZStack(alignment: .top) {
+                                            
+                                            Rectangle()
+                                                .fill(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+                                                .clipShape(RoundedRectangle(cornerRadius: showHome ? 30 : 42))
+                                                .frame(width: showHome ? 230 : 84, height: showHome ? 60 :84)
+                                                .animation(
+                                                    Animation
+                                                        //.spring(response: 0.5, dampingFraction: 0.5)
+                                                        .interpolatingSpring(stiffness: 120, damping: 12, initialVelocity: 6 )
+                                                )
+                                            
+                                            
+                                            
+                                            Button("Add today's emotion") {
+                                                //withAnimation(.spring(response: 0.5, dampingFraction: 0.5)) {
+                                                    showHome = false
+                                                //}
+                                            }.buttonStyle(MomoButton(w: 230, h: 60))
+                                            .opacity(showHome ? 1 : 0)
+                                            .animation(showHome ?
+                                                Animation
+                                                        .linear(duration: 0.5)
+                                                        .delay(0.5)
+                                                : nil
+                                            )
+                                            
+                                            
+                                            
+                                            
+                                        }
+                                        
                                         Spacer()
                                     }
                                     Text("See all entries")
                                         .underlineText()
+                                        .opacity(showHome ? 1 : 0)
+                                        .animation(.easeInOut(duration: 0.2))
                                 }
-                                
-                                
-                                
-                                
-                                
-
-                                
-                                
                                 
                             
-                            } else {
                                 
-                                RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
-                                    .position(CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2))
                                 
-                                CircleButton(isDragging: $isDragging)
-                                    .position(self.location)
-                                    .gesture(simpleDrag.simultaneously(with: fingerDrag))
-                                    .animation(Animation.interpolatingSpring(stiffness: 120, damping: 12))
-                                    .onAppear {
-                                        self.originalPos = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                                        self.location = self.originalPos
-                                    }
-                                if let fingerLocation = fingerLocation {
-                                    Circle()
-                                        .stroke(Color.green, lineWidth: 2)
-                                        .frame(width: 20, height: 20)
-                                        .position(fingerLocation)
-                                }
-                            }
+                                
+                                
+                                
+                                //                                RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
+                                //                                    .position(CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2))
+                                
+//                                CircleButton(isDragging: $isDragging)
+//                                    .position(self.location)
+//                                    .animation(nil)
+////                                    .gesture(simpleDrag.simultaneously(with: fingerDrag))
+////                                    .animation(Animation.interpolatingSpring(stiffness: 120, damping: 12))
+//                                    .opacity(showHome ? 0 : 1)
+//                                    .onAppear {
+//                                        self.originalPos = CGPoint(x: geometry.size.width / 2, y: 30)
+//                                        self.location = self.originalPos
+//                                    }
+                                
+                                //                                if let fingerLocation = fingerLocation {
+                                //                                    Circle()
+                                //                                        .stroke(Color.green, lineWidth: 2)
+                                //                                        .frame(width: 20, height: 20)
+                                //                                        .position(fingerLocation)
+                                //                                }
+                                
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                         }
                     }
+                    .padding(.top, 64)
                 }
             }
         }

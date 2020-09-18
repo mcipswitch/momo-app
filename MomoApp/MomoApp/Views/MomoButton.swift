@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct MomoButton: ButtonStyle {
-    var width: CGFloat
-    var height: CGFloat
+    var w: CGFloat
+    var h: CGFloat
     var size: CGFloat = 14.0
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .momoButtonText(size: size)
-            .frame(width: width, height: height)
+            .frame(width: w, height: h)
             .background(
-                RoundedRectangle(cornerRadius: height / 2, style: .continuous)
+                RoundedRectangle(cornerRadius: h / 2, style: .continuous)
                     .fill(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
             )
     }
