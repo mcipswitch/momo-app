@@ -42,6 +42,25 @@ struct AccentText: ViewModifier {
     }
 }
 
+// Animations
+struct SlideIn: ViewModifier {
+    @Binding var showHome: Bool
+    func body(content: Content) -> some View {
+        content
+            .offset(y: showHome ? -5 : 0)
+            .opacity(showHome ? 0 : 1)
+    }
+}
+
+struct SlideOut: ViewModifier {
+    @Binding var showHome: Bool
+    func body(content: Content) -> some View {
+        content
+            .offset(y: showHome ? 0 : 5)
+            .opacity(showHome ? 1 : 0)
+    }
+}
+
 // MARK: - View + Extensions
 extension View {
     func momoText(opacity: Double = 1) -> some View {

@@ -90,10 +90,9 @@ struct AddMoodView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
-                
-                
+                // START: Navigation Buttons
                 HStack {
-                    // Back Button
+                    // Back
                     Button(action: {
                         self.showHome.toggle()
                     }) {Image(systemName: "chevron.backward")
@@ -102,7 +101,7 @@ struct AddMoodView: View {
                     
                     Spacer()
                     
-                    // Next Button
+                    // Next
                     Button(action: {
                         print("Next...")
                     }) {
@@ -112,8 +111,7 @@ struct AddMoodView: View {
                         }
                     }.buttonStyle(MomoButton(w: 90, h: 34))
                 }
-                .offset(y: showHome ? -5 : 0)
-                .opacity(showHome ? 0 : 1)
+                .modifier(SlideIn(showHome: $showHome))
                 .animation(Animation
                             .easeInOut(duration: 0.2)
                             .delay(showHome ? 0 : 0.5)
@@ -130,28 +128,28 @@ struct AddMoodView: View {
                 
                 
                 
-                
+                // START: Entire View
                 VStack(spacing: 48) {
                     
                     VStack(spacing: 36) {
                         Text(Date(), formatter: dateFormat)
                             .dateText()
-                            .opacity(showHome ? 1 : 0)
-                            .offset(y: showHome ? 0 : 5)
+                            .modifier(SlideOut(showHome: $showHome))
                             .animation(Animation
                                         .easeInOut(duration: 0.2)
                                         .delay(showHome ? 0.5 : 0)
                             )
                             .padding(.top, 16)
+                        
                         ZStack(alignment: .top) {
                             Text("Hi, how are you feeling today?")
                                 .momoText()
-                                .opacity(showHome ? 1 : 0)
-                                .offset(y: showHome ? 0 : 5)
+                                .modifier(SlideOut(showHome: $showHome))
                                 .animation(Animation
                                             .easeInOut(duration: 0.2)
                                             .delay(showHome ? 0.5 : 0)
                                 )
+                            // START: Text Field
                             ZStack(alignment: .top) {
                                 if text.isEmpty {
                                     Text("My day in a word")
@@ -165,24 +163,22 @@ struct AddMoodView: View {
                                     self.text = String(text.prefix(20))
                                 }
                             }
-                            .opacity(showHome ? 0 : 1)
-                            .offset(y: showHome ? -5 : 0)
+                            .modifier(SlideIn(showHome: $showHome))
                             .animation(Animation
                                         .easeInOut(duration: 0.2)
-                                        .delay(showHome ? 0 : 0.5)
+                                        .delay(showHome ? 0 : (textFieldIsFocused ? 0 : 0.5))
                             )
-                            RoundedRectangle(cornerRadius: 1)
+                            RoundedRectangle(cornerRadius: 2)
                                 .fill(Color(textFieldIsFocused ? #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
                                 .frame(height: 2)
                                 .offset(y: 32)
                                 .opacity(showHome ? 0 : 1)
-                                //.offset(y: showHome ? -10 : 0)
-                                .frame(width: showHome ? 0 : 180)
-                                .animation(showHome ? nil : Animation
-                                            //.easeInOut(duration: 0.2)
+                                .frame(maxWidth: showHome ? 0 : .infinity)
+                                .animation(Animation
                                             .interpolatingSpring(stiffness: 180, damping: 16)
-                                            .delay(0.6)
+                                            .delay(showHome ? 0 : 0.6)
                                 )
+                            // END: Text Field
                         }
                         .frame(width: 180, height: 80)
                     }
@@ -228,24 +224,20 @@ struct AddMoodView: View {
                                                 .clipShape(RoundedRectangle(cornerRadius: showHome ? 30 : 42))
                                                 .frame(width: showHome ? 230 : 84, height: showHome ? 60 :84)
                                                 .animation(
-                                                    Animation
-                                                        //.spring(response: 0.5, dampingFraction: 0.5)
-                                                        .interpolatingSpring(stiffness: 120, damping: 12, initialVelocity: 6 )
+                                                    .interpolatingSpring(stiffness: 120, damping: 12)
                                                 )
                                             
                                             
                                             
                                             Button("Add today's emotion") {
-                                                //withAnimation(.spring(response: 0.5, dampingFraction: 0.5)) {
-                                                    showHome = false
-                                                //}
+                                                showHome = false
                                             }.buttonStyle(MomoButton(w: 230, h: 60))
                                             .opacity(showHome ? 1 : 0)
                                             .animation(showHome ?
-                                                Animation
-                                                        .linear(duration: 0.5)
+                                                        Animation
+                                                        .linear(duration: 0.2)
                                                         .delay(0.5)
-                                                : nil
+                                                        : nil
                                             )
                                             
                                             
@@ -302,6 +294,7 @@ struct AddMoodView: View {
                     }
                     .padding(.top, 64)
                 }
+                // END: Entire View
             }
         }
         .onChange(of: degrees) { value in
