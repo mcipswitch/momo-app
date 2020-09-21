@@ -16,9 +16,7 @@ struct MomoButton: ButtonStyle {
         configuration.label
             .momoButtonText(size: size)
             .frame(width: w, height: h)
-            .background(
-                RoundedRectangle(cornerRadius: h / 2, style: .continuous)
-                    .fill(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
-            )
+            .background(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+            .cornerRadius(h / 2)
     }
 }

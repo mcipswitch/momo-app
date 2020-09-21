@@ -25,15 +25,17 @@ struct AddMoodView: View {
     @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
     @State private var isDragging: Bool = false
+    @State private var isAnimating: Bool = false
     
     private var maxDistance: CGFloat = 36
     
     @State private var rainbowIsActive: Bool = false
     @State private var rainbowDegrees: Double = 0
-    @State private var counter: Int = 0
     
     @State private var textFieldIsFocused: Bool = false
     @Namespace private var namespace
+    
+    @State private var showButtonText: Bool = true
     
     // MARK: - Drag Gestures
     var simpleDrag: some Gesture {
@@ -49,11 +51,9 @@ struct AddMoodView: View {
                     newLocation.y += value.translation.height
                     let distance = startLocation.distance(to: newLocation)
                     if distance > maxDistance {
-                        
                         if distance > maxDistance * 1.5 {
                             self.rainbowIsActive = true
                         }
-                        
                         let k = maxDistance / distance
                         let locationX = ((newLocation.x - originalPos.x) * k) + originalPos.x
                         let locationY = ((newLocation.y - originalPos.y) * k) + originalPos.y
@@ -70,7 +70,6 @@ struct AddMoodView: View {
                 self.location = self.originalPos
                 self.isDragging = false
                 self.rainbowIsActive = false
-                self.counter = 0
             }
     }
     
@@ -90,18 +89,18 @@ struct AddMoodView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
+                
                 // START: Navigation Buttons
                 HStack {
-                    // Back
                     Button(action: {
                         self.showHome.toggle()
-                    }) {Image(systemName: "chevron.backward")
-                        .momoText()
+                    }) {
+                        Image(systemName: "chevron.backward")
+                            .momoText()
                     }
                     
                     Spacer()
                     
-                    // Next
                     Button(action: {
                         print("Next...")
                     }) {
@@ -118,19 +117,8 @@ struct AddMoodView: View {
                 )
                 .padding(16)
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
                 // START: Entire View
                 VStack(spacing: 48) {
-                    
                     VStack(spacing: 36) {
                         Text(Date(), formatter: dateFormat)
                             .dateText()
@@ -183,17 +171,6 @@ struct AddMoodView: View {
                         .frame(width: 180, height: 80)
                     }
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                     ZStack {
                         BlobView(frameSize: geometry.size.width * 0.7, pct: $pct)
                         VStack {
@@ -203,98 +180,83 @@ struct AddMoodView: View {
                             Text("Angle: \(Int(degrees))")
                             Text(isDragging ? "dragging..." : "")
                             Text(rainbowIsActive ? "rainbow..." : "")
-                            Text("Counter: \(counter)")
                         }
-                        .font(Font.system(size: 16))
+                        .font(Font.system(size: 12))
                     }
                     
                     ZStack {
                         GeometryReader { geometry in
-                            
-                            
-                                
                                 VStack(spacing: 30) {
                                     HStack {
                                         Spacer()
                                         
-                                        ZStack(alignment: .top) {
-                                            
-                                            Rectangle()
-                                                .fill(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
-                                                .clipShape(RoundedRectangle(cornerRadius: showHome ? 30 : 42))
-                                                .frame(width: showHome ? 230 : 84, height: showHome ? 60 :84)
-                                                .animation(
-                                                    .interpolatingSpring(stiffness: 120, damping: 12)
-                                                )
-                                            
-                                            
-                                            
-                                            Button("Add today's emotion") {
-                                                showHome = false
-                                            }.buttonStyle(MomoButton(w: 230, h: 60))
-                                            .opacity(showHome ? 1 : 0)
-                                            .animation(showHome ?
-                                                        Animation
-                                                        .linear(duration: 0.2)
-                                                        .delay(0.5)
-                                                        : nil
-                                            )
-                                            
-                                            
-                                            
-                                            
-                                        }
+                                        Button(action: {
+                                            showHome = false
+                                        }) {
+                                            Text("Add today's emotion")
+                                                    .opacity(showButtonText ? 1 : 0)
+                                                    .animation(Animation
+                                                                .easeInOut(duration: 0.2)
+                                                                .delay(showButtonText ? 0.5 : 0)
+                                                    )
+                                        }.buttonStyle(MomoButton(w :showHome ? 230 : 84, h: showHome ? 60 : 84))
+                                        .animation(.spring(response: 0.7, dampingFraction: 0.5))
                                         
                                         Spacer()
                                     }
-                                    Text("See all entries")
-                                        .underlineText()
-                                        .opacity(showHome ? 1 : 0)
-                                        .animation(.easeInOut(duration: 0.2))
+                                    .opacity(showHome ? 1 : 0)
+                                    .animation(Animation
+                                                .linear(duration: 0.001)
+                                                .delay(showHome ? 0 : 1.2)
+                                    )
+                                    Button(action: {
+                                        print("entries...")
+                                    }) {
+                                        Text("See all entries")
+                                            .underlineText()
+                                    }
+                                    .opacity(showHome ? 1 : 0)
+                                    .animation(Animation
+                                                .easeInOut(duration: 0.2)
+                                    )
                                 }
+                            RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
+                                .position(CGPoint(x: geometry.size.width / 2, y: 42))
+                            CircleButton(isDragging: $isDragging, isAnimating: $isAnimating)
+                                .position(self.location)
+                                .onAppear {
+                                    self.originalPos = CGPoint(x: geometry.size.width / 2, y: 42)
+                                    self.location = self.originalPos
+                                }
+                                .gesture(simpleDrag.simultaneously(with: fingerDrag))
+//                                .animation(
+//                                    .interpolatingSpring(stiffness: 120, damping: 12)
+//                                )
                                 
-                            
                                 
                                 
-                                
-                                
-                                
-                                //                                RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
-                                //                                    .position(CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2))
-                                
-//                                CircleButton(isDragging: $isDragging)
-//                                    .position(self.location)
-//                                    .animation(nil)
-////                                    .gesture(simpleDrag.simultaneously(with: fingerDrag))
-////                                    .animation(Animation.interpolatingSpring(stiffness: 120, damping: 12))
-//                                    .opacity(showHome ? 0 : 1)
-//                                    .onAppear {
-//                                        self.originalPos = CGPoint(x: geometry.size.width / 2, y: 30)
-//                                        self.location = self.originalPos
-//                                    }
-                                
-                                //                                if let fingerLocation = fingerLocation {
-                                //                                    Circle()
-                                //                                        .stroke(Color.green, lineWidth: 2)
-                                //                                        .frame(width: 20, height: 20)
-                                //                                        .position(fingerLocation)
-                                //                                }
-                                
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
+//                                .opacity(showHome ? 0 : 1)
+//                                .animation(Animation
+//                                            .linear(duration: 0.001)
+//                                            .delay(showHome ? 0 : 1.2)
+//                                )
+                            if let fingerLocation = fingerLocation {
+                                Circle()
+                                    .stroke(Color.green, lineWidth: 2)
+                                    .frame(width: 20, height: 20)
+                                    .position(fingerLocation)
+                            }
                         }
                     }
                     .padding(.top, 64)
                 }
                 // END: Entire View
+            }
+        }
+        .onChange(of: showHome) { value in
+            self.showButtonText.toggle()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                self.isAnimating.toggle()
             }
         }
         .onChange(of: degrees) { value in
