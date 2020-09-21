@@ -12,31 +12,27 @@ struct AddMoodView: View {
     //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     
     @State private var showHome: Bool = true
+    @State private var showButtonText: Bool = true
     
     // MARK: - Properties and Variables
     @State private var originalPos = CGPoint.zero
     @State private var location = CGPoint(x: UIScreen.screenWidth / 2, y: 0)
     @GestureState private var fingerLocation: CGPoint? = nil
     @GestureState private var startLocation: CGPoint? = nil
-    
     @GestureState private var currentLocation: CGPoint? = nil
     
     @State private var text = ""
+    @State private var textFieldIsFocused: Bool = false
+    
     @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
     @State private var isDragging: Bool = false
     @State private var isAnimating: Bool = false
     
-    private var maxDistance: CGFloat = 36
-    
     @State private var rainbowIsActive: Bool = false
     @State private var rainbowDegrees: Double = 0
-    
-    @State private var textFieldIsFocused: Bool = false
-    @Namespace private var namespace
-    
-    @State private var showButtonText: Bool = true
-    
+    private var maxDistance: CGFloat = 36
+
     // MARK: - Drag Gestures
     var simpleDrag: some Gesture {
         DragGesture(minimumDistance: 0)
@@ -51,9 +47,9 @@ struct AddMoodView: View {
                     newLocation.y += value.translation.height
                     let distance = startLocation.distance(to: newLocation)
                     if distance > maxDistance {
-                        if distance > maxDistance * 1.5 {
-                            self.rainbowIsActive = true
-                        }
+                        
+                        self.rainbowIsActive = (distance > maxDistance * 1.2) ? true : false
+                        
                         let k = maxDistance / distance
                         let locationX = ((newLocation.x - originalPos.x) * k) + originalPos.x
                         let locationY = ((newLocation.y - originalPos.y) * k) + originalPos.y
@@ -179,6 +175,7 @@ struct AddMoodView: View {
                             Text("Current Pos: x:\(Int(location.x)), y:\(Int(location.y))")
                             Text("Angle: \(Int(degrees))")
                             Text(isDragging ? "dragging..." : "")
+                            Text(isAnimating ? "animating..." : "")
                             Text(rainbowIsActive ? "rainbow..." : "")
                         }
                         .font(Font.system(size: 12))
@@ -210,7 +207,7 @@ struct AddMoodView: View {
                                                 .delay(showHome ? 0 : 1.2)
                                     )
                                     Button(action: {
-                                        print("entries...")
+                                        print("See all entries...")
                                     }) {
                                         Text("See all entries")
                                             .underlineText()
@@ -221,31 +218,33 @@ struct AddMoodView: View {
                                     )
                                 }
                             RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
-                                .position(CGPoint(x: geometry.size.width / 2, y: 42))
+                                .position(self.originalPos)
+                            
                             CircleButton(isDragging: $isDragging, isAnimating: $isAnimating)
                                 .position(self.location)
-                                .onAppear {
-                                    self.originalPos = CGPoint(x: geometry.size.width / 2, y: 42)
-                                    self.location = self.originalPos
-                                }
+                                .opacity(showHome ? 0 : 1)
+                                .animation(Animation
+                                            .linear(duration: 0.001)
+                                            .delay(showHome ? 0 : 1.2)
+                                )
                                 .gesture(simpleDrag.simultaneously(with: fingerDrag))
-//                                .animation(
-//                                    .interpolatingSpring(stiffness: 120, damping: 12)
-//                                )
+                                //.animation(.spring(response: 0.7, dampingFraction: 0.5))
+
+                            
+                            
+                            
+                            
                                 
-                                
-                                
-//                                .opacity(showHome ? 0 : 1)
-//                                .animation(Animation
-//                                            .linear(duration: 0.001)
-//                                            .delay(showHome ? 0 : 1.2)
-//                                )
                             if let fingerLocation = fingerLocation {
                                 Circle()
                                     .stroke(Color.green, lineWidth: 2)
                                     .frame(width: 20, height: 20)
                                     .position(fingerLocation)
                             }
+                        }
+                        .onAppear {
+                            self.originalPos = CGPoint(x: geometry.size.width / 2, y: 42)
+                            self.location = self.originalPos
                         }
                     }
                     .padding(.top, 64)
