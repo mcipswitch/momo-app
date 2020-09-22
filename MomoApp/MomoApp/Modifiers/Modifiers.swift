@@ -45,10 +45,15 @@ struct AccentText: ViewModifier {
 // Animations
 struct SlideIn: ViewModifier {
     @Binding var showHome: Bool
+    @Binding var noDelay: Bool
     func body(content: Content) -> some View {
         content
             .offset(y: showHome ? -5 : 0)
             .opacity(showHome ? 0 : 1)
+            .animation(Animation
+                        .easeInOut(duration: 0.2)
+                        .delay(showHome ? 0 : (noDelay ? 0 : 0.5))
+            )
     }
 }
 
@@ -58,6 +63,10 @@ struct SlideOut: ViewModifier {
         content
             .offset(y: showHome ? 0 : 5)
             .opacity(showHome ? 1 : 0)
+            .animation(Animation
+                        .easeInOut(duration: 0.2)
+                        .delay(showHome ? 0.5 : 0)
+            )
     }
 }
 

@@ -32,6 +32,8 @@ struct AddMoodView: View {
     @State private var rainbowIsActive: Bool = false
     @State private var rainbowDegrees: Double = 0
     private var maxDistance: CGFloat = 36
+    
+    @State private var joystickOn: Bool = false
 
     // MARK: - Drag Gestures
     var simpleDrag: some Gesture {
@@ -78,6 +80,12 @@ struct AddMoodView: View {
     
     // MARK: - Body
     var body: some View {
+        let spectrum = Gradient(colors: [.red, .orange, .yellow, .green, .blue, .purple, .red])
+        let conic = AngularGradient(gradient: spectrum,
+                                    center: .center,
+                                    angle: .degrees(180))
+        
+        
         ZStack {
             GeometryReader { geometry in
                 Image("background")
@@ -106,11 +114,7 @@ struct AddMoodView: View {
                         }
                     }.buttonStyle(MomoButton(w: 90, h: 34))
                 }
-                .modifier(SlideIn(showHome: $showHome))
-                .animation(Animation
-                            .easeInOut(duration: 0.2)
-                            .delay(showHome ? 0 : 0.5)
-                )
+                .modifier(SlideIn(showHome: $showHome, noDelay: .constant(false)))
                 .padding(16)
                 
                 // START: Entire View
@@ -119,20 +123,11 @@ struct AddMoodView: View {
                         Text(Date(), formatter: dateFormat)
                             .dateText()
                             .modifier(SlideOut(showHome: $showHome))
-                            .animation(Animation
-                                        .easeInOut(duration: 0.2)
-                                        .delay(showHome ? 0.5 : 0)
-                            )
                             .padding(.top, 16)
-                        
                         ZStack(alignment: .top) {
                             Text("Hi, how are you feeling today?")
                                 .momoText()
                                 .modifier(SlideOut(showHome: $showHome))
-                                .animation(Animation
-                                            .easeInOut(duration: 0.2)
-                                            .delay(showHome ? 0.5 : 0)
-                                )
                             // START: Text Field
                             ZStack(alignment: .top) {
                                 if text.isEmpty {
@@ -147,28 +142,15 @@ struct AddMoodView: View {
                                     self.text = String(text.prefix(20))
                                 }
                             }
-                            .modifier(SlideIn(showHome: $showHome))
-                            .animation(Animation
-                                        .easeInOut(duration: 0.2)
-                                        .delay(showHome ? 0 : (textFieldIsFocused ? 0 : 0.5))
-                            )
-                            RoundedRectangle(cornerRadius: 2)
-                                .fill(Color(textFieldIsFocused ? #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
-                                .frame(height: 2)
-                                .offset(y: 32)
-                                .opacity(showHome ? 0 : 1)
-                                .frame(maxWidth: showHome ? 0 : .infinity)
-                                .animation(Animation
-                                            .interpolatingSpring(stiffness: 180, damping: 16)
-                                            .delay(showHome ? 0 : 0.6)
-                                )
+                            .modifier(SlideIn(showHome: $showHome, noDelay: $textFieldIsFocused))
+                            TextFieldBorder(showHome: $showHome, textFieldIsFocused: $textFieldIsFocused)
                             // END: Text Field
                         }
                         .frame(width: 180, height: 80)
                     }
                     
                     ZStack {
-                        BlobView(frameSize: geometry.size.width * 0.7, pct: $pct)
+                        BlobView(frameSize: 250, pct: $pct)
                         VStack {
                             Text("Pct: \(pct)")
                             Text("Original Pos: x:\(Int(originalPos.x)), y:\(Int(originalPos.y))")
@@ -184,28 +166,68 @@ struct AddMoodView: View {
                     ZStack {
                         GeometryReader { geometry in
                                 VStack(spacing: 30) {
-                                    HStack {
-                                        Spacer()
-                                        
-                                        Button(action: {
-                                            showHome = false
-                                        }) {
-                                            Text("Add today's emotion")
+                                    
+                                    ZStack(alignment: .center) {
+                                        HStack {
+                                            Spacer()
+
+                                            Button(action: {
+                                                if showHome {
+                                                    showHome = false
+                                                } else {
+                                                    print("Joystick...")
+                                                }
+                                            }) {
+                                                Text("Add today's emotion")
                                                     .opacity(showButtonText ? 1 : 0)
                                                     .animation(Animation
                                                                 .easeInOut(duration: 0.2)
                                                                 .delay(showButtonText ? 0.5 : 0)
                                                     )
-                                        }.buttonStyle(MomoButton(w :showHome ? 230 : 84, h: showHome ? 60 : 84))
-                                        .animation(.spring(response: 0.7, dampingFraction: 0.5))
+                                            }.buttonStyle(MomoButton(w: showHome ? 230 : 75, h: showHome ? 60 : 75))
+                                            .animation(.spring(response: 0.7, dampingFraction: 0.5))
+                                            
+                                            Spacer()
+                                        }
                                         
-                                        Spacer()
+                                        if !showHome {
+                                            Circle()
+                                                .stroke(conic, lineWidth: 6)
+                                                .frame(width: 75 + 18)
+                                                .mask(Circle().frame(width: 75 + 6))
+                                                .opacity(joystickOn ? 1 : 0)
+                                                .blur(radius: joystickOn ? 0 : 2)
+                                                .scaleEffect(joystickOn ? 1 : 1.1)
+                                                .animation(Animation
+                                                            //.easeInOut(duration: 0.4)
+                                                            .spring(response: 0.7, dampingFraction: 0.5)
+                                                            .delay(0.8)
+                                                ) // 0.4 x 0.8
+                                                .rotationEffect(Angle(degrees: joystickOn ? 360 : 1))
+                                                .animation(Animation
+                                                            .linear(duration: 8)
+                                                            .repeat(while: joystickOn, autoreverses: false)
+                                                )
+                                        }
                                     }
-                                    .opacity(showHome ? 1 : 0)
-                                    .animation(Animation
-                                                .linear(duration: 0.001)
-                                                .delay(showHome ? 0 : 1.2)
-                                    )
+//                                    .scaleEffect(isAnimating ? 0.8 : 1)
+//                                    .animation(Animation
+//                                                .easeInOut(duration: 1.2)
+//                                                .repeat(while: isAnimating)
+//                                                .delay(joystickOn ? 1.2 : 0)
+//                                    )
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+//                                    .opacity(showHome ? 1 : 0)
+//                                    .animation(Animation
+//                                                .linear(duration: 0.001)
+//                                                .delay(showHome ? 0 : 1.2)
+//                                    )
                                     Button(action: {
                                         print("See all entries...")
                                     }) {
@@ -213,34 +235,24 @@ struct AddMoodView: View {
                                             .underlineText()
                                     }
                                     .opacity(showHome ? 1 : 0)
-                                    .animation(Animation
-                                                .easeInOut(duration: 0.2)
-                                    )
+                                    .animation(.easeInOut(duration: 0.2))
                                 }
                             RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
                                 .position(self.originalPos)
-                            
-                            CircleButton(isDragging: $isDragging, isAnimating: $isAnimating)
-                                .position(self.location)
-                                .opacity(showHome ? 0 : 1)
-                                .animation(Animation
-                                            .linear(duration: 0.001)
-                                            .delay(showHome ? 0 : 1.2)
-                                )
-                                .gesture(simpleDrag.simultaneously(with: fingerDrag))
-                                //.animation(.spring(response: 0.7, dampingFraction: 0.5))
-
-                            
-                            
-                            
-                            
-                                
-                            if let fingerLocation = fingerLocation {
-                                Circle()
-                                    .stroke(Color.green, lineWidth: 2)
-                                    .frame(width: 20, height: 20)
-                                    .position(fingerLocation)
-                            }
+//                            CircleButton(isDragging: $isDragging, isAnimating: $isAnimating)
+//                                .position(self.location)
+//                                .opacity(showHome ? 0 : 1)
+//                                .animation(Animation
+//                                            .linear(duration: 0.001)
+//                                            .delay(showHome ? 0 : 1.2)
+//                                )
+//                                .gesture(simpleDrag.simultaneously(with: fingerDrag))
+//                            if let fingerLocation = fingerLocation {
+//                                Circle()
+//                                    .stroke(Color.green, lineWidth: 2)
+//                                    .frame(width: 20, height: 20)
+//                                    .position(fingerLocation)
+//                            }
                         }
                         .onAppear {
                             self.originalPos = CGPoint(x: geometry.size.width / 2, y: 42)
@@ -254,9 +266,13 @@ struct AddMoodView: View {
         }
         .onChange(of: showHome) { value in
             self.showButtonText.toggle()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                self.isAnimating.toggle()
-            }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + (showHome ? 0 : 1.2)) {
+//                self.isAnimating.toggle()
+            //            }
+            
+            self.joystickOn.toggle()
+            self.isAnimating.toggle()
+            
         }
         .onChange(of: degrees) { value in
             switch value {
