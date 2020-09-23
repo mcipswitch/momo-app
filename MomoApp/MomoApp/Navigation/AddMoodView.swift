@@ -80,10 +80,26 @@ struct AddMoodView: View {
     
     // MARK: - Body
     var body: some View {
-        let spectrum = Gradient(colors: [.red, .orange, .yellow, .green, .blue, .purple, .red])
-        let conic = AngularGradient(gradient: spectrum,
-                                    center: .center,
-                                    angle: .degrees(180))
+        //let spectrum = Gradient(colors: [.red, .orange, .yellow, .green, .blue, .purple, .red])
+        let spectrum = Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))])
+        
+        let gradient1: [UIColor] = [#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1), #colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1), #colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1)]
+        let gradient2: [UIColor] = [#colorLiteral(red: 0.8352941176, green: 1, blue: 0.8196078431, alpha: 1), #colorLiteral(red: 0.7411764706, green: 1, blue: 0.5411764706, alpha: 1), #colorLiteral(red: 0.4823529412, green: 0.8156862745, blue: 0.2039215686, alpha: 1)]
+        let gradient3: [UIColor] = [#colorLiteral(red: 1, green: 0.9019607843, blue: 0.8196078431, alpha: 1), #colorLiteral(red: 1, green: 0.6705882353, blue: 0.5411764706, alpha: 1), #colorLiteral(red: 0.9843137255, green: 0.431372549, blue: 0.4588235294, alpha: 1)]
+        let gradient4: [UIColor] = [#colorLiteral(red: 0.9921568627, green: 0.9960784314, blue: 0.8, alpha: 1), #colorLiteral(red: 0.9960784314, green: 0.4745098039, blue: 0.6078431373, alpha: 1), #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.2862745098, alpha: 1)]
+        
+        
+        let conic = LinearGradient(gradient: spectrum,
+                                   startPoint: .topLeading,
+                                   endPoint: .bottomTrailing)
+        
+//        let conic = AngularGradient(gradient: spectrum,
+//                                    center: .center,
+//                                    angle: .degrees(180))
+        
+        
+        
+            
         
         
         ZStack {
@@ -185,7 +201,7 @@ struct AddMoodView: View {
                                                                 .delay(showButtonText ? 0.5 : 0)
                                                     )
                                             }.buttonStyle(MomoButton(w: showHome ? 230 : 75, h: showHome ? 60 : 75))
-                                            .animation(.spring(response: 0.7, dampingFraction: 0.5))
+                                            .animation(.spring(response: 0.8, dampingFraction: 0.5))
                                             
                                             Spacer()
                                         }
@@ -196,26 +212,19 @@ struct AddMoodView: View {
                                                 .frame(width: 75 + 18)
                                                 .mask(Circle().frame(width: 75 + 6))
                                                 .opacity(joystickOn ? 1 : 0)
-                                                .blur(radius: joystickOn ? 0 : 2)
+                                                .blur(radius: joystickOn ? 0 : 4)
                                                 .scaleEffect(joystickOn ? 1 : 1.1)
                                                 .animation(Animation
-                                                            //.easeInOut(duration: 0.4)
-                                                            .spring(response: 0.7, dampingFraction: 0.5)
+                                                            .spring(response: 0.8, dampingFraction: 0.5)
                                                             .delay(0.8)
-                                                ) // 0.4 x 0.8
-                                                .rotationEffect(Angle(degrees: joystickOn ? 360 : 1))
+                                                )
+                                                .hueRotation(Angle(degrees: joystickOn ? 360 : 0))
                                                 .animation(Animation
-                                                            .linear(duration: 8)
+                                                            .easeInOut(duration: 4)
                                                             .repeat(while: joystickOn, autoreverses: false)
                                                 )
                                         }
                                     }
-//                                    .scaleEffect(isAnimating ? 0.8 : 1)
-//                                    .animation(Animation
-//                                                .easeInOut(duration: 1.2)
-//                                                .repeat(while: isAnimating)
-//                                                .delay(joystickOn ? 1.2 : 0)
-//                                    )
                                     
                                     
                                     
