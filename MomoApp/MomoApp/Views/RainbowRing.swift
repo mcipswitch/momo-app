@@ -25,12 +25,13 @@ struct RainbowRing: View {
             )
             .mask(
                 Circle()
-                    .trim(from: 0.0, to: 1/3)
+                    .trim(from: 0.0, to: 1)
+//                    .trim(from: 0.0, to: 1/3)
                     .stroke(conic, lineWidth: 40)
                     .rotationEffect(Angle(degrees: 210))
                     .rotationEffect(Angle(degrees: degrees))
             )
-            .blur(radius: 50)
+            //.blur(radius: 50)
             .frame(width: 180)
     }
 }
