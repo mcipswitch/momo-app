@@ -15,7 +15,7 @@ struct RainbowRing: View {
         let spectrum = Gradient(colors: [Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), Color(#colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1)), Color(#colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1)), Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1))])
         let conic = AngularGradient(gradient: spectrum,
                                     center: .center,
-                                    angle: .degrees(180))
+                                    angle: .degrees(-90))
         
         Circle()
             .stroke(conic, lineWidth: 50)
@@ -25,13 +25,18 @@ struct RainbowRing: View {
             )
             .mask(
                 Circle()
-                    .trim(from: 0.0, to: 1)
-//                    .trim(from: 0.0, to: 1/3)
+                    .trim(from: 0.0, to: 1/3)
                     .stroke(conic, lineWidth: 40)
                     .rotationEffect(Angle(degrees: 210))
                     .rotationEffect(Angle(degrees: degrees))
             )
-            //.blur(radius: 50)
+            .blur(radius: 50)
             .frame(width: 180)
+    }
+}
+
+struct RainbowRing_Previews: PreviewProvider {
+    static var previews: some View {
+        RainbowRing(isActive: .constant(true), degrees: .constant(90))
     }
 }
