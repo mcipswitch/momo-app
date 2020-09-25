@@ -1,6 +1,6 @@
 # MomoApp
 
-A SwiftUI app to log your daily mood.
+A SwiftUI app to log your daily emotion.
 
 Built using XCode 12.0 beta 3 (SwiftUI 2.0)
 
