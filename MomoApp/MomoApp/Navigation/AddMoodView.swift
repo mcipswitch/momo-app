@@ -33,8 +33,6 @@ struct AddMoodView: View {
     @State private var rainbowIsActive: Bool = false
     @State private var rainbowDegrees: Double = 0
     @State private var buttonSize: CGFloat = 80
-    
-    @State private var showJoystick: Bool = false
  
     // MARK: - Drag Gestures
     var simpleDrag: some Gesture {
@@ -170,50 +168,38 @@ struct AddMoodView: View {
                                 ZStack(alignment: .center) {
                                     Button(action: self.handleAddEmotion) {
                                         Text("Add today's emotion")
-                                            .opacity(showButtonText ? 1 : 0)
-                                            .animation(!showButtonText ? .none : Animation
+                                            .opacity(isAnimating ? 0 : 1)
+                                            .animation(isAnimating ? .none : Animation
                                                         .easeInOut(duration: 0.2)
                                                         .delay(0.5)
                                             )
                                     }.buttonStyle(MomoButton(w: showHome ? 230 : buttonSize, h: showHome ? 60 : buttonSize))
-                                    .animation(isDragging ? .default :
-                                                
-                                                isResetting ?
+                                    .animation(isDragging ? .default : Animation
                                                 .spring(response: 0.7, dampingFraction: 0.5)
-                                                :
-                                                
-                                                Animation
-                                                .spring(response: 0.7, dampingFraction: 0.5)
-                                                .delay(isAnimating ? 0.2 : 0)
+                                                .delay(isAnimating ? (isResetting ? 0 : 0.2) : 0)
                                     )
-                                    CircleRing(size: $buttonSize, isAnimating: $isAnimating)
+                                    CircleRing(size: $buttonSize, shiftColors: $isAnimating)
                                         .blur(radius: isAnimating ? 0 : 2)
                                         .opacity(isAnimating ? 1 : 0)
                                         .scaleEffect(isAnimating ? 1 : 1.1)
-                                        .animation(isDragging ? .default :
-                                                    
-                                                    isResetting ?
+                                        .animation(isDragging ? .default : Animation
                                                     .spring(response: 0.7, dampingFraction: 0.5)
-                                                    :
-                                                    
-                                                    Animation
-                                                    .spring(response: 0.7, dampingFraction: 0.5)
-                                                    .delay(isAnimating ? 1 : 0)
+                                                    .delay(isAnimating ? (isResetting ? 0 : 1) : 0)
                                         )
                                     Button(action: self.handleSeeEntries) {
-                                        Text("See all entries")
-                                            .underlineText()
-                                    }
+                                        Text("See all entries").underline()
+                                    }.buttonStyle(MomoLink())
                                     .offset(y: 60)
                                     .modifier(SlideOut(showHome: $showHome))
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
                                 }
                                 .position(self.location ?? CGPoint(x: geometry.size.width / 2, y: buttonSize / 2))
                                 .highPriorityGesture(showHome ? nil : simpleDrag.simultaneously(with: fingerDrag))
-                            
-                            
-                            
-                            
-                            
                             if let fingerLocation = fingerLocation {
                                 Circle()
                                     .stroke(Color.red, lineWidth: 2)
@@ -234,7 +220,6 @@ struct AddMoodView: View {
         .onChange(of: showHome) { value in
             self.showButtonText.toggle()
             self.isAnimating.toggle()
-            self.showJoystick.toggle()
         }
         .onChange(of: degrees) { value in
             switch value {
@@ -248,9 +233,7 @@ struct AddMoodView: View {
     
     // MARK: - Internal Methods
     private func handleAddEmotion() {
-        if showHome {
-            showHome.toggle()
-        }
+        if showHome { showHome.toggle() }
     }
     
     private func handleSeeEntries() {
@@ -259,7 +242,7 @@ struct AddMoodView: View {
     
     // Navigation Buttons
     private func handleBack() {
-        self.showHome.toggle()
+        showHome.toggle()
     }
     
     private func handleNext() {

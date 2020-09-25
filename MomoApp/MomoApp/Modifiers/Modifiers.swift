@@ -34,7 +34,7 @@ struct MomoButtonText: ViewModifier {
     }
 }
 
-struct AccentText: ViewModifier {
+struct LinkText: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.custom("DMSans-Bold", size: 16))
@@ -42,7 +42,7 @@ struct AccentText: ViewModifier {
     }
 }
 
-// Animations
+// MARK: - Animations
 struct SlideIn: ViewModifier {
     @Binding var showHome: Bool
     @Binding var noDelay: Bool
@@ -78,6 +78,9 @@ extension View {
     func dateText() -> some View {
         return self.modifier(DateText())
     }
+    func linkText() -> some View {
+        return self.modifier(LinkText())
+    }
     func momoButtonText(size: CGFloat) -> some View {
         return self.modifier(MomoButtonText(size: size))
     }
@@ -86,6 +89,6 @@ extension View {
 // MARK: - Text + Extension
 extension Text {
     func underlineText() -> some View {
-        return self.underline().modifier(AccentText())
+        return self.underline().modifier(LinkText())
     }
 }
