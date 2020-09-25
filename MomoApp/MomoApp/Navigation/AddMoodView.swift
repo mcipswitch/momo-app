@@ -191,12 +191,6 @@ struct AddMoodView: View {
                                     }.buttonStyle(MomoLink())
                                     .offset(y: 60)
                                     .modifier(SlideOut(showHome: $showHome))
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
                                 }
                                 .position(self.location ?? CGPoint(x: geometry.size.width / 2, y: buttonSize / 2))
                                 .highPriorityGesture(showHome ? nil : simpleDrag.simultaneously(with: fingerDrag))
