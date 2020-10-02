@@ -35,12 +35,12 @@
 		9383FBD42514E48E00E38E95 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBCD2514E48E00E38E95 /* OFL.txt */; };
 		9383FBD52514E48E00E38E95 /* DMSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBCE2514E48E00E38E95 /* DMSans-MediumItalic.ttf */; };
 		9383FBD62514E48E00E38E95 /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBCF2514E48E00E38E95 /* DMSans-Italic.ttf */; };
+		938BBD0E2527B59000759092 /* TextFieldBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938BBD0D2527B59000759092 /* TextFieldBorder.swift */; };
 		938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */; };
 		938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E537024E983F3002653F0 /* UIColor + Extension.swift */; };
 		93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93976DE624EB6ABF0018C667 /* HomeView.swift */; };
 		93A65BFC250FDF1600BF756A /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFB250FDF1600BF756A /* CustomSlider.swift */; };
 		93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */; };
-		93DA68992519A0110053CCE5 /* TextFieldBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA68982519A0110053CCE5 /* TextFieldBorder.swift */; };
 		93E9A338251D29900095D48C /* ColorRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E9A337251D29900095D48C /* ColorRing.swift */; };
 		93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EB5C602527891900087D0B /* UIApplication + Extension.swift */; };
 		93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F075FF24F1D9BC000B6449 /* TextLimiter.swift */; };
@@ -78,12 +78,12 @@
 		9383FBCD2514E48E00E38E95 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
 		9383FBCE2514E48E00E38E95 /* DMSans-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-MediumItalic.ttf"; sourceTree = "<group>"; };
 		9383FBCF2514E48E00E38E95 /* DMSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Italic.ttf"; sourceTree = "<group>"; };
+		938BBD0D2527B59000759092 /* TextFieldBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBorder.swift; sourceTree = "<group>"; };
 		938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath + Extension.swift"; sourceTree = "<group>"; };
 		938E537024E983F3002653F0 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		93976DE624EB6ABF0018C667 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		93A65BFB250FDF1600BF756A /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat + Extension.swift"; sourceTree = "<group>"; };
-		93DA68982519A0110053CCE5 /* TextFieldBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBorder.swift; sourceTree = "<group>"; };
 		93E9A337251D29900095D48C /* ColorRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorRing.swift; sourceTree = "<group>"; };
 		93EB5C602527891900087D0B /* UIApplication + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + Extension.swift"; sourceTree = "<group>"; };
 		93F075FF24F1D9BC000B6449 /* TextLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLimiter.swift; sourceTree = "<group>"; };
@@ -113,7 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				93E9A337251D29900095D48C /* ColorRing.swift */,
-				93DA68982519A0110053CCE5 /* TextFieldBorder.swift */,
+				938BBD0D2527B59000759092 /* TextFieldBorder.swift */,
 				936315392513A6B6005E20EA /* RainbowRing.swift */,
 				9376158D2512581A00AEF59C /* MomoButtonStyle.swift */,
 				93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */,
@@ -311,6 +311,7 @@
 				930105922514E0B9007F0E7A /* Modifiers.swift in Sources */,
 				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
 				931476A624F574980031D913 /* EmotionTextFieldStyle.swift in Sources */,
+				938BBD0E2527B59000759092 /* TextFieldBorder.swift in Sources */,
 				93FAEB9B2514FCDC00C057AC /* AddMoodView.swift in Sources */,
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
 				93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */,
@@ -330,7 +331,6 @@
 				93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */,
 				937688E124F98E9500CC0B10 /* CustomView.swift in Sources */,
 				936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */,
-				93DA68992519A0110053CCE5 /* TextFieldBorder.swift in Sources */,
 				93388BE0250FAAA700766633 /* ForceButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

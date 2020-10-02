@@ -38,7 +38,7 @@ struct LinkText: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.custom("DMSans-Bold", size: 16))
-            .foregroundColor(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+            .foregroundColor(Color.momo)
     }
 }
 

@@ -21,4 +21,6 @@ extension UIColor {
 
 extension Color {
     public static let momo = Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1))
+    public static let momoPurple = Color(#colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1))
+    public static let momoOrange = Color(#colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1))
 }

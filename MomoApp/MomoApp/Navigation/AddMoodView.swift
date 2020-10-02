@@ -31,7 +31,7 @@ struct AddMoodView: View {
     @State private var isAnimating: Bool = false
     @State private var isResetting: Bool = false
     
-    @State private var nextIsActive: Bool = false
+    @State private var nextButtonIsActive: Bool = false
     
     @State private var rainbowIsActive: Bool = false
     @State private var rainbowDegrees: Double = 0
@@ -100,8 +100,7 @@ struct AddMoodView: View {
                 HStack {
                     BackButton(action: self.handleBack)
                     Spacer()
-                    NextButton(action: self.handleNext)
-                        .opacity(nextIsActive ? 1 : 0.2)
+                    NextButton(isActive: $nextButtonIsActive, action: self.handleNext)
                         .animation(.easeIn(duration: 0.2))
                 }
                 .modifier(SlideIn(showHome: $showHome, noDelay: .constant(false)))
@@ -114,7 +113,7 @@ struct AddMoodView: View {
                             .dateText()
                             .modifier(SlideOut(showHome: $showHome))
                             .padding(.top, 16)
-                        ZStack(alignment: .top) {
+                        ZStack {
                             Text("Hi, how are you feeling today?")
                                 .momoText()
                                 .modifier(SlideOut(showHome: $showHome))
@@ -122,12 +121,6 @@ struct AddMoodView: View {
                                 EmotionTextField(text: $text, textFieldIsFocused: $textFieldIsFocused)
                                     .modifier(SlideIn(showHome: $showHome, noDelay: $textFieldIsFocused))
                                 TextFieldBorder(showHome: $showHome, textFieldIsFocused: $textFieldIsFocused)
-                                    .opacity(showHome ? 0 : 1)
-                                    .frame(maxWidth: showHome ? 0 : .infinity)
-                                    .animation(Animation
-                                                .interpolatingSpring(stiffness: 180, damping: 16)
-                                                .delay(if: !showHome, 0.6)
-                                    )
                             }
                         }
                         .frame(width: 180, height: 80)
@@ -196,7 +189,7 @@ struct AddMoodView: View {
             UIApplication.shared.endEditing()
         }
         .onChange(of: text) { _ in
-            self.nextIsActive = text.isEmpty ? false : true
+            self.nextButtonIsActive = text.isEmpty ? false : true
         }
         .onChange(of: degrees) { value in
             switch value {
@@ -234,7 +227,7 @@ struct EmotionTextField: View {
     @Binding var text: String
     @Binding var textFieldIsFocused: Bool
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack(alignment: .center) {
             Text("My day in a word")
                 .momoText(opacity: text.isEmpty ? 0.6 : 0)
             TextField("", text: $text, onEditingChanged: { editingChanged in
@@ -261,6 +254,7 @@ struct BackButton: View {
 }
 
 struct NextButton: View {
+    @Binding var isActive: Bool
     var action: () -> Void
     var body: some View {
         Button(action: action) {
@@ -268,7 +262,7 @@ struct NextButton: View {
                 Text("Next")
                 Image(systemName: "arrow.right")
             }
-        }.buttonStyle(MomoButtonStyle(w: 90, h: 34))
+        }.buttonStyle(MomoButtonStyle(w: 90, h: 34, isActive: isActive))
     }
 }
 

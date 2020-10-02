@@ -11,6 +11,7 @@ struct MomoButtonStyle: ButtonStyle {
     var w: CGFloat
     var h: CGFloat
     var size: CGFloat = 14.0
+    var isActive: Bool = true
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -18,5 +19,6 @@ struct MomoButtonStyle: ButtonStyle {
             .frame(width: w, height: h)
             .background(Color.momo)
             .cornerRadius(h / 2)
+            .opacity(isActive ? 1 : 0.2)
     }
 }

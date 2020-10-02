@@ -12,7 +12,7 @@ struct RainbowRing: View {
     @Binding var degrees: Double
     
     var body: some View {
-        let spectrum = Gradient(colors: [Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), Color(#colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1)), Color(#colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1)), Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1))])
+        let spectrum = Gradient(colors: [Color.momo, Color.momoPurple, Color.momoOrange, Color.momo])
         let conic = AngularGradient(gradient: spectrum,
                                     center: .center,
                                     angle: .degrees(-90))
