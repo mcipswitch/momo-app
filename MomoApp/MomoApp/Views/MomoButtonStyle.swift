@@ -12,7 +12,6 @@ struct MomoButtonStyle: ButtonStyle {
     var h: CGFloat
     var size: CGFloat = 14.0
     var isActive: Bool = true
-    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .momoButtonText(size: size)

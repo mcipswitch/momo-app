@@ -44,7 +44,7 @@ struct AddMoodView: View {
                 self.isDragging = true
                 
                 guard let startLocation = startLocation else { return }
-                let maxDistance: CGFloat = 36
+                let maxDistance: CGFloat = 40
                 var newLocation = startLocation
                 newLocation.x += value.translation.width
                 newLocation.y += value.translation.height
@@ -73,7 +73,7 @@ struct AddMoodView: View {
                 self.rainbowIsActive = false
                 
                 self.isResetting = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.isResetting = false
                 }
             }
@@ -96,15 +96,16 @@ struct AddMoodView: View {
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
                 
-                // Navigation Buttons
+                // START: - Navigation Buttons
                 HStack {
                     BackButton(action: self.handleBack)
                     Spacer()
                     NextButton(isActive: $nextButtonIsActive, action: self.handleNext)
-                        .animation(.easeIn(duration: 0.2))
+                        .animation(.ease())
                 }
                 .modifier(SlideIn(showHome: $showHome, noDelay: .constant(false)))
                 .padding(16)
+                .disabled(isResetting)
                 
                 // START: - Main View
                 VStack(spacing: 48) {
@@ -122,6 +123,9 @@ struct AddMoodView: View {
                                     .modifier(SlideIn(showHome: $showHome, noDelay: $textFieldIsFocused))
                                 TextFieldBorder(showHome: $showHome, textFieldIsFocused: $textFieldIsFocused)
                             }
+                        }
+                        .onChange(of: text) { _ in
+                            self.nextButtonIsActive = text.isEmpty ? false : true
                         }
                         .frame(width: 180, height: 80)
                     }
@@ -166,6 +170,7 @@ struct AddMoodView: View {
                                 }
                                 .position(self.location ?? CGPoint(x: geometry.size.width / 2, y: buttonSize / 2))
                                 .highPriorityGesture(showHome ? nil : simpleDrag.simultaneously(with: fingerDrag))
+                                .disabled(isResetting)
                             if let fingerLocation = fingerLocation {
                                 Circle()
                                     .stroke(Color.red, lineWidth: 2)
@@ -187,9 +192,6 @@ struct AddMoodView: View {
             self.showButtonText.toggle()
             self.isAnimating.toggle()
             UIApplication.shared.endEditing()
-        }
-        .onChange(of: text) { _ in
-            self.nextButtonIsActive = text.isEmpty ? false : true
         }
         .onChange(of: degrees) { value in
             switch value {
@@ -213,6 +215,7 @@ struct AddMoodView: View {
     // Navigation Buttons
     private func handleBack() {
         showHome.toggle()
+        print("Back...")
     }
     
     private func handleNext() {
@@ -248,8 +251,7 @@ struct BackButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: "chevron.backward")
-                .momoText()
-        }
+        }.buttonStyle(ActionButtonStyle())
     }
 }
 
@@ -263,6 +265,7 @@ struct NextButton: View {
                 Image(systemName: "arrow.right")
             }
         }.buttonStyle(MomoButtonStyle(w: 90, h: 34, isActive: isActive))
+        .disabled(!isActive)
     }
 }
 
