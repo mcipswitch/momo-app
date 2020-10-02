@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct CustomTextFieldStyle: TextFieldStyle {
+struct EmotionTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .momoText()
             .autocapitalization(.none)
             .disableAutocorrection(true)
-            .accentColor(Color(#colorLiteral(red: 0.4196078431, green: 0.8745098039, blue: 0.5960784314, alpha: 1)))
+            .accentColor(Color.momo)
             .minimumScaleFactor(0.7)
     }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MomoButton: ButtonStyle {
+struct MomoButtonStyle: ButtonStyle {
     var w: CGFloat
     var h: CGFloat
     var size: CGFloat = 14.0
@@ -16,7 +16,7 @@ struct MomoButton: ButtonStyle {
         configuration.label
             .momoButtonText(size: size)
             .frame(width: w, height: h)
-            .background(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)))
+            .background(Color.momo)
             .cornerRadius(h / 2)
     }
 }

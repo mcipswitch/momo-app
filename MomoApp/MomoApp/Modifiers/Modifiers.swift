@@ -51,8 +51,8 @@ struct SlideIn: ViewModifier {
             .offset(y: showHome ? -5 : 0)
             .opacity(showHome ? 0 : 1)
             .animation(Animation
-                        .easeInOut(duration: 0.2)
-                        .delay(showHome ? 0 : 0.5)
+                        .ease()
+                        .delay(if: !showHome, 0.5)
                         //.delay(showHome ? 0 : (noDelay ? 0 : 0.5))
             )
     }
@@ -65,8 +65,8 @@ struct SlideOut: ViewModifier {
             .offset(y: showHome ? 0 : 5)
             .opacity(showHome ? 1 : 0)
             .animation(Animation
-                        .easeInOut(duration: 0.2)
-                        .delay(showHome ? 0.5 : 0)
+                        .ease()
+                        .delay(if: showHome, 0.5)
             )
     }
 }

@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-struct CircleRing: View {
+struct ColorRing: View {
     @Binding var size: CGFloat
     @Binding var shiftColors: Bool
-    
     var body: some View {
         //let spectrum = Gradient(colors: [Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)), Color(#colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1)), Color(#colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1))])
         let spectrum = Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))])

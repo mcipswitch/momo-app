@@ -26,9 +26,12 @@ struct AddMoodView: View {
     
     @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
+    
     @State private var isDragging: Bool = false
     @State private var isAnimating: Bool = false
     @State private var isResetting: Bool = false
+    
+    @State private var nextIsActive: Bool = false
     
     @State private var rainbowIsActive: Bool = false
     @State private var rainbowDegrees: Double = 0
@@ -93,26 +96,18 @@ struct AddMoodView: View {
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
                 
-                // START: Navigation Buttons
+                // Navigation Buttons
                 HStack {
-                    Button(action: self.handleBack) {
-                        Image(systemName: "chevron.backward")
-                            .momoText()
-                    }
-                    
+                    BackButton(action: self.handleBack)
                     Spacer()
-                    
-                    Button(action: self.handleNext) {
-                        HStack {
-                            Text("Next")
-                            Image(systemName: "arrow.right")
-                        }
-                    }.buttonStyle(MomoButton(w: 90, h: 34))
+                    NextButton(action: self.handleNext)
+                        .opacity(nextIsActive ? 1 : 0.2)
+                        .animation(.easeIn(duration: 0.2))
                 }
                 .modifier(SlideIn(showHome: $showHome, noDelay: .constant(false)))
                 .padding(16)
                 
-                // START: Entire View
+                // START: - Main View
                 VStack(spacing: 48) {
                     VStack(spacing: 36) {
                         Text(Date(), formatter: dateFormat)
@@ -123,23 +118,17 @@ struct AddMoodView: View {
                             Text("Hi, how are you feeling today?")
                                 .momoText()
                                 .modifier(SlideOut(showHome: $showHome))
-                            // START: Text Field
-                            ZStack(alignment: .top) {
-                                if text.isEmpty {
-                                    Text("My day in a word")
-                                        .momoText(opacity: 0.6)
-                                }
-                                TextField("", text: $text, onEditingChanged: { editingChanged in
-                                    textFieldIsFocused = editingChanged ? true : false
-                                })
-                                .textFieldStyle(CustomTextFieldStyle())
-                                .onReceive(text.publisher.collect()) { characters in
-                                    self.text = String(text.prefix(20))
-                                }
+                            VStack(spacing: 6) {
+                                EmotionTextField(text: $text, textFieldIsFocused: $textFieldIsFocused)
+                                    .modifier(SlideIn(showHome: $showHome, noDelay: $textFieldIsFocused))
+                                TextFieldBorder(showHome: $showHome, textFieldIsFocused: $textFieldIsFocused)
+                                    .opacity(showHome ? 0 : 1)
+                                    .frame(maxWidth: showHome ? 0 : .infinity)
+                                    .animation(Animation
+                                                .interpolatingSpring(stiffness: 180, damping: 16)
+                                                .delay(if: !showHome, 0.6)
+                                    )
                             }
-                            .modifier(SlideIn(showHome: $showHome, noDelay: $textFieldIsFocused))
-                            TextFieldBorder(showHome: $showHome, textFieldIsFocused: $textFieldIsFocused)
-                            // END: Text Field
                         }
                         .frame(width: 180, height: 80)
                     }
@@ -163,34 +152,24 @@ struct AddMoodView: View {
                     ZStack {
                         RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
                             .position(self.originalPos)
-                        
                         GeometryReader { geometry in
                                 ZStack(alignment: .center) {
-                                    Button(action: self.handleAddEmotion) {
-                                        Text("Add today's emotion")
-                                            .opacity(isAnimating ? 0 : 1)
-                                            .animation(isAnimating ? .none : Animation
-                                                        .easeInOut(duration: 0.2)
-                                                        .delay(0.5)
-                                            )
-                                    }.buttonStyle(MomoButton(w: showHome ? 230 : buttonSize, h: showHome ? 60 : buttonSize))
-                                    .animation(isDragging ? .default : Animation
-                                                .spring(response: 0.7, dampingFraction: 0.5)
-                                                .delay(isAnimating ? (isResetting ? 0 : 0.2) : 0)
-                                    )
-                                    CircleRing(size: $buttonSize, shiftColors: $isAnimating)
+                                    AddEmotionButton(showHome: $showHome, isAnimating: $isAnimating, buttonSize: $buttonSize, action: self.handleAddEmotion)
+                                        .animation(isDragging ? .default : Animation
+                                                    .bounce()
+                                                    .delay(if: isAnimating, (isResetting ? 0 : 0.2))
+                                        )
+                                    ColorRing(size: $buttonSize, shiftColors: $isAnimating)
                                         .blur(radius: isAnimating ? 0 : 2)
                                         .opacity(isAnimating ? 1 : 0)
                                         .scaleEffect(isAnimating ? 1 : 1.1)
-                                        .animation(isDragging ? .default : Animation
-                                                    .spring(response: 0.7, dampingFraction: 0.5)
-                                                    .delay(isAnimating ? (isResetting ? 0 : 1) : 0)
+                                        .animation(isDragging ? .default : !isAnimating ? .default : Animation
+                                                    .bounce()
+                                                    .delay(if: isAnimating, (isResetting ? 0 : 0.6))
                                         )
-                                    Button(action: self.handleSeeEntries) {
-                                        Text("See all entries").underline()
-                                    }.buttonStyle(MomoLink())
-                                    .offset(y: 60)
-                                    .modifier(SlideOut(showHome: $showHome))
+                                    SeeEntriesButton(action: self.handleSeeEntries)
+                                        .offset(y: 60)
+                                        .modifier(SlideOut(showHome: $showHome))
                                 }
                                 .position(self.location ?? CGPoint(x: geometry.size.width / 2, y: buttonSize / 2))
                                 .highPriorityGesture(showHome ? nil : simpleDrag.simultaneously(with: fingerDrag))
@@ -208,12 +187,16 @@ struct AddMoodView: View {
                     }
                     .padding(.top, 64)
                 }
-                // END: Entire View
+                // END: - Main View
             }
         }
-        .onChange(of: showHome) { value in
+        .onChange(of: showHome) { _ in
             self.showButtonText.toggle()
             self.isAnimating.toggle()
+            UIApplication.shared.endEditing()
+        }
+        .onChange(of: text) { _ in
+            self.nextIsActive = text.isEmpty ? false : true
         }
         .onChange(of: degrees) { value in
             switch value {
@@ -243,6 +226,75 @@ struct AddMoodView: View {
         print("Next...")
     }
     
+}
+
+// MARK: - Views
+
+struct EmotionTextField: View {
+    @Binding var text: String
+    @Binding var textFieldIsFocused: Bool
+    var body: some View {
+        ZStack(alignment: .top) {
+            Text("My day in a word")
+                .momoText(opacity: text.isEmpty ? 0.6 : 0)
+            TextField("", text: $text, onEditingChanged: { editingChanged in
+                textFieldIsFocused = editingChanged ? true : false
+                print(textFieldIsFocused ? "focused" : "not focused")
+            }, onCommit: {
+                print(text)
+            }).textFieldStyle(EmotionTextFieldStyle())
+            .onReceive(text.publisher.collect()) { characters in
+                self.text = String(text.prefix(20))
+            }
+        }
+    }
+}
+
+struct BackButton: View {
+    var action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: "chevron.backward")
+                .momoText()
+        }
+    }
+}
+
+struct NextButton: View {
+    var action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text("Next")
+                Image(systemName: "arrow.right")
+            }
+        }.buttonStyle(MomoButtonStyle(w: 90, h: 34))
+    }
+}
+
+struct AddEmotionButton: View {
+    @Binding var showHome: Bool
+    @Binding var isAnimating: Bool
+    @Binding var buttonSize: CGFloat
+    var action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            Text("Add today's emotion")
+                .opacity(isAnimating ? 0 : 1)
+                .animation(isAnimating ? .none : Animation
+                            .ease().delay(0.5)
+                )
+        }.buttonStyle(MomoButtonStyle(w: showHome ? 230 : buttonSize, h: showHome ? 60 : buttonSize))
+    }
+}
+
+struct SeeEntriesButton: View {
+    var action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            Text("See all entries").underline()
+        }.buttonStyle(MomoTextLinkStyle())
+    }
 }
 
 // MARK: - Previews

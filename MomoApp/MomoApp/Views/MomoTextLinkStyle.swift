@@ -10,8 +10,8 @@ import SwiftUI
 struct MomoTextLinkStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundColor(Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)).opacity(
-                                configuration.isPressed ? 0.5 : 1
+            .foregroundColor(Color.momo.opacity(
+                                configuration.isPressed ? pressedOpacity : 1
             ))
             .linkText()
     }

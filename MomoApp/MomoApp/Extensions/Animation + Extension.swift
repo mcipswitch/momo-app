@@ -15,4 +15,16 @@ extension Animation {
             return self
         }
     }
+    
+    func delay(if expression: Bool, _ delay: Double) -> Animation {
+        return self.delay(expression ? delay : 0)
+    }
+    
+    // MARK: - Custom
+    public static func bounce() -> Animation {
+        return self.spring(response: 0.7, dampingFraction: 0.5)
+    }
+    public static func ease() -> Animation {
+        return self.easeInOut(duration: 0.2)
+    }
 }

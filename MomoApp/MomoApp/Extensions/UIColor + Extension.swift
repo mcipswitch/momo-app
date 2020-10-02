@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 extension UIColor {
     static func fromHexString(_ hexString: String, alpha: CGFloat = 1.0) -> UIColor {
@@ -16,4 +17,8 @@ extension UIColor {
         }
         return UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
     }
+}
+
+extension Color {
+    public static let momo = Color(#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1))
 }
