@@ -131,7 +131,7 @@ struct AddMoodView: View {
                     }
                     
                     ZStack {
-                        BlobView(frameSize: 250, pct: $pct)
+                        BlobView(pct: $pct, frameSize: 250)
                         VStack {
                             Text("Pct: \(pct)")
                             Text("Original Pos: x:\(Int(originalPos.x)), y:\(Int(originalPos.y))")
@@ -164,10 +164,6 @@ struct AddMoodView: View {
                                                     .bounce()
                                                     .delay(if: isAnimating, (isResetting ? 0 : 0.6))
                                         )
-                                    
-                                    
-                                    
-                                    
                                     SeeEntriesButton(action: self.handleSeeEntries)
                                         .offset(y: 60)
                                         .modifier(SlideOut(showHome: $showHome))

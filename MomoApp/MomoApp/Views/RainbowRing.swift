@@ -12,13 +12,12 @@ struct RainbowRing: View {
     @Binding var degrees: Double
     
     var body: some View {
-        let spectrum = Gradient(colors: [Color.momo, Color.momoPurple, Color.momoOrange, Color.momo])
-        let conic = AngularGradient(gradient: spectrum,
+        let gradient = Gradient(colors: [Color.momo, Color.momoPurple, Color.momoOrange, Color.momo])
+        let ring = AngularGradient(gradient: gradient,
                                     center: .center,
                                     angle: .degrees(-90))
-        
         Circle()
-            .stroke(conic, lineWidth: 50)
+            .stroke(ring, lineWidth: 50)
             .opacity(isActive ? 1 : 0)
             .animation(Animation
                         .easeInOut(duration: 1.5)
@@ -26,7 +25,7 @@ struct RainbowRing: View {
             .mask(
                 Circle()
                     .trim(from: 0.0, to: 1/3)
-                    .stroke(conic, lineWidth: 40)
+                    .stroke(ring, lineWidth: 40)
                     .rotationEffect(Angle(degrees: 210))
                     .rotationEffect(Angle(degrees: degrees))
             )

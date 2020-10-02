@@ -223,9 +223,9 @@
 				938E537024E983F3002653F0 /* UIColor + Extension.swift */,
 				937615852511D22300AEF59C /* CGPoint + Extension.swift */,
 				93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */,
-				937615872512527100AEF59C /* UIScreen + Extension.swift */,
 				9301058F2513F8A1007F0E7A /* Date + Extensions.swift */,
 				93EB5C602527891900087D0B /* UIApplication + Extension.swift */,
+				937615872512527100AEF59C /* UIScreen + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

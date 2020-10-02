@@ -15,7 +15,83 @@
  */
 
 import SwiftUI
-import Combine
+
+struct BlobView: View {
+    @Binding var pct: CGFloat
+    @State var percentage: CGFloat = 0
+    @State var firstHalf = true
+    @State var isAnimating = false
+    let frameSize: CGFloat
+    let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
+    var duration: Double = 1
+    
+    var body: some View {
+        ZStack {
+            // Blob: Shadow Layer
+            BlobShape(bezier: .blob3, pathBounds: pathBounds)
+                .fill(Color.clear)
+                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
+                .modifier(BlobEffect(
+                    skewValue: isAnimating ? 2 : 0
+                ))
+                // Skew Effect
+                .animation(Animation
+                            .easeInOut(duration: duration)
+                            .repeat(while: isAnimating)
+                )
+                // Breathe Effect
+                .scaleEffect(isAnimating ? 1.05 : 1)
+                .animation(Animation
+                            .breathe()
+                            .repeat(while: isAnimating)
+                )
+            // Blob: Gradient Layer
+            ZStack {
+                Rectangle()
+                    .modifier(AnimatableGradient(from: UIColor.gradientMomo, to: UIColor.gradientOrange, pct: pct, startRadius: 100, endRadius: pathBounds.width * 1.3)) // 120 * 1.5
+            }
+            .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
+            .mask(
+                BlobShape(bezier: .blob3, pathBounds: pathBounds)
+                    .modifier(BlobEffect(
+                        skewValue: isAnimating ? 2 : 0
+                    ))
+                    // Skew Effect
+                    .animation(Animation
+                                .easeInOut(duration: duration)
+                                .repeat(while: isAnimating)
+                    )
+                    // Breathe Effect
+                    .scaleEffect(isAnimating ? 1.05 : 1)
+                    .animation(Animation
+                                .breathe()
+                                .repeat(while: isAnimating)
+                    )
+                    // Rotate Effect
+                    .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
+                    .animation(Animation
+                                .linear(duration: 50)
+                                .repeatForever(autoreverses: false)
+                    )
+            )
+        }
+        .frame(width: frameSize, height: frameSize * (pathBounds.width / pathBounds.height))
+        .onAppear {
+            isAnimating = true
+        }
+//        .onChange(of: self.pct) { value in
+//            if value <= 0.5 {
+//                self.firstHalf = true
+//                self.percentage = pct * 2
+//            } else {
+//                self.firstHalf = false
+//                self.percentage = pct * 2 - 1
+//            }
+//        }
+    }
+}
+
+// MARK: - Blob Shape + Effect
 
 struct BlobEffect: GeometryEffect {
     var skewValue: CGFloat
@@ -47,99 +123,9 @@ struct BlobEffect: GeometryEffect {
     }
 }
 
-struct BlobView: View {
-    @State var isAnimating = false
-    
-    let frameSize: CGFloat
-    let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
-    var duration: Double = 1
-    
-    @Binding var pct: CGFloat
-    @State var percentage: CGFloat = 0
-    @State var firstHalf = true
-    
-    let gradient1: [UIColor] = [#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1), #colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1), #colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1)]
-    //let gradient2: [UIColor] = [#colorLiteral(red: 0.8352941176, green: 1, blue: 0.8196078431, alpha: 1), #colorLiteral(red: 0.7411764706, green: 1, blue: 0.5411764706, alpha: 1), #colorLiteral(red: 0.4823529412, green: 0.8156862745, blue: 0.2039215686, alpha: 1)]
-    let gradient2: [UIColor] = [#colorLiteral(red: 1, green: 0.9019607843, blue: 0.8196078431, alpha: 1), #colorLiteral(red: 1, green: 0.6705882353, blue: 0.5411764706, alpha: 1), #colorLiteral(red: 0.9843137255, green: 0.431372549, blue: 0.4588235294, alpha: 1)]
-    let gradient3: [UIColor] = [#colorLiteral(red: 0.9921568627, green: 0.9960784314, blue: 0.8, alpha: 1), #colorLiteral(red: 0.9960784314, green: 0.4745098039, blue: 0.6078431373, alpha: 1), #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.2862745098, alpha: 1)]
-    
-    var body: some View {
-        ZStack {
-            // Blob: Shadow Layer
-            BlobShape(bezier: .blob3, pathBounds: pathBounds)
-                .fill(Color.clear)
-                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
-                .modifier(BlobEffect(
-                    skewValue: isAnimating ? 2 : 0
-                ))
-                // Skew Effect
-                .animation(Animation
-                            .easeInOut(duration: duration)
-                            .repeat(while: isAnimating)
-                )
-                // Breathe Effect
-                .scaleEffect(isAnimating ? 1.05 : 1)
-                .animation(Animation
-                            .timingCurve(0.4, 0, 0.4, 1, duration: 4)
-                            .repeat(while: isAnimating)
-                )
-            // Blob: Gradient Layer
-            ZStack {
-                Rectangle()
-                    .modifier(AnimatableGradient(from: gradient1, to: gradient2, pct: pct, startRadius: 100, endRadius: pathBounds.width * 1.3)) // 120 * 1.5
-            }
-            .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
-            .mask(
-                BlobShape(bezier: .blob3, pathBounds: pathBounds)
-                    .modifier(BlobEffect(
-                        skewValue: isAnimating ? 2 : 0
-                    ))
-                    // Skew Effect
-                    .animation(Animation
-                                .easeInOut(duration: duration)
-                                .repeat(while: isAnimating)
-                    )
-                    // Breathe Effect
-                    .scaleEffect(isAnimating ? 1.05 : 1)
-                    .animation(Animation
-                                .timingCurve(0.4, 0, 0.4, 1, duration: 4)
-                                .repeat(while: isAnimating)
-                    )
-                    // Rotate Effect
-                    .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-                    .animation(Animation
-                                .linear(duration: 50)
-                                .repeatForever(autoreverses: false)
-                    )
-            )
-            
-//            VStack {
-//                Text("\(percentage)")
-//            }
-//            .padding(.bottom, 50)
-        }
-        .frame(width: frameSize, height: frameSize * (pathBounds.width / pathBounds.height))
-        .onAppear {
-            isAnimating = true
-        }
-//        .onChange(of: self.pct) { value in
-//            if value <= 0.5 {
-//                self.firstHalf = true
-//                self.percentage = pct * 2
-//            } else {
-//                self.firstHalf = false
-//                self.percentage = pct * 2 - 1
-//            }
-//        }
-    }
-}
-
-// MARK: - Blob Shape
-
 struct BlobShape: Shape {
     let bezier: UIBezierPath
     let pathBounds: CGRect
-    
     func path(in rect: CGRect) -> Path {
         let centerPoint = CGPoint(x: rect.midX, y: rect.midY)
         
@@ -159,31 +145,3 @@ struct BlobShape: Shape {
         return path.applying(position)
     }
 }
-
-// MARK: - Previews
-
-struct Blob_Previews: PreviewProvider {
-    static var previews: some View {
-        BlobView(frameSize: 250, pct: .constant(0.1))
-    }
-}
-
-
-
-
-
-
-
-
-
-//    var speedMin: Double = 1
-//    var speedMax: Double = 24
-//    @State var speed: Double = 1
-//
-//    var skewValueMin: CGFloat = 2
-//    var skewValueMax: CGFloat = 8
-//    @State var skewValue: CGFloat = 0
-//
-//    var scaleMin: CGFloat = 1
-//    var scaleMax: CGFloat = 1.05
-//    @State var scaleFactor: CGFloat = 1

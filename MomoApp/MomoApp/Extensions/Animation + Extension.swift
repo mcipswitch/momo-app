@@ -28,4 +28,7 @@ extension Animation {
     public static func ease() -> Animation {
         return self.easeInOut(duration: 0.2)
     }
+    public static func breathe() -> Animation {
+        return self.timingCurve(0.4, 0, 0.4, 1, duration: 4)
+    }
 }
