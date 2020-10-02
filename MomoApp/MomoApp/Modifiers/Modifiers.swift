@@ -52,7 +52,8 @@ struct SlideIn: ViewModifier {
             .opacity(showHome ? 0 : 1)
             .animation(Animation
                         .easeInOut(duration: 0.2)
-                        .delay(showHome ? 0 : (noDelay ? 0 : 0.5))
+                        .delay(showHome ? 0 : 0.5)
+                        //.delay(showHome ? 0 : (noDelay ? 0 : 0.5))
             )
     }
 }
