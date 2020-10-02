@@ -14,6 +14,6 @@ struct EmotionTextFieldStyle: TextFieldStyle {
             .autocapitalization(.none)
             .disableAutocorrection(true)
             .accentColor(Color.momo)
-            .minimumScaleFactor(0.7)
+            .minimumScaleFactor(0.8)
     }
 }

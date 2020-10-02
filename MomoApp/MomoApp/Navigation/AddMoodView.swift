@@ -156,7 +156,7 @@ struct AddMoodView: View {
                                                     .bounce()
                                                     .delay(if: isAnimating, (isResetting ? 0 : 0.2))
                                         )
-                                    ColorRing(size: $buttonSize, shiftColors: $isAnimating)
+                                    ColorRing(size: $buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
                                         .blur(radius: isAnimating ? 0 : 2)
                                         .opacity(isAnimating ? 1 : 0)
                                         .scaleEffect(isAnimating ? 1 : 1.1)
@@ -164,13 +164,16 @@ struct AddMoodView: View {
                                                     .bounce()
                                                     .delay(if: isAnimating, (isResetting ? 0 : 0.6))
                                         )
+                                    
+                                    
+                                    
+                                    
                                     SeeEntriesButton(action: self.handleSeeEntries)
                                         .offset(y: 60)
                                         .modifier(SlideOut(showHome: $showHome))
                                 }
                                 .position(self.location ?? CGPoint(x: geometry.size.width / 2, y: buttonSize / 2))
                                 .highPriorityGesture(showHome ? nil : simpleDrag.simultaneously(with: fingerDrag))
-                                .disabled(isResetting)
                             if let fingerLocation = fingerLocation {
                                 Circle()
                                     .stroke(Color.red, lineWidth: 2)
@@ -225,7 +228,6 @@ struct AddMoodView: View {
 }
 
 // MARK: - Views
-
 struct EmotionTextField: View {
     @Binding var text: String
     @Binding var textFieldIsFocused: Bool

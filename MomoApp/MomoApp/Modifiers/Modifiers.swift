@@ -14,7 +14,7 @@ struct MomoText: ViewModifier {
             .font(.custom("DMSans-Bold", size: 22))
             .foregroundColor(Color.white.opacity(opacity))
             .multilineTextAlignment(.center)
-            .lineSpacing(4)
+            //.lineSpacing(4)
     }
 }
 
