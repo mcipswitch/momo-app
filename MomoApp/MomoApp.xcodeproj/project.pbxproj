@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9301058F2513F8A1007F0E7A /* Date + Extensions.swift */; };
 		930105922514E0B9007F0E7A /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930105912514E0B9007F0E7A /* Modifiers.swift */; };
+		930ABB6F254A32E00050C1C4 /* JournalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */; };
 		931476A624F574980031D913 /* EmotionTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931476A524F574980031D913 /* EmotionTextFieldStyle.swift */; };
 		93159F4E251E3FAB004A99A4 /* MomoTextLinkStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */; };
 		9328BC2D252757E6005C893A /* ButtonStyle + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9328BC2C252757E6005C893A /* ButtonStyle + Extension.swift */; };
@@ -57,6 +58,7 @@
 /* Begin PBXFileReference section */
 		9301058F2513F8A1007F0E7A /* Date + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extensions.swift"; sourceTree = "<group>"; };
 		930105912514E0B9007F0E7A /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
+		930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalGraphView.swift; sourceTree = "<group>"; };
 		931476A524F574980031D913 /* EmotionTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionTextFieldStyle.swift; sourceTree = "<group>"; };
 		93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoTextLinkStyle.swift; sourceTree = "<group>"; };
 		9328BC2C252757E6005C893A /* ButtonStyle + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonStyle + Extension.swift"; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 		9305EBF324EB69DB00E1DB0F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */,
 				93EF7982254A14700062571F /* Navigation */,
 				93E9A337251D29900095D48C /* ColorRing.swift */,
 				938BBD0D2527B59000759092 /* TextFieldBorder.swift */,
@@ -367,6 +370,7 @@
 				936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */,
 				93EF797D254A07F20062571F /* MomoJournalView.swift in Sources */,
 				93388BE0250FAAA700766633 /* ForceButton.swift in Sources */,
+				930ABB6F254A32E00050C1C4 /* JournalGraphView.swift in Sources */,
 				93EF7988254A14D30062571F /* ListViewButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

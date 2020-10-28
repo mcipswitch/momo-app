@@ -18,13 +18,14 @@ struct MomoJournalView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 // Navigation Buttons
-                #warning("Fix center spacing as buttons take up diff size")
-                HStack {
-                    BackButton(action: self.handleBack)
-                    Spacer()
+                ZStack {
+                    #warning("Fix center spacing as buttons take up diff size")
+                    HStack {
+                        BackButton(action: self.handleBack)
+                        Spacer()
+                        ListViewButton(action: self.handleBack)
+                    }
                     CalendarMonthButton(action: self.handleMonthSelection)
-                    Spacer()
-                    ListViewButton(action: self.handleBack)
                 }
                 .padding(16)
             }
