@@ -21,6 +21,7 @@ extension Animation {
     }
     
     // MARK: - Custom
+    
     public static func bounce() -> Animation {
         //return self.spring(response: 0.7, dampingFraction: 0.5)
         return self.interpolatingSpring(stiffness: 180, damping: 16)

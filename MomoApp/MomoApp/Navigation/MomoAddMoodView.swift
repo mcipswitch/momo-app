@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-struct AddMoodView: View {
+struct MomoAddMoodView: View {
     //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     
     // MARK: - Properties and Variables
@@ -96,7 +96,7 @@ struct AddMoodView: View {
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
                 
-                // START: - Navigation Buttons
+                // Navigation Buttons
                 HStack {
                     BackButton(action: self.handleBack)
                     Spacer()
@@ -296,6 +296,6 @@ struct SeeEntriesButton: View {
 
 struct AddMoodProfile_Previews: PreviewProvider {
     static var previews: some View {
-        AddMoodView()
+        MomoAddMoodView()
     }
 }

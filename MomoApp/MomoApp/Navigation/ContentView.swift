@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        AddMoodView()
+        MomoAddMoodView()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        AddMoodView()
+        MomoAddMoodView()
     }
 }

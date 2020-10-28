@@ -79,15 +79,6 @@ struct BlobView: View {
         .onAppear {
             isAnimating = true
         }
-//        .onChange(of: self.pct) { value in
-//            if value <= 0.5 {
-//                self.firstHalf = true
-//                self.percentage = pct * 2
-//            } else {
-//                self.firstHalf = false
-//                self.percentage = pct * 2 - 1
-//            }
-//        }
     }
 }
 
@@ -95,24 +86,22 @@ struct BlobView: View {
 
 struct BlobEffect: GeometryEffect {
     var skewValue: CGFloat
-    //private var a: CGFloat { CGFloat(Angle(degrees: angle).radians) }
-    
     var animatableData: CGFloat {
         get { skewValue }
         set { skewValue = newValue }
     }
     
     func effectValue(size: CGSize) -> ProjectionTransform {
-        //var skew: CGFloat { cos(skewValue + .pi / 2) * 0.1 }
+        //var skew: CGFloat { cos(skewValue + .pi / 2) * 1 }
         var skew: CGFloat { skewValue * 0.03 }
         
         // m34: sets the perspective parameter
         var transform3d = CATransform3DIdentity;
         transform3d.m34 = -1 / max(size.width, size.height)
         // Transform: Rotate
-        //transform3d = CATransform3DRotate(transform3d, a, 0, 0, 1)
+        // transform3d = CATransform3DRotate(transform3d, a, 0, 0, 1)
         // Transform: Scale
-        //transform3d = CATransform3DScale(transform3d, scaleFactor, 1, 0)
+        // transform3d = CATransform3DScale(transform3d, scaleFactor, 1, 0)
         // Transform: Shifts anchor point of rotation (from top leading corner to centrer)
         transform3d = CATransform3DTranslate(transform3d, -size.width/2.0, -size.height/2.0, 0)
         // Transform: Skew
