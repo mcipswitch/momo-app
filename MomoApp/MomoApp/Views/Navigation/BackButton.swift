@@ -13,6 +13,7 @@ struct BackButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: "chevron.backward")
-        }.buttonStyle(ActionButtonStyle())
+        }
+        .momoTextRegular()
     }
 }

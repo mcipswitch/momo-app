@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MomoJournalView: View {
-    
     var body: some View {
         ZStack {
             GeometryReader { geometry in
@@ -19,8 +18,11 @@ struct MomoJournalView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 // Navigation Buttons
+                #warning("Fix center spacing as buttons take up diff size")
                 HStack {
                     BackButton(action: self.handleBack)
+                    Spacer()
+                    CalendarMonthButton(action: self.handleMonthSelection)
                     Spacer()
                     ListViewButton(action: self.handleBack)
                 }
@@ -33,6 +35,10 @@ struct MomoJournalView: View {
     
     private func handleBack() {
         print("Back...")
+    }
+    
+    private func handleMonthSelection() {
+        print("Month...")
     }
 }
 

@@ -11,7 +11,7 @@ struct MomoTextLinkStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(Color.momo.opacity(
-                                configuration.isPressed ? pressedOpacity : 1
+                configuration.isPressed ? pressedOpacity : 1
             ))
             .linkText()
     }

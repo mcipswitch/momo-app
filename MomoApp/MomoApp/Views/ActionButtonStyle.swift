@@ -13,6 +13,6 @@ struct ActionButtonStyle: ButtonStyle {
             .foregroundColor(Color.white.opacity(
                 configuration.isPressed ? pressedOpacity : 1
             ))
-            .momoText()
+            .momoTextRegular()
     }
 }

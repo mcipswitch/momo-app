@@ -18,11 +18,31 @@ struct MomoText: ViewModifier {
     }
 }
 
+struct MomoTextRegular: ViewModifier {
+    var opacity: Double
+    func body(content: Content) -> some View {
+        content
+            .font(.custom("DMSans-Medium", size: 22))
+            .foregroundColor(Color.white.opacity(opacity))
+            .multilineTextAlignment(.center)
+    }
+}
+
+struct CalendarMonthText: ViewModifier {
+    var size: CGFloat
+    func body(content: Content) -> some View {
+        content
+            .font(.custom("DMSans-Bold", size: size))
+            .foregroundColor(.white)
+    }
+}
+
 struct DateText: ViewModifier {
+    var opacity: Double
     func body(content: Content) -> some View {
         content
             .font(.custom("DMSans-Medium", size: 16))
-            .foregroundColor(Color.white.opacity(0.6))
+            .foregroundColor(Color.white.opacity(opacity))
     }
 }
 
@@ -76,8 +96,14 @@ extension View {
     func momoText(opacity: Double = 1) -> some View {
         return self.modifier(MomoText(opacity: opacity))
     }
-    func dateText() -> some View {
-        return self.modifier(DateText())
+    func momoTextRegular(opacity: Double = 1) -> some View {
+        return self.modifier(MomoTextRegular(opacity: opacity))
+    }
+    func calendarMonthText(size: CGFloat = 16) -> some View {
+        return self.modifier(CalendarMonthText(size: size))
+    }
+    func dateText(opacity: Double = 1) -> some View {
+        return self.modifier(DateText(opacity: opacity))
     }
     func linkText() -> some View {
         return self.modifier(LinkText())

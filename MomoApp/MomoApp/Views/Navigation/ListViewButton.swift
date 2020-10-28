@@ -13,6 +13,7 @@ struct ListViewButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: "list.bullet")
-        }.buttonStyle(ActionButtonStyle())
+        }
+        .momoTextRegular()
     }
 }
