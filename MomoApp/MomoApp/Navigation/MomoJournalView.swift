@@ -17,8 +17,22 @@ struct MomoJournalView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: geometry.size.width)
                     .edgesIgnoringSafeArea(.all)
+                
+                // Navigation Buttons
+                HStack {
+                    BackButton(action: self.handleBack)
+                    Spacer()
+                    ListViewButton(action: self.handleBack)
+                }
+                .padding(16)
             }
         }
+    }
+    
+    // MARK: - Internal Methods
+    
+    private func handleBack() {
+        print("Back...")
     }
 }
 

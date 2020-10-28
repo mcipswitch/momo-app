@@ -203,6 +203,7 @@ struct MomoAddMoodView: View {
     }
     
     // MARK: - Internal Methods
+    
     private func handleAddEmotion() {
         if showHome { showHome.toggle() }
     }
@@ -224,6 +225,7 @@ struct MomoAddMoodView: View {
 }
 
 // MARK: - Views
+
 struct EmotionTextField: View {
     @Binding var text: String
     @Binding var textFieldIsFocused: Bool
@@ -241,29 +243,6 @@ struct EmotionTextField: View {
                 self.text = String(text.prefix(20))
             }
         }
-    }
-}
-
-struct BackButton: View {
-    var action: () -> Void
-    var body: some View {
-        Button(action: action) {
-            Image(systemName: "chevron.backward")
-        }.buttonStyle(ActionButtonStyle())
-    }
-}
-
-struct NextButton: View {
-    @Binding var isActive: Bool
-    var action: () -> Void
-    var body: some View {
-        Button(action: action) {
-            HStack {
-                Text("Next")
-                Image(systemName: "arrow.right")
-            }
-        }.buttonStyle(MomoButtonStyle(w: 90, h: 34, isActive: isActive))
-        .disabled(!isActive)
     }
 }
 

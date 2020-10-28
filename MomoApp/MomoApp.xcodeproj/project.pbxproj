@@ -46,6 +46,9 @@
 		93E9A338251D29900095D48C /* ColorRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E9A337251D29900095D48C /* ColorRing.swift */; };
 		93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EB5C602527891900087D0B /* UIApplication + Extension.swift */; };
 		93EF797D254A07F20062571F /* MomoJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF797C254A07F20062571F /* MomoJournalView.swift */; };
+		93EF7980254A146A0062571F /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF797F254A146A0062571F /* BackButton.swift */; };
+		93EF7985254A14BE0062571F /* NextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF7984254A14BE0062571F /* NextButton.swift */; };
+		93EF7988254A14D30062571F /* ListViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF7987254A14D30062571F /* ListViewButton.swift */; };
 		93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F075FF24F1D9BC000B6449 /* TextLimiter.swift */; };
 		93FAEB9B2514FCDC00C057AC /* MomoAddMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FAEB9A2514FCDB00C057AC /* MomoAddMoodView.swift */; };
 /* End PBXBuildFile section */
@@ -92,6 +95,9 @@
 		93E9A337251D29900095D48C /* ColorRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorRing.swift; sourceTree = "<group>"; };
 		93EB5C602527891900087D0B /* UIApplication + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + Extension.swift"; sourceTree = "<group>"; };
 		93EF797C254A07F20062571F /* MomoJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoJournalView.swift; sourceTree = "<group>"; };
+		93EF797F254A146A0062571F /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		93EF7984254A14BE0062571F /* NextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextButton.swift; sourceTree = "<group>"; };
+		93EF7987254A14D30062571F /* ListViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewButton.swift; sourceTree = "<group>"; };
 		93F075FF24F1D9BC000B6449 /* TextLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLimiter.swift; sourceTree = "<group>"; };
 		93FAEB9A2514FCDB00C057AC /* MomoAddMoodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomoAddMoodView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +124,7 @@
 		9305EBF324EB69DB00E1DB0F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				93EF7982254A14700062571F /* Navigation */,
 				93E9A337251D29900095D48C /* ColorRing.swift */,
 				938BBD0D2527B59000759092 /* TextFieldBorder.swift */,
 				936315392513A6B6005E20EA /* RainbowRing.swift */,
@@ -236,6 +243,16 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		93EF7982254A14700062571F /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				93EF797F254A146A0062571F /* BackButton.swift */,
+				93EF7984254A14BE0062571F /* NextButton.swift */,
+				93EF7987254A14D30062571F /* ListViewButton.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -314,6 +331,7 @@
 			files = (
 				9376158C2512580300AEF59C /* CircleButton.swift in Sources */,
 				930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */,
+				93EF7980254A146A0062571F /* BackButton.swift in Sources */,
 				93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */,
 				93E9A338251D29900095D48C /* ColorRing.swift in Sources */,
 				93A65BFC250FDF1600BF756A /* CustomSlider.swift in Sources */,
@@ -333,6 +351,7 @@
 				9376158E2512581A00AEF59C /* MomoButtonStyle.swift in Sources */,
 				93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */,
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,
+				93EF7985254A14BE0062571F /* NextButton.swift in Sources */,
 				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
 				93159F4E251E3FAB004A99A4 /* MomoTextLinkStyle.swift in Sources */,
 				93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */,
@@ -344,6 +363,7 @@
 				936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */,
 				93EF797D254A07F20062571F /* MomoJournalView.swift in Sources */,
 				93388BE0250FAAA700766633 /* ForceButton.swift in Sources */,
+				93EF7988254A14D30062571F /* ListViewButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
