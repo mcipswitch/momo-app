@@ -19,7 +19,6 @@ struct MomoJournalView: View {
                 
                 // Navigation Buttons
                 ZStack {
-                    #warning("Fix center spacing as buttons take up diff size")
                     HStack {
                         BackButton(action: self.handleBack)
                         Spacer()
@@ -28,6 +27,10 @@ struct MomoJournalView: View {
                     CalendarMonthButton(action: self.handleMonthSelection)
                 }
                 .padding(16)
+                
+                VStack(spacing: 48) {
+                    JournalGraphView()
+                }
             }
         }
     }

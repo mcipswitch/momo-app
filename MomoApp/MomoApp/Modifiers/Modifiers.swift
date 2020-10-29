@@ -19,10 +19,11 @@ struct MomoText: ViewModifier {
 }
 
 struct MomoTextRegular: ViewModifier {
+    var size: CGFloat
     var opacity: Double
     func body(content: Content) -> some View {
         content
-            .font(.custom("DMSans-Medium", size: 22))
+            .font(.custom("DMSans-Medium", size: size))
             .foregroundColor(Color.white.opacity(opacity))
             .multilineTextAlignment(.center)
     }
@@ -96,8 +97,8 @@ extension View {
     func momoText(opacity: Double = 1) -> some View {
         return self.modifier(MomoText(opacity: opacity))
     }
-    func momoTextRegular(opacity: Double = 1) -> some View {
-        return self.modifier(MomoTextRegular(opacity: opacity))
+    func momoTextRegular(size: CGFloat = 22, opacity: Double = 1) -> some View {
+        return self.modifier(MomoTextRegular(size: size, opacity: opacity))
     }
     func calendarMonthText(size: CGFloat = 16) -> some View {
         return self.modifier(CalendarMonthText(size: size))
