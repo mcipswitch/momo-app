@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct MomoJournalView: View {
+    @State var pct: CGFloat = 0.5
+    @State var word = "Sunflower"
+    
     var body: some View {
         ZStack {
             GeometryReader { geometry in
@@ -26,11 +29,22 @@ struct MomoJournalView: View {
                     }
                     CalendarMonthButton(action: self.handleMonthSelection)
                 }
-                .padding(16)
+                .padding()
                 
-                VStack(spacing: 48) {
+                // Main View
+                VStack(spacing: 36) {
                     JournalGraphView()
+                    VStack(spacing: 12) {
+                        Text(Date(), formatter: dateFormat)
+                            .dateText(opacity: 0.6)
+                            .padding(.top, 16)
+                        Text(word)
+                            .momoTextBold()
+                        BlobView(pct: $pct, frameSize: 250)
+                            .scaleEffect(0.60)
+                    }
                 }
+                .padding(.top, 32)
             }
         }
     }

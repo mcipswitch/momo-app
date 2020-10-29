@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct MomoText: ViewModifier {
+    var size: CGFloat
     var opacity: Double
     func body(content: Content) -> some View {
         content
-            .font(.custom("DMSans-Bold", size: 22))
+            .font(.custom("DMSans-Bold", size: size))
             .foregroundColor(Color.white.opacity(opacity))
             .multilineTextAlignment(.center)
             //.lineSpacing(4)
@@ -94,8 +95,8 @@ struct SlideOut: ViewModifier {
 
 // MARK: - View + Extensions
 extension View {
-    func momoText(opacity: Double = 1) -> some View {
-        return self.modifier(MomoText(opacity: opacity))
+    func momoTextBold(size: CGFloat = 22, opacity: Double = 1) -> some View {
+        return self.modifier(MomoText(size: size, opacity: opacity))
     }
     func momoTextRegular(size: CGFloat = 22, opacity: Double = 1) -> some View {
         return self.modifier(MomoTextRegular(size: size, opacity: opacity))

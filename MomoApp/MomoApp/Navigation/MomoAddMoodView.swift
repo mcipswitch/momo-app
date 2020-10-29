@@ -116,7 +116,7 @@ struct MomoAddMoodView: View {
                             .padding(.top, 16)
                         ZStack {
                             Text("Hi, how are you feeling today?")
-                                .momoText()
+                                .momoTextBold()
                                 .modifier(SlideOut(showHome: $showHome))
                             VStack(spacing: 6) {
                                 EmotionTextField(text: $text, textFieldIsFocused: $textFieldIsFocused)
@@ -232,7 +232,7 @@ struct EmotionTextField: View {
     var body: some View {
         ZStack(alignment: .center) {
             Text("My day in a word")
-                .momoText(opacity: text.isEmpty ? 0.6 : 0)
+                .momoTextBold(opacity: text.isEmpty ? 0.6 : 0)
             TextField("", text: $text, onEditingChanged: { editingChanged in
                 textFieldIsFocused = editingChanged ? true : false
                 print(textFieldIsFocused ? "focused" : "not focused")

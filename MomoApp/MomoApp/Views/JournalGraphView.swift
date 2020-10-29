@@ -18,9 +18,7 @@ struct JournalGraphView: View {
                     VStack {
                         GraphLine()
                         Text("\(num + startDate)")
-                            //.momoTextRegular(size: 14, opacity: 0.6)
-                            .font(.custom("DMSans-Medium", size: 14))
-                            .foregroundColor(Color.black.opacity(0.6))
+                            .momoTextBold(size: 14, opacity: 0.6)
                     }
                     .frame(width: 20)
                 }
@@ -36,7 +34,12 @@ struct GraphLine: View {
     var body: some View {
         Rectangle()
             .frame(width: 1)
-            .foregroundColor(.gray)
+            .foregroundColor(.clear)
+            .background(LinearGradient(
+                            gradient: Gradient(colors: [.gray, .clear]),
+                            startPoint: .bottom,
+                            endPoint: .top)
+            )
     }
 }
 

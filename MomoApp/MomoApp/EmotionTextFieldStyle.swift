@@ -10,7 +10,7 @@ import SwiftUI
 struct EmotionTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .momoText()
+            .momoTextBold()
             .autocapitalization(.none)
             .disableAutocorrection(true)
             .accentColor(Color.momo)
