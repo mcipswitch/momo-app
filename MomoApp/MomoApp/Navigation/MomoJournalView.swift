@@ -25,7 +25,7 @@ struct MomoJournalView: View {
                     HStack {
                         BackButton(action: self.handleBack)
                         Spacer()
-                        ListViewButton(action: self.handleBack)
+                        ListViewButton(action: self.handleListView)
                     }
                     CalendarMonthButton(action: self.handleMonthSelection)
                 }
@@ -44,7 +44,7 @@ struct MomoJournalView: View {
                             .scaleEffect(0.60)
                     }
                 }
-                .padding(.top, 32)
+                .padding(.top, 48)
             }
         }
     }
@@ -53,6 +53,10 @@ struct MomoJournalView: View {
     
     private func handleBack() {
         print("Back...")
+    }
+    
+    private func handleListView() {
+        print("List view...")
     }
     
     private func handleMonthSelection() {
