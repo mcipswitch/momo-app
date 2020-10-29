@@ -53,18 +53,8 @@ struct JournalGraphView: View {
                         }
                         .frame(width: 20)
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-                            GeometryReader { geometry in
-                                preferences.map {
-                                    Rectangle()
-                                        .fill(Color.white)
-                                        .frame(width: 2, height: geometry[$0].height)
-                                        .frame(
-                                            width: geometry.size.width,
-                                            height: geometry[$0].height,
-                                            alignment: .center
-                                        )
-                                }
-                            }
+                            SelectionLine(preferences: preferences)
+                                .animation(.easeInOut)
                         })
                     }
                 }
@@ -76,6 +66,30 @@ struct JournalGraphView: View {
 }
 
 // MARK: - Views
+
+struct SelectionLine: View {
+    let preferences: Anchor<CGRect>?
+    var body: some View {
+        GeometryReader { geometry in
+            preferences.map {
+                Rectangle()
+                    .fill(Color.momo)
+                    .frame(width: 2, height: geometry[$0].height)
+                    .frame(
+                        width: geometry.size.width,
+                        height: geometry[$0].height,
+                        alignment: .center
+                    )
+                    .overlay(
+                        Circle()
+                            .strokeBorder(Color.momo, lineWidth: 4)
+                            .frame(width: 18)
+                    )
+            }
+            
+        }
+    }
+}
 
 struct GraphLine: View {
     var body: some View {
