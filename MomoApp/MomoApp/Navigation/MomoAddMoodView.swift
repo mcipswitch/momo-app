@@ -110,7 +110,7 @@ struct MomoAddMoodView: View {
                 // START: - Main View
                 VStack(spacing: 48) {
                     VStack(spacing: 36) {
-                        Text(Date(), formatter: dateFormat)
+                        Text(Date(), formatter: DateFormatter.shortDate)
                             .dateText(opacity: 0.6)
                             .modifier(SlideOut(showHome: $showHome))
                             .padding(.top, 16)

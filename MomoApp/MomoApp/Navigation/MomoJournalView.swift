@@ -35,7 +35,7 @@ struct MomoJournalView: View {
                 VStack(spacing: 36) {
                     JournalGraphView(value: pct)
                     VStack(spacing: 12) {
-                        Text(Date(), formatter: dateFormat)
+                        Text(Date(), formatter: DateFormatter.shortDate)
                             .dateText(opacity: 0.6)
                             .padding(.top, 16)
                         Text(word)
