@@ -27,16 +27,22 @@ struct SelectionPreferenceKey: PreferenceKey {
 }
 
 struct JournalGraphView: View {
+    @State var value: CGFloat
     @State var graphType: GraphType = GraphType.week
     @State var activeDay = 0
     var startDate: Int = 5
+    
+    let date = Date()
+    
+    
+    let lastSevenDays = Date.getDates(forLastNDays: 7)
     
     var body: some View {
         let numOfLines = graphType.scale
         ZStack {
             GeometryReader { geometry in
                 HStack(spacing: (geometry.size.width - CGFloat(20 * graphType.scale)) / CGFloat(numOfLines - 1)) {
-                    ForEach(0..<numOfLines) { index in
+                    ForEach(0 ..< lastSevenDays.count) { index in
                         VStack {
                             GraphLine()
                                 .anchorPreference(
@@ -45,7 +51,7 @@ struct JournalGraphView: View {
                                     transform: { anchor in
                                         self.activeDay == index ? anchor : nil
                                     })
-                            Text("\(index + startDate)")
+                            Text("\(lastSevenDays[index])")
                                 .momoTextBold(size: 14, opacity: 0.6)
                                 .onTapGesture {
                                     self.activeDay = index
@@ -53,7 +59,7 @@ struct JournalGraphView: View {
                         }
                         .frame(width: 20)
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-                            SelectionLine(preferences: preferences)
+                            SelectionLine(value: $value, preferences: preferences)
                                 .animation(.easeInOut)
                         })
                     }
@@ -68,6 +74,7 @@ struct JournalGraphView: View {
 // MARK: - Views
 
 struct SelectionLine: View {
+    @Binding var value: CGFloat
     let preferences: Anchor<CGRect>?
     var body: some View {
         GeometryReader { geometry in
@@ -80,13 +87,12 @@ struct SelectionLine: View {
                         height: geometry[$0].height,
                         alignment: .center
                     )
-                    .overlay(
-                        Circle()
-                            .strokeBorder(Color.momo, lineWidth: 4)
-                            .frame(width: 18)
-                    )
+//                    .overlay(
+//                        Circle()
+//                            .strokeBorder(Color.momo, lineWidth: 4)
+//                            .frame(width: 18)
+//                    )
             }
-            
         }
     }
 }
@@ -108,6 +114,6 @@ struct GraphLine: View {
 
 struct JournalGraphView_Previews: PreviewProvider {
     static var previews: some View {
-        JournalGraphView()
+        JournalGraphView(value: CGFloat(0.5))
     }
 }

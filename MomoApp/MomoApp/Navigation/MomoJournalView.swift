@@ -33,7 +33,7 @@ struct MomoJournalView: View {
                 
                 // Main View
                 VStack(spacing: 36) {
-                    JournalGraphView()
+                    JournalGraphView(value: pct)
                     VStack(spacing: 12) {
                         Text(Date(), formatter: dateFormat)
                             .dateText(opacity: 0.6)

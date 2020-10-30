@@ -25,9 +25,7 @@
 		936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936C6CD525112E6A00650D4A /* AnimatableGradient.swift */; };
 		937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615852511D22300AEF59C /* CGPoint + Extension.swift */; };
 		937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615872512527100AEF59C /* UIScreen + Extension.swift */; };
-		9376158C2512580300AEF59C /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9376158B2512580300AEF59C /* CircleButton.swift */; };
 		9376158E2512581A00AEF59C /* MomoButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9376158D2512581A00AEF59C /* MomoButtonStyle.swift */; };
-		937688DD24F987E400CC0B10 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937688DC24F987E400CC0B10 /* Animator.swift */; };
 		937688E124F98E9500CC0B10 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937688E024F98E9500CC0B10 /* CustomView.swift */; };
 		9383FBD02514E48E00E38E95 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBC92514E48E00E38E95 /* DMSans-Regular.ttf */; };
 		9383FBD12514E48E00E38E95 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBCA2514E48E00E38E95 /* DMSans-Medium.ttf */; };
@@ -76,9 +74,7 @@
 		936C6CD525112E6A00650D4A /* AnimatableGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableGradient.swift; sourceTree = "<group>"; };
 		937615852511D22300AEF59C /* CGPoint + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint + Extension.swift"; sourceTree = "<group>"; };
 		937615872512527100AEF59C /* UIScreen + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen + Extension.swift"; sourceTree = "<group>"; };
-		9376158B2512580300AEF59C /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		9376158D2512581A00AEF59C /* MomoButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoButtonStyle.swift; sourceTree = "<group>"; };
-		937688DC24F987E400CC0B10 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		937688E024F98E9500CC0B10 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		9383FBC92514E48E00E38E95 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		9383FBCA2514E48E00E38E95 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
@@ -200,9 +196,7 @@
 		936C6CD425112E1B00650D4A /* Old */ = {
 			isa = PBXGroup;
 			children = (
-				9376158B2512580300AEF59C /* CircleButton.swift */,
 				935FD32E24EA2E23008568FA /* ArcShape.swift */,
-				937688DC24F987E400CC0B10 /* Animator.swift */,
 				93388BDF250FAAA700766633 /* ForceButton.swift */,
 				937688E024F98E9500CC0B10 /* CustomView.swift */,
 			);
@@ -335,7 +329,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9376158C2512580300AEF59C /* CircleButton.swift in Sources */,
 				930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */,
 				93EF7980254A146A0062571F /* BackButton.swift in Sources */,
 				93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */,
@@ -353,7 +346,6 @@
 				937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */,
 				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,
 				937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */,
-				937688DD24F987E400CC0B10 /* Animator.swift in Sources */,
 				938BBD102527BCF300759092 /* ActionButtonStyle.swift in Sources */,
 				9376158E2512581A00AEF59C /* MomoButtonStyle.swift in Sources */,
 				93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */,
