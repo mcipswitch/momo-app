@@ -5,6 +5,8 @@
 //  Created by Priscilla Ip on 2020-10-28.
 //
 
+// Inspired by: https://levelup.gitconnected.com/snap-to-item-scrolling-debccdcbb22f
+
 import SwiftUI
 
 enum GraphMode: Int {
@@ -18,52 +20,66 @@ struct JournalGraphView: View {
     let date = Date()
     
     
-    @State private var dragOffset = CGSize.zero
+    @State private var dragOffset: CGFloat = 0
     
     var body: some View {
         let days = date.getDates(forLastNDays: 7)
         
         ZStack {
             GeometryReader { geometry in
-                let defaultWidth: CGFloat = 24
-                let spacing: CGFloat = (geometry.size.width - (defaultWidth * CGFloat(days.count))) / CGFloat(days.count - 1)
+                let itemWidth: CGFloat = 25
+                let graphWidth: CGFloat = geometry.size.width
+                let spacing: CGFloat = (graphWidth - (itemWidth * CGFloat(days.count))) / CGFloat(days.count - 1)
+                
+                let itemSpacing: CGFloat = itemWidth + spacing
                 
                 HStack(spacing: spacing) {
-                    ForEach(0 ..< days.count) { day in
+                    ForEach(0 ..< days.count) { index in
                         VStack {
                             GraphLine()
                                 .anchorPreference(
                                     key: SelectionPreferenceKey.self,
                                     value: .bounds,
                                     transform: { anchor in
-                                        self.activeDay == day ? anchor : nil
+                                        self.activeDay == index ? anchor : nil
                                     })
-                            Text("\(days[day])")
+                            Text("\(days[index])")
                                 .momoTextBold(size: 14)
                                 .onTapGesture {
-                                    self.activeDay = day
+                                    self.activeDay = index
                                 }
                         }
-                        .frame(width: defaultWidth)
+                        .frame(width: itemWidth)
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(value: $value, preferences: preferences)
-                                .offset(x: dragOffset.width)
+                                .offset(x: dragOffset)
                                 .gesture(
                                     DragGesture()
                                         .onChanged { value in
-                                            self.dragOffset = value.translation
+                                            self.dragOffset = value.translation.width
                                         }
                                         .onEnded { value in
-                                            self.dragOffset = .zero
+                                            let indexShift = Int(round(dragOffset / itemSpacing))
+                                            self.activeDay += indexShift
+                                            self.dragOffset = 0
                                         }
                                 )
                         })
                         .animation(Animation.ease())
                     }
                 }
+                VStack {
+                    Text("Index: \(self.activeDay)")
+                    Text("Drag: \(self.dragOffset)")
+                    Text("\(itemSpacing)")
+                }.foregroundColor(.yellow)
             }
         }
         .padding()
+        .onAppear {
+            // As default, current day is active
+            self.activeDay = days.count - 1
+        }
     }
 }
 
@@ -77,7 +93,7 @@ struct SelectionLine: View {
             preferences.map {
                 RoundedRectangle(cornerRadius: 1)
                     .fill(Color.momo)
-                    .frame(width: 2, height: geometry[$0].height)
+                    .frame(width: 10, height: geometry[$0].height)
                     .frame(
                         width: geometry.size.width,
                         height: geometry[$0].height,
