@@ -11,7 +11,7 @@ struct MomoJournalView: View {
     @State var pct: CGFloat = 0.5
     @State var word = "Sunflower"
     
-    var body: some View {
+    var body: some View {    
         ZStack {
             GeometryReader { geometry in
                 Image("background")
@@ -60,6 +60,7 @@ struct MomoJournalView: View {
     }
     
     private func handleMonthSelection() {
+        // is there a cleaner way to write this?
         print("Month...")
     }
 }

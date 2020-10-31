@@ -29,7 +29,7 @@ extension Date {
         return dateFormatter.string(from: self)
     }
     
-    static func getDates(forLastNDays nDays: Int) -> [String] {
+    func getDates(forLastNDays nDays: Int) -> [String] {
         let calendar = Calendar.current
         let sevenDaysAgo = calendar.date(byAdding: .weekOfYear, value: -1, to: Date())!
         var date = calendar.startOfDay(for: sevenDaysAgo)
@@ -41,6 +41,12 @@ extension Date {
             arrDates.append(dateString)
         }
         return arrDates
+    }
+    
+    func getDaysInCurrentMonth(date: Date) -> Int {
+        let range = Calendar.current.range(of: .day, in: .month, for: date)!
+        let numOfDays = range.count
+        return numOfDays
     }
 }
     
