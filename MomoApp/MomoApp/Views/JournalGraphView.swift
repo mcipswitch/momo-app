@@ -20,6 +20,8 @@ struct JournalGraphView: View {
     let date = Date()
     
     
+    
+    @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
     
     var body: some View {
@@ -28,9 +30,8 @@ struct JournalGraphView: View {
         ZStack {
             GeometryReader { geometry in
                 let itemWidth: CGFloat = 25
-                let graphWidth: CGFloat = geometry.size.width
-                let spacing: CGFloat = (graphWidth - (itemWidth * CGFloat(days.count))) / CGFloat(days.count - 1)
-                
+                let screenWidth: CGFloat = geometry.size.width
+                let spacing: CGFloat = (screenWidth - (itemWidth * CGFloat(days.count))) / CGFloat(days.count - 1)
                 let itemSpacing: CGFloat = itemWidth + spacing
                 
                 HStack(spacing: spacing) {
@@ -45,34 +46,49 @@ struct JournalGraphView: View {
                                     })
                             Text("\(days[index])")
                                 .momoTextBold(size: 14)
-                                .onTapGesture {
-                                    self.activeDay = index
-                                }
                         }
                         .frame(width: itemWidth)
+                        
+                        #warning("Doesn't register on the whole 25 frame")
+                        .onTapGesture {
+                            self.activeDay = index
+                        }
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-                            SelectionLine(value: $value, preferences: preferences)
-                                .offset(x: dragOffset)
-                                .gesture(
-                                    DragGesture()
-                                        .onChanged { value in
-                                            self.dragOffset = value.translation.width
-                                        }
-                                        .onEnded { value in
-                                            let indexShift = Int(round(dragOffset / itemSpacing))
-                                            self.activeDay += indexShift
-                                            self.dragOffset = 0
-                                        }
-                                )
+                            let indexShift = Int(round(dragOffset / itemSpacing))
+                            let index = self.activeDay + indexShift
+                            
+                            ZStack {
+                                SelectionLine(value: $value, preferences: preferences)
+                                    .offset(x: currentOffset + dragOffset)
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                self.dragOffset = value.translation.width
+                                            }
+                                            .onEnded { _ in
+                                                // Set final offset (snap to item)
+                                                let newOffset = itemSpacing * CGFloat(indexShift)
+                                                
+                                                withAnimation(.ease()) {
+                                                    self.currentOffset += newOffset
+                                                    self.dragOffset = 0
+                                                }
+                                                //self.activeDay = index
+                                            }
+                                    )
+                                VStack {
+                                    Text("\(indexShift)")
+                                }
+                            }
                         })
-                        .animation(Animation.ease())
                     }
                 }
                 VStack {
-                    Text("Index: \(self.activeDay)")
+                    Text("Active Index: \(self.activeDay)")
+                    Text("Current: \(self.currentOffset)")
                     Text("Drag: \(self.dragOffset)")
-                    Text("\(itemSpacing)")
                 }.foregroundColor(.yellow)
+                
             }
         }
         .padding()
@@ -88,12 +104,15 @@ struct JournalGraphView: View {
 struct SelectionLine: View {
     @Binding var value: CGFloat
     let preferences: Anchor<CGRect>?
+    
     var body: some View {
+        let width: CGFloat = 10 // 4
+        
         GeometryReader { geometry in
             preferences.map {
-                RoundedRectangle(cornerRadius: 1)
+                RoundedRectangle(cornerRadius: width / 2)
                     .fill(Color.momo)
-                    .frame(width: 10, height: geometry[$0].height)
+                    .frame(width: width, height: geometry[$0].height)
                     .frame(
                         width: geometry.size.width,
                         height: geometry[$0].height,
@@ -111,14 +130,16 @@ struct SelectionLine: View {
 
 struct GraphLine: View {
     var body: some View {
-        Rectangle()
-            .frame(width: 1)
-            .foregroundColor(.clear)
-            .background(LinearGradient(
-                            gradient: Gradient(colors: [.gray, .clear]),
-                            startPoint: .bottom,
-                            endPoint: .top)
-            )
+        ZStack {
+            Rectangle()
+                .foregroundColor(.clear).frame(width: 1)
+                .background(LinearGradient(
+                                gradient: Gradient(colors: [.gray, .clear]),
+                                startPoint: .bottom,
+                                endPoint: .top)
+                )
+            
+        }
     }
 }
 

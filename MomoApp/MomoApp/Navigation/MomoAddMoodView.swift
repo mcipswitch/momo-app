@@ -38,6 +38,7 @@ struct MomoAddMoodView: View {
     @State private var buttonSize: CGFloat = 80
  
     // MARK: - Drag Gestures
+    
     var simpleDrag: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { value in
