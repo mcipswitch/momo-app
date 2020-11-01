@@ -9,18 +9,13 @@
 
 import SwiftUI
 
-enum GraphMode: Int {
-    case week = 7
-    case month = 30
-}
-
 struct JournalGraphView: View {
     @State var value: CGFloat
     @State var activeDay = 0
     let date = Date()
     
     
-    
+    // Selection Line
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
     
@@ -47,15 +42,15 @@ struct JournalGraphView: View {
                             Text("\(days[index])")
                                 .momoTextBold(size: 14)
                         }
-                        .frame(width: itemWidth)
-                        
-                        #warning("Doesn't register on the whole 25 frame")
+                        // Make whole stack tappable
+                        .contentShape(Rectangle())
                         .onTapGesture {
                             self.activeDay = index
                         }
+                        .frame(width: itemWidth)
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             let indexShift = Int(round(dragOffset / itemSpacing))
-                            let index = self.activeDay + indexShift
+                            //let index = self.activeDay + indexShift
                             
                             ZStack {
                                 SelectionLine(value: $value, preferences: preferences)
@@ -130,16 +125,14 @@ struct SelectionLine: View {
 
 struct GraphLine: View {
     var body: some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(.clear).frame(width: 1)
-                .background(LinearGradient(
-                                gradient: Gradient(colors: [.gray, .clear]),
-                                startPoint: .bottom,
-                                endPoint: .top)
-                )
-            
-        }
+        Rectangle()
+            .foregroundColor(.clear).frame(width: 1)
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [.gray, .clear]),
+                    startPoint: .bottom,
+                    endPoint: .top)
+            )
     }
 }
 
