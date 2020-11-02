@@ -11,13 +11,14 @@ import SwiftUI
 
 struct JournalGraphView: View {
     @State var value: CGFloat
-    @State var activeDay = 0
-    let date = Date()
-    
     
     // Selection Line
+    @State private var currentDay: Int = 0
+    @State private var selectedDay: Int = 0
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
+    
+    let date = Date()
     
     var body: some View {
         let days = date.getDates(forLastNDays: 7)
@@ -29,6 +30,9 @@ struct JournalGraphView: View {
                 let spacing: CGFloat = (screenWidth - (itemWidth * CGFloat(days.count))) / CGFloat(days.count - 1)
                 let itemSpacing: CGFloat = itemWidth + spacing
                 
+                let indexShift = Int(round(dragOffset / itemSpacing))
+                let selectedIndex = selectedDay + indexShift
+                
                 HStack(spacing: spacing) {
                     ForEach(0 ..< days.count) { index in
                         VStack {
@@ -37,24 +41,29 @@ struct JournalGraphView: View {
                                     key: SelectionPreferenceKey.self,
                                     value: .bounds,
                                     transform: { anchor in
-                                        self.activeDay == index ? anchor : nil
+                                        self.currentDay == index ? anchor : nil
                                     })
                             Text("\(days[index])")
                                 .momoTextBold(size: 14)
                         }
                         // Make whole stack tappable
                         .contentShape(Rectangle())
-                        .onTapGesture {
-                            self.activeDay = index
-                        }
+//                        .onTapGesture {
+//                            // calculate index and move accordingly
+//                            let newOffset = itemSpacing * CGFloat(index)
+//                            self.currentOffset += newOffset
+//
+//
+//                        }
                         .frame(width: itemWidth)
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-                            let indexShift = Int(round(dragOffset / itemSpacing))
-                            //let index = self.activeDay + indexShift
-                            
                             ZStack {
                                 SelectionLine(value: $value, preferences: preferences)
                                     .offset(x: currentOffset + dragOffset)
+                                    
+                                    
+                                    // Fix content shape
+                                    
                                     .gesture(
                                         DragGesture()
                                             .onChanged { value in
@@ -67,8 +76,9 @@ struct JournalGraphView: View {
                                                 withAnimation(.ease()) {
                                                     self.currentOffset += newOffset
                                                     self.dragOffset = 0
+                                                    
+                                                    self.selectedDay = selectedIndex
                                                 }
-                                                //self.activeDay = index
                                             }
                                     )
                                 VStack {
@@ -79,7 +89,8 @@ struct JournalGraphView: View {
                     }
                 }
                 VStack {
-                    Text("Active Index: \(self.activeDay)")
+                    Text("Active Index: \(self.currentDay)")
+                    Text("Selected Index: \(self.selectedDay)")
                     Text("Current: \(self.currentOffset)")
                     Text("Drag: \(self.dragOffset)")
                 }.foregroundColor(.yellow)
@@ -89,7 +100,8 @@ struct JournalGraphView: View {
         .padding()
         .onAppear {
             // As default, current day is active
-            self.activeDay = days.count - 1
+            self.currentDay = days.count - 1
+            self.selectedDay = currentDay
         }
     }
 }
@@ -101,7 +113,7 @@ struct SelectionLine: View {
     let preferences: Anchor<CGRect>?
     
     var body: some View {
-        let width: CGFloat = 10 // 4
+        let width: CGFloat = 4
         
         GeometryReader { geometry in
             preferences.map {
@@ -113,6 +125,8 @@ struct SelectionLine: View {
                         height: geometry[$0].height,
                         alignment: .center
                     )
+                    .contentShape(Rectangle())
+                
                 //                    .overlay(
                 //                        Circle()
                 //                            .strokeBorder(Color.momo, lineWidth: 4)
