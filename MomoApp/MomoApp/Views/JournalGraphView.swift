@@ -48,22 +48,22 @@ struct JournalGraphView: View {
                         }
                         // Make whole stack tappable
                         .contentShape(Rectangle())
-//                        .onTapGesture {
-//                            // calculate index and move accordingly
-//                            let newOffset = itemSpacing * CGFloat(index)
-//                            self.currentOffset += newOffset
-//
-//
-//                        }
+                        .onTapGesture {
+                            // calculate index and move accordingly
+                            withAnimation(.ease()) {
+                                let newOffset = itemSpacing * CGFloat(index - selectedIndex)
+                                self.currentOffset += newOffset
+                                self.selectedDay = index
+                            }
+                        }
+                        
+                        
+                        
                         .frame(width: itemWidth)
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             ZStack {
                                 SelectionLine(value: $value, preferences: preferences)
                                     .offset(x: currentOffset + dragOffset)
-                                    
-                                    
-                                    // Fix content shape
-                                    
                                     .gesture(
                                         DragGesture()
                                             .onChanged { value in
