@@ -12,7 +12,7 @@ import SwiftUI
 struct JournalGraphView: View {
     @State var value: CGFloat
     
-    // Selection Line
+    @State private var nDays: Int = 7
     @State private var currentDay: Int = 0
     @State private var selectedDay: Int = 0
     @State private var currentOffset: CGFloat = 0
@@ -21,80 +21,86 @@ struct JournalGraphView: View {
     let date = Date()
     
     var body: some View {
-        let days = date.getDates(forLastNDays: 7)
+        let days = date.getDates(forLastNDays: nDays)
         
         ZStack {
             GeometryReader { geometry in
+                // Calculate equal spacing for graph lines
                 let itemWidth: CGFloat = 25
-                let screenWidth: CGFloat = geometry.size.width
-                let spacing: CGFloat = (screenWidth - (itemWidth * CGFloat(days.count))) / CGFloat(days.count - 1)
-                let itemSpacing: CGFloat = itemWidth + spacing
+                let hStackSpacing = (geometry.size.width - (itemWidth * CGFloat(nDays))) / CGFloat(nDays - 1)
                 
-                let indexShift = Int(round(dragOffset / itemSpacing))
-                let selectedIndex = selectedDay + indexShift
+                // Calculate which item we are closest to
+                let itemSpacing = itemWidth + hStackSpacing
+                var indexShift = Int(round(dragOffset / itemSpacing))
+                var selectedIndex = selectedDay + indexShift
                 
-                HStack(spacing: spacing) {
-                    ForEach(0 ..< days.count) { index in
-                        VStack {
-                            GraphLine()
-                                .anchorPreference(
-                                    key: SelectionPreferenceKey.self,
-                                    value: .bounds,
-                                    transform: { anchor in
-                                        self.currentDay == index ? anchor : nil
-                                    })
+                HStack(spacing: hStackSpacing) {
+                    ForEach(0 ..< nDays) { index in
+                        VStack {GraphLine()
+                            .anchorPreference(
+                                key: SelectionPreferenceKey.self,
+                                value: .bounds,
+                                transform: { anchor in
+                                    self.currentDay == index ? anchor : nil
+                                })
                             Text("\(days[index])")
                                 .momoTextBold(size: 14)
                         }
+                        .frame(width: itemWidth)
                         // Make whole stack tappable
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            // calculate index and move accordingly
+                            // Calculate final offset
+                            let newOffset = itemSpacing * CGFloat(index - selectedIndex)
+                            
+                            // Animate snapping
                             withAnimation(.ease()) {
-                                let newOffset = itemSpacing * CGFloat(index - selectedIndex)
                                 self.currentOffset += newOffset
-                                self.selectedDay = index
                             }
+                            self.selectedDay = index
                         }
-                        
-                        
-                        
-                        .frame(width: itemWidth)
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             ZStack {
                                 SelectionLine(value: $value, preferences: preferences)
                                     .offset(x: currentOffset + dragOffset)
-                                    .gesture(
-                                        DragGesture()
-                                            .onChanged { value in
-                                                self.dragOffset = value.translation.width
-                                            }
-                                            .onEnded { _ in
-                                                // Set final offset (snap to item)
-                                                let newOffset = itemSpacing * CGFloat(indexShift)
-                                                
-                                                withAnimation(.ease()) {
-                                                    self.currentOffset += newOffset
-                                                    self.dragOffset = 0
+                                    .gesture(DragGesture()
+                                                .onChanged { value in
+                                                    dragOffset = value.translation.width
+                                                }
+                                                .onEnded { value in
                                                     
+                                                    // Protect from scrolling out of bounds
+                                                    if selectedIndex > nDays - 1 {
+                                                        indexShift -= indexShift.signum()
+                                                        selectedIndex -= indexShift.signum()
+                                                    } else if selectedIndex < 0 {
+                                                        indexShift -= indexShift.signum()
+                                                        selectedIndex -= indexShift.signum()
+                                                    }
+                                                    
+                                                    // Calculate final offset
+                                                    let newOffset = itemSpacing * CGFloat(indexShift)
+                                                    
+                                                    // Animate snapping
+                                                    withAnimation(.ease()) {
+                                                        self.currentOffset += newOffset
+                                                        self.dragOffset = 0
+                                                    }
                                                     self.selectedDay = selectedIndex
                                                 }
-                                            }
                                     )
-                                VStack {
-                                    Text("\(indexShift)")
-                                }
+                                Text("\(indexShift)")
                             }
                         })
                     }
                 }
                 VStack {
-                    Text("Active Index: \(self.currentDay)")
-                    Text("Selected Index: \(self.selectedDay)")
+                    Text("Active Idx: \(self.currentDay)")
+                    Text("Selected Idx: \(self.selectedDay)")
                     Text("Current: \(self.currentOffset)")
                     Text("Drag: \(self.dragOffset)")
-                }.foregroundColor(.yellow)
-                
+                }
+                .foregroundColor(Color.gray.opacity(0.5))
             }
         }
         .padding()
