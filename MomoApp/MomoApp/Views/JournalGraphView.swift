@@ -51,12 +51,8 @@ struct JournalGraphView: View {
                         .contentShape(Rectangle())
                         .onTapGesture {
                             // Calculate final offset
-                            let newOffset = itemSpacing * CGFloat(index - selectedIndex)
-                            
-                            // Animate snapping
-                            withAnimation(.ease()) {
-                                self.currentOffset += newOffset
-                            }
+                            let indexShift = index - selectedIndex
+                            self.handleSnap(itemSpacing: itemSpacing, indexShift: indexShift)
                             self.selectedDay = index
                         }
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
@@ -68,24 +64,16 @@ struct JournalGraphView: View {
                                                     dragOffset = value.translation.width
                                                 }
                                                 .onEnded { value in
-                                                    
                                                     // Protect from scrolling out of bounds
-                                                    if selectedIndex > nDays - 1 {
+                                                    if selectedIndex > nDays - 1 || selectedIndex < 0 {
                                                         indexShift -= indexShift.signum()
                                                         selectedIndex -= indexShift.signum()
-                                                    } else if selectedIndex < 0 {
-                                                        indexShift -= indexShift.signum()
-                                                        selectedIndex -= indexShift.signum()
+                                                        
+                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                            self.handleSnap(itemSpacing: itemSpacing, indexShift: indexShift)
+                                                        }
                                                     }
-                                                    
-                                                    // Calculate final offset
-                                                    let newOffset = itemSpacing * CGFloat(indexShift)
-                                                    
-                                                    // Animate snapping
-                                                    withAnimation(.ease()) {
-                                                        self.currentOffset += newOffset
-                                                        self.dragOffset = 0
-                                                    }
+                                                    self.handleSnap(itemSpacing: itemSpacing, indexShift: indexShift)
                                                     self.selectedDay = selectedIndex
                                                 }
                                     )
@@ -110,6 +98,20 @@ struct JournalGraphView: View {
             self.selectedDay = currentDay
         }
     }
+    
+    // MARK: - Internal Methods
+    
+    private func handleSnap(itemSpacing: CGFloat, indexShift: Int) {
+        // Calculate final offset
+        let offset = itemSpacing * CGFloat(indexShift)
+        
+        // Animate snapping
+        withAnimation(.ease()) {
+            self.currentOffset += offset
+            self.dragOffset = 0
+        }
+    }
+    
 }
 
 // MARK: - Views
