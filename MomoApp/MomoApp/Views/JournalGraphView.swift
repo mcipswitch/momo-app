@@ -18,6 +18,8 @@ struct JournalGraphView: View {
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
     
+    @State private var isSelected: Bool = false
+    
     let date = Date()
     
     var body: some View {
@@ -52,7 +54,8 @@ struct JournalGraphView: View {
                         .onTapGesture {
                             // Calculate final offset
                             let indexShift = index - selectedIndex
-                            self.handleSnap(itemSpacing: itemSpacing, indexShift: indexShift)
+                            let offset = itemSpacing * CGFloat(indexShift)
+                            self.handleSnap(to: offset)
                             self.selectedDay = index
                         }
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
@@ -62,18 +65,35 @@ struct JournalGraphView: View {
                                     .gesture(DragGesture()
                                                 .onChanged { value in
                                                     dragOffset = value.translation.width
+                                                    
+                                                    // Out of bounds threshold
+                                                    let threshold = 0.25 * itemSpacing
+                                                    
+                                                    let totalOffset = currentOffset + dragOffset
+                                                    let maxOffset = itemSpacing * CGFloat(indexShift)
+                                                    
+                                                    // Protect from dragging out of bounds
+                                                    if totalOffset - threshold > 0 {
+                                                        dragOffset = maxOffset + threshold
+                                                    }
+                                                    if totalOffset + threshold < -itemSpacing * (CGFloat(nDays) - 1) {
+                                                        dragOffset = maxOffset - threshold
+                                                    }
                                                 }
                                                 .onEnded { value in
+                                                    // TODO: fix out of bounds
                                                     // Protect from scrolling out of bounds
-                                                    if selectedIndex > nDays - 1 || selectedIndex < 0 {
-                                                        indexShift -= indexShift.signum()
-                                                        selectedIndex -= indexShift.signum()
-                                                        
-                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                                            self.handleSnap(itemSpacing: itemSpacing, indexShift: indexShift)
-                                                        }
-                                                    }
-                                                    self.handleSnap(itemSpacing: itemSpacing, indexShift: indexShift)
+                                                    let offset = itemSpacing * CGFloat(indexShift)
+                                                    self.handleSnap(to: offset)
+                                                    
+                                                    
+//                                                    if selectedIndex > nDays - 1 || selectedIndex < 0 {
+//                                                        indexShift -= indexShift.signum()
+//                                                        selectedIndex -= indexShift.signum()
+//                                                    }
+                                                    
+                                                    
+                                                    
                                                     self.selectedDay = selectedIndex
                                                 }
                                     )
@@ -101,13 +121,10 @@ struct JournalGraphView: View {
     
     // MARK: - Internal Methods
     
-    private func handleSnap(itemSpacing: CGFloat, indexShift: Int) {
-        // Calculate final offset
-        let offset = itemSpacing * CGFloat(indexShift)
-        
+    private func handleSnap(to offset: CGFloat) {
         // Animate snapping
         withAnimation(.ease()) {
-            self.currentOffset += offset
+            self.currentOffset += CGFloat(offset)
             self.dragOffset = 0
         }
     }
