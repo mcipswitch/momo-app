@@ -267,7 +267,7 @@ struct SeeEntriesButton: View {
     var action: () -> Void
     var body: some View {
         Button(action: action) {
-            Text("See all entries").underline()
+            Text("See your past entries").underline()
         }.buttonStyle(MomoTextLinkStyle())
     }
 }
