@@ -11,6 +11,8 @@
 		930105922514E0B9007F0E7A /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930105912514E0B9007F0E7A /* Modifiers.swift */; };
 		930924FF25582D0800AA3934 /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930924FE25582D0800AA3934 /* JournalListView.swift */; };
 		9309250225582DB300AA3934 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309250125582DB300AA3934 /* EntryView.swift */; };
+		930925052558335C00AA3934 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930925042558335C00AA3934 /* DataManager.swift */; };
+		93092508255834B900AA3934 /* MockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93092507255834B900AA3934 /* MockDataManager.swift */; };
 		930ABB6F254A32E00050C1C4 /* JournalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */; };
 		931476A624F574980031D913 /* EmotionTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931476A524F574980031D913 /* EmotionTextFieldStyle.swift */; };
 		93159F4E251E3FAB004A99A4 /* MomoTextLinkStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */; };
@@ -62,6 +64,8 @@
 		930105912514E0B9007F0E7A /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		930924FE25582D0800AA3934 /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
 		9309250125582DB300AA3934 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
+		930925042558335C00AA3934 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		93092507255834B900AA3934 /* MockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManager.swift; sourceTree = "<group>"; };
 		930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalGraphView.swift; sourceTree = "<group>"; };
 		931476A524F574980031D913 /* EmotionTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionTextFieldStyle.swift; sourceTree = "<group>"; };
 		93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoTextLinkStyle.swift; sourceTree = "<group>"; };
@@ -146,10 +150,19 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		9309250A255834BC00AA3934 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				93092507255834B900AA3934 /* MockDataManager.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
 		9318888425582B8C0004CD4F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				9318888125582B870004CD4F /* EntriesViewModel.swift */,
+				930925042558335C00AA3934 /* DataManager.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -185,6 +198,7 @@
 		93519F4E24E8CF630095DA38 /* MomoApp */ = {
 			isa = PBXGroup;
 			children = (
+				9309250A255834BC00AA3934 /* Mock */,
 				9318888425582B8C0004CD4F /* ViewModel */,
 				936C6CD425112E1B00650D4A /* Old */,
 				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
@@ -350,6 +364,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93347DF52551091F0015629B /* SelectionLineModifier.swift in Sources */,
+				930925052558335C00AA3934 /* DataManager.swift in Sources */,
 				930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */,
 				93EF7980254A146A0062571F /* BackButton.swift in Sources */,
 				93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */,
@@ -373,6 +388,7 @@
 				9376158E2512581A00AEF59C /* MomoButtonStyle.swift in Sources */,
 				93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */,
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,
+				93092508255834B900AA3934 /* MockDataManager.swift in Sources */,
 				93EF7985254A14BE0062571F /* NextButton.swift in Sources */,
 				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
 				93159F4E251E3FAB004A99A4 /* MomoTextLinkStyle.swift in Sources */,

@@ -5,16 +5,40 @@
 //  Created by Priscilla Ip on 2020-11-08.
 //
 
-import SwiftUI
+import Combine
+import Foundation
 
-class EntriesViewModel: ObservableObject {
+final class EntriesViewModel: ObservableObject {
+    @Published var entries: [Entry] = []
     
+    var dataManager: DataManagerProtocol
+    
+    init(dataManager: DataManagerProtocol = DataManager.shared) {
+        self.dataManager = dataManager
+        fetchEntries()
+    }
+}
+
+// MARK: - EntriesViewModelProtocol
+
+extension EntriesViewModel: EntriesViewModelProtocol {
+    func fetchEntries() {
+        entries = dataManager.fetchEntries()
+    }
+}
+
+// MARK: - Protocol
+
+protocol EntriesViewModelProtocol {
+    var entries: [Entry] { get }
+    func fetchEntries()
 }
 
 // MARK: - Model
 
-struct Entry: Hashable {
-    let emotion: String
-    let date: Date
-    let value: CGFloat
+struct Entry: Identifiable, Hashable {
+    var id = UUID()
+    var emotion: String
+    var date: Date
+    var value: Double
 }
