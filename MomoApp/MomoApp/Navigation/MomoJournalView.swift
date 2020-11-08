@@ -26,7 +26,7 @@ struct MomoJournalView: View {
                 .padding()
                 
                 // Main View
-                VStack(spacing: 36) {
+                VStack(spacing: 48) {
                     JournalGraphView(value: pct)
                     VStack(spacing: 12) {
                         Text(Date(), formatter: DateFormatter.shortDate)
@@ -35,6 +35,7 @@ struct MomoJournalView: View {
                             .momoTextBold()
                         BlobView(pct: $pct, frameSize: 250)
                             .scaleEffect(0.60)
+                        Spacer()
                     }
                 }
                 .padding(.top, 48)

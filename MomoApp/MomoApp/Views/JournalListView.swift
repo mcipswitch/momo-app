@@ -12,8 +12,8 @@ struct JournalListView: View {
     
     var body: some View {
         NavigationView {
-            List(viewModel.entries) { entry in
-                Text(entry.emotion)
+            List(viewModel.entries, id: \.self) {
+                EntryView(entry: $0)
             }
             .navigationBarTitle(Text("Journal List"))
         }

@@ -4,6 +4,7 @@
 //
 //  Created by Priscilla Ip on 2020-11-08.
 //
+//  Inspired by: https://medium.com/swlh/getting-started-with-swiftui-and-combine-using-mvvm-and-protocols-for-ios-d8c37731a1d9
 
 import Combine
 import Foundation
