@@ -21,7 +21,7 @@ struct MomoJournalView: View {
                         Spacer()
                         ListViewButton(action: self.handleListView)
                     }
-                    CalendarMonthButton(action: self.handleMonthSelection)
+                    GraphViewScaleButton(action: self.handleScaleButton)
                 }
                 .padding()
                 
@@ -56,7 +56,7 @@ struct MomoJournalView: View {
         print("List view...")
     }
     
-    private func handleMonthSelection() {
+    private func handleScaleButton() {
         // is there a cleaner way to write this?
         print("Month...")
     }

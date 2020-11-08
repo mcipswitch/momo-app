@@ -11,11 +11,14 @@ struct JournalListView: View {
     @ObservedObject var viewModel = EntriesViewModel()
     
     var body: some View {
-        NavigationView {
-            List(viewModel.entries, id: \.self) {
-                EntryView(entry: $0)
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.entries, id: \.self) {
+                    EntryView(entry: $0)
+                }
+                .padding(.bottom, 8)
             }
-            .navigationBarTitle(Text("Journal List"))
+            .padding()
         }
         .onAppear {
             self.viewModel.fetchEntries()
@@ -28,5 +31,9 @@ struct JournalListView_Previews: PreviewProvider {
         var view = JournalListView()
         view.viewModel = EntriesViewModel(dataManager: MockDataManager())
         return view
+            .background(
+                Image("background")
+                    .edgesIgnoringSafeArea(.all)
+            )
     }
 }

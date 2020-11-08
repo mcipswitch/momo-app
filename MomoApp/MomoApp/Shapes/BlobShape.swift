@@ -76,9 +76,9 @@ struct BlobView: View {
             )
         }
         .frame(width: frameSize, height: frameSize * (pathBounds.width / pathBounds.height))
-        .onAppear {
-            isAnimating = true
-        }
+//        .onAppear {
+//            isAnimating = true
+//        }
     }
 }
 

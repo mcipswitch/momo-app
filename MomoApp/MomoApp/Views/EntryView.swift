@@ -13,11 +13,30 @@ struct EntryView: View {
         self.entry = entry
     }
     
+    @State var pct: CGFloat = 0.2
+    
     var body: some View {
-        HStack {
-            Text(entry.emotion)
-            Text(entry.date.toString(withFormat: .short))
+        ZStack {
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.black.opacity(0.3))
+            HStack {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(entry.date, formatter: DateFormatter.shortDate)
+                        .dateText(opacity: 0.6)
+                    Text(entry.emotion)
+                        .momoTextBold()
+                }
+                Spacer()
+                VStack {
+                    BlobView(pct: $pct, isAnimating: false, frameSize: 250)
+                        .scaleEffect(0.25)
+                }
+                .frame(width: 0, height: 0)
+                .padding([.leading, .trailing], 72)
+            }
+            .padding(.all, 24)
         }
+        .frame(height: 100)
     }
 }
 
