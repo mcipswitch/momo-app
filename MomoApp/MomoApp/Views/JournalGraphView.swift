@@ -29,12 +29,13 @@ struct JournalGraphView: View {
             GeometryReader { geometry in
                 // Calculate equal spacing for graph lines
                 let itemWidth: CGFloat = 25
-                let hStackSpacing = (geometry.size.width - (itemWidth * CGFloat(nDays))) / CGFloat(nDays - 1)
+                let numOfSpaces: Int = nDays - 1
+                let hStackSpacing = (geometry.size.width - (itemWidth * CGFloat(nDays))) / CGFloat(numOfSpaces)
                 
                 // Calculate which item we are closest to
                 let itemSpacing = itemWidth + hStackSpacing
-                var indexShift = Int(round(dragOffset / itemSpacing))
-                var selectedIndex = selectedDay + indexShift
+                let indexShift = Int(round(dragOffset / itemSpacing))
+                let selectedIndex = selectedDay + indexShift
                 
                 HStack(spacing: hStackSpacing) {
                     ForEach(0 ..< nDays) { index in
@@ -59,46 +60,34 @@ struct JournalGraphView: View {
                             self.selectedDay = index
                         }
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-                            ZStack {
-                                SelectionLine(value: $value, preferences: preferences)
-                                    .offset(x: currentOffset + dragOffset)
-                                    .gesture(DragGesture()
-                                                .onChanged { value in
-                                                    dragOffset = value.translation.width
-                                                    
-                                                    // Out of bounds threshold
-                                                    let threshold = 0.25 * itemSpacing
-                                                    
-                                                    let totalOffset = currentOffset + dragOffset
-                                                    let maxOffset = itemSpacing * CGFloat(indexShift)
-                                                    
-                                                    // Protect from dragging out of bounds
-                                                    if totalOffset - threshold > 0 {
-                                                        dragOffset = maxOffset + threshold
-                                                    }
-                                                    if totalOffset + threshold < -itemSpacing * (CGFloat(nDays) - 1) {
-                                                        dragOffset = maxOffset - threshold
-                                                    }
+                            SelectionLine(value: $value, preferences: preferences)
+                                .offset(x: currentOffset + dragOffset)
+                                .gesture(DragGesture()
+                                            .onChanged { value in
+                                                dragOffset = value.translation.width
+                                                
+                                                // Out of bounds threshold
+                                                let threshold = 0.25 * itemSpacing
+                                                let minBounds = -(itemSpacing * (CGFloat(numOfSpaces)) + threshold)
+                                                let maxBounds = 0 + threshold
+                                                
+                                                let totalOffset = currentOffset + dragOffset
+                                                let offsetBounds = itemSpacing * CGFloat(indexShift)
+                                                
+                                                // Protect from dragging out of bounds
+                                                if totalOffset > maxBounds {
+                                                    dragOffset = offsetBounds + threshold
                                                 }
-                                                .onEnded { value in
-                                                    // TODO: fix out of bounds
-                                                    // Protect from scrolling out of bounds
-                                                    let offset = itemSpacing * CGFloat(indexShift)
-                                                    self.handleSnap(to: offset)
-                                                    
-                                                    
-//                                                    if selectedIndex > nDays - 1 || selectedIndex < 0 {
-//                                                        indexShift -= indexShift.signum()
-//                                                        selectedIndex -= indexShift.signum()
-//                                                    }
-                                                    
-                                                    
-                                                    
-                                                    self.selectedDay = selectedIndex
+                                                if totalOffset < minBounds {
+                                                    dragOffset = offsetBounds - threshold
                                                 }
-                                    )
-                                Text("\(indexShift)")
-                            }
+                                            }
+                                            .onEnded { value in
+                                                let offset = itemSpacing * CGFloat(indexShift)
+                                                self.handleSnap(to: offset)
+                                                self.selectedDay = selectedIndex
+                                            }
+                                )
                         })
                     }
                 }

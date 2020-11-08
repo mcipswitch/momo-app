@@ -14,12 +14,6 @@ struct MomoJournalView: View {
     var body: some View {    
         ZStack {
             GeometryReader { geometry in
-                Image("background")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: geometry.size.width)
-                    .edgesIgnoringSafeArea(.all)
-                
                 // Navigation Buttons
                 ZStack {
                     HStack {
@@ -37,7 +31,6 @@ struct MomoJournalView: View {
                     VStack(spacing: 12) {
                         Text(Date(), formatter: DateFormatter.shortDate)
                             .dateText(opacity: 0.6)
-                            .padding(.top, 16)
                         Text(word)
                             .momoTextBold()
                         BlobView(pct: $pct, frameSize: 250)
@@ -47,6 +40,9 @@ struct MomoJournalView: View {
                 .padding(.top, 48)
             }
         }
+        .background(Image("background")
+                        .edgesIgnoringSafeArea(.all)
+        )
     }
     
     // MARK: - Internal Methods

@@ -9,9 +9,12 @@
 /* Begin PBXBuildFile section */
 		930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9301058F2513F8A1007F0E7A /* Date + Extensions.swift */; };
 		930105922514E0B9007F0E7A /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930105912514E0B9007F0E7A /* Modifiers.swift */; };
+		930924FF25582D0800AA3934 /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930924FE25582D0800AA3934 /* JournalListView.swift */; };
+		9309250225582DB300AA3934 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309250125582DB300AA3934 /* EntryView.swift */; };
 		930ABB6F254A32E00050C1C4 /* JournalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */; };
 		931476A624F574980031D913 /* EmotionTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931476A524F574980031D913 /* EmotionTextFieldStyle.swift */; };
 		93159F4E251E3FAB004A99A4 /* MomoTextLinkStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */; };
+		9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9318888125582B870004CD4F /* EntriesViewModel.swift */; };
 		9328BC2D252757E6005C893A /* ButtonStyle + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9328BC2C252757E6005C893A /* ButtonStyle + Extension.swift */; };
 		9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9331230724F94C17008B6DD2 /* Animation + Extension.swift */; };
 		93347DF52551091F0015629B /* SelectionLineModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93347DF42551091F0015629B /* SelectionLineModifier.swift */; };
@@ -57,9 +60,12 @@
 /* Begin PBXFileReference section */
 		9301058F2513F8A1007F0E7A /* Date + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extensions.swift"; sourceTree = "<group>"; };
 		930105912514E0B9007F0E7A /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
+		930924FE25582D0800AA3934 /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
+		9309250125582DB300AA3934 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
 		930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalGraphView.swift; sourceTree = "<group>"; };
 		931476A524F574980031D913 /* EmotionTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionTextFieldStyle.swift; sourceTree = "<group>"; };
 		93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoTextLinkStyle.swift; sourceTree = "<group>"; };
+		9318888125582B870004CD4F /* EntriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesViewModel.swift; sourceTree = "<group>"; };
 		9328BC2C252757E6005C893A /* ButtonStyle + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonStyle + Extension.swift"; sourceTree = "<group>"; };
 		9331230724F94C17008B6DD2 /* Animation + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation + Extension.swift"; sourceTree = "<group>"; };
 		93347DF42551091F0015629B /* SelectionLineModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionLineModifier.swift; sourceTree = "<group>"; };
@@ -127,6 +133,8 @@
 			isa = PBXGroup;
 			children = (
 				930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */,
+				930924FE25582D0800AA3934 /* JournalListView.swift */,
+				9309250125582DB300AA3934 /* EntryView.swift */,
 				93EF7982254A14700062571F /* Navigation */,
 				93E9A337251D29900095D48C /* ColorRing.swift */,
 				938BBD0D2527B59000759092 /* TextFieldBorder.swift */,
@@ -136,6 +144,14 @@
 				93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		9318888425582B8C0004CD4F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9318888125582B870004CD4F /* EntriesViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		933B150324F1B30C004E9F1C /* Navigation */ = {
@@ -169,6 +185,7 @@
 		93519F4E24E8CF630095DA38 /* MomoApp */ = {
 			isa = PBXGroup;
 			children = (
+				9318888425582B8C0004CD4F /* ViewModel */,
 				936C6CD425112E1B00650D4A /* Old */,
 				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
 				93F075FF24F1D9BC000B6449 /* TextLimiter.swift */,
@@ -344,7 +361,9 @@
 				938BBD0E2527B59000759092 /* TextFieldBorder.swift in Sources */,
 				93FAEB9B2514FCDC00C057AC /* MomoAddMoodView.swift in Sources */,
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
+				930924FF25582D0800AA3934 /* JournalListView.swift in Sources */,
 				93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */,
+				9309250225582DB300AA3934 /* EntryView.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
 				93EF798B254A17960062571F /* CalendarMonthButton.swift in Sources */,
 				937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */,
@@ -357,6 +376,7 @@
 				93EF7985254A14BE0062571F /* NextButton.swift in Sources */,
 				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
 				93159F4E251E3FAB004A99A4 /* MomoTextLinkStyle.swift in Sources */,
+				9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */,
 				93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */,
 				9363153A2513A6B6005E20EA /* RainbowRing.swift in Sources */,
 				9328BC2D252757E6005C893A /* ButtonStyle + Extension.swift in Sources */,
