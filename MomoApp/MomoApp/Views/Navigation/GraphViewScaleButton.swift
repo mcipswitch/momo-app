@@ -8,16 +8,21 @@
 import SwiftUI
 
 struct GraphViewScaleButton: View {
+    @Binding var isGraphView: Bool
     var action: () -> Void
     
     var body: some View {
         Button(action: action) {
             HStack {
-                Text("Last 7 days")
-                    .calendarMonthText()
+                if isGraphView {
+                    Text("Last 7 days")
+                } else {
+                    Text("All entries")
+                }
 //                Image(systemName: "chevron.down")
 //                    .calendarMonthText(size: 12.0)
             }
+            .calendarMonthText()
         }
     }
 }

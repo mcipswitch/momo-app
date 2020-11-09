@@ -13,32 +13,65 @@ struct EntryView: View {
         self.entry = entry
     }
     
-    @State var pct: CGFloat = 0.2
+    @State var pct: CGFloat = 0
+    @State private var isExpanded: Bool = false
+    @Namespace private var animation
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.black.opacity(0.3))
-            HStack {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(entry.date, formatter: DateFormatter.shortDate)
-                        .dateText(opacity: 0.6)
-                    Text(entry.emotion)
-                        .momoTextBold()
+            if isExpanded {
+                //                ZStack {
+                //                    RoundedRectangle(cornerRadius: 8)
+                //                        .fill(Color.black.opacity(0.3))
+                //                    VStack {
+                //                        HStack {
+                //                            VStack(alignment: .leading, spacing: 8) {
+                //                                Text(entry.date, formatter: DateFormatter.shortDate)
+                //                                    .dateText(opacity: 0.6)
+                //                                Text(entry.emotion)
+                //                                    .momoTextBold()
+                //                            }
+                //                            .matchedGeometryEffect(id: "\(entry) text", in: animation)
+                //                            Spacer()
+                //                        }
+                //                        BlobView(pct: $pct, isStatic: true, scale: 0.5)
+                //                            .matchedGeometryEffect(id: "\(entry) blob", in: animation)
+                //                    }
+                //                    .padding(24)
+                //                }
+                //                .frame(height: 200)
+            } else {
+                HStack {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(entry.date, formatter: DateFormatter.shortDate)
+                            .dateText(opacity: 0.6)
+                        Text(entry.emotion)
+                            .momoTextBold()
+                    }
+                    .matchedGeometryEffect(id: "text\(entry.id)", in: animation)
+                    Spacer()
+                    BlobView(pct: $pct, isStatic: true, scale: 0.25)
+                        .padding(.trailing, 16)
+                        .matchedGeometryEffect(id: "blob\(entry.id)", in: animation)
                 }
-                Spacer()
-                VStack {
-                    BlobView(pct: $pct, isAnimating: false, frameSize: 250)
-                        .scaleEffect(0.25)
-                }
-                .frame(width: 0, height: 0)
-                .padding([.leading, .trailing], 72)
+                .frame(width: .infinity, height: 60)
+                .padding(24)
+                .background(VisualEffectBlur(blurStyle: .dark))
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             }
-            .padding(.all, 24)
         }
-        .frame(height: 100)
+        .onTapGesture {
+            withAnimation(.ease()) {
+                self.isExpanded.toggle()
+            }
+        }
+        .onAppear {
+            //self.isExpanded = true
+        }
     }
 }
+
+// MARK: - Previews
 
 struct EntryView_Previews: PreviewProvider {
     static var previews: some View {

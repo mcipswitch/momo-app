@@ -4,7 +4,6 @@
 //
 //  Created by Priscilla Ip on 2020-08-15.
 //
-
 /*
  Inspired by Code Disciple post...
  http://www.code-disciple.com/creating-smooth-animation-like-headspace-app/
@@ -18,14 +17,17 @@ import SwiftUI
 
 struct BlobView: View {
     @Binding var pct: CGFloat
-    @State var percentage: CGFloat = 0
-    @State var firstHalf = true
+    @State var isStatic = true
     @State var isAnimating = false
-    let frameSize: CGFloat
+    @State var scale: CGFloat = 1
+    
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
     var duration: Double = 1
     
     var body: some View {
+        let frameSize: CGFloat = 250
+        let scaledFrame = frameSize * scale
+        
         ZStack {
             // Blob: Shadow Layer
             BlobShape(bezier: .blob3, pathBounds: pathBounds)
@@ -34,12 +36,12 @@ struct BlobView: View {
                 .modifier(BlobEffect(
                     skewValue: isAnimating ? 2 : 0
                 ))
-                // Skew Effect
+                /// Skew Effect
                 .animation(Animation
                             .easeInOut(duration: duration)
                             .repeat(while: isAnimating)
                 )
-                // Breathe Effect
+                /// Breathe Effect
                 .scaleEffect(isAnimating ? 1.05 : 1)
                 .animation(Animation
                             .breathe()
@@ -48,7 +50,13 @@ struct BlobView: View {
             // Blob: Gradient Layer
             ZStack {
                 Rectangle()
-                    .modifier(AnimatableGradient(from: UIColor.gradientMomo, to: UIColor.gradientOrange, pct: pct, startRadius: 100, endRadius: pathBounds.width * 1.3)) // 120 * 1.5
+                    .modifier(AnimatableGradient(
+                                from: UIColor.gradientMomo,
+                                to: UIColor.gradientOrange,
+                                pct: pct,
+                                startRadius: scaledFrame * 0.5, // default: 100
+                                endRadius: scaledFrame // pathBounds.width * 1.3
+                    ))
             }
             .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
             .mask(
@@ -56,18 +64,18 @@ struct BlobView: View {
                     .modifier(BlobEffect(
                         skewValue: isAnimating ? 2 : 0
                     ))
-                    // Skew Effect
+                    /// Skew Effect
                     .animation(Animation
                                 .easeInOut(duration: duration)
                                 .repeat(while: isAnimating)
                     )
-                    // Breathe Effect
+                    /// Breathe Effect
                     .scaleEffect(isAnimating ? 1.05 : 1)
                     .animation(Animation
                                 .breathe()
                                 .repeat(while: isAnimating)
                     )
-                    // Rotate Effect
+                    /// Rotate Effect
                     .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
                     .animation(Animation
                                 .linear(duration: 50)
@@ -75,14 +83,14 @@ struct BlobView: View {
                     )
             )
         }
-        .frame(width: frameSize, height: frameSize * (pathBounds.width / pathBounds.height))
-//        .onAppear {
-//            isAnimating = true
-//        }
+        .frame(width: scaledFrame, height: scaledFrame * (pathBounds.width / pathBounds.height))
+        .onAppear {
+            isAnimating = isStatic ? false : true
+        }
     }
 }
 
-// MARK: - Blob Shape + Effect
+// MARK: - Blob Animation
 
 struct BlobEffect: GeometryEffect {
     var skewValue: CGFloat
@@ -112,6 +120,8 @@ struct BlobEffect: GeometryEffect {
     }
 }
 
+// MARK: - Blob Shape
+
 struct BlobShape: Shape {
     let bezier: UIBezierPath
     let pathBounds: CGRect
@@ -132,5 +142,13 @@ struct BlobShape: Shape {
         // Center the blob inside the rectangle
         let position = scale.concatenating(CGAffineTransform(translationX: centerPoint.x, y: centerPoint.y))
         return path.applying(position)
+    }
+}
+
+// MARK: - Previews
+
+struct BlobShape_Previews: PreviewProvider {
+    static var previews: some View {
+        BlobView(pct: .constant(0.8), scale: 1)
     }
 }

@@ -132,7 +132,7 @@ struct MomoAddMoodView: View {
                     }
                     
                     ZStack {
-                        BlobView(pct: $pct, frameSize: 250)
+                        BlobView(pct: $pct, isStatic: false)
                         VStack {
                             Text("Pct: \(pct)")
                             Text("Original Pos: x:\(Int(originalPos.x)), y:\(Int(originalPos.y))")

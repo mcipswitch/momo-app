@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MomoJournalView: View {
+    @State var isGraphView: Bool = true
     @State var pct: CGFloat = 0.5
     @State var word = "Sunflower"
     
@@ -19,23 +20,31 @@ struct MomoJournalView: View {
                     HStack {
                         BackButton(action: self.handleBack)
                         Spacer()
-                        ListViewButton(action: self.handleListView)
+                        if isGraphView {
+                            ListViewButton(action: self.handleJournalView)
+                        } else {
+                            GraphViewButton(action: self.handleJournalView)
+                        }
                     }
-                    GraphViewScaleButton(action: self.handleScaleButton)
+                    GraphViewScaleButton(isGraphView: $isGraphView, action: self.handleScaleButton)
                 }
                 .padding()
                 
                 // Main View
                 VStack(spacing: 48) {
-                    JournalGraphView(value: pct)
-                    VStack(spacing: 12) {
-                        Text(Date(), formatter: DateFormatter.shortDate)
-                            .dateText(opacity: 0.6)
-                        Text(word)
-                            .momoTextBold()
-                        BlobView(pct: $pct, frameSize: 250)
-                            .scaleEffect(0.60)
-                        Spacer()
+                    if isGraphView {
+                        JournalGraphView(value: pct)
+                        VStack(spacing: 12) {
+                            Text(Date(), formatter: DateFormatter.shortDate)
+                                .dateText(opacity: 0.6)
+                            Text(word)
+                                .momoTextBold()
+                            BlobView(pct: $pct, isStatic: false, scale: 0.5)
+                                .scaleEffect(0.60)
+                            Spacer()
+                        }
+                    } else {
+                        JournalListView()
                     }
                 }
                 .padding(.top, 48)
@@ -52,8 +61,9 @@ struct MomoJournalView: View {
         print("Back...")
     }
     
-    private func handleListView() {
+    private func handleJournalView() {
         print("List view...")
+        self.isGraphView.toggle()
     }
     
     private func handleScaleButton() {

@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct JournalListView: View {
-    @ObservedObject var viewModel = EntriesViewModel()
+    @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
+    @State var selectedEntry: Entry?
     
     var body: some View {
         ScrollView {
             LazyVStack {
-                ForEach(viewModel.entries, id: \.self) {
-                    EntryView(entry: $0)
+                ForEach(viewModel.entries, id: \.self) { entry in
+                    EntryView(entry: entry)
+                        .onTapGesture {
+                            withAnimation {
+                                selectedEntry = entry
+                            }
+                        }
                 }
                 .padding(.bottom, 8)
             }

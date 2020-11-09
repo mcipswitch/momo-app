@@ -32,6 +32,8 @@ class MockDataManager {
 extension MockDataManager: DataManagerProtocol {
     func fetchEntries() -> [Entry] {
         entries
+        
+        // TO-DO: group by date
     }
     
     func add(entry: Entry) {
