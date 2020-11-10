@@ -22,7 +22,6 @@ struct JournalListView: View {
                             }
                         }
                 }
-                .padding(.bottom, 8)
             }
             .padding()
         }

@@ -36,6 +36,8 @@ struct ColorRing: View {
     }
 }
 
+// MARK: - Previews
+
 struct ColorRing_Previews: PreviewProvider {
     static var previews: some View {
         ColorRing(size: .constant(CGFloat(64)), shiftColors: .constant(true), isDragging: .constant(false))

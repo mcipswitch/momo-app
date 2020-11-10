@@ -6,12 +6,9 @@
 //
 
 import SwiftUI
-import Combine
 
 struct MomoAddMoodView: View {
     //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
-    
-    // MARK: - Properties and Variables
     @State private var showHome: Bool = true
     @State private var showButtonText: Bool = true
     
@@ -36,7 +33,9 @@ struct MomoAddMoodView: View {
     @State private var rainbowIsActive: Bool = false
     @State private var rainbowDegrees: Double = 0
     @State private var buttonSize: CGFloat = 80
- 
+    
+    @State private var showJournalView: Bool = false
+    
     // MARK: - Drag Gestures
     
     var simpleDrag: some Gesture {
@@ -88,14 +87,11 @@ struct MomoAddMoodView: View {
     }
     
     // MARK: - Body
+    
     var body: some View {
+        //NavigationView {
         ZStack {
             GeometryReader { geometry in
-                Image("background")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: geometry.size.width)
-                    .edgesIgnoringSafeArea(.all)
                 
                 // Navigation Buttons
                 HStack {
@@ -110,6 +106,8 @@ struct MomoAddMoodView: View {
                 
                 // START: - Main View
                 VStack(spacing: 48) {
+                    
+                    // Date + TextField
                     VStack(spacing: 36) {
                         Text(Date(), formatter: DateFormatter.shortDate)
                             .dateText(opacity: 0.6)
@@ -126,11 +124,11 @@ struct MomoAddMoodView: View {
                             }
                         }
                         .onChange(of: text) { _ in
-                            self.nextButtonIsActive = text.isEmpty ? false : true
-                        }
+                            self.nextButtonIsActive = text.isEmpty ? false : true }
                         .frame(width: 180, height: 80)
                     }
                     
+                    // Blob
                     ZStack {
                         BlobView(pct: $pct, isStatic: false)
                         VStack {
@@ -144,33 +142,36 @@ struct MomoAddMoodView: View {
                             Text(isAnimating ? "animating..." : "")
                             Text(rainbowIsActive ? "rainbow..." : "")
                         }
-                        .font(Font.system(size: 12))
                     }
                     
+                    // Bottom Navigation
                     ZStack {
-                        RainbowRing(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
+                        BlurredColorBase(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
                             .position(self.originalPos)
+                        
                         GeometryReader { geometry in
-                                ZStack(alignment: .center) {
-                                    AddEmotionButton(showHome: $showHome, isAnimating: $isAnimating, buttonSize: $buttonSize, action: self.handleAddEmotion)
-                                        .animation(isDragging ? .default : Animation
-                                                    .bounce()
-                                                    .delay(if: isAnimating, (isResetting ? 0 : 0.2))
-                                        )
-                                    ColorRing(size: $buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
-                                        .blur(radius: isAnimating ? 0 : 2)
-                                        .opacity(isAnimating ? 1 : 0)
-                                        .scaleEffect(isAnimating ? 1 : 1.1)
-                                        .animation(isDragging ? .default : !isAnimating ? .default : Animation
-                                                    .bounce()
-                                                    .delay(if: isAnimating, (isResetting ? 0 : 0.6))
-                                        )
-                                    SeeEntriesButton(action: self.handleSeeEntries)
-                                        .offset(y: 60)
-                                        .modifier(SlideOut(showHome: $showHome))
-                                }
-                                .position(self.location ?? CGPoint(x: geometry.size.width / 2, y: buttonSize / 2))
-                                .highPriorityGesture(showHome ? nil : simpleDrag.simultaneously(with: fingerDrag))
+                            ZStack(alignment: .center) {
+                                AddEmotionButton(showHome: $showHome, isAnimating: $isAnimating, buttonSize: $buttonSize, action: self.handleAddEmotion)
+                                    .animation(isDragging ? .default : Animation
+                                                .bounce()
+                                                .delay(if: isAnimating, (isResetting ? 0 : 0.2))
+                                    )
+                                ColorRing(size: $buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
+                                    .blur(radius: isAnimating ? 0 : 2)
+                                    .opacity(isAnimating ? 1 : 0)
+                                    .scaleEffect(isAnimating ? 1 : 1.1)
+                                    .animation(isDragging ? .default : !isAnimating ? .default : Animation
+                                                .bounce()
+                                                .delay(if: isAnimating, (isResetting ? 0 : 0.6))
+                                    )
+                                SeeEntriesButton(action: self.handleSeeEntries)
+                                    .offset(y: 60)
+                                    .modifier(SlideOut(showHome: $showHome))
+                            }
+                            .position(self.location ?? CGPoint(x: geometry.size.width / 2, y: buttonSize / 2))
+                            .highPriorityGesture(showHome ? nil : simpleDrag.simultaneously(with: fingerDrag))
+                            
+                            /// Temp gesture to show finger location
                             if let fingerLocation = fingerLocation {
                                 Circle()
                                     .stroke(Color.red, lineWidth: 2)
@@ -180,26 +181,29 @@ struct MomoAddMoodView: View {
                         }
                         .onAppear {
                             self.originalPos = CGPoint(x: geometry.size.width / 2, y: buttonSize / 2)
-                            self.location = self.originalPos
-                        }
+                            self.location = self.originalPos }
                     }
                     .padding(.top, 64)
                 }
                 // END: - Main View
+                //}
             }
-        }
-        .onChange(of: showHome) { _ in
-            self.showButtonText.toggle()
-            self.isAnimating.toggle()
-            UIApplication.shared.endEditing()
-        }
-        .onChange(of: degrees) { value in
-            switch value {
-            case 0..<120: rainbowDegrees = 0
-            case 120..<240: rainbowDegrees = 120
-            case 240..<360: rainbowDegrees = 240
-            default: rainbowDegrees = 0
-            }
+            .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
+            .background(Image("background")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .edgesIgnoringSafeArea(.all))
+            .onChange(of: showHome) { _ in
+                self.showButtonText.toggle()
+                self.isAnimating.toggle()
+                UIApplication.shared.endEditing() }
+            .onChange(of: degrees) { value in
+                switch value {
+                case 0..<120: rainbowDegrees = 0
+                case 120..<240: rainbowDegrees = 120
+                case 240..<360: rainbowDegrees = 240
+                default: rainbowDegrees = 0 }}
         }
     }
     
@@ -210,17 +214,16 @@ struct MomoAddMoodView: View {
     }
     
     private func handleSeeEntries() {
-        print("See all entries...")
+        //self.showJournalView.toggle()
     }
     
     // Navigation Buttons
     private func handleBack() {
-        showHome.toggle()
-        print("Back...")
+        self.showHome.toggle()
     }
     
     private func handleNext() {
-        print("Next...")
+        print("Confirmation Page")
     }
     
 }

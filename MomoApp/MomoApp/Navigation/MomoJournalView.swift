@@ -39,7 +39,7 @@ struct MomoJournalView: View {
                                 .dateText(opacity: 0.6)
                             Text(word)
                                 .momoTextBold()
-                            BlobView(pct: $pct, isStatic: false, scale: 0.5)
+                            BlobView(pct: $pct, isStatic: false)
                                 .scaleEffect(0.60)
                             Spacer()
                         }

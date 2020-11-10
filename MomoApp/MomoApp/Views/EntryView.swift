@@ -19,54 +19,58 @@ struct EntryView: View {
     
     var body: some View {
         ZStack {
-            if isExpanded {
-                //                ZStack {
-                //                    RoundedRectangle(cornerRadius: 8)
-                //                        .fill(Color.black.opacity(0.3))
-                //                    VStack {
-                //                        HStack {
-                //                            VStack(alignment: .leading, spacing: 8) {
-                //                                Text(entry.date, formatter: DateFormatter.shortDate)
-                //                                    .dateText(opacity: 0.6)
-                //                                Text(entry.emotion)
-                //                                    .momoTextBold()
-                //                            }
-                //                            .matchedGeometryEffect(id: "\(entry) text", in: animation)
-                //                            Spacer()
-                //                        }
-                //                        BlobView(pct: $pct, isStatic: true, scale: 0.5)
-                //                            .matchedGeometryEffect(id: "\(entry) blob", in: animation)
-                //                    }
-                //                    .padding(24)
-                //                }
-                //                .frame(height: 200)
-            } else {
-                HStack {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(entry.date, formatter: DateFormatter.shortDate)
-                            .dateText(opacity: 0.6)
-                        Text(entry.emotion)
-                            .momoTextBold()
+                VStack {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(entry.date, formatter: DateFormatter.shortDate)
+                                .dateText(opacity: 0.6)
+                            Text(entry.emotion)
+                                .momoTextBold()
+                        }
+                        Spacer()
+                        if !isExpanded {
+                            BlobView(pct: $pct, isStatic: true, scale: isExpanded ? 0.6 : 0.2)
+                                .padding(.trailing, 16)
+                        }
                     }
-                    .matchedGeometryEffect(id: "text\(entry.id)", in: animation)
-                    Spacer()
-                    BlobView(pct: $pct, isStatic: true, scale: 0.25)
-                        .padding(.trailing, 16)
-                        .matchedGeometryEffect(id: "blob\(entry.id)", in: animation)
+                    if isExpanded {
+                        //BlobView(pct: $pct, isStatic: true, scale: isExpanded ? 0.6 : 0.25)
+                    }
                 }
-                .frame(width: .infinity, height: 60)
-                .padding(24)
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .padding([.leading, .trailing], 24)
+                .padding([.top, .bottom], 16)
                 .background(VisualEffectBlur(blurStyle: .dark))
-                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            }
+                .clipShape(
+                    RoundedRectangle(cornerRadius: 8, style: .continuous))
+//
+//
+//                HStack {
+//                    VStack(alignment: .leading, spacing: 8) {
+//                        Text(entry.date, formatter: DateFormatter.shortDate)
+//                            .dateText(opacity: 0.6)
+//                        Text(entry.emotion)
+//                            .momoTextBold()
+//                    }
+//                    //.matchedGeometryEffect(id: "text\(entry.id)", in: animation)
+//                    Spacer()
+//                    BlobView(pct: $pct, isStatic: true, scale: 0.25)
+//                        .padding(.trailing, 16)
+//                        .matchedGeometryEffect(id: "blob\(entry.id)", in: animation)
+//                }
+//                .frame(minWidth: 0, maxWidth: .infinity)
+//                .padding(24)
+//                .background(VisualEffectBlur(blurStyle: .dark))
+//                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+//
         }
         .onTapGesture {
-            withAnimation(.ease()) {
+            withAnimation(.spring()) {
                 self.isExpanded.toggle()
             }
         }
         .onAppear {
-            //self.isExpanded = true
+            self.isExpanded = false
         }
     }
 }
