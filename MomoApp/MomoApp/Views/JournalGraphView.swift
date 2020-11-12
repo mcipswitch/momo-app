@@ -5,7 +5,9 @@
 //  Created by Priscilla Ip on 2020-10-28.
 //
 
-// Inspired by: https://levelup.gitconnected.com/snap-to-item-scrolling-debccdcbb22f
+/*
+ Inspired by: https://levelup.gitconnected.com/snap-to-item-scrolling-debccdcbb22f
+ */
 
 import SwiftUI
 
