@@ -11,17 +11,17 @@
 
 import SwiftUI
 
-struct JournalGraphView: View {
+struct Test: View {
     @State var value: CGFloat
-
+    
     @State private var nDays: Int = 7
     @State private var currentDay: Int = 0
     @State private var selectedDay: Int = 0
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
-
+    
     @State private var isSelected: Bool = false
-
+    
 
     var date = Date()
 
@@ -32,14 +32,14 @@ struct JournalGraphView: View {
     private var totalOffset: CGFloat {
         return currentOffset + dragOffset
     }
-
+    
     var body: some View {
         let days = date.getDates(forLastNDays: nDays)
         let itemWidth: CGFloat = 25
         let columnLayout: [GridItem] = Array(
             repeating: .init(.flexible(), spacing: itemWidth),
             count: nDays)
-
+        
         ZStack {
             GeometryReader { geometry in
 
@@ -50,7 +50,7 @@ struct JournalGraphView: View {
                 // Calculate which line we are closest to
                 let indexShift = Int(round(dragOffset / itemSpacing))
                 let selectedIndex = selectedDay + indexShift
-
+                
                 LazyVGrid(
                     columns: columnLayout,
                     alignment: .center
@@ -68,7 +68,8 @@ struct JournalGraphView: View {
                                 .momoTextBold(size: 14)
                         }
                         .frame(minWidth: itemWidth, minHeight: geometry.size.height)
-
+                        .border(Color.yellow.opacity(0.1))
+                        
                         // Make whole stack tappable
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -78,14 +79,14 @@ struct JournalGraphView: View {
                             self.handleSnap(to: offset)
                             self.selectedDay = index
                         }
-
+                        
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(value: $value, preferences: preferences)
                                 .offset(x: self.totalOffset)
                                 .gesture(DragGesture()
                                             .onChanged { value in
                                                 dragOffset = value.translation.width
-
+                                                
                                                 // Calculate out of bounds threshold
                                                 let offsetBounds = itemSpacing * CGFloat(indexShift)
                                                 let threshold = 0.25 * itemSpacing
@@ -126,77 +127,23 @@ struct JournalGraphView: View {
             self.selectedDay = currentDay
         }
     }
-
+    
     // MARK: - Internal Methods
-
+    
     private func handleSnap(to offset: CGFloat) {
         withAnimation(.ease()) {
             self.currentOffset += CGFloat(offset)
             self.dragOffset = 0
         }
     }
-
-}
-
-// MARK: - Views
-
-struct SelectionLine: View {
-    @Binding var value: CGFloat
-    let preferences: Anchor<CGRect>?
     
-    var body: some View {
-        let width: CGFloat = 4
-        
-        GeometryReader { geometry in
-            preferences.map {
-                RoundedRectangle(cornerRadius: width / 2)
-                    .fill(Color.momo)
-                    .frame(width: width, height: geometry[$0].height)
-                    .frame(
-                        width: geometry.size.width,
-                        height: geometry[$0].height,
-                        alignment: .center
-                    )
-                    .contentShape(Rectangle())
-                
-                //                    .overlay(
-                //                        Circle()
-                //                            .strokeBorder(Color.momo, lineWidth: 4)
-                //                            .frame(width: 18)
-                //                    )
-            }
-        }
-    }
-}
-
-struct GraphLine: View {
-    var body: some View {
-        Rectangle()
-            .foregroundColor(.clear).frame(width: 1)
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [.gray, .clear]),
-                    startPoint: .bottom,
-                    endPoint: .top)
-            )
-    }
-}
-
-// MARK: - Preference Keys
-
-struct SelectionPreferenceKey: PreferenceKey {
-    typealias Value = Anchor<CGRect>?
-    static var defaultValue: Value = nil
-    static func reduce(value: inout Value, nextValue: () -> Value) {
-        value = nextValue()
-    }
 }
 
 // MARK: - Previews
 
-struct JournalGraphView_Previews: PreviewProvider {
+struct Test_Previews: PreviewProvider {
     static var previews: some View {
-        JournalGraphView(value: CGFloat(0.5))
+        Test(value: CGFloat(0.5))
             .background(
                 Image("background")
                     .edgesIgnoringSafeArea(.all)

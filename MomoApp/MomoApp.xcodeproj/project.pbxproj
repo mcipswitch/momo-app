@@ -52,6 +52,7 @@
 		93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DB0F5B253656180074EBB6 /* Binding + Extension.swift */; };
 		93E9A338251D29900095D48C /* ColorRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E9A337251D29900095D48C /* ColorRing.swift */; };
 		93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EB5C602527891900087D0B /* UIApplication + Extension.swift */; };
+		93ECC017255DF82700434EC5 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ECC016255DF82700434EC5 /* Test.swift */; };
 		93EF797D254A07F20062571F /* MomoJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF797C254A07F20062571F /* MomoJournalView.swift */; };
 		93EF7980254A146A0062571F /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF797F254A146A0062571F /* BackButton.swift */; };
 		93EF7985254A14BE0062571F /* NextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF7984254A14BE0062571F /* NextButton.swift */; };
@@ -109,6 +110,7 @@
 		93DB0F5B253656180074EBB6 /* Binding + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding + Extension.swift"; sourceTree = "<group>"; };
 		93E9A337251D29900095D48C /* ColorRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorRing.swift; sourceTree = "<group>"; };
 		93EB5C602527891900087D0B /* UIApplication + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + Extension.swift"; sourceTree = "<group>"; };
+		93ECC016255DF82700434EC5 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		93EF797C254A07F20062571F /* MomoJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoJournalView.swift; sourceTree = "<group>"; };
 		93EF797F254A146A0062571F /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		93EF7984254A14BE0062571F /* NextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextButton.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */,
+				93ECC016255DF82700434EC5 /* Test.swift */,
 				930924FE25582D0800AA3934 /* JournalListView.swift */,
 				9309250125582DB300AA3934 /* EntryView.swift */,
 				938693912559073E00C7F79D /* VisualEffectBlur.swift */,
@@ -374,6 +377,7 @@
 				930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */,
 				93EF7980254A146A0062571F /* BackButton.swift in Sources */,
 				93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */,
+				93ECC017255DF82700434EC5 /* Test.swift in Sources */,
 				938693922559073E00C7F79D /* VisualEffectBlur.swift in Sources */,
 				93E9A338251D29900095D48C /* ColorRing.swift in Sources */,
 				93A65BFC250FDF1600BF756A /* CustomSlider.swift in Sources */,
