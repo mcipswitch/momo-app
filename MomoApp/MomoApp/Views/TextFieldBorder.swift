@@ -11,6 +11,7 @@ struct TextFieldBorder: View {
     @Binding var showHome: Bool
     @Binding var textFieldIsFocused: Bool
     var height: CGFloat = 2
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: height / 2)

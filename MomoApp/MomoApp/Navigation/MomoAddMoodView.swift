@@ -7,30 +7,6 @@
 
 import SwiftUI
 
-enum DragState {
-    case inactive
-    case pressing
-    case dragging(translation: CGSize)
-
-    var translation: CGSize {
-        switch self {
-        case .inactive, .pressing:
-            return .zero
-        case .dragging(let translation):
-            return translation
-        }
-    }
-
-    var isActive: Bool {
-        switch self {
-        case .pressing, .dragging:
-            return true
-        case .inactive:
-            return false
-        }
-    }
-}
-
 struct MomoAddMoodView: View {
     //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     @State private var showHome: Bool = true
@@ -38,12 +14,14 @@ struct MomoAddMoodView: View {
     
     @State private var originalPos = CGPoint.zero
     @State private var location: CGPoint? = nil
-    @GestureState private var fingerLocation: CGPoint? = nil
+//    @GestureState private var fingerLocation: CGPoint? = nil
+    @GestureState private var dragState: DragState = .inactive
+
+
     @GestureState private var startLocation: CGPoint? = nil
     @GestureState private var currentLocation: CGPoint? = nil
     
-    @State private var text = ""
-    @State private var textFieldIsFocused: Bool = false
+
     
     @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
@@ -52,18 +30,18 @@ struct MomoAddMoodView: View {
     @State private var isAnimating: Bool = false
     @State private var isResetting: Bool = false
     
-    @State private var emotionFieldComplete: Bool = false
-    
-    @State private var rainbowIsActive: Bool = false
-    @State private var rainbowDegrees: Double = 0
+    // Navigation State
+    @State private var emotionText = ""
+    @State private var textFieldIsFocused: Bool = false
+    @State private var emotionTextFieldCompleted: Bool = false
+
+
+
+    @State private var blurredColorWheelIsActive: Bool = false
+    @State private var blurredColorWheelDegrees: Double = 0
     @State private var buttonSize: CGFloat = 80
     
     @State private var showJournalView: Bool = false
-
-
-
-
-    @GestureState var dragState: DragState = .inactive
 
     // MARK: - Drag Gestures
     
@@ -79,7 +57,7 @@ struct MomoAddMoodView: View {
                 newLocation.y += value.translation.height
                 let distance = startLocation.distance(to: newLocation)
                 if distance > maxDistance {
-                    self.rainbowIsActive = (distance > maxDistance * 1.2) ? true : false
+                    self.blurredColorWheelIsActive = (distance > maxDistance * 1.2) ? true : false
                     let k = maxDistance / distance
                     let locationX = ((newLocation.x - startLocation.x) * k) + startLocation.x
                     let locationY = ((newLocation.y - startLocation.y) * k) + startLocation.y
@@ -97,22 +75,20 @@ struct MomoAddMoodView: View {
                 // It will reset once the gesture ends
                 state = startLocation ?? location
 
-
-
             }.onEnded(onDragEnded(drag:))
     }
     
     var fingerDrag: some Gesture {
         DragGesture(minimumDistance: 0)
-            .updating($fingerLocation) { value, fingerLocation, transaction in
-                fingerLocation = value.location
+            .updating($dragState) { value, fingerLocation, _ in
+                fingerLocation = .active(location: value.location, translation: value.translation)
             }
     }
 
     private func onDragEnded(drag: DragGesture.Value) {
         self.location = self.originalPos
         self.isDragging = false
-        self.rainbowIsActive = false
+        self.blurredColorWheelIsActive = false
         self.isResetting = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.isResetting = false
@@ -126,20 +102,20 @@ struct MomoAddMoodView: View {
         ZStack {
             GeometryReader { geometry in
                 
-                // Navigation Buttons
+                // Top Navigation
                 HStack {
                     BackButton(action: self.backButtonPressed)
                     Spacer()
-                    NextButton(isActive: $emotionFieldComplete, action: self.nextButtonPressed)
+                    NextButton(isActive: $emotionTextFieldCompleted, action: self.nextButtonPressed)
                 }
                 .modifier(SlideIn(showHome: $showHome, noDelay: .constant(false)))
-                .padding(16)
+                .padding()
                 .disabled(isResetting)
-                
-                // START: - Main View
+
+                // Main View
                 VStack(spacing: 48) {
                     
-                    // Date + TextField
+                    // Date + EmotionTextField
                     VStack(spacing: 36) {
                         Text(Date(), formatter: DateFormatter.shortDate)
                             .dateText(opacity: 0.6)
@@ -150,13 +126,13 @@ struct MomoAddMoodView: View {
                                 .momoTextBold()
                                 .modifier(SlideOut(showHome: $showHome))
                             VStack(spacing: 6) {
-                                EmotionTextField(text: $text, textFieldIsFocused: $textFieldIsFocused)
+                                EmotionTextField(text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
                                     .modifier(SlideIn(showHome: $showHome, noDelay: $textFieldIsFocused))
                                 TextFieldBorder(showHome: $showHome, textFieldIsFocused: $textFieldIsFocused)
                             }
                         }
-                        .onChange(of: text) { _ in
-                            self.emotionFieldComplete = text.isEmpty ? false : true
+                        .onChange(of: emotionText) { field in
+                            self.emotionTextFieldCompleted = field.isEmpty ? false : true
                         }
                         .frame(width: 180, height: 80)
                     }
@@ -173,18 +149,18 @@ struct MomoAddMoodView: View {
                             Text(isDragging ? "dragging..." : "")
                             Text(isResetting ? "resetting..." : "")
                             Text(isAnimating ? "animating..." : "")
-                            Text(rainbowIsActive ? "rainbow..." : "")
+                            Text(blurredColorWheelIsActive ? "rainbow..." : "")
                         }
                     }
                     
                     // Bottom Navigation
                     ZStack {
-                        BlurredColorBase(isActive: $rainbowIsActive, degrees: $rainbowDegrees)
+                        BlurredColorWheel(isActive: $blurredColorWheelIsActive, degrees: $blurredColorWheelDegrees)
                             .position(self.originalPos)
                         
                         GeometryReader { geometry in
                             ZStack(alignment: .center) {
-                                AddEmotionButton(showHome: $showHome, isAnimating: $isAnimating, buttonSize: $buttonSize, action: self.handleAddEmotion)
+                                AddEmotionButton(showHome: $showHome, isAnimating: $isAnimating, buttonSize: $buttonSize, action: self.addEmotionButtonPressed)
                                     .animation(isDragging ? .default : Animation
                                                 .bounce()
                                                 .delay(if: isAnimating, (isResetting ? 0 : 0.2))
@@ -197,19 +173,19 @@ struct MomoAddMoodView: View {
                                                 .bounce()
                                                 .delay(if: isAnimating, (isResetting ? 0 : 0.6))
                                     )
-                                SeeEntriesButton(action: self.handleSeeEntries)
+                                SeeEntriesButton(action: self.seeEntriesButtonPressed)
                                     .offset(y: 60)
                                     .modifier(SlideOut(showHome: $showHome))
                             }
                             .position(self.location ?? CGPoint(x: geometry.size.width / 2, y: buttonSize / 2))
                             .highPriorityGesture(showHome ? nil : simpleDrag.simultaneously(with: fingerDrag))
                             
-                            /// Temp gesture to show finger location
-                            if let fingerLocation = fingerLocation {
+                            // Temp gesture to show finger location
+                            if let fingerLocation = dragState {
                                 Circle()
                                     .stroke(Color.red, lineWidth: 2)
                                     .frame(width: 20, height: 20)
-                                    .position(fingerLocation)
+                                    .position(fingerLocation.location)
                             }
                         }
                         .onAppear {
@@ -233,20 +209,20 @@ struct MomoAddMoodView: View {
                 UIApplication.shared.endEditing() }
             .onChange(of: degrees) { value in
                 switch value {
-                case 0..<120: rainbowDegrees = 0
-                case 120..<240: rainbowDegrees = 120
-                case 240..<360: rainbowDegrees = 240
-                default: rainbowDegrees = 0 }}
+                case 0..<120: blurredColorWheelDegrees = 0
+                case 120..<240: blurredColorWheelDegrees = 120
+                case 240..<360: blurredColorWheelDegrees = 240
+                default: blurredColorWheelDegrees = 0 }}
         }
     }
     
     // MARK: - Internal Methods
     
-    private func handleAddEmotion() {
+    private func addEmotionButtonPressed() {
         if showHome { showHome.toggle() }
     }
     
-    private func handleSeeEntries() {
+    private func seeEntriesButtonPressed() {
         //self.showJournalView.toggle()
     }
     
@@ -266,17 +242,20 @@ struct MomoAddMoodView: View {
 struct EmotionTextField: View {
     @Binding var text: String
     @Binding var textFieldIsFocused: Bool
+
     var body: some View {
         ZStack(alignment: .center) {
+            // Makeshift Placeholder
             Text("My day in a word")
                 .momoTextBold(opacity: text.isEmpty ? 0.6 : 0)
             TextField("", text: $text, onEditingChanged: { editingChanged in
                 textFieldIsFocused = editingChanged ? true : false
-                print(textFieldIsFocused ? "focused" : "not focused")
             }, onCommit: {
+                // TODO: ???
                 print(text)
-            }).textFieldStyle(EmotionTextFieldStyle())
-            .onReceive(text.publisher.collect()) { characters in
+            })
+            .textFieldStyle(EmotionTextFieldStyle())
+            .onReceive(text.publisher.collect()) { _ in
                 self.text = String(text.prefix(20))
             }
         }

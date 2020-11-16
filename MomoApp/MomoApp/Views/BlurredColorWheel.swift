@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BlurredColorBase: View {
+struct BlurredColorWheel: View {
     @Binding var isActive: Bool
     @Binding var degrees: Double
     
@@ -38,6 +38,6 @@ struct BlurredColorBase: View {
 
 struct RainbowRing_Previews: PreviewProvider {
     static var previews: some View {
-        BlurredColorBase(isActive: .constant(true), degrees: .constant(90))
+        BlurredColorWheel(isActive: .constant(true), degrees: .constant(90))
     }
 }

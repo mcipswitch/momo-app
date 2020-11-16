@@ -19,5 +19,6 @@ struct NextButton: View {
             }
         }.buttonStyle(MomoButtonStyle(w: 90, h: 34, isActive: isActive))
         .disabled(!isActive)
+        .animation(.ease())
     }
 }

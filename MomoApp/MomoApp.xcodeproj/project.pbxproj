@@ -14,6 +14,7 @@
 		930925052558335C00AA3934 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930925042558335C00AA3934 /* DataManager.swift */; };
 		93092508255834B900AA3934 /* MockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93092507255834B900AA3934 /* MockDataManager.swift */; };
 		930ABB6F254A32E00050C1C4 /* JournalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */; };
+		930AE6B725633B520091EDA7 /* DragState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930AE6B625633B520091EDA7 /* DragState.swift */; };
 		931476A624F574980031D913 /* EmotionTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931476A524F574980031D913 /* EmotionTextFieldStyle.swift */; };
 		93159F4E251E3FAB004A99A4 /* MomoTextLinkStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */; };
 		9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9318888125582B870004CD4F /* EntriesViewModel.swift */; };
@@ -28,7 +29,7 @@
 		93519F5724E8CF640095DA38 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5624E8CF640095DA38 /* Preview Assets.xcassets */; };
 		93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5E24E8D0090095DA38 /* BlobShape.swift */; };
 		935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935FD32E24EA2E23008568FA /* ArcShape.swift */; };
-		9363153A2513A6B6005E20EA /* BlurredColorBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936315392513A6B6005E20EA /* BlurredColorBase.swift */; };
+		9363153A2513A6B6005E20EA /* BlurredColorWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936315392513A6B6005E20EA /* BlurredColorWheel.swift */; };
 		936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936C6CD525112E6A00650D4A /* AnimatableGradient.swift */; };
 		937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615852511D22300AEF59C /* CGPoint + Extension.swift */; };
 		937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615872512527100AEF59C /* UIScreen + Extension.swift */; };
@@ -70,6 +71,7 @@
 		930925042558335C00AA3934 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		93092507255834B900AA3934 /* MockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManager.swift; sourceTree = "<group>"; };
 		930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalGraphView.swift; sourceTree = "<group>"; };
+		930AE6B625633B520091EDA7 /* DragState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragState.swift; sourceTree = "<group>"; };
 		931476A524F574980031D913 /* EmotionTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionTextFieldStyle.swift; sourceTree = "<group>"; };
 		93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoTextLinkStyle.swift; sourceTree = "<group>"; };
 		9318888125582B870004CD4F /* EntriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesViewModel.swift; sourceTree = "<group>"; };
@@ -86,7 +88,7 @@
 		93519F5824E8CF640095DA38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93519F5E24E8D0090095DA38 /* BlobShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobShape.swift; sourceTree = "<group>"; };
 		935FD32E24EA2E23008568FA /* ArcShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcShape.swift; sourceTree = "<group>"; };
-		936315392513A6B6005E20EA /* BlurredColorBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredColorBase.swift; sourceTree = "<group>"; };
+		936315392513A6B6005E20EA /* BlurredColorWheel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredColorWheel.swift; sourceTree = "<group>"; };
 		936C6CD525112E6A00650D4A /* AnimatableGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableGradient.swift; sourceTree = "<group>"; };
 		937615852511D22300AEF59C /* CGPoint + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint + Extension.swift"; sourceTree = "<group>"; };
 		937615872512527100AEF59C /* UIScreen + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen + Extension.swift"; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				930105912514E0B9007F0E7A /* Modifiers.swift */,
+				930AE6B625633B520091EDA7 /* DragState.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -148,7 +151,7 @@
 				9309250125582DB300AA3934 /* EntryView.swift */,
 				938693912559073E00C7F79D /* VisualEffectBlur.swift */,
 				93E9A337251D29900095D48C /* ColorRing.swift */,
-				936315392513A6B6005E20EA /* BlurredColorBase.swift */,
+				936315392513A6B6005E20EA /* BlurredColorWheel.swift */,
 				938BBD0D2527B59000759092 /* TextFieldBorder.swift */,
 				938BBD0F2527BCF300759092 /* ActionButtonStyle.swift */,
 				9376158D2512581A00AEF59C /* MomoButtonStyle.swift */,
@@ -403,9 +406,10 @@
 				93EF7985254A14BE0062571F /* NextButton.swift in Sources */,
 				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
 				93159F4E251E3FAB004A99A4 /* MomoTextLinkStyle.swift in Sources */,
+				930AE6B725633B520091EDA7 /* DragState.swift in Sources */,
 				9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */,
 				93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */,
-				9363153A2513A6B6005E20EA /* BlurredColorBase.swift in Sources */,
+				9363153A2513A6B6005E20EA /* BlurredColorWheel.swift in Sources */,
 				9328BC2D252757E6005C893A /* ButtonStyle + Extension.swift in Sources */,
 				93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */,
 				93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */,
