@@ -45,22 +45,6 @@ struct ScrollingLineModifier: ViewModifier {
             .gesture(DragGesture()
                         .onChanged { value in
                             self.dragOffset = value.translation.width
-
-                            // Calculate out of bounds threshold
-//                            let offsetDistance = itemSpacing * CGFloat(indexShift)
-//                            let boundsThreshold = 0.25 * itemSpacing
-//                            let bounds = (
-//                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
-//                                max: boundsThreshold
-//                            )
-//
-//                            // Protect from scrolling out of bounds
-//                            if self.totalOffset > bounds.max {
-//                                self.dragOffset = offsetDistance + boundsThreshold
-//                            }
-//                            else if self.totalOffset < bounds.min {
-//                                self.dragOffset = offsetDistance - boundsThreshold
-//                            }
                         }
                         .onEnded { value in
                             // Set final offset (snap to item)

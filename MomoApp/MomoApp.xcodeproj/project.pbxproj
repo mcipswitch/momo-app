@@ -170,6 +170,7 @@
 			children = (
 				9318888125582B870004CD4F /* EntriesViewModel.swift */,
 				930925042558335C00AA3934 /* DataManager.swift */,
+				9309250A255834BC00AA3934 /* Mock */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -204,9 +205,8 @@
 		93519F4E24E8CF630095DA38 /* MomoApp */ = {
 			isa = PBXGroup;
 			children = (
-				9309250A255834BC00AA3934 /* Mock */,
-				9318888425582B8C0004CD4F /* ViewModel */,
 				936C6CD425112E1B00650D4A /* Old */,
+				9318888425582B8C0004CD4F /* ViewModel */,
 				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
 				93A65BFB250FDF1600BF756A /* CustomSlider.swift */,
 				931476A524F574980031D913 /* EmotionTextFieldStyle.swift */,

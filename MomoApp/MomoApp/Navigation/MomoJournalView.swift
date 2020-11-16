@@ -36,7 +36,7 @@ struct MomoJournalView: View {
                 // Main View
                 VStack(spacing: 48) {
                     if isGraphView {
-                        JournalGraphView(numOfEntries: $numOfEntries, value: pct)
+                        JournalGraphView(numOfEntries: numOfEntries, value: pct)
                         VStack(spacing: 12) {
                             Text(entrySelection?.date ?? Date(), formatter: DateFormatter.shortDate)
                                 .dateText(opacity: 0.6)

@@ -12,7 +12,6 @@ enum DragState {
     case pressing
     case dragging(translation: CGSize)
 
-    // dragging state is associated with the translation
     var translation: CGSize {
         switch self {
         case .inactive, .pressing:
@@ -22,7 +21,7 @@ enum DragState {
         }
     }
 
-    var isPressing: Bool {
+    var isActive: Bool {
         switch self {
         case .pressing, .dragging:
             return true
@@ -53,14 +52,19 @@ struct MomoAddMoodView: View {
     @State private var isAnimating: Bool = false
     @State private var isResetting: Bool = false
     
-    @State private var nextButtonIsActive: Bool = false
+    @State private var emotionFieldComplete: Bool = false
     
     @State private var rainbowIsActive: Bool = false
     @State private var rainbowDegrees: Double = 0
     @State private var buttonSize: CGFloat = 80
     
     @State private var showJournalView: Bool = false
-    
+
+
+
+
+    @GestureState var dragState: DragState = .inactive
+
     // MARK: - Drag Gestures
     
     var simpleDrag: some Gesture {
@@ -88,10 +92,13 @@ struct MomoAddMoodView: View {
                 self.degrees = location.angle(to: startLocation)
                 self.pct = self.degrees / 360
                 
-            }.updating($startLocation) { value, state, transaction in
+            }.updating($startLocation) { value, state, _ in
                 // Set startLocation to current button position
                 // It will reset once the gesture ends
                 state = startLocation ?? location
+
+
+
             }.onEnded(onDragEnded(drag:))
     }
     
@@ -121,10 +128,9 @@ struct MomoAddMoodView: View {
                 
                 // Navigation Buttons
                 HStack {
-                    BackButton(action: self.handleBack)
+                    BackButton(action: self.backButtonPressed)
                     Spacer()
-                    NextButton(isActive: $nextButtonIsActive, action: self.handleNext)
-                        .animation(.ease())
+                    NextButton(isActive: $emotionFieldComplete, action: self.nextButtonPressed)
                 }
                 .modifier(SlideIn(showHome: $showHome, noDelay: .constant(false)))
                 .padding(16)
@@ -150,7 +156,8 @@ struct MomoAddMoodView: View {
                             }
                         }
                         .onChange(of: text) { _ in
-                            self.nextButtonIsActive = text.isEmpty ? false : true }
+                            self.emotionFieldComplete = text.isEmpty ? false : true
+                        }
                         .frame(width: 180, height: 80)
                     }
                     
@@ -244,11 +251,11 @@ struct MomoAddMoodView: View {
     }
     
     // Navigation Buttons
-    private func handleBack() {
+    private func backButtonPressed() {
         self.showHome.toggle()
     }
     
-    private func handleNext() {
+    private func nextButtonPressed() {
         print("Confirmation Page")
     }
     

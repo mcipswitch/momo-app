@@ -27,16 +27,15 @@ class GlobalEnvironment: ObservableObject {
 struct JournalGraphView: View {
     @EnvironmentObject var env: GlobalEnvironment
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
-    @Binding var numOfEntries: Int
+    @State var numOfEntries: Int
     @State var indexSelection: Int = 0
 
     private var entries: [Entry] {
         return viewModel.entries.suffix(numOfEntries)
     }
 
-    private var items: CGFloat {
-        return CGFloat(numOfEntries)
-    }
+    private var items: CGFloat { CGFloat(numOfEntries)
+}
 
     @State var value: CGFloat
     @State private var animateOn: Bool = false
@@ -44,9 +43,9 @@ struct JournalGraphView: View {
     var date = Date()
 
     // Selection Line
-
-    @State var currentOffset: CGFloat = 0
-    @State var dragOffset: CGFloat = 0
+    @State private var position: CGPoint = .zero
+    @State private var currentOffset: CGFloat = 0
+    @State private var dragOffset: CGFloat = 0
     private var totalOffset: CGFloat { currentOffset + dragOffset }
 
     // MARK: - Body
@@ -100,37 +99,32 @@ struct JournalGraphView: View {
                         }
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(value: $value, preferences: preferences)
+                                .position(x: self.position.x + itemWidth / 2, y: self.position.y + geometry.size.height / 2)
                                 .offset(x: self.totalOffset)
                                 .gesture(
                                     DragGesture()
                                         .onChanged { value in
                                             self.dragOffset = value.translation.width
 
-
-
                                             // Calculate out of bounds threshold
-                                            let indexShift = Int(round(self.dragOffset / itemSpacing))
-                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
-                                            let boundsThreshold = 0.2 * itemSpacing
-                                            let bounds = (
-                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
-                                                max: boundsThreshold
-                                            )
+//                                            let indexShift = Int(round(value.translation.width / itemSpacing))
+//                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
+//                                            let boundsThreshold = 0.2 * itemSpacing
+//                                            let bounds = (
+//                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
+//                                                max: boundsThreshold
+//                                            )
+//
+//                                            // Protect from scrolling out of bounds
+//                                            if value.translation.width > bounds.max {
+//                                                //self.dragOffset = offsetDistance + boundsThreshold
+//                                            }
+//                                            else if value.translation.width < bounds.min {
+//                                                //self.dragOffset = offsetDistance - boundsThreshold
+//                                            }
 
-                                            // Protect from scrolling out of bounds
-                                            if self.totalOffset > bounds.max {
-                                                self.dragOffset = offsetDistance + boundsThreshold
-                                            }
-                                            else if self.totalOffset < bounds.min {
-                                                self.dragOffset = offsetDistance - boundsThreshold
-                                            }
-
-
-                                            print("current: \(self.currentOffset)")
-                                            print("drag: \(self.dragOffset)")
 
                                         }.onEnded { value in
-                                            // Set final offset (snap to item)
                                             let indexShift = Int(round(value.translation.width / itemSpacing))
                                             let newOffset = itemSpacing * CGFloat(indexShift)
                                             self.snap(to: newOffset)
@@ -168,6 +162,8 @@ struct JournalGraphView: View {
     }
 
     // MARK: - Internal Methods
+
+    var didSnap: (() -> Void)? = nil
 
     private func onDragEnded(drag: DragGesture.Value) {
 
@@ -263,7 +259,7 @@ struct ItemSpacingPreferenceKey: PreferenceKey {
 struct JournalGraphView_Previews: PreviewProvider {
     static var previews: some View {
         let env = GlobalEnvironment()
-        JournalGraphView(numOfEntries: .constant(7), value: CGFloat(0.5))
+        JournalGraphView(numOfEntries: 7, value: CGFloat(0.5))
             .background(
                 Image("background")
                     .edgesIgnoringSafeArea(.all)

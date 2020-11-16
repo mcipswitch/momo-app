@@ -19,5 +19,6 @@ struct MomoButtonStyle: ButtonStyle {
             .background(Color.momo)
             .cornerRadius(h / 2)
             .opacity(isActive ? 1 : 0.2)
+            .animation(.ease())
     }
 }
