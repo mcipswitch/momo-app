@@ -28,23 +28,32 @@ struct JournalGraphView: View {
     @EnvironmentObject var env: GlobalEnvironment
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     @Binding var numOfEntries: Int
-    @State var indexSelection: Int?
+    @State var indexSelection: Int = 0
 
     private var entries: [Entry] {
         return viewModel.entries.suffix(numOfEntries)
     }
 
-    @State var didTap: Bool = false
-
-    @State var value: CGFloat
-
-    @State private var animateOn: Bool = false
-
     private var items: CGFloat {
-        CGFloat(numOfEntries)
+        return CGFloat(numOfEntries)
     }
 
+    @State var didTap: Bool = false
+    @State var value: CGFloat
+    @State private var animateOn: Bool = false
+
     var date = Date()
+
+    // Selection Line
+    @State var currentOffset: CGFloat = 0
+    @State var dragOffset: CGFloat = 0
+    private var totalOffset: CGFloat { currentOffset + dragOffset }
+//    private var indexShift: Int {
+//        // Calculate which line to snap to
+//        Int(round(dragOffset / itemSpacing))
+//    }
+
+    // MARK: - Body
 
     var body: some View {
         ZStack {
@@ -63,21 +72,13 @@ struct JournalGraphView: View {
                         VStack {
                             ZStack {
                                 GraphLine()
-//                                    .anchorPreference(
-//                                        key: SelectionPreferenceKey.self,
-//                                        value: .bounds,
-//                                        transform: { anchor in
-//                                            self.indexSelection == index ? anchor : nil
-//                                        })
-                                if self.indexSelection == index {
-                                    SelectionLineTest()
-                                }
+                                    .anchorPreference(
+                                        key: SelectionPreferenceKey.self,
+                                        value: .bounds,
+                                        transform: { anchor in
+                                            self.indexSelection == index ? anchor : nil
+                                        })
                             }
-                            .onTapGesture {
-                                self.indexSelection = index
-                            }
-
-
                             VStack(spacing: 8) {
                                 Text("\(self.entries[index].date.getWeekday())")
                                     .momoTextBold(size: 12, opacity: 0.4)
@@ -93,29 +94,83 @@ struct JournalGraphView: View {
                                     .delay(Double(index) * 0.1)
                         )
 
-//                         Make whole stack tappable
-//                        .contentShape(Rectangle())
-                        // .onTapGesture { }
-                        // .modifier(ScrollingLineModifier(items: numOfEntries, itemWidth: itemWidth, itemSpacing: itemSpacing, index: index, tapGesture: true))
-//                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-//                            SelectionLine(value: $value, preferences: preferences)
-//                                .modifier(ScrollingLineModifier(items: numOfEntries, itemWidth: itemWidth, itemSpacing: itemSpacing, index: index, tapGesture: false))
-//                        })
+                        // Make whole stack tappable
+                        .contentShape(Rectangle())
+
+                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
+                            SelectionLine(value: $value, preferences: preferences)
+                                .offset(x: self.totalOffset)
+                                .gesture(
+                                    DragGesture()
+                                        .onChanged { value in
+                                            self.dragOffset = value.translation.width
+
+                                            // Calculate out of bounds threshold
+//                                            let indexShift = Int(round(self.dragOffset / itemSpacing))
+//                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
+//                                            let boundsThreshold = 0.25 * itemSpacing
+//                                            let bounds = (
+//                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
+//                                                max: boundsThreshold
+//                                            )
+//
+//                                            // Protect from scrolling out of bounds
+//                                            if self.totalOffset > bounds.max {
+//                                                self.dragOffset = offsetDistance + boundsThreshold
+//                                            }
+//                                            else if self.totalOffset < bounds.min {
+//                                                self.dragOffset = offsetDistance - boundsThreshold
+//                                            }
+                                        }
+                                        .onEnded { value in
+                                            // Set final offset (snap to item)
+                                            let indexShift = Int(round(self.dragOffset / itemSpacing))
+                                            let newOffset = itemSpacing * CGFloat(indexShift)
+                                            self.snap(to: newOffset)
+
+                                            // After delay, update the index selection
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                self.currentOffset = 0
+                                                self.indexSelection += indexShift
+                                            }
+                                        }
+                                )
+
+
+
+//                                .modifier(
+//                                    ScrollingLineModifier(
+//                                        items: numOfEntries,
+//                                        itemWidth: itemWidth,
+//                                        itemSpacing: itemSpacing,
+//                                        index: index,
+//                                        prevIndex: indexSelection))
+                        })
                     }
                 }
                 VStack {
-                    Text("ENV Index Selection: \(self.env.indexSelection)")
-                    Text("Index Selection: \(self.indexSelection ?? 0)")
+                    Text("ENV IDX Selection: \(self.env.indexSelection)")
+                    Text("IDX Selection: \(self.indexSelection)")
+                    Text("Current Offset: \(self.currentOffset)")
+                    Text("Drag Offset: \(self.dragOffset)")
                 }
-                .foregroundColor(Color.gray.opacity(0.2))
             }
         }
         .padding()
         .onAppear {
-            self.animateOn = true
-
             // Current day is default selection
             self.indexSelection = self.entries.count - 1
+
+            self.animateOn = true
+        }
+    }
+
+    // MARK: - Internal Methods
+
+    private func snap(to offset: CGFloat) {
+        withAnimation(.ease()) {
+            self.currentOffset += CGFloat(offset)
+            self.dragOffset = 0
         }
     }
 }
@@ -149,7 +204,7 @@ struct SelectionLine: View {
                         height: geometry[$0].height,
                         alignment: .center
                     )
-                    //.contentShape(Rectangle())
+                    .contentShape(Rectangle())
                 
                 //                    .overlay(
                 //                        Circle()
@@ -189,7 +244,6 @@ struct SelectionPreferenceKey: PreferenceKey {
 struct JournalGraphView_Previews: PreviewProvider {
     static var previews: some View {
         let env = GlobalEnvironment()
-
         JournalGraphView(numOfEntries: .constant(7), value: CGFloat(0.5))
             .background(
                 Image("background")

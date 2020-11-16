@@ -26,14 +26,14 @@ struct ScrollingLineModifier: ViewModifier {
     var itemWidth: CGFloat
     var itemSpacing: CGFloat
     var index: Int
-    var tapGesture: Bool
+    var prevIndex: Int
 
-    init(items: Int, itemWidth: CGFloat, itemSpacing: CGFloat, index: Int, tapGesture: Bool) {
+    init(items: Int, itemWidth: CGFloat, itemSpacing: CGFloat, index: Int, prevIndex: Int) {
         self.items = items
         self.itemWidth = itemWidth
         self.itemSpacing = itemSpacing
         self.index = index
-        self.tapGesture = tapGesture
+        self.prevIndex = prevIndex
 
         self._currentOffset = State(initialValue: 0)
         self._dragOffset = State(initialValue: 0)
@@ -42,59 +42,31 @@ struct ScrollingLineModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .offset(x: self.totalOffset)
-            .gesture(tapGesture ?
-                        TapGesture()
-                        .onEnded { _ in
-                            let indexShift = index - self.env.indexSelection
-                            self.env.shiftIndex(by: indexShift)
-                            self.currentOffset = 0
-                        } : nil
-            )
-            .gesture(!tapGesture ?
-                        DragGesture()
+            .gesture(DragGesture()
                         .onChanged { value in
-
-                            print("currentOffset: \(self.currentOffset)")
-                            print("dragOffset: \(self.dragOffset)")
-
                             self.dragOffset = value.translation.width
 
                             // Calculate out of bounds threshold
-                            //                            let offsetDistance = itemSpacing * CGFloat(indexShift)
-                            //                            let boundsThreshold = 0.25 * itemSpacing
-                            //                            let bounds = (
-                            //                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
-                            //                                max: boundsThreshold
-                            //                            )
-
-                            // Protect from scrolling out of bounds
-
-                            // WHY DOES THIS DISAPPEAR WHEN THE GESTURE GOES OUT OF BOUNDS???
-
-                            //                            if self.totalOffset > bounds.max {
-                            //                                self.dragOffset = offsetDistance + boundsThreshold
-                            //                            }
-                            //                            else if self.totalOffset < bounds.min {
-                            //                                self.dragOffset = offsetDistance - boundsThreshold
-                            //                            }
+//                            let offsetDistance = itemSpacing * CGFloat(indexShift)
+//                            let boundsThreshold = 0.25 * itemSpacing
+//                            let bounds = (
+//                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
+//                                max: boundsThreshold
+//                            )
+//
+//                            // Protect from scrolling out of bounds
+//                            if self.totalOffset > bounds.max {
+//                                self.dragOffset = offsetDistance + boundsThreshold
+//                            }
+//                            else if self.totalOffset < bounds.min {
+//                                self.dragOffset = offsetDistance - boundsThreshold
+//                            }
                         }
                         .onEnded { value in
-
-
-
                             // Set final offset (snap to item)
                             let newOffset = self.itemSpacing * CGFloat(self.indexShift)
-
                             self.snap(to: newOffset)
-                            self.env.shiftIndex(by: indexShift)
-
-
-
-
-                            print("currentOffset: \(self.currentOffset)")
-                            print("dragOffset: \(self.dragOffset)")
-
-                        } : nil
+                        }
             )
     }
 
