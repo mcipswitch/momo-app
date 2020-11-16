@@ -21,6 +21,7 @@ extension DateFormatter {
 extension Date {
     enum DateFormat: String {
         case short = "EEEE, MMM d"
+        case weekday = "eeeee" // Monday: "M"
         case day = "d"
     }
     
@@ -28,6 +29,15 @@ extension Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format.rawValue
         return dateFormatter.string(from: self)
+    }
+
+    func getWeekday() -> String {
+        return self.toString(withFormat: .weekday)
+    }
+
+    func getDay() -> String {
+        let dayString = self.toString(withFormat: .day)
+        return dayString
     }
     
     func getDates(forLastNDays nDays: Int) -> [String] {

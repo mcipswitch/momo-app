@@ -19,7 +19,7 @@ extension DataManager: DataManagerProtocol {
     func fetchEntries() -> [Entry] {
         entries
     }
-    
+
     func add(entry: Entry) {
         entries.insert(entry, at: 0)
     }

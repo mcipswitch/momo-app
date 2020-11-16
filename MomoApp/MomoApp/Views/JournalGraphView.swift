@@ -11,134 +11,126 @@
 
 import SwiftUI
 
+//MARK: - Global Application State
+
+class GlobalEnvironment: ObservableObject {
+    @Published var entrySelection: Entry?
+    @Published var indexSelection: Int = 6
+
+    func shiftIndex(by amount: Int) {
+        withAnimation(Animation.easeInOut(duration: 0.05)) {
+            self.indexSelection += amount
+        }
+    }
+}
+
 struct JournalGraphView: View {
+    @EnvironmentObject var env: GlobalEnvironment
+    @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
+    @Binding var numOfEntries: Int
+    @State var indexSelection: Int?
+
+    private var entries: [Entry] {
+        return viewModel.entries.suffix(numOfEntries)
+    }
+
+    @State var didTap: Bool = false
+
     @State var value: CGFloat
 
-    @State private var nDays: Int = 7
-    @State private var currentDay: Int = 0
-    @State private var selectedDay: Int = 0
-    @State private var currentOffset: CGFloat = 0
-    @State private var dragOffset: CGFloat = 0
+    @State private var animateOn: Bool = false
 
-    @State private var isSelected: Bool = false
-
+    private var items: CGFloat {
+        CGFloat(numOfEntries)
+    }
 
     var date = Date()
 
-    private var scale: CGFloat {
-        return CGFloat(nDays)
-    }
-
-    private var totalOffset: CGFloat {
-        return currentOffset + dragOffset
-    }
-
     var body: some View {
-        let days = date.getDates(forLastNDays: nDays)
-        let itemWidth: CGFloat = 25
-        let columnLayout: [GridItem] = Array(
-            repeating: .init(.flexible(), spacing: itemWidth),
-            count: nDays)
-
         ZStack {
             GeometryReader { geometry in
 
                 // Calculate the spacing between graph lines
-                let itemFrameSpacing = (geometry.size.width - (itemWidth * scale)) / (scale - 1)
+                let itemWidth: CGFloat = 25
+                let itemFrameSpacing = (geometry.size.width - (itemWidth * items)) / (items - 1)
                 let itemSpacing = itemWidth + itemFrameSpacing
+                let columnLayout: [GridItem] = Array(
+                    repeating: .init(.flexible(), spacing: itemFrameSpacing),
+                    count: numOfEntries)
 
-                // Calculate which line we are closest to
-                let indexShift = Int(round(dragOffset / itemSpacing))
-                let selectedIndex = selectedDay + indexShift
-
-                LazyVGrid(
-                    columns: columnLayout,
-                    alignment: .center
-                ) {
-                    ForEach(0 ..< nDays) { index in
+                LazyVGrid(columns: columnLayout, alignment: .center) {
+                    ForEach(0 ..< numOfEntries) { index in
                         VStack {
-                            GraphLine()
-                                .anchorPreference(
-                                    key: SelectionPreferenceKey.self,
-                                    value: .bounds,
-                                    transform: { anchor in
-                                        self.currentDay == index ? anchor : nil
-                                    })
-                            Text("\(days[index])")
-                                .momoTextBold(size: 14)
+                            ZStack {
+                                GraphLine()
+//                                    .anchorPreference(
+//                                        key: SelectionPreferenceKey.self,
+//                                        value: .bounds,
+//                                        transform: { anchor in
+//                                            self.indexSelection == index ? anchor : nil
+//                                        })
+                                if self.indexSelection == index {
+                                    SelectionLineTest()
+                                }
+                            }
+                            .onTapGesture {
+                                self.indexSelection = index
+                            }
+
+
+                            VStack(spacing: 8) {
+                                Text("\(self.entries[index].date.getWeekday())")
+                                    .momoTextBold(size: 12, opacity: 0.4)
+                                Text("\(self.entries[index].date.getDay())")
+                                    .momoTextBold(size: 14)
+                            }
                         }
                         .frame(minWidth: itemWidth, minHeight: geometry.size.height)
+                        // Animate on the graph lines
+                        .opacity(animateOn ? 1 : 0)
+                        .animation(Animation
+                                    .easeInOut(duration: 2)
+                                    .delay(Double(index) * 0.1)
+                        )
 
-                        // Make whole stack tappable
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            // Calculate final offset
-                            let indexShift = index - selectedIndex
-                            let offset = itemSpacing * CGFloat(indexShift)
-                            self.handleSnap(to: offset)
-                            self.selectedDay = index
-                        }
-
-                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-                            SelectionLine(value: $value, preferences: preferences)
-                                .offset(x: self.totalOffset)
-                                .gesture(DragGesture()
-                                            .onChanged { value in
-                                                dragOffset = value.translation.width
-
-                                                // Calculate out of bounds threshold
-                                                let offsetBounds = itemSpacing * CGFloat(indexShift)
-                                                let threshold = 0.25 * itemSpacing
-                                                let bounds = (
-                                                    min: -(itemSpacing * (scale - 1) + threshold),
-                                                    max: threshold
-                                                )
-                                                // Protect from dragging out of bounds
-                                                if self.totalOffset > bounds.max {
-                                                    dragOffset = offsetBounds + threshold
-                                                }
-                                                if self.totalOffset < bounds.min {
-                                                    dragOffset = offsetBounds - threshold
-                                                }
-                                            }
-                                            .onEnded { value in
-                                                let offset = itemSpacing * CGFloat(indexShift)
-                                                self.handleSnap(to: offset)
-                                                self.selectedDay = selectedIndex
-                                            }
-                                )
-                        })
+//                         Make whole stack tappable
+//                        .contentShape(Rectangle())
+                        // .onTapGesture { }
+                        // .modifier(ScrollingLineModifier(items: numOfEntries, itemWidth: itemWidth, itemSpacing: itemSpacing, index: index, tapGesture: true))
+//                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
+//                            SelectionLine(value: $value, preferences: preferences)
+//                                .modifier(ScrollingLineModifier(items: numOfEntries, itemWidth: itemWidth, itemSpacing: itemSpacing, index: index, tapGesture: false))
+//                        })
                     }
                 }
                 VStack {
-                    Text("Active Idx: \(self.currentDay)")
-                    Text("Selected Idx: \(self.selectedDay)")
-                    Text("Current: \(self.currentOffset)")
-                    Text("Drag: \(self.dragOffset)")
+                    Text("ENV Index Selection: \(self.env.indexSelection)")
+                    Text("Index Selection: \(self.indexSelection ?? 0)")
                 }
-                .foregroundColor(Color.gray.opacity(0.5))
+                .foregroundColor(Color.gray.opacity(0.2))
             }
         }
         .padding()
         .onAppear {
-            // As default, current day is active
-            self.currentDay = days.count - 1
-            self.selectedDay = currentDay
+            self.animateOn = true
+
+            // Current day is default selection
+            self.indexSelection = self.entries.count - 1
         }
     }
-
-    // MARK: - Internal Methods
-
-    private func handleSnap(to offset: CGFloat) {
-        withAnimation(.ease()) {
-            self.currentOffset += CGFloat(offset)
-            self.dragOffset = 0
-        }
-    }
-
 }
 
 // MARK: - Views
+
+struct SelectionLineTest: View {
+    let width: CGFloat = 4
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: width / 2)
+            .fill(Color.momo)
+            .frame(width: width)
+    }
+}
 
 struct SelectionLine: View {
     @Binding var value: CGFloat
@@ -157,7 +149,7 @@ struct SelectionLine: View {
                         height: geometry[$0].height,
                         alignment: .center
                     )
-                    .contentShape(Rectangle())
+                    //.contentShape(Rectangle())
                 
                 //                    .overlay(
                 //                        Circle()
@@ -196,10 +188,13 @@ struct SelectionPreferenceKey: PreferenceKey {
 
 struct JournalGraphView_Previews: PreviewProvider {
     static var previews: some View {
-        JournalGraphView(value: CGFloat(0.5))
+        let env = GlobalEnvironment()
+
+        JournalGraphView(numOfEntries: .constant(7), value: CGFloat(0.5))
             .background(
                 Image("background")
                     .edgesIgnoringSafeArea(.all)
             )
+            .environmentObject(env)
     }
 }

@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct MomoJournalView: View {
+    @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
+    @State var entrySelection: Entry?
+    @State var numOfEntries: Int = 7
     @State var isGraphView: Bool = true
     @State var pct: CGFloat = 0.5
-    @State var word = "Sunflower"
     
     var body: some View {    
         ZStack {
             GeometryReader { geometry in
+
                 // Navigation Buttons
                 ZStack {
                     HStack {
@@ -33,17 +36,18 @@ struct MomoJournalView: View {
                 // Main View
                 VStack(spacing: 48) {
                     if isGraphView {
-                        JournalGraphView(value: pct)
+                        JournalGraphView(numOfEntries: $numOfEntries, value: pct)
                         VStack(spacing: 12) {
-                            Text(Date(), formatter: DateFormatter.shortDate)
+                            Text(entrySelection?.date ?? Date(), formatter: DateFormatter.shortDate)
                                 .dateText(opacity: 0.6)
-                            Text(word)
+                            Text(entrySelection?.emotion ?? "")
                                 .momoTextBold()
                             BlobView(pct: $pct, isStatic: false)
                                 .scaleEffect(0.60)
                             Spacer()
                         }
                     } else {
+                        // TODO: Inject with entry
                         JournalListView()
                     }
                 }
@@ -53,6 +57,9 @@ struct MomoJournalView: View {
         .background(Image("background")
                         .edgesIgnoringSafeArea(.all)
         )
+        .onAppear {
+            self.entrySelection = viewModel.entries.first
+        }
     }
     
     // MARK: - Internal Methods
@@ -72,8 +79,12 @@ struct MomoJournalView: View {
     }
 }
 
+// MARK: - Previews
+
 struct MomoJournalView_Previews: PreviewProvider {
     static var previews: some View {
+        let env = GlobalEnvironment()
         MomoJournalView()
+            .environmentObject(env)
     }
 }
