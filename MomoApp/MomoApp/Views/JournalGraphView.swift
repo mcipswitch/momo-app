@@ -96,7 +96,17 @@ struct JournalGraphView: View {
 
                         // Make whole stack tappable
                         .contentShape(Rectangle())
+                        .onTapGesture {
+                            let indexShift = index - self.indexSelection
+                            let newOffset = itemSpacing * CGFloat(indexShift)
+                            self.snap(to: newOffset)
 
+                            // After delay, update the index selection
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                self.currentOffset = 0
+                                self.indexSelection += indexShift
+                            }
+                        }
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(value: $value, preferences: preferences)
                                 .offset(x: self.totalOffset)
