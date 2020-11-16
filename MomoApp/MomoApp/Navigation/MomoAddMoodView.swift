@@ -7,6 +7,31 @@
 
 import SwiftUI
 
+enum DragState {
+    case inactive
+    case pressing
+    case dragging(translation: CGSize)
+
+    // dragging state is associated with the translation
+    var translation: CGSize {
+        switch self {
+        case .inactive, .pressing:
+            return .zero
+        case .dragging(let translation):
+            return translation
+        }
+    }
+
+    var isPressing: Bool {
+        switch self {
+        case .pressing, .dragging:
+            return true
+        case .inactive:
+            return false
+        }
+    }
+}
+
 struct MomoAddMoodView: View {
     //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     @State private var showHome: Bool = true
@@ -67,16 +92,7 @@ struct MomoAddMoodView: View {
                 // Set startLocation to current button position
                 // It will reset once the gesture ends
                 state = startLocation ?? location
-            }.onEnded { _ in
-                self.location = self.originalPos
-                self.isDragging = false
-                self.rainbowIsActive = false
-                
-                self.isResetting = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.isResetting = false
-                }
-            }
+            }.onEnded(onDragEnded(drag:))
     }
     
     var fingerDrag: some Gesture {
@@ -84,6 +100,16 @@ struct MomoAddMoodView: View {
             .updating($fingerLocation) { value, fingerLocation, transaction in
                 fingerLocation = value.location
             }
+    }
+
+    private func onDragEnded(drag: DragGesture.Value) {
+        self.location = self.originalPos
+        self.isDragging = false
+        self.rainbowIsActive = false
+        self.isResetting = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.isResetting = false
+        }
     }
     
     // MARK: - Body

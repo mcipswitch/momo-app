@@ -38,20 +38,16 @@ struct JournalGraphView: View {
         return CGFloat(numOfEntries)
     }
 
-    @State var didTap: Bool = false
     @State var value: CGFloat
     @State private var animateOn: Bool = false
 
     var date = Date()
 
     // Selection Line
+
     @State var currentOffset: CGFloat = 0
     @State var dragOffset: CGFloat = 0
     private var totalOffset: CGFloat { currentOffset + dragOffset }
-//    private var indexShift: Int {
-//        // Calculate which line to snap to
-//        Int(round(dragOffset / itemSpacing))
-//    }
 
     // MARK: - Body
 
@@ -100,12 +96,7 @@ struct JournalGraphView: View {
                             let indexShift = index - self.indexSelection
                             let newOffset = itemSpacing * CGFloat(indexShift)
                             self.snap(to: newOffset)
-
-                            // After delay, update the index selection
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                self.currentOffset = 0
-                                self.indexSelection += indexShift
-                            }
+                            self.updateIndexSelection(by: indexShift)
                         }
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(value: $value, preferences: preferences)
@@ -115,54 +106,56 @@ struct JournalGraphView: View {
                                         .onChanged { value in
                                             self.dragOffset = value.translation.width
 
+
+
                                             // Calculate out of bounds threshold
-//                                            let indexShift = Int(round(self.dragOffset / itemSpacing))
-//                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
-//                                            let boundsThreshold = 0.25 * itemSpacing
-//                                            let bounds = (
-//                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
-//                                                max: boundsThreshold
-//                                            )
-//
-//                                            // Protect from scrolling out of bounds
-//                                            if self.totalOffset > bounds.max {
-//                                                self.dragOffset = offsetDistance + boundsThreshold
-//                                            }
-//                                            else if self.totalOffset < bounds.min {
-//                                                self.dragOffset = offsetDistance - boundsThreshold
-//                                            }
-                                        }
-                                        .onEnded { value in
-                                            // Set final offset (snap to item)
                                             let indexShift = Int(round(self.dragOffset / itemSpacing))
+                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
+                                            let boundsThreshold = 0.2 * itemSpacing
+                                            let bounds = (
+                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
+                                                max: boundsThreshold
+                                            )
+
+                                            // Protect from scrolling out of bounds
+                                            if self.totalOffset > bounds.max {
+                                                self.dragOffset = offsetDistance + boundsThreshold
+                                            }
+                                            else if self.totalOffset < bounds.min {
+                                                self.dragOffset = offsetDistance - boundsThreshold
+                                            }
+
+
+                                            print("current: \(self.currentOffset)")
+                                            print("drag: \(self.dragOffset)")
+
+                                        }.onEnded { value in
+                                            // Set final offset (snap to item)
+                                            let indexShift = Int(round(value.translation.width / itemSpacing))
                                             let newOffset = itemSpacing * CGFloat(indexShift)
                                             self.snap(to: newOffset)
-
-                                            // After delay, update the index selection
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                                self.currentOffset = 0
-                                                self.indexSelection += indexShift
-                                            }
+                                            self.updateIndexSelection(by: indexShift)
+//
+//                                            print(value.startLocation.x - value.location.x) // == dragOffset
                                         }
                                 )
 
 
 
-//                                .modifier(
-//                                    ScrollingLineModifier(
-//                                        items: numOfEntries,
-//                                        itemWidth: itemWidth,
-//                                        itemSpacing: itemSpacing,
-//                                        index: index,
-//                                        prevIndex: indexSelection))
+                            //                                .modifier(
+                            //                                    ScrollingLineModifier(
+                            //                                        items: numOfEntries,
+                            //                                        itemWidth: itemWidth,
+                            //                                        itemSpacing: itemSpacing,
+                            //                                        index: index,
+                            //                                        prevIndex: indexSelection))
                         })
                     }
                 }
                 VStack {
                     Text("ENV IDX Selection: \(self.env.indexSelection)")
                     Text("IDX Selection: \(self.indexSelection)")
-                    Text("Current Offset: \(self.currentOffset)")
-                    Text("Drag Offset: \(self.dragOffset)")
+                    Text("Drag: \(self.dragOffset)")
                 }
             }
         }
@@ -170,17 +163,27 @@ struct JournalGraphView: View {
         .onAppear {
             // Current day is default selection
             self.indexSelection = self.entries.count - 1
-
             self.animateOn = true
         }
     }
 
     // MARK: - Internal Methods
 
+    private func onDragEnded(drag: DragGesture.Value) {
+
+    }
+
     private func snap(to offset: CGFloat) {
         withAnimation(.ease()) {
             self.currentOffset += CGFloat(offset)
             self.dragOffset = 0
+        }
+    }
+
+    private func updateIndexSelection(by indexShift: Int) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.currentOffset = 0
+            self.indexSelection += indexShift
         }
     }
 }
@@ -242,9 +245,15 @@ struct GraphLine: View {
 // MARK: - Preference Keys
 
 struct SelectionPreferenceKey: PreferenceKey {
-    typealias Value = Anchor<CGRect>?
     static var defaultValue: Value = nil
-    static func reduce(value: inout Value, nextValue: () -> Value) {
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+        value = nextValue()
+    }
+}
+
+struct ItemSpacingPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat? = nil
+    static func reduce(value: inout CGFloat?, nextValue: () -> CGFloat?) {
         value = nextValue()
     }
 }
