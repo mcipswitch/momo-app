@@ -118,13 +118,7 @@ struct MomoAddMoodView: View {
                             Text("Hi, how are you feeling today?")
                                 .momoTextBold()
                                 .slideOut(if: $homeViewActive)
-                            VStack(spacing: 6) {
-                                EmotionTextField(text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
-                                    .slideIn(if: $homeViewActive)
-
-
-                                TextFieldBorder(showHome: $homeViewActive, textFieldIsFocused: $textFieldIsFocused)
-                            }
+                            EmotionTextField(homeViewActive: $homeViewActive, text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
                         }
                         .onChange(of: emotionText) { field in
                             self.emotionTextFieldCompleted = field.isEmpty ? false : true
@@ -270,26 +264,32 @@ struct MomoAddMoodView: View {
 // MARK: - Views
 
 struct EmotionTextField: View {
+    @Binding var homeViewActive: Bool
     @Binding var text: String
     @Binding var textFieldIsFocused: Bool
 
     var body: some View {
-        ZStack(alignment: .center) {
+        VStack(spacing: 6) {
+            ZStack(alignment: .center) {
 
-            // Placeholder
-            Text("My day in a word")
-                .momoTextBold(opacity: text.isEmpty ? 0.6 : 0)
+                // Placeholder
+                Text("My day in a word")
+                    .momoTextBold(opacity: text.isEmpty ? 0.6 : 0)
 
-            TextField("", text: $text, onEditingChanged: { editingChanged in
-                textFieldIsFocused = editingChanged ? true : false
-            }, onCommit: {
-                // TODO
-                print(text)
-            })
-            .textFieldStyle(EmotionTextFieldStyle())
-            .onReceive(text.publisher.collect()) { _ in
-                self.text = String(text.prefix(20))
+                TextField("", text: $text, onEditingChanged: { editingChanged in
+                    textFieldIsFocused = editingChanged ? true : false
+                }, onCommit: {
+                    // TODO
+                    print(text)
+                })
+                .textFieldStyle(EmotionTextFieldStyle())
+                .onReceive(text.publisher.collect()) { _ in
+                    self.text = String(text.prefix(20))
+                }
             }
+            .slideIn(if: $homeViewActive)
+
+            TextFieldBorder(showHome: $homeViewActive, textFieldIsFocused: $textFieldIsFocused)
         }
     }
 }
