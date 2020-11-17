@@ -41,8 +41,8 @@ struct JournalGraphView: View {
     var date = Date()
 
     // Selection Line
-    @State private var position: CGFloat = .zero
-    @State private var positionOffset: CGFloat = .zero
+    @State private var location: CGPoint = .zero
+    @GestureState private var startLocation: CGPoint? = nil
 
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
@@ -103,43 +103,49 @@ struct JournalGraphView: View {
                         )
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(value: $value, preferences: preferences)
-                                .position(x: self.position + itemWidth / 2, y: geometry.size.height / 2)
-                                .offset(x: self.totalOffset)
+                                .position(x: self.location.x + itemWidth / 2, y: geometry.size.height / 2)
+                                //.offset(x: self.totalOffset)
                                 .gesture(
                                     DragGesture()
                                         .onChanged { value in
-                                            self.dragOffset = value.translation.width
-
-
-
-                                            // Calculate out of bounds threshold
-                                            let indexShift = Int(round(value.translation.width / itemSpacing))
-                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
-                                            let boundsThreshold = 0 * itemSpacing
-                                            let bounds = (
-                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
-                                                max: boundsThreshold
-                                            )
+                                            var newLocation = startLocation ?? location
 
                                             // Protect from scrolling out of bounds
-                                            if value.translation.width > bounds.max {
-                                                self.dragOffset = offsetDistance + boundsThreshold
-                                            }
-                                            else if value.translation.width < bounds.min {
-                                                self.dragOffset = offsetDistance - boundsThreshold
-                                            }
+                                            let maxOffset = -itemSpacing * (items - 1)
+                                            newLocation.x = min(0, max(maxOffset, newLocation.x + value.translation.width))
+
+                                            self.location = newLocation
 
 
+//                                            self.dragOffset = value.translation.width
+
+//                                            // Calculate out of bounds threshold
+//                                            let indexShift = Int(round(value.translation.width / itemSpacing))
+//                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
+//                                            let boundsThreshold = 0 * itemSpacing
+//                                            let bounds = (
+//                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
+//                                                max: boundsThreshold
+//                                            )
+//
+//                                            // Protect from scrolling out of bounds
+//                                            if value.translation.width > bounds.max {
+//                                                self.dragOffset = offsetDistance + boundsThreshold
+//                                            }
+//                                            else if value.translation.width < bounds.min {
+//                                                self.dragOffset = offsetDistance - boundsThreshold
+//                                            }
+
+                                        }.updating($startLocation) { value, state, _ in
+                                            state = startLocation ?? location
                                         }.onEnded { value in
 
-                                            self.positionOffset = 0
 
-                                            let indexShift = Int(round(value.translation.width / itemSpacing))
-                                            let newOffset = itemSpacing * CGFloat(indexShift)
-                                            self.snap(to: newOffset)
-                                            self.updateIndexSelection(by: indexShift)
-//
-//                                            print(value.startLocation.x - value.location.x) // == dragOffset
+
+//                                            let indexShift = Int(round(value.translation.width / itemSpacing))
+//                                            let newOffset = itemSpacing * CGFloat(indexShift)
+//                                            self.snap(to: newOffset)
+//                                            self.updateIndexSelection(by: indexShift)
                                         }
                                 )
 
@@ -158,7 +164,6 @@ struct JournalGraphView: View {
                 VStack {
                     Text("ENV IDX Selection: \(self.env.indexSelection)")
                     Text("IDX Selection: \(self.indexSelection)")
-                    Text("Position: \(self.position + self.positionOffset)")
                     Text("Drag: \(self.dragOffset)")
                 }
             }

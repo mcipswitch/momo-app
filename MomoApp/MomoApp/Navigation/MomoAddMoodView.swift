@@ -10,13 +10,7 @@ import SwiftUI
 struct MomoAddMoodView: View {
     //    @ObservedObject private var textLimiter = TextLimiter(limit: 5)
     @State private var homeViewActive: Bool = true
-    
-    // Stored Original Position
-    @State private var originalPos = CGPoint.zero
-    @State private var buttonLocation: CGPoint? = nil
-    @GestureState private var dragState: DragState = .inactive
-    @GestureState private var startLocation: CGPoint? = nil
-    @GestureState private var currentLocation: CGPoint? = nil
+
     
     @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
@@ -36,17 +30,19 @@ struct MomoAddMoodView: View {
 
     private var buttonSize: CGFloat = 80
 
-
-
     // Add Emotion Button
-    @State var dragValue = CGSize.zero
-    @State var dragStart = CGPoint.zero
+    @GestureState private var dragState: DragState = .inactive
+    @State private var dragValue = CGSize.zero
+    @State private var dragStart = CGPoint.zero
+    @State private var buttonLocation: CGPoint? = nil
 
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
 
+    // TODO: Fix the broken drag
+    // ADD A DELAY AFTER EACH DRAG TO PREVENT THE BUG
     var resistanceDrag: some Gesture {
-        DragGesture()
+        DragGesture(minimumDistance: 0)
             .onChanged { value in
                 self.isDragging = true
 
@@ -71,51 +67,18 @@ struct MomoAddMoodView: View {
                 self.degrees = newLocation.angle(to: dragStart)
                 self.pct = self.degrees / 360
 
-            }.updating($startLocation) { value, state, _ in
-                // Set 'startLocation' to current button position
-                // It will reset once the gesture ends
-                //state = self.startLocation ?? self.buttonLocation
+            }.updating($dragState) { value, state, _ in
+                state = .active(location: value.location, translation: value.translation)
             }.onEnded { value in
                 self.isDragging = false
                 self.dragValue = .zero
                 self.blurredColorWheelIsActive = false
                 self.isResetting = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                     self.isResetting = false
                 }
             }
-    }
-    
-    var simpleDrag: some Gesture {
-        DragGesture(minimumDistance: 0)
-            .onChanged { value in
-                self.isDragging = true
-                
-                guard let startLocation = startLocation else { return }
-                let maxDistance: CGFloat = 40
-                var newLocation = startLocation
-                newLocation.x += value.translation.width
-                newLocation.y += value.translation.height
-                let distance = startLocation.distance(to: newLocation)
-                if distance > maxDistance {
-                    self.blurredColorWheelIsActive = (distance > maxDistance * 1.2) ? true : false
-                    let k = maxDistance / distance
-                    let locationX = ((newLocation.x - startLocation.x) * k) + startLocation.x
-                    let locationY = ((newLocation.y - startLocation.y) * k) + startLocation.y
-                    self.buttonLocation = CGPoint(x: locationX, y: locationY)
-                } else {
-                    self.buttonLocation = newLocation
-                }
-                
-                guard let location = buttonLocation else { return }
-                self.degrees = location.angle(to: startLocation)
-                self.pct = self.degrees / 360
-                
-            }.updating($startLocation) { value, state, _ in
-                // Set startLocation to current button position
-                // It will reset once the gesture ends
-                state = startLocation ?? buttonLocation
-            }.onEnded(onDragEnded(drag:))
     }
     
     var fingerDrag: some Gesture {
@@ -123,16 +86,6 @@ struct MomoAddMoodView: View {
             .updating($dragState) { value, fingerLocation, _ in
                 fingerLocation = .active(location: value.location, translation: value.translation)
             }
-    }
-
-    private func onDragEnded(drag: DragGesture.Value) {
-        self.buttonLocation = self.originalPos
-        self.isDragging = false
-        self.blurredColorWheelIsActive = false
-        self.isResetting = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.isResetting = false
-        }
     }
     
     // MARK: - Body
@@ -181,8 +134,7 @@ struct MomoAddMoodView: View {
                         VStack {
                             Text(self.homeViewActive ? "Home Active" : "")
                             Text("Pct: \(pct)")
-                            Text("Original Pos: x:\(Int(originalPos.x)), y:\(Int(originalPos.y))")
-                            Text("Starting Location: x:\(Int(startLocation?.x ?? 0)), y:\(Int(startLocation?.y ?? 0))")
+                            Text("Original Pos: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
                             Text("Button Pos: x:\(Int(buttonLocation?.x ?? 0)), y:\(Int(buttonLocation?.y ?? 0))")
                             Text("Angle: \(Int(degrees))")
                             //Text(isDragging ? "dragging..." : "")
@@ -198,7 +150,7 @@ struct MomoAddMoodView: View {
                     // Bottom Navigation
                     ZStack {
                         BlurredColorWheel(isActive: $blurredColorWheelIsActive, degrees: $blurredColorWheelDegrees)
-                            .position(self.originalPos)
+                            .position(self.dragStart)
 
                         // TODO: CLEAN UP ANIMATION HERE
                         GeometryReader { geometry in
@@ -216,19 +168,19 @@ struct MomoAddMoodView: View {
                                     )
 
                                 // TODO: Remove $isAnimating
-//                                ColorRing(size: buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
-//                                    .blur(radius: isAnimating ? 0 : 2)
-//                                    .opacity(isAnimating ? 1 : 0)
-//                                    .scaleEffect(isAnimating ? 1 : 1.1)
-//                                    /*
-//                                     Add delay so the 'Color Ring' appears after button morph.
-//                                     Remove delay if the button is resetting position.
-//                                     */
-//                                    .animation(dragState.isActive ? .default :
-//                                                self.homeViewActive ? .default : Animation
-//                                                .bounce()
-//                                                .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
-//                                    )
+                                ColorRing(size: buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
+                                    .blur(radius: isAnimating ? 0 : 2)
+                                    .opacity(isAnimating ? 1 : 0)
+                                    .scaleEffect(isAnimating ? 1 : 1.1)
+                                    /*
+                                     Add delay so the 'Color Ring' appears after button morph.
+                                     Remove delay if the button is resetting position.
+                                     */
+                                    .animation(dragState.isActive ? .resist() :
+                                                self.homeViewActive ? .resist() : Animation
+                                                .bounce()
+                                                .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
+                                    )
                                 SeeEntriesButton(action: self.seeEntriesButtonPressed)
                                     .offset(y: 60)
                                     .modifier(SlideOut(showHome: $homeViewActive))
@@ -236,8 +188,8 @@ struct MomoAddMoodView: View {
                             .offset(x: self.dragValue.width * 0.5, y: self.dragValue.height * 0.5)
                             .position(self.buttonLocation ?? CGPoint(x: geometry.size.width / 2,
                                                                      y: buttonSize / 2))
-                            .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag
-                                                    .simultaneously(with: self.fingerDrag))
+                            .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
+                            .disabled(self.isResetting)
 
                             // Temp gesture to show finger location
                             if let dragState = dragState {
@@ -250,8 +202,8 @@ struct MomoAddMoodView: View {
                         }
                         .onAppear {
                             // Set original position to center
-                            self.originalPos = CGPoint(x: geometry.size.width / 2, y: buttonSize / 2)
-                            self.buttonLocation = self.originalPos
+                            self.dragStart = CGPoint(x: geometry.size.width / 2, y: buttonSize / 2)
+                            self.buttonLocation = self.dragStart
                         }
                     }
                     .padding(.top, 64)
@@ -264,7 +216,7 @@ struct MomoAddMoodView: View {
                         .aspectRatio(contentMode: .fill)
                         .edgesIgnoringSafeArea(.all)
         )
-        .onChange(of: homeViewActive) { _ in
+        .onChange(of: self.homeViewActive) { _ in
             self.isAnimating.toggle()
             UIApplication.shared.endEditing()
         }
@@ -356,3 +308,45 @@ struct AddMoodProfile_Previews: PreviewProvider {
         MomoAddMoodView()
     }
 }
+
+// MARK: - Old
+
+//var simpleDrag: some Gesture {
+//    DragGesture(minimumDistance: 0)
+//        .onChanged { value in
+//            self.isDragging = true
+//
+//            guard let startLocation = startLocation else { return }
+//            let maxDistance: CGFloat = 40
+//            var newLocation = startLocation
+//            newLocation.x += value.translation.width
+//            newLocation.y += value.translation.height
+//            let distance = startLocation.distance(to: newLocation)
+//            if distance > maxDistance {
+//                self.blurredColorWheelIsActive = (distance > maxDistance * 1.2) ? true : false
+//                let k = maxDistance / distance
+//                let locationX = ((newLocation.x - startLocation.x) * k) + startLocation.x
+//                let locationY = ((newLocation.y - startLocation.y) * k) + startLocation.y
+//                self.buttonLocation = CGPoint(x: locationX, y: locationY)
+//            } else {
+//                self.buttonLocation = newLocation
+//            }
+//
+//            guard let location = buttonLocation else { return }
+//            self.degrees = location.angle(to: startLocation)
+//            self.pct = self.degrees / 360
+//
+//        }.updating($startLocation) { value, state, _ in
+//            // Set startLocation to current button position
+//            // It will reset once the gesture ends
+//            state = startLocation ?? buttonLocation
+//        }.onEnded { value in
+//            self.buttonLocation = self.originalPos
+//            self.isDragging = false
+//            self.blurredColorWheelIsActive = false
+//            self.isResetting = true
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                self.isResetting = false
+//            }
+//        }
+//}
