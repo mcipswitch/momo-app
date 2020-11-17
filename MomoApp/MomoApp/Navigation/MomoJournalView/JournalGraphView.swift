@@ -33,8 +33,7 @@ struct JournalGraphView: View {
         return viewModel.entries.suffix(numOfEntries)
     }
 
-    private var items: CGFloat { CGFloat(numOfEntries)
-}
+    private var items: CGFloat { CGFloat(numOfEntries) }
 
     @State var value: CGFloat
     @State private var animateOn: Bool = false
@@ -43,6 +42,7 @@ struct JournalGraphView: View {
 
     // Selection Line
     @State private var position: CGPoint = .zero
+
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
     private var totalOffset: CGFloat { currentOffset + dragOffset }
@@ -80,6 +80,8 @@ struct JournalGraphView: View {
                                     .momoTextBold(size: 14)
                             }
                         }
+                        // TODO: Disable Tap Gesture
+
                         .frame(minWidth: itemWidth, minHeight: geometry.size.height)
                         // Animate on the graph lines
                         .blur(radius: animateOn ? 0 : 2)
@@ -91,12 +93,17 @@ struct JournalGraphView: View {
 
                         // Make whole stack tappable
                         .contentShape(Rectangle())
-                        .onTapGesture {
-                            let indexShift = index - self.indexSelection
-                            let newOffset = itemSpacing * CGFloat(indexShift)
-                            self.snap(to: newOffset)
-                            self.updateIndexSelection(by: indexShift)
-                        }
+
+                        .gesture(
+                            // Using 'LongPressGesture' to avoid multiple quick taps
+                            LongPressGesture(minimumDuration: 0.2)
+                                .onEnded { _ in
+                                    let indexShift = index - self.indexSelection
+                                    let newOffset = itemSpacing * CGFloat(indexShift)
+                                    self.snap(to: newOffset)
+                                    self.updateIndexSelection(by: indexShift)
+                                }
+                        )
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(value: $value, preferences: preferences)
                                 .position(x: self.position.x + itemWidth / 2, y: self.position.y + geometry.size.height / 2)

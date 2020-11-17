@@ -51,7 +51,6 @@ struct MomoJournalView: View {
                         JournalListView()
                     }
                 }
-                .padding(.top, 48)
             }
         }
         .background(RadialGradient.momo
