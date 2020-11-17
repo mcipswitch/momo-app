@@ -36,7 +36,55 @@ struct MomoAddMoodView: View {
 
     private var buttonSize: CGFloat = 80
 
+
+
+    // Add Emotion Button
+    @State var dragValue = CGSize.zero
+    @State var dragStart = CGPoint.zero
+
     // MARK: - Drag Gestures
+    // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
+
+    var resistanceDrag: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                self.isDragging = true
+
+                // The lower the limit, the tighter the resistance
+                let limit: CGFloat = 200
+                let xOff = value.translation.width
+                let yOff = value.translation.height
+                let dist = sqrt(xOff*xOff + yOff*yOff);
+                let factor = 1 / (dist / limit + 1)
+                self.dragValue = CGSize(width: value.translation.width * factor,
+                                        height: value.translation.height * factor)
+
+                // Calculate distance to activate 'BlurredColorWheel'
+                let maxDistance: CGFloat = 40
+                var newLocation = self.dragStart
+                newLocation.x += value.translation.width
+                newLocation.y += value.translation.height
+                let distance = dragStart.distance(to: newLocation)
+                self.blurredColorWheelIsActive = distance > maxDistance ? true : false
+
+                // Calculate the degrees to activate correct part of 'BlurredColorWheel'
+                self.degrees = newLocation.angle(to: dragStart)
+                self.pct = self.degrees / 360
+
+            }.updating($startLocation) { value, state, _ in
+                // Set 'startLocation' to current button position
+                // It will reset once the gesture ends
+                //state = self.startLocation ?? self.buttonLocation
+            }.onEnded { value in
+                self.isDragging = false
+                self.dragValue = .zero
+                self.blurredColorWheelIsActive = false
+                self.isResetting = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.isResetting = false
+                }
+            }
+    }
     
     var simpleDrag: some Gesture {
         DragGesture(minimumDistance: 0)
@@ -90,8 +138,8 @@ struct MomoAddMoodView: View {
     // MARK: - Body
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
+        ZStack {
+            GeometryReader { geometry in
                 // Top Navigation
                 HStack {
                     BackButton(action: self.backButtonPressed)
@@ -162,32 +210,34 @@ struct MomoAddMoodView: View {
                                      Add delay so the 'Color Ring' disappears first.
                                      Remove delay if the button is resetting position.
                                      */
-                                    .animation(dragState.isActive ? .default : Animation
+                                    .animation(dragState.isActive ? .resist() : Animation
                                                 .bounce()
                                                 .delay(if: self.homeViewActive, (isResetting ? 0 : 0.2))
                                     )
 
                                 // TODO: Remove $isAnimating
-                                ColorRing(size: buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
-                                    .blur(radius: isAnimating ? 0 : 2)
-                                    .opacity(isAnimating ? 1 : 0)
-                                    .scaleEffect(isAnimating ? 1 : 1.1)
-                                    /*
-                                     Add delay so the 'Color Ring' appears after button morph.
-                                     Remove delay if the button is resetting position.
-                                     */
-                                    .animation(dragState.isActive ? .default :
-                                                self.homeViewActive ? .default : Animation
-                                                .bounce()
-                                                .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
-                                    )
+//                                ColorRing(size: buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
+//                                    .blur(radius: isAnimating ? 0 : 2)
+//                                    .opacity(isAnimating ? 1 : 0)
+//                                    .scaleEffect(isAnimating ? 1 : 1.1)
+//                                    /*
+//                                     Add delay so the 'Color Ring' appears after button morph.
+//                                     Remove delay if the button is resetting position.
+//                                     */
+//                                    .animation(dragState.isActive ? .default :
+//                                                self.homeViewActive ? .default : Animation
+//                                                .bounce()
+//                                                .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
+//                                    )
                                 SeeEntriesButton(action: self.seeEntriesButtonPressed)
                                     .offset(y: 60)
                                     .modifier(SlideOut(showHome: $homeViewActive))
                             }
+                            .offset(x: self.dragValue.width * 0.5, y: self.dragValue.height * 0.5)
                             .position(self.buttonLocation ?? CGPoint(x: geometry.size.width / 2,
                                                                      y: buttonSize / 2))
-                            .highPriorityGesture(self.homeViewActive ? nil : simpleDrag.simultaneously(with: fingerDrag))
+                            .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag
+                                                    .simultaneously(with: self.fingerDrag))
 
                             // Temp gesture to show finger location
                             if let dragState = dragState {
@@ -224,7 +274,6 @@ struct MomoAddMoodView: View {
             case 120..<240: blurredColorWheelDegrees = 120
             case 240..<360: blurredColorWheelDegrees = 240
             default: blurredColorWheelDegrees = 0 }}
-        //        }
     }
     
     // MARK: - Internal Methods
