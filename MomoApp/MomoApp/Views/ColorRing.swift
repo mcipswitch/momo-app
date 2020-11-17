@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ColorRing: View {
-    @Binding var size: CGFloat
+    @State var size: CGFloat
     @Binding var shiftColors: Bool
     @Binding var isDragging: Bool
     
@@ -17,6 +17,7 @@ struct ColorRing: View {
         let ring = LinearGradient(gradient: gradient,
                                   startPoint: .topLeading,
                                   endPoint: .bottomTrailing)
+
         ZStack {
             Circle()
                 .stroke(ring, lineWidth: 6)
@@ -26,6 +27,7 @@ struct ColorRing: View {
                             .easeInOut(duration: shiftColors ? 4 : 1)
                             .repeat(while: shiftColors, autoreverses: false)
                 )
+
             // When user drags joystick, ring will turn green
             Circle()
                 .stroke(Color.momo, lineWidth: 6)
@@ -40,6 +42,6 @@ struct ColorRing: View {
 
 struct ColorRing_Previews: PreviewProvider {
     static var previews: some View {
-        ColorRing(size: .constant(CGFloat(64)), shiftColors: .constant(true), isDragging: .constant(false))
+        ColorRing(size: CGFloat(64), shiftColors: .constant(true), isDragging: .constant(true))
     }
 }

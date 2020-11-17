@@ -4,7 +4,6 @@
 //
 //  Created by Priscilla Ip on 2020-10-28.
 //
-
 /*
  Inspired by: https://levelup.gitconnected.com/snap-to-item-scrolling-debccdcbb22f
  */
@@ -159,6 +158,7 @@ struct JournalGraphView: View {
             self.indexSelection = self.entries.count - 1
             self.animateOn = true
         }
+
     }
 
     // MARK: - Internal Methods

@@ -9,15 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        MomoAddMoodView()
-//        let env = GlobalEnvironment()
-//
-//        JournalGraphView(numOfEntries: 7, value: CGFloat(0.5))
-//            .background(
-//                Image("background")
-//                    .edgesIgnoringSafeArea(.all)
-//            )
-//            .environmentObject(env)
+//        MomoAddMoodView()
+        let env = GlobalEnvironment()
+
+        JournalGraphView(numOfEntries: 7, value: CGFloat(0.5))
+            .background(
+                Image("background")
+                    .edgesIgnoringSafeArea(.all)
+            )
+            .environmentObject(env)
     }
 }
 

@@ -31,4 +31,13 @@ enum DragState {
             return .zero
         }
     }
+
+    var isActive: Bool {
+        switch self {
+        case .active(_, _):
+            return true
+        default:
+            return false
+        }
+    }
 }

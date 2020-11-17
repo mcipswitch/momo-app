@@ -18,7 +18,7 @@ struct MomoJournalView: View {
         ZStack {
             GeometryReader { geometry in
 
-                // Navigation Buttons
+                // Top Navigation
                 ZStack {
                     HStack {
                         BackButton(action: self.handleBack)
@@ -54,7 +54,7 @@ struct MomoJournalView: View {
                 .padding(.top, 48)
             }
         }
-        .background(Image("background")
+        .background(RadialGradient.momo
                         .edgesIgnoringSafeArea(.all)
         )
         .onAppear {
