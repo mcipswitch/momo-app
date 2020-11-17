@@ -65,59 +65,47 @@ struct LinkText: ViewModifier {
 }
 
 // MARK: - Animations
+
 struct SlideIn: ViewModifier {
-    @Binding var showHome: Bool
-    @Binding var noDelay: Bool
+    @Binding var observedValue: Bool
+
     func body(content: Content) -> some View {
         content
-            .offset(y: showHome ? -5 : 0)
-            .opacity(showHome ? 0 : 1)
+            .offset(y: observedValue ? -5 : 0)
+            .opacity(observedValue ? 0 : 1)
             .animation(Animation
                         .ease()
-                        .delay(if: !showHome, 0.5)
-                        //.delay(showHome ? 0 : (noDelay ? 0 : 0.5))
+                        .delay(if: !observedValue, 0.5)
+
+                       // Not sure what this accomplishes
+                       //.delay(showHome ? 0 : (noDelay ? 0 : 0.5))
             )
     }
 }
 
 struct SlideOut: ViewModifier {
-    @Binding var showHome: Bool
+    @Binding var observedValue: Bool
+
     func body(content: Content) -> some View {
         content
-            .offset(y: showHome ? 0 : 5)
-            .opacity(showHome ? 1 : 0)
+            .offset(y: observedValue ? 0 : 5)
+            .opacity(observedValue ? 1 : 0)
             .animation(Animation
                         .ease()
-                        .delay(if: showHome, 0.5)
+                        .delay(if: observedValue, 0.5)
             )
     }
 }
 
-// MARK: - View + Extensions
-extension View {
-    func momoTextBold(size: CGFloat = 22, opacity: Double = 1) -> some View {
-        return self.modifier(MomoText(size: size, opacity: opacity))
-    }
-    func momoTextRegular(size: CGFloat = 22, opacity: Double = 1) -> some View {
-        return self.modifier(MomoTextRegular(size: size, opacity: opacity))
-    }
-    func calendarMonthText(size: CGFloat = 16) -> some View {
-        return self.modifier(CalendarMonthText(size: size))
-    }
-    func dateText(opacity: Double = 1) -> some View {
-        return self.modifier(DateText(opacity: opacity))
-    }
-    func linkText() -> some View {
-        return self.modifier(LinkText())
-    }
-    func momoButtonText(size: CGFloat) -> some View {
-        return self.modifier(MomoButtonText(size: size))
-    }
-}
+// MARK: -
 
-// MARK: - Text + Extension
-extension Text {
-    func underlineText() -> some View {
-        return self.underline().modifier(LinkText())
+extension View {
+
+    func slideIn(if value: Binding<Bool>) -> some View{
+        return modifier(SlideIn(observedValue: value))
+    }
+
+    func slideOut(if value: Binding<Bool>) -> some View {
+        return modifier(SlideOut(observedValue: value))
     }
 }

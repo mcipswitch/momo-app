@@ -11,6 +11,7 @@
 		930105922514E0B9007F0E7A /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930105912514E0B9007F0E7A /* Modifiers.swift */; };
 		9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */; };
 		9308077425645EF000A13156 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9308077325645EF000A13156 /* View+Extension.swift */; };
+		930807792564681100A13156 /* SimpleDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930807782564681100A13156 /* SimpleDrag.swift */; };
 		930924FF25582D0800AA3934 /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930924FE25582D0800AA3934 /* JournalListView.swift */; };
 		9309250225582DB300AA3934 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309250125582DB300AA3934 /* EntryView.swift */; };
 		930925052558335C00AA3934 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930925042558335C00AA3934 /* DataManager.swift */; };
@@ -52,7 +53,6 @@
 		938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E537024E983F3002653F0 /* UIColor + Extension.swift */; };
 		9390FB032563821200E2E53A /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390FB022563821200E2E53A /* HomeScreen.swift */; };
 		93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93976DE624EB6ABF0018C667 /* HomeView.swift */; };
-		93A65BFC250FDF1600BF756A /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFB250FDF1600BF756A /* CustomSlider.swift */; };
 		93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */; };
 		93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DB0F5B253656180074EBB6 /* Binding + Extension.swift */; };
 		93E9A338251D29900095D48C /* ColorRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E9A337251D29900095D48C /* ColorRing.swift */; };
@@ -71,6 +71,7 @@
 		930105912514E0B9007F0E7A /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCompletionObserverModifier.swift; sourceTree = "<group>"; };
 		9308077325645EF000A13156 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		930807782564681100A13156 /* SimpleDrag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrag.swift; sourceTree = "<group>"; };
 		930924FE25582D0800AA3934 /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
 		9309250125582DB300AA3934 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
 		930925042558335C00AA3934 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -114,7 +115,6 @@
 		938E537024E983F3002653F0 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		9390FB022563821200E2E53A /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		93976DE624EB6ABF0018C667 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		93A65BFB250FDF1600BF756A /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat + Extension.swift"; sourceTree = "<group>"; };
 		93DB0F5B253656180074EBB6 /* Binding + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding + Extension.swift"; sourceTree = "<group>"; };
 		93E9A337251D29900095D48C /* ColorRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorRing.swift; sourceTree = "<group>"; };
@@ -142,8 +142,8 @@
 		930105932514E0BF007F0E7A /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
-				930105912514E0B9007F0E7A /* Modifiers.swift */,
 				9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */,
+				930105912514E0B9007F0E7A /* Modifiers.swift */,
 				930AE6B625633B520091EDA7 /* DragState.swift */,
 			);
 			path = Modifiers;
@@ -153,7 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				9389A35725603E3E008AC500 /* ScrollingLineModifier.swift */,
-				9309250125582DB300AA3934 /* EntryView.swift */,
 				938693912559073E00C7F79D /* VisualEffectBlur.swift */,
 				93E9A337251D29900095D48C /* ColorRing.swift */,
 				936315392513A6B6005E20EA /* BlurredColorWheel.swift */,
@@ -184,11 +183,10 @@
 		933B150324F1B30C004E9F1C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				9390FB022563821200E2E53A /* HomeScreen.swift */,
 				93FAEB9A2514FCDB00C057AC /* MomoAddMoodView.swift */,
 				9390FB0A2563889200E2E53A /* MomoJournalView */,
-				93976DE624EB6ABF0018C667 /* HomeView.swift */,
 				93519F5124E8CF630095DA38 /* ContentView.swift */,
+				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -214,7 +212,6 @@
 			children = (
 				936C6CD425112E1B00650D4A /* Old */,
 				9318888425582B8C0004CD4F /* ViewModel */,
-				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
 				931476A524F574980031D913 /* EmotionTextFieldStyle.swift */,
 				936C6CD525112E6A00650D4A /* AnimatableGradient.swift */,
 				93EF7982254A14700062571F /* UI */,
@@ -243,7 +240,9 @@
 		936C6CD425112E1B00650D4A /* Old */ = {
 			isa = PBXGroup;
 			children = (
-				93A65BFB250FDF1600BF756A /* CustomSlider.swift */,
+				93976DE624EB6ABF0018C667 /* HomeView.swift */,
+				930807782564681100A13156 /* SimpleDrag.swift */,
+				9390FB022563821200E2E53A /* HomeScreen.swift */,
 				93347DF42551091F0015629B /* SelectionLineModifier.swift */,
 				935FD32E24EA2E23008568FA /* ArcShape.swift */,
 				93388BDF250FAAA700766633 /* ForceButton.swift */,
@@ -277,6 +276,7 @@
 		938E537324E983F8002653F0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				9308077325645EF000A13156 /* View+Extension.swift */,
 				938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */,
 				9331230724F94C17008B6DD2 /* Animation + Extension.swift */,
 				9328BC2C252757E6005C893A /* ButtonStyle + Extension.swift */,
@@ -286,7 +286,6 @@
 				93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */,
 				9301058F2513F8A1007F0E7A /* Date + Extensions.swift */,
 				93EB5C602527891900087D0B /* UIApplication + Extension.swift */,
-				9308077325645EF000A13156 /* View+Extension.swift */,
 				937615872512527100AEF59C /* UIScreen + Extension.swift */,
 			);
 			path = Extensions;
@@ -308,6 +307,7 @@
 				93EF797C254A07F20062571F /* MomoJournalView.swift */,
 				930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */,
 				930924FE25582D0800AA3934 /* JournalListView.swift */,
+				9309250125582DB300AA3934 /* EntryView.swift */,
 			);
 			path = MomoJournalView;
 			sourceTree = "<group>";
@@ -416,7 +416,6 @@
 				938693922559073E00C7F79D /* VisualEffectBlur.swift in Sources */,
 				9389A35825603E3E008AC500 /* ScrollingLineModifier.swift in Sources */,
 				93E9A338251D29900095D48C /* ColorRing.swift in Sources */,
-				93A65BFC250FDF1600BF756A /* CustomSlider.swift in Sources */,
 				930105922514E0B9007F0E7A /* Modifiers.swift in Sources */,
 				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
 				931476A624F574980031D913 /* EmotionTextFieldStyle.swift in Sources */,
@@ -428,6 +427,7 @@
 				93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */,
 				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,
 				9309250225582DB300AA3934 /* EntryView.swift in Sources */,
+				930807792564681100A13156 /* SimpleDrag.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
 				93EF798B254A17960062571F /* GraphViewScale.swift in Sources */,
 				937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */,

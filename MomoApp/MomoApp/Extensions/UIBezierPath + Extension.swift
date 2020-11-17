@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIBezierPath {
+
     static func calculateBounds(paths: [UIBezierPath]) -> CGRect {
         let myPaths = UIBezierPath()
         for path in paths {
@@ -35,6 +36,7 @@ extension UIBezierPath {
         shape.close()
         return shape
     }
+
     static var blob2: UIBezierPath {
         let shape = UIBezierPath()
         shape.move(to: CGPoint(x: 45.5, y: -78.6))
@@ -53,6 +55,7 @@ extension UIBezierPath {
         shape.close()
         return shape
     }
+
     static var blob3: UIBezierPath {
         let shape = UIBezierPath()
         shape.move(to: CGPoint(x: 45.8, y: -79.4))
@@ -71,6 +74,7 @@ extension UIBezierPath {
         shape.close()
         return shape
     }
+    
     static var blob4: UIBezierPath {
         let shape = UIBezierPath()
         shape.move(to: CGPoint(x: 44.5, y: -76.1))
@@ -108,9 +112,4 @@ extension UIBezierPath {
         shape.close()
         return shape
     }
-    
-    
-    
-    
-    
 }

@@ -99,7 +99,9 @@ struct MomoAddMoodView: View {
                     Spacer()
                     NextButton(isActive: $emotionTextFieldCompleted, action: self.nextButtonPressed)
                 }
-                .modifier(SlideIn(showHome: $homeViewActive, noDelay: .constant(false)))
+                .slideIn(if: $homeViewActive)
+
+
                 .padding()
                 .disabled(isResetting)
 
@@ -110,15 +112,17 @@ struct MomoAddMoodView: View {
                     VStack(spacing: 36) {
                         Text(Date(), formatter: DateFormatter.shortDate)
                             .dateText(opacity: 0.6)
-                            .modifier(SlideOut(showHome: $homeViewActive))
+                            .slideOut(if: $homeViewActive)
                             .padding(.top, 16)
                         ZStack {
                             Text("Hi, how are you feeling today?")
                                 .momoTextBold()
-                                .modifier(SlideOut(showHome: $homeViewActive))
+                                .slideOut(if: $homeViewActive)
                             VStack(spacing: 6) {
                                 EmotionTextField(text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
-                                    .modifier(SlideIn(showHome: $homeViewActive, noDelay: $textFieldIsFocused))
+                                    .slideIn(if: $homeViewActive)
+
+
                                 TextFieldBorder(showHome: $homeViewActive, textFieldIsFocused: $textFieldIsFocused)
                             }
                         }
@@ -145,7 +149,6 @@ struct MomoAddMoodView: View {
                             Text(!homeViewActive ? "H.animating..." : "")
 
                             Text("\(dragValue.width), \(dragValue.height)")
-
                         }
                     }
 
@@ -170,28 +173,27 @@ struct MomoAddMoodView: View {
                                     )
 
                                 // TODO: Remove $isAnimating
-//                                ColorRing(size: buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
-//                                    .blur(radius: isAnimating ? 0 : 2)
-//                                    .opacity(isAnimating ? 1 : 0)
-//                                    .scaleEffect(isAnimating ? 1 : 1.1)
-//                                    /*
-//                                     Add delay so the 'Color Ring' appears after button morph.
-//                                     Remove delay if the button is resetting position.
-//                                     */
-//                                    .animation(dragState.isActive ? .resist() :
-//                                                self.homeViewActive ? .resist() : Animation
-//                                                .bounce()
-//                                                .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
-//                                    )
+                                ColorRing(size: buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
+                                    .blur(radius: isAnimating ? 0 : 2)
+                                    .opacity(isAnimating ? 1 : 0)
+                                    .scaleEffect(isAnimating ? 1 : 1.1)
+                                    /*
+                                     Add delay so the 'Color Ring' appears after button morph.
+                                     Remove delay if the button is resetting position.
+                                     */
+                                    .animation(dragState.isActive ? .resist() :
+                                                self.homeViewActive ? .resist() : Animation
+                                                .bounce()
+                                                .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
+                                    )
                                 SeeEntriesButton(action: self.seeEntriesButtonPressed)
                                     .offset(y: 60)
-                                    .modifier(SlideOut(showHome: $homeViewActive))
+                                    .slideOut(if: $homeViewActive)
                             }
                             .offset(x: self.dragValue.width * 0.5, y: self.dragValue.height * 0.5)
-                            .onAnimationCompleted(for: dragValue.width, completion: {
-                                print("COMPLETED!!!!!")
-                            })
-
+                            .onAnimationCompleted(for: dragValue.width) {
+                                print("Drag animation completed!")
+                            }
 
 
 
@@ -201,6 +203,11 @@ struct MomoAddMoodView: View {
                             .position(self.buttonLocation ?? CGPoint(x: geometry.size.width / 2,
                                                                      y: buttonSize / 2))
                             .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
+
+
+
+
+
                             .disabled(self.isResetting)
 
                             // Temp gesture to show finger location
@@ -213,7 +220,6 @@ struct MomoAddMoodView: View {
                             }
                         }
                         .onAppear {
-                            // Set original position to center
                             self.dragStart = CGPoint(x: geometry.size.width / 2, y: buttonSize / 2)
                             self.buttonLocation = self.dragStart
                         }
@@ -277,7 +283,7 @@ struct EmotionTextField: View {
             TextField("", text: $text, onEditingChanged: { editingChanged in
                 textFieldIsFocused = editingChanged ? true : false
             }, onCommit: {
-                // TODO: ???
+                // TODO
                 print(text)
             })
             .textFieldStyle(EmotionTextFieldStyle())
@@ -323,45 +329,3 @@ struct AddMoodProfile_Previews: PreviewProvider {
         MomoAddMoodView()
     }
 }
-
-// MARK: - Old
-
-//var simpleDrag: some Gesture {
-//    DragGesture(minimumDistance: 0)
-//        .onChanged { value in
-//            self.isDragging = true
-//
-//            guard let startLocation = startLocation else { return }
-//            let maxDistance: CGFloat = 40
-//            var newLocation = startLocation
-//            newLocation.x += value.translation.width
-//            newLocation.y += value.translation.height
-//            let distance = startLocation.distance(to: newLocation)
-//            if distance > maxDistance {
-//                self.blurredColorWheelIsActive = (distance > maxDistance * 1.2) ? true : false
-//                let k = maxDistance / distance
-//                let locationX = ((newLocation.x - startLocation.x) * k) + startLocation.x
-//                let locationY = ((newLocation.y - startLocation.y) * k) + startLocation.y
-//                self.buttonLocation = CGPoint(x: locationX, y: locationY)
-//            } else {
-//                self.buttonLocation = newLocation
-//            }
-//
-//            guard let location = buttonLocation else { return }
-//            self.degrees = location.angle(to: startLocation)
-//            self.pct = self.degrees / 360
-//
-//        }.updating($startLocation) { value, state, _ in
-//            // Set startLocation to current button position
-//            // It will reset once the gesture ends
-//            state = startLocation ?? buttonLocation
-//        }.onEnded { value in
-//            self.buttonLocation = self.originalPos
-//            self.isDragging = false
-//            self.blurredColorWheelIsActive = false
-//            self.isResetting = true
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                self.isResetting = false
-//            }
-//        }
-//}

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// https://swiftui-lab.com/swiftui-animations-part3/
+
 struct AnimatableGradient: AnimatableModifier {
     let from: [UIColor]
     let to: [UIColor]

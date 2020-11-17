@@ -4,6 +4,7 @@
 //
 //  Created by Priscilla Ip on 2020-08-15.
 //
+
 /*
  Inspired by Code Disciple post...
  http://www.code-disciple.com/creating-smooth-animation-like-headspace-app/
