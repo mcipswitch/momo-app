@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9301058F2513F8A1007F0E7A /* Date + Extensions.swift */; };
 		930105922514E0B9007F0E7A /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930105912514E0B9007F0E7A /* Modifiers.swift */; };
+		9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */; };
+		9308077425645EF000A13156 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9308077325645EF000A13156 /* View+Extension.swift */; };
 		930924FF25582D0800AA3934 /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930924FE25582D0800AA3934 /* JournalListView.swift */; };
 		9309250225582DB300AA3934 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309250125582DB300AA3934 /* EntryView.swift */; };
 		930925052558335C00AA3934 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930925042558335C00AA3934 /* DataManager.swift */; };
@@ -67,6 +69,8 @@
 /* Begin PBXFileReference section */
 		9301058F2513F8A1007F0E7A /* Date + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extensions.swift"; sourceTree = "<group>"; };
 		930105912514E0B9007F0E7A /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
+		9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCompletionObserverModifier.swift; sourceTree = "<group>"; };
+		9308077325645EF000A13156 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		930924FE25582D0800AA3934 /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
 		9309250125582DB300AA3934 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
 		930925042558335C00AA3934 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -139,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				930105912514E0B9007F0E7A /* Modifiers.swift */,
+				9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */,
 				930AE6B625633B520091EDA7 /* DragState.swift */,
 			);
 			path = Modifiers;
@@ -210,11 +215,11 @@
 				936C6CD425112E1B00650D4A /* Old */,
 				9318888425582B8C0004CD4F /* ViewModel */,
 				93519F4F24E8CF630095DA38 /* MomoAppApp.swift */,
-				93A65BFB250FDF1600BF756A /* CustomSlider.swift */,
 				931476A524F574980031D913 /* EmotionTextFieldStyle.swift */,
 				936C6CD525112E6A00650D4A /* AnimatableGradient.swift */,
 				93EF7982254A14700062571F /* UI */,
 				933B150324F1B30C004E9F1C /* Navigation */,
+				93CC40C82564305D008B765D /* Models */,
 				9305EBF324EB69DB00E1DB0F /* Views */,
 				93722F3724F7E43B00274E9F /* Shapes */,
 				930105932514E0BF007F0E7A /* Modifiers */,
@@ -238,8 +243,8 @@
 		936C6CD425112E1B00650D4A /* Old */ = {
 			isa = PBXGroup;
 			children = (
+				93A65BFB250FDF1600BF756A /* CustomSlider.swift */,
 				93347DF42551091F0015629B /* SelectionLineModifier.swift */,
-				93F075FF24F1D9BC000B6449 /* TextLimiter.swift */,
 				935FD32E24EA2E23008568FA /* ArcShape.swift */,
 				93388BDF250FAAA700766633 /* ForceButton.swift */,
 				937688E024F98E9500CC0B10 /* CustomView.swift */,
@@ -281,6 +286,7 @@
 				93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */,
 				9301058F2513F8A1007F0E7A /* Date + Extensions.swift */,
 				93EB5C602527891900087D0B /* UIApplication + Extension.swift */,
+				9308077325645EF000A13156 /* View+Extension.swift */,
 				937615872512527100AEF59C /* UIScreen + Extension.swift */,
 			);
 			path = Extensions;
@@ -304,6 +310,14 @@
 				930924FE25582D0800AA3934 /* JournalListView.swift */,
 			);
 			path = MomoJournalView;
+			sourceTree = "<group>";
+		};
+		93CC40C82564305D008B765D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				93F075FF24F1D9BC000B6449 /* TextLimiter.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		93EF7982254A14700062571F /* UI */ = {
@@ -412,6 +426,7 @@
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
 				930924FF25582D0800AA3934 /* JournalListView.swift in Sources */,
 				93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */,
+				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,
 				9309250225582DB300AA3934 /* EntryView.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
 				93EF798B254A17960062571F /* GraphViewScale.swift in Sources */,
@@ -427,6 +442,7 @@
 				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
 				93159F4E251E3FAB004A99A4 /* MomoTextLinkStyle.swift in Sources */,
 				930AE6B725633B520091EDA7 /* DragState.swift in Sources */,
+				9308077425645EF000A13156 /* View+Extension.swift in Sources */,
 				9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */,
 				93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */,
 				9363153A2513A6B6005E20EA /* BlurredColorWheel.swift in Sources */,

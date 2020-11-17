@@ -43,6 +43,7 @@ struct JournalGraphView: View {
     // Selection Line
     @State private var location: CGPoint = .zero
     @GestureState private var startLocation: CGPoint? = nil
+    @GestureState private var isLongPress: Bool = false
 
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
@@ -93,8 +94,10 @@ struct JournalGraphView: View {
                         .contentShape(Rectangle())
                         .gesture(
                             // Using 'LongPressGesture' to avoid multiple quick taps
-                            LongPressGesture(minimumDuration: 0.2)
-                                .onEnded { _ in
+                            LongPressGesture(minimumDuration: 0.1)
+                                .updating($isLongPress) { value, state, transaction in
+
+                                }.onEnded { _ in
                                     let indexShift = index - self.indexSelection
                                     let newOffset = itemSpacing * CGFloat(indexShift)
                                     self.snap(to: newOffset)
@@ -104,17 +107,27 @@ struct JournalGraphView: View {
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(value: $value, preferences: preferences)
                                 .position(x: self.location.x + itemWidth / 2, y: geometry.size.height / 2)
-                                //.offset(x: self.totalOffset)
+                                .offset(x: self.totalOffset)
                                 .gesture(
                                     DragGesture()
                                         .onChanged { value in
                                             var newLocation = startLocation ?? location
 
                                             // Protect from scrolling out of bounds
-                                            let maxOffset = -itemSpacing * (items - 1)
-                                            newLocation.x = min(0, max(maxOffset, newLocation.x + value.translation.width))
+//
+//                                            let minIndexShift = self.indexSelection
+//                                            let maxIndexShift = self.numOfEntries - self.indexSelection
+//                                            newLocation.x = (
+//                                                min((CGFloat(minIndexShift) * itemSpacing), newLocation.x + value.translation.width)
+//                                            )
+//
+//                                            self.location = newLocation
 
-                                            self.location = newLocation
+
+
+
+
+
 
 
 //                                            self.dragOffset = value.translation.width
@@ -142,8 +155,9 @@ struct JournalGraphView: View {
 
 
 
-//                                            let indexShift = Int(round(value.translation.width / itemSpacing))
 //                                            let newOffset = itemSpacing * CGFloat(indexShift)
+//                                            self.location.x += newOffset
+
 //                                            self.snap(to: newOffset)
 //                                            self.updateIndexSelection(by: indexShift)
                                         }
@@ -164,6 +178,7 @@ struct JournalGraphView: View {
                 VStack {
                     Text("ENV IDX Selection: \(self.env.indexSelection)")
                     Text("IDX Selection: \(self.indexSelection)")
+                    Text("Location: \(self.location.x)")
                     Text("Drag: \(self.dragOffset)")
                 }
             }

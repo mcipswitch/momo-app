@@ -16,13 +16,14 @@ class TextLimiter: ObservableObject {
     }
     
     @Published var hasReachedLimit = false
+
     @Published var userInput = "" {
         didSet {
             if userInput.count > limit {
-                userInput = String(userInput.prefix(limit))
-                hasReachedLimit = true
+                userInput = String(userInput.prefix(self.limit))
+                self.hasReachedLimit = true
             } else {
-                hasReachedLimit = false
+                self.hasReachedLimit = false
             }
         }
     }
