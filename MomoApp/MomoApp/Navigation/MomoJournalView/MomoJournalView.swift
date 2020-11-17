@@ -20,6 +20,7 @@ struct MomoJournalView: View {
 
                 // Top Navigation
                 ZStack {
+                    GraphViewScale(isGraphView: $isGraphView)
                     HStack {
                         BackButton(action: self.handleBack)
                         Spacer()
@@ -29,7 +30,6 @@ struct MomoJournalView: View {
                             GraphViewButton(action: self.handleJournalView)
                         }
                     }
-                    GraphViewScaleButton(isGraphView: $isGraphView, action: self.handleScaleButton)
                 }
                 .padding()
                 
@@ -71,11 +71,6 @@ struct MomoJournalView: View {
     private func handleJournalView() {
         print("List view...")
         self.isGraphView.toggle()
-    }
-    
-    private func handleScaleButton() {
-        // is there a cleaner way to write this?
-        print("Month...")
     }
 }
 

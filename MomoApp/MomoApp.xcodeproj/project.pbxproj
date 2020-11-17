@@ -48,6 +48,7 @@
 		938BBD102527BCF300759092 /* ActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938BBD0F2527BCF300759092 /* ActionButtonStyle.swift */; };
 		938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */; };
 		938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E537024E983F3002653F0 /* UIColor + Extension.swift */; };
+		9390FB032563821200E2E53A /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390FB022563821200E2E53A /* HomeScreen.swift */; };
 		93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93976DE624EB6ABF0018C667 /* HomeView.swift */; };
 		93A65BFC250FDF1600BF756A /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFB250FDF1600BF756A /* CustomSlider.swift */; };
 		93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */; };
@@ -58,7 +59,7 @@
 		93EF7980254A146A0062571F /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF797F254A146A0062571F /* BackButton.swift */; };
 		93EF7985254A14BE0062571F /* NextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF7984254A14BE0062571F /* NextButton.swift */; };
 		93EF7988254A14D30062571F /* ListViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF7987254A14D30062571F /* ListViewButton.swift */; };
-		93EF798B254A17960062571F /* GraphViewScaleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF798A254A17960062571F /* GraphViewScaleButton.swift */; };
+		93EF798B254A17960062571F /* GraphViewScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF798A254A17960062571F /* GraphViewScale.swift */; };
 		93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F075FF24F1D9BC000B6449 /* TextLimiter.swift */; };
 		93FAEB9B2514FCDC00C057AC /* MomoAddMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FAEB9A2514FCDB00C057AC /* MomoAddMoodView.swift */; };
 /* End PBXBuildFile section */
@@ -107,6 +108,7 @@
 		938BBD0F2527BCF300759092 /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
 		938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath + Extension.swift"; sourceTree = "<group>"; };
 		938E537024E983F3002653F0 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
+		9390FB022563821200E2E53A /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		93976DE624EB6ABF0018C667 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		93A65BFB250FDF1600BF756A /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat + Extension.swift"; sourceTree = "<group>"; };
@@ -117,7 +119,7 @@
 		93EF797F254A146A0062571F /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		93EF7984254A14BE0062571F /* NextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextButton.swift; sourceTree = "<group>"; };
 		93EF7987254A14D30062571F /* ListViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewButton.swift; sourceTree = "<group>"; };
-		93EF798A254A17960062571F /* GraphViewScaleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewScaleButton.swift; sourceTree = "<group>"; };
+		93EF798A254A17960062571F /* GraphViewScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewScale.swift; sourceTree = "<group>"; };
 		93F075FF24F1D9BC000B6449 /* TextLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLimiter.swift; sourceTree = "<group>"; };
 		93FAEB9A2514FCDB00C057AC /* MomoAddMoodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomoAddMoodView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,16 +148,12 @@
 			isa = PBXGroup;
 			children = (
 				9389A35725603E3E008AC500 /* ScrollingLineModifier.swift */,
-				930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */,
-				930924FE25582D0800AA3934 /* JournalListView.swift */,
 				9309250125582DB300AA3934 /* EntryView.swift */,
 				938693912559073E00C7F79D /* VisualEffectBlur.swift */,
 				93E9A337251D29900095D48C /* ColorRing.swift */,
 				936315392513A6B6005E20EA /* BlurredColorWheel.swift */,
 				938BBD0D2527B59000759092 /* TextFieldBorder.swift */,
-				938BBD0F2527BCF300759092 /* ActionButtonStyle.swift */,
-				9376158D2512581A00AEF59C /* MomoButtonStyle.swift */,
-				93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */,
+				9390FB082563880000E2E53A /* ButtonStyles */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -181,8 +179,9 @@
 		933B150324F1B30C004E9F1C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				9390FB022563821200E2E53A /* HomeScreen.swift */,
 				93FAEB9A2514FCDB00C057AC /* MomoAddMoodView.swift */,
-				93EF797C254A07F20062571F /* MomoJournalView.swift */,
+				9390FB0A2563889200E2E53A /* MomoJournalView */,
 				93976DE624EB6ABF0018C667 /* HomeView.swift */,
 				93519F5124E8CF630095DA38 /* ContentView.swift */,
 			);
@@ -287,6 +286,26 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		9390FB082563880000E2E53A /* ButtonStyles */ = {
+			isa = PBXGroup;
+			children = (
+				938BBD0F2527BCF300759092 /* ActionButtonStyle.swift */,
+				9376158D2512581A00AEF59C /* MomoButtonStyle.swift */,
+				93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */,
+			);
+			path = ButtonStyles;
+			sourceTree = "<group>";
+		};
+		9390FB0A2563889200E2E53A /* MomoJournalView */ = {
+			isa = PBXGroup;
+			children = (
+				93EF797C254A07F20062571F /* MomoJournalView.swift */,
+				930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */,
+				930924FE25582D0800AA3934 /* JournalListView.swift */,
+			);
+			path = MomoJournalView;
+			sourceTree = "<group>";
+		};
 		93EF7982254A14700062571F /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -294,7 +313,7 @@
 				93EF7984254A14BE0062571F /* NextButton.swift */,
 				93EF7987254A14D30062571F /* ListViewButton.swift */,
 				934486DF2558604100958526 /* GraphViewButton.swift */,
-				93EF798A254A17960062571F /* GraphViewScaleButton.swift */,
+				93EF798A254A17960062571F /* GraphViewScale.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -387,6 +406,7 @@
 				930105922514E0B9007F0E7A /* Modifiers.swift in Sources */,
 				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
 				931476A624F574980031D913 /* EmotionTextFieldStyle.swift in Sources */,
+				9390FB032563821200E2E53A /* HomeScreen.swift in Sources */,
 				938BBD0E2527B59000759092 /* TextFieldBorder.swift in Sources */,
 				93FAEB9B2514FCDC00C057AC /* MomoAddMoodView.swift in Sources */,
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
@@ -394,7 +414,7 @@
 				93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */,
 				9309250225582DB300AA3934 /* EntryView.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
-				93EF798B254A17960062571F /* GraphViewScaleButton.swift in Sources */,
+				93EF798B254A17960062571F /* GraphViewScale.swift in Sources */,
 				937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */,
 				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,
 				937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */,

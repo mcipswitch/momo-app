@@ -90,10 +90,8 @@ struct MomoAddMoodView: View {
     // MARK: - Body
     
     var body: some View {
-        //NavigationView {
-        ZStack {
-            GeometryReader { geometry in
-                
+        GeometryReader { geometry in
+            ZStack {
                 // Top Navigation
                 HStack {
                     BackButton(action: self.backButtonPressed)
@@ -106,7 +104,7 @@ struct MomoAddMoodView: View {
 
                 // Main View
                 VStack(spacing: 48) {
-                    
+
                     // Date + EmotionTextField
                     VStack(spacing: 36) {
                         Text(Date(), formatter: DateFormatter.shortDate)
@@ -128,7 +126,7 @@ struct MomoAddMoodView: View {
                         }
                         .frame(width: 180, height: 80)
                     }
-                    
+
                     // Blob
                     ZStack {
                         BlobView(pct: $pct, isStatic: false)
@@ -137,7 +135,7 @@ struct MomoAddMoodView: View {
                             Text("Pct: \(pct)")
                             Text("Original Pos: x:\(Int(originalPos.x)), y:\(Int(originalPos.y))")
                             Text("Starting Location: x:\(Int(startLocation?.x ?? 0)), y:\(Int(startLocation?.y ?? 0))")
-                            Text("Current Pos: x:\(Int(buttonLocation?.x ?? 0)), y:\(Int(buttonLocation?.y ?? 0))")
+                            Text("Button Pos: x:\(Int(buttonLocation?.x ?? 0)), y:\(Int(buttonLocation?.y ?? 0))")
                             Text("Angle: \(Int(degrees))")
                             //Text(isDragging ? "dragging..." : "")
                             Text(dragState.isActive ? "active drag" : "")
@@ -148,7 +146,7 @@ struct MomoAddMoodView: View {
                             //Text(blurredColorWheelIsActive ? "rainbow..." : "")
                         }
                     }
-                    
+
                     // Bottom Navigation
                     ZStack {
                         BlurredColorWheel(isActive: $blurredColorWheelIsActive, degrees: $blurredColorWheelDegrees)
@@ -188,9 +186,9 @@ struct MomoAddMoodView: View {
                                     .modifier(SlideOut(showHome: $homeViewActive))
                             }
                             .position(self.buttonLocation ?? CGPoint(x: geometry.size.width / 2,
-                                                               y: buttonSize / 2))
+                                                                     y: buttonSize / 2))
                             .highPriorityGesture(self.homeViewActive ? nil : simpleDrag.simultaneously(with: fingerDrag))
-                            
+
                             // Temp gesture to show finger location
                             if let dragState = dragState {
                                 Circle()
@@ -209,26 +207,24 @@ struct MomoAddMoodView: View {
                     .padding(.top, 64)
                 }
                 // END: - Main View
-                //}
             }
-            //.navigationBarHidden(true)
-            //.navigationBarBackButtonHidden(true)
-            .background(Image("background")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .edgesIgnoringSafeArea(.all)
-            )
-            .onChange(of: homeViewActive) { _ in
-                self.isAnimating.toggle()
-                UIApplication.shared.endEditing()
-            }
-            .onChange(of: degrees) { value in
-                switch value {
-                case 0..<120: blurredColorWheelDegrees = 0
-                case 120..<240: blurredColorWheelDegrees = 120
-                case 240..<360: blurredColorWheelDegrees = 240
-                default: blurredColorWheelDegrees = 0 }}
         }
+        .background(Image("background")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .edgesIgnoringSafeArea(.all)
+        )
+        .onChange(of: homeViewActive) { _ in
+            self.isAnimating.toggle()
+            UIApplication.shared.endEditing()
+        }
+        .onChange(of: degrees) { value in
+            switch value {
+            case 0..<120: blurredColorWheelDegrees = 0
+            case 120..<240: blurredColorWheelDegrees = 120
+            case 240..<360: blurredColorWheelDegrees = 240
+            default: blurredColorWheelDegrees = 0 }}
+        //        }
     }
     
     // MARK: - Internal Methods

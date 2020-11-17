@@ -82,6 +82,7 @@ struct JournalGraphView: View {
                         }
                         .frame(minWidth: itemWidth, minHeight: geometry.size.height)
                         // Animate on the graph lines
+                        .blur(radius: animateOn ? 0 : 2)
                         .opacity(animateOn ? 1 : 0)
                         .animation(Animation
                                     .easeInOut(duration: 2)
