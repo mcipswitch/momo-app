@@ -96,16 +96,3 @@ struct SlideOut: ViewModifier {
             )
     }
 }
-
-// MARK: -
-
-extension View {
-
-    func slideIn(if value: Binding<Bool>) -> some View{
-        return modifier(SlideIn(observedValue: value))
-    }
-
-    func slideOut(if value: Binding<Bool>) -> some View {
-        return modifier(SlideOut(observedValue: value))
-    }
-}

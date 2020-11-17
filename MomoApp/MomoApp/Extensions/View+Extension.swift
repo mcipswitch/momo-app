@@ -18,6 +18,14 @@ extension View {
         return modifier(AnimationCompletionObserverModifier(observedValue: value, completion: completion))
     }
 
+    func slideIn(if value: Binding<Bool>) -> some View {
+        return modifier(SlideIn(observedValue: value))
+    }
+
+    func slideOut(if value: Binding<Bool>) -> some View {
+        return modifier(SlideOut(observedValue: value))
+    }
+
     // MARK: - Text Modifiers
 
     func momoTextBold(size: CGFloat = 22, opacity: Double = 1) -> some View {
