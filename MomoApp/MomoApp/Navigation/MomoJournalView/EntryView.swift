@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct EntryView: View {
+
     private let entry: Entry
+
     init(entry: Entry) {
         self.entry = entry
     }
     
-    @State var pct: CGFloat = 0
-    @Namespace private var animation
+    @State var blobValue: CGFloat = 0
     
     var body: some View {
         ZStack {
@@ -27,7 +28,7 @@ struct EntryView: View {
                             .momoTextBold()
                     }
                     Spacer()
-                    BlobView(blobValue: $pct, isStatic: true, scale: 0.2)
+                    BlobView(blobValue: $blobValue, isStatic: true, scale: 0.2)
                         .padding(.trailing, 16)
                 }
             }

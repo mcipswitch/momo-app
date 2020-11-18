@@ -53,6 +53,8 @@ struct MomoJournalView: View {
     }
     
     // MARK: - Internal Methods
+
+    var didChangeJournalView: (() -> Void)? = nil
     
     private func backButtonPressed() {
         print("Back...")

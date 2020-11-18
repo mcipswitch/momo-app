@@ -10,20 +10,19 @@ import SwiftUI
 struct JournalListView: View {
 
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
-    @State private var animateOn: Bool = false
+
+    var layout: [GridItem] {
+        [GridItem(.flexible())]
+    }
     
     var body: some View {
         ScrollView {
-            LazyVStack {
-                ForEach(viewModel.entries, id: \.self) { entry in
-                    EntryView(entry: entry)
+            LazyVGrid(columns: layout) {
+                ForEach(viewModel.entries.indices) { index in
+                    EntryView(entry: viewModel.entries[index])
                 }
             }
             .padding()
-        }
-        .onAppear {
-            self.viewModel.fetchEntries()
-            self.animateOn = true
         }
     }
 }
