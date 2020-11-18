@@ -100,8 +100,6 @@ struct MomoAddMoodView: View {
                     NextButton(isActive: $emotionTextFieldCompleted, action: self.nextButtonPressed)
                 }
                 .slideIn(if: $homeViewActive)
-
-
                 .padding()
                 .disabled(isResetting)
 
@@ -135,9 +133,7 @@ struct MomoAddMoodView: View {
                             Text("Original Pos: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
                             Text("Button Pos: x:\(Int(buttonLocation?.x ?? 0)), y:\(Int(buttonLocation?.y ?? 0))")
                             Text("Angle: \(Int(degrees))")
-                            //Text(isDragging ? "dragging..." : "")
                             Text(dragState.isActive ? "active drag" : "")
-
                             Text(isResetting ? "resetting..." : "")
                             Text(isAnimating ? "animating..." : "")
                             Text(!homeViewActive ? "H.animating..." : "")
@@ -168,9 +164,6 @@ struct MomoAddMoodView: View {
 
                                 // TODO: Remove $isAnimating
                                 ColorRing(size: buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
-                                    .blur(radius: isAnimating ? 0 : 2)
-                                    .opacity(isAnimating ? 1 : 0)
-                                    .scaleEffect(isAnimating ? 1 : 1.1)
                                     /*
                                      Add delay so the 'Color Ring' appears after button morph.
                                      Remove delay if the button is resetting position.
@@ -180,28 +173,15 @@ struct MomoAddMoodView: View {
                                                 .bounce()
                                                 .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
                                     )
+
                                 SeeEntriesButton(action: self.seeEntriesButtonPressed)
                                     .offset(y: 60)
                                     .slideOut(if: $homeViewActive)
                             }
                             .offset(x: self.dragValue.width * 0.5, y: self.dragValue.height * 0.5)
-                            .onAnimationCompleted(for: dragValue.width) {
-                                print("Drag animation completed!")
-                            }
-
-
-
-
-
-
                             .position(self.buttonLocation ?? CGPoint(x: geometry.size.width / 2,
                                                                      y: buttonSize / 2))
                             .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
-
-
-
-
-
                             .disabled(self.isResetting)
 
                             // Temp gesture to show finger location

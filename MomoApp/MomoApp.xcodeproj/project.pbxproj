@@ -48,7 +48,6 @@
 		938693922559073E00C7F79D /* VisualEffectBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938693912559073E00C7F79D /* VisualEffectBlur.swift */; };
 		9389A35825603E3E008AC500 /* ScrollingLineModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9389A35725603E3E008AC500 /* ScrollingLineModifier.swift */; };
 		938BBD0E2527B59000759092 /* TextFieldBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938BBD0D2527B59000759092 /* TextFieldBorder.swift */; };
-		938BBD102527BCF300759092 /* ActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938BBD0F2527BCF300759092 /* ActionButtonStyle.swift */; };
 		938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */; };
 		938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E537024E983F3002653F0 /* UIColor + Extension.swift */; };
 		9390FB032563821200E2E53A /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390FB022563821200E2E53A /* HomeScreen.swift */; };
@@ -110,7 +109,6 @@
 		938693912559073E00C7F79D /* VisualEffectBlur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualEffectBlur.swift; sourceTree = "<group>"; };
 		9389A35725603E3E008AC500 /* ScrollingLineModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingLineModifier.swift; sourceTree = "<group>"; };
 		938BBD0D2527B59000759092 /* TextFieldBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBorder.swift; sourceTree = "<group>"; };
-		938BBD0F2527BCF300759092 /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
 		938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath + Extension.swift"; sourceTree = "<group>"; };
 		938E537024E983F3002653F0 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		9390FB022563821200E2E53A /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
@@ -212,7 +210,6 @@
 			children = (
 				936C6CD425112E1B00650D4A /* Old */,
 				9318888425582B8C0004CD4F /* ViewModel */,
-				931476A524F574980031D913 /* EmotionTextFieldStyle.swift */,
 				936C6CD525112E6A00650D4A /* AnimatableGradient.swift */,
 				93EF7982254A14700062571F /* UI */,
 				933B150324F1B30C004E9F1C /* Navigation */,
@@ -294,9 +291,9 @@
 		9390FB082563880000E2E53A /* ButtonStyles */ = {
 			isa = PBXGroup;
 			children = (
-				938BBD0F2527BCF300759092 /* ActionButtonStyle.swift */,
 				9376158D2512581A00AEF59C /* MomoButtonStyle.swift */,
 				93159F4D251E3FAB004A99A4 /* MomoTextLinkStyle.swift */,
+				931476A524F574980031D913 /* EmotionTextFieldStyle.swift */,
 			);
 			path = ButtonStyles;
 			sourceTree = "<group>";
@@ -433,7 +430,6 @@
 				937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */,
 				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,
 				937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */,
-				938BBD102527BCF300759092 /* ActionButtonStyle.swift in Sources */,
 				9376158E2512581A00AEF59C /* MomoButtonStyle.swift in Sources */,
 				93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */,
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,

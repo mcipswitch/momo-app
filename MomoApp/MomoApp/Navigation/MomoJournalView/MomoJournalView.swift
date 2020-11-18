@@ -32,14 +32,15 @@ struct MomoJournalView: View {
                     }
                 }
                 .padding()
-                
+
                 // Main View
                 VStack(spacing: 48) {
                     if isGraphView {
                         JournalGraphView(numOfEntries: numOfEntries, value: pct)
-                        VStack(spacing: 12) {
+                        VStack(spacing: 0) {
                             Text(entrySelection?.date ?? Date(), formatter: DateFormatter.shortDate)
                                 .dateText(opacity: 0.6)
+                                .padding(.bottom, 12)
                             Text(entrySelection?.emotion ?? "")
                                 .momoTextBold()
                             BlobView(pct: $pct, isStatic: false)
@@ -51,6 +52,7 @@ struct MomoJournalView: View {
                         JournalListView()
                     }
                 }
+                .padding(.top, 48)
             }
         }
         .background(RadialGradient.momo

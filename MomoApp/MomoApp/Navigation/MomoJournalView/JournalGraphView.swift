@@ -82,14 +82,20 @@ struct JournalGraphView: View {
                                     .momoTextBold(size: 14)
                             }
                         }
-                        .frame(minWidth: itemWidth, minHeight: geometry.size.height)
                         // Animate on the graph lines
                         .blur(radius: animateOn ? 0 : 2)
                         .opacity(animateOn ? 1 : 0)
                         .animation(Animation
-                                    .easeInOut(duration: 2)
-                                    .delay(Double(index) * 0.1)
+                                    .easeInOut(duration: 0.8)
+                                    .delay(Double(index) * 0.05)
                         )
+                        .frame(minWidth: itemWidth, minHeight: geometry.size.height)
+
+
+
+//                        .frame(minWidth: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, idealWidth: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, idealHeight: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+
+
                         // Make whole stack tappable
                         .contentShape(Rectangle())
                         .gesture(
