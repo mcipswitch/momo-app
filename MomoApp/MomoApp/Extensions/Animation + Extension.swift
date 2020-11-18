@@ -25,13 +25,24 @@ extension Animation {
     public static func resist() -> Animation {
         return self.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)
     }
+
     public static func bounce() -> Animation {
         return self.interpolatingSpring(stiffness: 180, damping: 16)
     }
+
     public static func ease() -> Animation {
         return self.easeInOut(duration: 0.2)
     }
+
     public static func breathe() -> Animation {
         return self.timingCurve(0.4, 0, 0.4, 1, duration: 4)
+    }
+
+    /// Creates a cascading animation effect.
+    /// - Parameter offset: The timing offset between the individual elements.
+    /// - Returns: A `Animation` instance.
+    public static func cascade(offset: Double) -> Animation {
+        return self.easeInOut(duration: 0.8)
+            .delay(offset * 0.05)
     }
 }

@@ -22,18 +22,13 @@ struct JournalListView: View {
                 ForEach(viewModel.entries.indices) { index in
                     EntryView(entry: viewModel.entries[index])
                         .opacity(animate ? 1 : 0)
-                        .animation(Animation
-                                    .easeInOut(duration: 0.8)
-                                    .delay(Double(index) * 0.05)
-                        )
+                        .animation(.cascade(offset: Double(index)))
                 }
             }
             .padding()
         }
         .onAppear {
-            withAnimation(Animation.default.delay(1.0)) {
-                self.animate.toggle()
-            }
+            self.animate.toggle()
         }
     }
 }
