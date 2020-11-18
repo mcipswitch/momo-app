@@ -46,10 +46,4 @@ extension View {
     func momoButtonText(size: CGFloat) -> some View {
         return self.modifier(MomoButtonText(size: size))
     }
-
-    // MARK: - Backgrounds
-
-    func addMomoBackground() -> some View {
-        return self.modifier(MomoBackground())
-    }
 }

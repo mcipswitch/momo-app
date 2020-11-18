@@ -27,13 +27,7 @@ struct MomoJournalView: View {
                     HStack {
                         BackButton(action: self.backButtonPressed)
                         Spacer()
-                        
-
-                        if self.isGraphViewActive {
-                            ListViewButton(action: self.journalTypeButtonPressed)
-                        } else {
-                            GraphViewButton(action: self.journalTypeButtonPressed)
-                        }
+                        JournalViewTypeButton(view: self.isGraphViewActive ? .chart : .list, action: self.journalTypeButtonPressed)
                     }
                 }.padding()
 
@@ -49,7 +43,7 @@ struct MomoJournalView: View {
                 }.padding(.top, 48)
             }
         }
-        .addMomoBackground()
+        .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
         .onAppear {
             self.selectedEntry = viewModel.entries.first ?? Entry(emotion: "Sunflower", date: Date(), value: 0.68)
         }

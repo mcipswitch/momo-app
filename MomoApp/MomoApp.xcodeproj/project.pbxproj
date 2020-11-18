@@ -25,7 +25,6 @@
 		9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9331230724F94C17008B6DD2 /* Animation + Extension.swift */; };
 		93347DF52551091F0015629B /* SelectionLineModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93347DF42551091F0015629B /* SelectionLineModifier.swift */; };
 		93388BE0250FAAA700766633 /* ForceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93388BDF250FAAA700766633 /* ForceButton.swift */; };
-		934486E02558604100958526 /* GraphViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934486DF2558604100958526 /* GraphViewButton.swift */; };
 		93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F4F24E8CF630095DA38 /* MomoAppApp.swift */; };
 		93519F5224E8CF630095DA38 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5124E8CF630095DA38 /* ContentView.swift */; };
 		93519F5424E8CF640095DA38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5324E8CF640095DA38 /* Assets.xcassets */; };
@@ -59,8 +58,7 @@
 		93EF797D254A07F20062571F /* MomoJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF797C254A07F20062571F /* MomoJournalView.swift */; };
 		93EF7980254A146A0062571F /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF797F254A146A0062571F /* BackButton.swift */; };
 		93EF7985254A14BE0062571F /* NextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF7984254A14BE0062571F /* NextButton.swift */; };
-		93EF7988254A14D30062571F /* ListViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF7987254A14D30062571F /* ListViewButton.swift */; };
-		93EF798B254A17960062571F /* GraphViewScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF798A254A17960062571F /* GraphViewScale.swift */; };
+		93EF7988254A14D30062571F /* JournalViewTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF7987254A14D30062571F /* JournalViewTypeButton.swift */; };
 		93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F075FF24F1D9BC000B6449 /* TextLimiter.swift */; };
 		93FAEB9B2514FCDC00C057AC /* MomoAddMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FAEB9A2514FCDB00C057AC /* MomoAddMoodView.swift */; };
 /* End PBXBuildFile section */
@@ -84,7 +82,6 @@
 		9331230724F94C17008B6DD2 /* Animation + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation + Extension.swift"; sourceTree = "<group>"; };
 		93347DF42551091F0015629B /* SelectionLineModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionLineModifier.swift; sourceTree = "<group>"; };
 		93388BDF250FAAA700766633 /* ForceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceButton.swift; sourceTree = "<group>"; };
-		934486DF2558604100958526 /* GraphViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewButton.swift; sourceTree = "<group>"; };
 		93519F4C24E8CF630095DA38 /* MomoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93519F4F24E8CF630095DA38 /* MomoAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoAppApp.swift; sourceTree = "<group>"; };
 		93519F5124E8CF630095DA38 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -120,8 +117,7 @@
 		93EF797C254A07F20062571F /* MomoJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoJournalView.swift; sourceTree = "<group>"; };
 		93EF797F254A146A0062571F /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		93EF7984254A14BE0062571F /* NextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextButton.swift; sourceTree = "<group>"; };
-		93EF7987254A14D30062571F /* ListViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewButton.swift; sourceTree = "<group>"; };
-		93EF798A254A17960062571F /* GraphViewScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewScale.swift; sourceTree = "<group>"; };
+		93EF7987254A14D30062571F /* JournalViewTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalViewTypeButton.swift; sourceTree = "<group>"; };
 		93F075FF24F1D9BC000B6449 /* TextLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLimiter.swift; sourceTree = "<group>"; };
 		93FAEB9A2514FCDB00C057AC /* MomoAddMoodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomoAddMoodView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -322,9 +318,7 @@
 			children = (
 				93EF797F254A146A0062571F /* BackButton.swift */,
 				93EF7984254A14BE0062571F /* NextButton.swift */,
-				93EF7987254A14D30062571F /* ListViewButton.swift */,
-				934486DF2558604100958526 /* GraphViewButton.swift */,
-				93EF798A254A17960062571F /* GraphViewScale.swift */,
+				93EF7987254A14D30062571F /* JournalViewTypeButton.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -426,7 +420,6 @@
 				9309250225582DB300AA3934 /* EntryView.swift in Sources */,
 				930807792564681100A13156 /* SimpleDrag.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
-				93EF798B254A17960062571F /* GraphViewScale.swift in Sources */,
 				937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */,
 				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,
 				937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */,
@@ -447,11 +440,10 @@
 				93519F5024E8CF630095DA38 /* MomoAppApp.swift in Sources */,
 				937688E124F98E9500CC0B10 /* CustomView.swift in Sources */,
 				936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */,
-				934486E02558604100958526 /* GraphViewButton.swift in Sources */,
 				93EF797D254A07F20062571F /* MomoJournalView.swift in Sources */,
 				93388BE0250FAAA700766633 /* ForceButton.swift in Sources */,
 				930ABB6F254A32E00050C1C4 /* JournalGraphView.swift in Sources */,
-				93EF7988254A14D30062571F /* ListViewButton.swift in Sources */,
+				93EF7988254A14D30062571F /* JournalViewTypeButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
