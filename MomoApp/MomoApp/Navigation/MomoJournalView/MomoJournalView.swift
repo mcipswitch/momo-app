@@ -27,6 +27,8 @@ struct MomoJournalView: View {
                     HStack {
                         BackButton(action: self.backButtonPressed)
                         Spacer()
+                        
+
                         if self.isGraphViewActive {
                             ListViewButton(action: self.journalTypeButtonPressed)
                         } else {
@@ -47,8 +49,7 @@ struct MomoJournalView: View {
                 }.padding(.top, 48)
             }
         }
-        .background(RadialGradient.momo
-                        .edgesIgnoringSafeArea(.all))
+        .addMomoBackground()
         .onAppear {
             self.selectedEntry = viewModel.entries.first ?? Entry(emotion: "Sunflower", date: Date(), value: 0.68)
         }
@@ -56,6 +57,9 @@ struct MomoJournalView: View {
             // Add delay so we can see the cascading animation
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.animateList.toggle()
+
+
+                // disable the graph view change for 0.8 seconds to let the full animation to avoid bug
             }
         }
     }

@@ -31,11 +31,11 @@ extension Color {
 }
 
 extension Gradient {
-    public static let backgroundGradient = Gradient(colors: [Color(#colorLiteral(red: 0.2588235294, green: 0.2039215686, blue: 0.5019607843, alpha: 1)), Color(#colorLiteral(red: 0.1098039216, green: 0.09411764706, blue: 0.2509803922, alpha: 1))])
+    public static let momoBackgroundGradient = Gradient(colors: [Color(#colorLiteral(red: 0.2588235294, green: 0.2039215686, blue: 0.5019607843, alpha: 1)), Color(#colorLiteral(red: 0.1098039216, green: 0.09411764706, blue: 0.2509803922, alpha: 1))])
 }
 
 extension RadialGradient {
-    public static let momo = RadialGradient(gradient: Gradient.backgroundGradient,
+    public static let momo = RadialGradient(gradient: Gradient.momoBackgroundGradient,
                                             center: .center,
                                             startRadius: 10,
                                             endRadius: 500)

@@ -21,6 +21,10 @@ struct JournalListView: View {
             LazyVGrid(columns: layout) {
                 ForEach(viewModel.entries.indices) { index in
                     EntryView(entry: viewModel.entries[index])
+
+
+                        // handler when this animation ends...
+                        
                         .opacity(animate ? 1 : 0)
                         .animation(.cascade(offset: Double(index)))
                 }
