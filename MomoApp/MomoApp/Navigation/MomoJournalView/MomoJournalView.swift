@@ -11,7 +11,7 @@ struct MomoJournalView: View {
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     @State var selectedEntry: Entry
     @State var numOfEntries: Int = 7
-    @State var isGraphViewActive: Bool = true
+    @State var isGraphActive: Bool = true
     @State var blobValue: CGFloat = 0.5
 
     @State var animateList: Bool = false
@@ -20,14 +20,12 @@ struct MomoJournalView: View {
         ZStack {
             GeometryReader { geometry in
                 ZStack {
-                    LastSevenDays()
-                        .slideOut(if: $isGraphViewActive)
-                    AllEntries()
-                        .slideIn(if: $isGraphViewActive)
+                    JournalViewTypeTitle(view: self.isGraphActive ? .graph : .list)
+                        .slideIn(if: $isGraphActive)
                     HStack {
                         BackButton(action: self.backButtonPressed)
                         Spacer()
-                        JournalViewTypeButton(view: self.isGraphViewActive ? .chart : .list, action: self.journalTypeButtonPressed)
+                        JournalViewTypeButton(view: self.isGraphActive ? .graph : .list, action: self.journalTypeButtonPressed)
                     }
                 }.padding()
 
@@ -36,10 +34,10 @@ struct MomoJournalView: View {
                         JournalGraphView(numOfEntries: numOfEntries, value: blobValue)
                         MiniBlobView(entry: $selectedEntry, blobValue: $blobValue)
                     }
-                    .slideOut(if: $isGraphViewActive)
+                    .slideOut(if: $isGraphActive)
 
                     JournalListView(animate: $animateList)
-                        .slideIn(if: $isGraphViewActive)
+                        .slideIn(if: $isGraphActive)
                 }.padding(.top, 48)
             }
         }
@@ -47,11 +45,10 @@ struct MomoJournalView: View {
         .onAppear {
             self.selectedEntry = viewModel.entries.first ?? Entry(emotion: "Sunflower", date: Date(), value: 0.68)
         }
-        .onChange(of: self.isGraphViewActive) { value in
+        .onChange(of: self.isGraphActive) { value in
             // Add delay so we can see the cascading animation
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.animateList.toggle()
-
 
                 // disable the graph view change for 0.8 seconds to let the full animation to avoid bug
             }
@@ -68,7 +65,7 @@ struct MomoJournalView: View {
     
     private func journalTypeButtonPressed() {
         print("List view...")
-        self.isGraphViewActive.toggle()
+        self.isGraphActive.toggle()
     }
 }
 
@@ -92,15 +89,10 @@ struct MiniBlobView: View {
     }
 }
 
-struct LastSevenDays: View {
+struct JournalViewTypeTitle: View {
+    var view: JournalViewType
     var body: some View {
-        Text("Last 7 days").calendarMonthText()
-    }
-}
-
-struct AllEntries: View {
-    var body: some View {
-        Text("All entries").calendarMonthText()
+        Text(view.title).calendarMonthText()
     }
 }
 
