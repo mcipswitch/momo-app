@@ -10,7 +10,7 @@ import SwiftUI
 struct JournalListView: View {
 
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
-    @State var animate: Bool = false
+    @Binding var animate: Bool
 
     var layout: [GridItem] {
         [GridItem(.flexible())]
@@ -27,9 +27,6 @@ struct JournalListView: View {
             }
             .padding()
         }
-        .onAppear {
-            self.animate.toggle()
-        }
     }
 }
 
@@ -37,7 +34,7 @@ struct JournalListView: View {
 
 struct JournalListView_Previews: PreviewProvider {
     static var previews: some View {
-        var view = JournalListView()
+        var view = JournalListView(animate: .constant(true))
         view.viewModel = EntriesViewModel(dataManager: MockDataManager())
         return view
             .background(

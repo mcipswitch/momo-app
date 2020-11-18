@@ -13,8 +13,10 @@ struct MomoJournalView: View {
     @State var numOfEntries: Int = 7
     @State var isGraphViewActive: Bool = true
     @State var blobValue: CGFloat = 0.5
+
+    @State var animateList: Bool = false
     
-    var body: some View {    
+    var body: some View {
         ZStack {
             GeometryReader { geometry in
                 ZStack {
@@ -40,7 +42,7 @@ struct MomoJournalView: View {
                     }
                     .slideOut(if: $isGraphViewActive)
 
-                    JournalListView()
+                    JournalListView(animate: $animateList)
                         .slideIn(if: $isGraphViewActive)
                 }.padding(.top, 48)
             }
@@ -49,6 +51,12 @@ struct MomoJournalView: View {
                         .edgesIgnoringSafeArea(.all))
         .onAppear {
             self.selectedEntry = viewModel.entries.first ?? Entry(emotion: "Sunflower", date: Date(), value: 0.68)
+        }
+        .onChange(of: self.isGraphViewActive) { value in
+            // Add delay so we can see the cascading animation
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.animateList.toggle()
+            }
         }
     }
     
