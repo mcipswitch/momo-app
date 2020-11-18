@@ -27,7 +27,7 @@ struct EntryView: View {
                             .momoTextBold()
                     }
                     Spacer()
-                    BlobView(pct: $pct, isStatic: true, scale: 0.2)
+                    BlobView(blobValue: $pct, isStatic: true, scale: 0.2)
                         .padding(.trailing, 16)
                 }
             }

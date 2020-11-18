@@ -9,69 +9,90 @@ import SwiftUI
 
 struct MomoJournalView: View {
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
-    @State var entrySelection: Entry?
+    @State var selectedEntry: Entry
     @State var numOfEntries: Int = 7
-    @State var isGraphView: Bool = true
-    @State var pct: CGFloat = 0.5
+    @State var isGraphViewActive: Bool = true
+    @State var blobValue: CGFloat = 0.5
     
     var body: some View {    
         ZStack {
             GeometryReader { geometry in
-
-                // Top Navigation
                 ZStack {
-                    GraphViewScale(isGraphView: $isGraphView)
+                    LastSevenDays()
+                        .slideOut(if: $isGraphViewActive)
+                    AllEntries()
+                        .slideIn(if: $isGraphViewActive)
                     HStack {
-                        BackButton(action: self.handleBack)
+                        BackButton(action: self.backButtonPressed)
                         Spacer()
-                        if isGraphView {
-                            ListViewButton(action: self.handleJournalView)
+                        if self.isGraphViewActive {
+                            ListViewButton(action: self.journalTypeButtonPressed)
                         } else {
-                            GraphViewButton(action: self.handleJournalView)
+                            GraphViewButton(action: self.journalTypeButtonPressed)
                         }
                     }
-                }
-                .padding()
+                }.padding()
 
-                // Main View
-                VStack(spacing: 48) {
-                    if isGraphView {
-                        JournalGraphView(numOfEntries: numOfEntries, value: pct)
-                        VStack(spacing: 0) {
-                            Text(entrySelection?.date ?? Date(), formatter: DateFormatter.shortDate)
-                                .dateText(opacity: 0.6)
-                                .padding(.bottom, 12)
-                            Text(entrySelection?.emotion ?? "")
-                                .momoTextBold()
-                            BlobView(pct: $pct, isStatic: false)
-                                .scaleEffect(0.60)
-                            Spacer()
-                        }
-                    } else {
-                        // TODO: Inject with entry
-                        JournalListView()
+                ZStack {
+                    VStack(spacing: 48) {
+                        JournalGraphView(numOfEntries: numOfEntries, value: blobValue)
+                        MiniBlobView(entry: $selectedEntry, blobValue: $blobValue)
                     }
-                }
-                .padding(.top, 48)
+                    .slideOut(if: $isGraphViewActive)
+
+                    JournalListView()
+                        .slideIn(if: $isGraphViewActive)
+                }.padding(.top, 48)
             }
         }
         .background(RadialGradient.momo
-                        .edgesIgnoringSafeArea(.all)
-        )
+                        .edgesIgnoringSafeArea(.all))
         .onAppear {
-            self.entrySelection = viewModel.entries.first
+            self.selectedEntry = viewModel.entries.first ?? Entry(emotion: "Sunflower", date: Date(), value: 0.68)
         }
     }
     
     // MARK: - Internal Methods
     
-    private func handleBack() {
+    private func backButtonPressed() {
         print("Back...")
     }
     
-    private func handleJournalView() {
+    private func journalTypeButtonPressed() {
         print("List view...")
-        self.isGraphView.toggle()
+        self.isGraphViewActive.toggle()
+    }
+}
+
+// MARK: - Views
+
+struct MiniBlobView: View {
+    @Binding var entry: Entry
+    @Binding var blobValue: CGFloat
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Text(self.entry.date, formatter: DateFormatter.shortDate)
+                .dateText(opacity: 0.6)
+                .padding(.bottom, 12)
+            Text(self.entry.emotion)
+                .momoTextBold()
+            BlobView(blobValue: $blobValue, isStatic: false)
+                .scaleEffect(0.60)
+            Spacer()
+        }
+    }
+}
+
+struct LastSevenDays: View {
+    var body: some View {
+        Text("Last 7 days").calendarMonthText()
+    }
+}
+
+struct AllEntries: View {
+    var body: some View {
+        Text("All entries").calendarMonthText()
     }
 }
 
@@ -80,7 +101,7 @@ struct MomoJournalView: View {
 struct MomoJournalView_Previews: PreviewProvider {
     static var previews: some View {
         let env = GlobalEnvironment()
-        MomoJournalView()
+        MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
             .environmentObject(env)
     }
 }

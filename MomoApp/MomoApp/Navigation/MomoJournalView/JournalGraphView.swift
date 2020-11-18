@@ -82,19 +82,16 @@ struct JournalGraphView: View {
                                     .momoTextBold(size: 14)
                             }
                         }
+
                         // Animate on the graph lines
-                        .blur(radius: animateOn ? 0 : 2)
-                        .opacity(animateOn ? 1 : 0)
-                        .animation(Animation
-                                    .easeInOut(duration: 0.8)
-                                    .delay(Double(index) * 0.05)
-                        )
+//                        .blur(radius: animateOn ? 0 : 2)
+//                        .opacity(animateOn ? 1 : 0)
+//                        .animation(Animation
+//                                    .easeInOut(duration: 0.8)
+//                                    .delay(Double(index) * 0.05)
+//                        )
+
                         .frame(minWidth: itemWidth, minHeight: geometry.size.height)
-
-
-
-//                        .frame(minWidth: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, idealWidth: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, idealHeight: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-
 
                         // Make whole stack tappable
                         .contentShape(Rectangle())
@@ -117,28 +114,25 @@ struct JournalGraphView: View {
                                 .gesture(
                                     DragGesture()
                                         .onChanged { value in
-                                            var newLocation = startLocation ?? location
+                                            var newLocation = self.location
 
                                             // Protect from scrolling out of bounds
-//
-//                                            let minIndexShift = self.indexSelection
-//                                            let maxIndexShift = self.numOfEntries - self.indexSelection
-//                                            newLocation.x = (
-//                                                min((CGFloat(minIndexShift) * itemSpacing), newLocation.x + value.translation.width)
-//                                            )
-//
-//                                            self.location = newLocation
+                                            let maxShiftLeft = self.indexSelection * Int(itemSpacing)
+                                            let maxShiftRight = (self.numOfEntries - self.indexSelection - 1) * Int(itemSpacing)
+
+                                            print(maxShiftLeft)
+                                            print(maxShiftRight)
+
+                                            newLocation.x = min(
+                                                0,
+                                                newLocation.x + CGFloat(maxShiftRight)
+                                            )
+
+                                            self.location = newLocation
 
 
 
-
-
-
-
-
-//                                            self.dragOffset = value.translation.width
-
-//                                            // Calculate out of bounds threshold
+                                            // Calculate out of bounds threshold
 //                                            let indexShift = Int(round(value.translation.width / itemSpacing))
 //                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
 //                                            let boundsThreshold = 0 * itemSpacing
@@ -158,12 +152,8 @@ struct JournalGraphView: View {
                                         }.updating($startLocation) { value, state, _ in
                                             state = startLocation ?? location
                                         }.onEnded { value in
-
-
-
+//                                            let indexShift = Int(round(value.translation.width / itemSpacing))
 //                                            let newOffset = itemSpacing * CGFloat(indexShift)
-//                                            self.location.x += newOffset
-
 //                                            self.snap(to: newOffset)
 //                                            self.updateIndexSelection(by: indexShift)
                                         }
@@ -182,7 +172,6 @@ struct JournalGraphView: View {
                     }
                 }
                 VStack {
-                    Text("ENV IDX Selection: \(self.env.indexSelection)")
                     Text("IDX Selection: \(self.indexSelection)")
                     Text("Location: \(self.location.x)")
                     Text("Drag: \(self.dragOffset)")

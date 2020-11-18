@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        MomoAddMoodView()
+        //MomoAddMoodView()
 //        let env = GlobalEnvironment()
 //
 //        JournalGraphView(numOfEntries: 7, value: CGFloat(0.5))
@@ -18,6 +18,9 @@ struct ContentView: View {
 //                    .edgesIgnoringSafeArea(.all)
 //            )
 //            .environmentObject(env)
+//    }
+
+        MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
     }
 }
 

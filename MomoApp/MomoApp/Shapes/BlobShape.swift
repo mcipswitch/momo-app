@@ -17,7 +17,7 @@
 import SwiftUI
 
 struct BlobView: View {
-    @Binding var pct: CGFloat
+    @Binding var blobValue: CGFloat
     @State var isStatic = true
     @State var isAnimating = false
     @State var scale: CGFloat = 1
@@ -54,7 +54,7 @@ struct BlobView: View {
                     .modifier(AnimatableGradient(
                                 from: UIColor.gradientMomo,
                                 to: UIColor.gradientOrange,
-                                pct: pct,
+                                pct: blobValue,
                                 startRadius: scaledFrame * 0.5, // default: 100
                                 endRadius: scaledFrame // pathBounds.width * 1.3
                     ))
@@ -150,6 +150,6 @@ struct BlobShape: Shape {
 
 struct BlobShape_Previews: PreviewProvider {
     static var previews: some View {
-        BlobView(pct: .constant(0.8), scale: 1)
+        BlobView(blobValue: .constant(0.8), scale: 1)
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct JournalListView: View {
 
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
+    @State private var animateOn: Bool = false
     
     var body: some View {
         ScrollView {
@@ -22,6 +23,7 @@ struct JournalListView: View {
         }
         .onAppear {
             self.viewModel.fetchEntries()
+            self.animateOn = true
         }
     }
 }

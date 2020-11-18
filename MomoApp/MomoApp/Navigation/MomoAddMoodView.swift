@@ -126,7 +126,7 @@ struct MomoAddMoodView: View {
 
                     // Blob
                     ZStack {
-                        BlobView(pct: $pct, isStatic: false)
+                        BlobView(blobValue: $pct, isStatic: false)
                         VStack {
                             Text(self.homeViewActive ? "Home Active" : "")
                             Text("Pct: \(pct)")
