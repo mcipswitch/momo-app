@@ -22,7 +22,6 @@ struct JournalListView: View {
                 ForEach(viewModel.entries.indices) { index in
                     EntryView(entry: viewModel.entries[index])
 
-
                         // handler when this animation ends...
                         
                         .opacity(animate ? 1 : 0)

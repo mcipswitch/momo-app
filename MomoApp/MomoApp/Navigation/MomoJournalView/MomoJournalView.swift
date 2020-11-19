@@ -15,13 +15,14 @@ struct MomoJournalView: View {
     @State var blobValue: CGFloat = 0.5
 
     @State var animateList: Bool = false
+
+    @State var isDisabled: Bool = false
     
     var body: some View {
         ZStack {
             GeometryReader { geometry in
                 ZStack {
                     JournalViewTypeTitle(view: self.isGraphActive ? .graph : .list)
-                        .slideIn(if: $isGraphActive)
                     HStack {
                         BackButton(action: self.backButtonPressed)
                         Spacer()
@@ -45,26 +46,28 @@ struct MomoJournalView: View {
         .onAppear {
             self.selectedEntry = viewModel.entries.first ?? Entry(emotion: "Sunflower", date: Date(), value: 0.68)
         }
-        .onChange(of: self.isGraphActive) { value in
+        .onChange(of: self.isGraphActive) { graph in
             // Add delay so we can see the cascading animation
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.animateList.toggle()
 
-                // disable the graph view change for 0.8 seconds to let the full animation to avoid bug
+            if graph == false {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.animateList.toggle()
+                }
+            } else {
+                self.animateList.toggle()
             }
         }
     }
     
     // MARK: - Internal Methods
 
-    var didChangeJournalView: (() -> Void)? = nil
+    var didFinishAnimation: (() -> Void)? = nil
     
     private func backButtonPressed() {
         print("Back...")
     }
     
     private func journalTypeButtonPressed() {
-        print("List view...")
         self.isGraphActive.toggle()
     }
 }
