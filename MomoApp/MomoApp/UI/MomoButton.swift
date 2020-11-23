@@ -29,9 +29,30 @@ struct MomoButton: View {
                 Image(systemName: type.imageName)
             }
         }
-        .buttonStyle(MomoButtonStyle(w: 90, h: 34, isActive: isActive))
+        .momoButtonStyle(w: 90, h: 34, isActive: isActive)
         .disabled(!isActive)
         .animation(.ease())
+    }
+}
+
+struct MomoButtonStyle: ButtonStyle {
+    var w: CGFloat
+    var h: CGFloat
+    var isActive: Bool = true
+    var size: CGFloat = 14.0
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .momoButtonText(size: size)
+            .frame(width: w, height: h)
+            .background(Color.momo)
+            .cornerRadius(h / 2)
+            .opacity(isActive ? 1 : 0.2)
+    }
+}
+
+extension View {
+    func momoButtonStyle(w: CGFloat, h: CGFloat, isActive: Bool = true) -> some View {
+        return self.buttonStyle(MomoButtonStyle(w: w, h: h, isActive: isActive))
     }
 }
 

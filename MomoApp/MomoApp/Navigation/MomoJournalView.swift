@@ -81,7 +81,7 @@ struct MiniBlobView: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(self.entry.date, formatter: DateFormatter.shortDate)
-                .dateText(opacity: 0.6)
+                .momoTextRegular(textStyle: .date)
                 .padding(.bottom, 12)
             Text(self.entry.emotion)
                 .momoTextBold()

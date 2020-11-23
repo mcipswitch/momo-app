@@ -23,7 +23,7 @@ struct EntryView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(entry.date, formatter: DateFormatter.shortDate)
-                            .dateText(opacity: 0.6)
+                            .momoTextRegular(textStyle: .date)
                         Text(entry.emotion)
                             .momoTextBold()
                     }

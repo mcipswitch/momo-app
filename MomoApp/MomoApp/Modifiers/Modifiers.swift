@@ -15,38 +15,28 @@ struct MomoText: ViewModifier {
             .font(.custom("DMSans-Bold", size: size))
             .foregroundColor(Color.white.opacity(opacity))
             .multilineTextAlignment(.center)
-            //.lineSpacing(4)
+        //.lineSpacing(4)
     }
 }
 
 struct MomoTextRegular: ViewModifier {
-    var size: CGFloat
-    var opacity: Double
+    var textStyle: MomoTextStyle
     func body(content: Content) -> some View {
         content
-            .font(.custom("DMSans-Medium", size: size))
-            .foregroundColor(Color.white.opacity(opacity))
+            .font(.custom(textStyle.font, size: textStyle.size))
+            .foregroundColor(Color.white.opacity(textStyle.opacity))
             .multilineTextAlignment(.center)
     }
 }
 
-struct CalendarMonthText: ViewModifier {
-    var size: CGFloat
-    func body(content: Content) -> some View {
-        content
-            .font(.custom("DMSans-Bold", size: size))
-            .foregroundColor(.white)
-    }
-}
-
-struct DateText: ViewModifier {
-    var opacity: Double
-    func body(content: Content) -> some View {
-        content
-            .font(.custom("DMSans-Medium", size: 16))
-            .foregroundColor(Color.white.opacity(opacity))
-    }
-}
+//struct CalendarMonthText: ViewModifier {
+//    var size: CGFloat
+//    func body(content: Content) -> some View {
+//        content
+//            .font(.custom("DMSans-Bold", size: size))
+//            .foregroundColor(.white)
+//    }
+//}
 
 struct MomoButtonText: ViewModifier {
     var size: CGFloat
@@ -56,11 +46,27 @@ struct MomoButtonText: ViewModifier {
     }
 }
 
-struct LinkText: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .font(.custom("DMSans-Bold", size: 16))
-            .foregroundColor(Color.momo)
+// MARK: - Helpers
+
+enum MomoTextStyle {
+    case date, toolbarButton, toolbarTitle, link
+    var size: CGFloat {
+        switch self {
+        case .date, .link, .toolbarTitle: return 16
+        case .toolbarButton: return 22
+        }
+    }
+    var opacity: Double {
+        switch self {
+        case .date: return 0.6
+        default: return 1
+        }
+    }
+    var font: String {
+        switch self {
+        case .link, .toolbarTitle: return "DMSans-Bold"
+        default: return "DMSans-Medium"
+        }
     }
 }
 
@@ -76,9 +82,6 @@ struct AnimateSlideIn: ViewModifier {
             .animation(Animation
                         .ease()
                         .delay(if: !observedValue, 0.5)
-
-                       // Not sure what this accomplishes
-                       //.delay(showHome ? 0 : (noDelay ? 0 : 0.5))
             )
     }
 }

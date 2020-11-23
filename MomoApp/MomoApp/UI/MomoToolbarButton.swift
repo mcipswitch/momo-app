@@ -30,7 +30,8 @@ enum ToolbarButtonType {
 struct MomoToolbarTitle: View {
     var type: ToolbarButtonType
     var body: some View {
-        Text(type.title).calendarMonthText()
+        Text(type.title)
+            .momoTextRegular(textStyle: .toolbarTitle)
     }
 }
 
@@ -42,6 +43,6 @@ struct MomoToolbarButton: View {
         Button(action: action) {
             Image(systemName: type.imageName)
         }
-        .momoTextRegular()
+        .momoTextRegular(textStyle: .toolbarButton)
     }
 }

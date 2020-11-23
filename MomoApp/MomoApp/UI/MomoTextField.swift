@@ -26,7 +26,7 @@ struct MomoTextField: View {
                     // TODO
                     print(text)
                 })
-                .textFieldStyle(EmotionTextFieldStyle())
+                .momoTextFieldStyle()
                 .onReceive(text.publisher.collect()) { _ in
                     self.text = String(text.prefix(20))
                 }
@@ -35,5 +35,22 @@ struct MomoTextField: View {
 
             MomoTextFieldBorder(showHome: $homeViewActive, textFieldIsFocused: $textFieldIsFocused)
         }
+    }
+}
+
+struct MomoTextFieldStyle: TextFieldStyle {
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+            .momoTextBold()
+            .autocapitalization(.none)
+            .disableAutocorrection(true)
+            .accentColor(Color.momo)
+            .minimumScaleFactor(0.8)
+    }
+}
+
+extension View {
+    func momoTextFieldStyle() -> some View {
+        return self.textFieldStyle(MomoTextFieldStyle())
     }
 }

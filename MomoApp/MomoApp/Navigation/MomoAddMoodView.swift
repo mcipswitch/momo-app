@@ -108,7 +108,7 @@ struct MomoAddMoodView: View {
                     // Date + EmotionTextField
                     VStack(spacing: 36) {
                         Text(Date(), formatter: DateFormatter.shortDate)
-                            .dateText(opacity: 0.6)
+                            .momoTextRegular(textStyle: .date)
                             .slideOut(if: $homeViewActive)
                             .padding(.top, 16)
                         ZStack {
@@ -173,7 +173,7 @@ struct MomoAddMoodView: View {
                                                 .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
                                     )
 
-                                SeeEntriesButton(action: self.seeEntriesButtonPressed)
+                                MomoTextLinkButton(link: .pastEntries, action: self.seeEntriesButtonPressed)
                                     .offset(y: 60)
                                     .slideOut(if: $homeViewActive)
                             }
@@ -258,16 +258,6 @@ struct AddEmotionButton: View {
                 )
         }.buttonStyle(MomoButtonStyle(w: homeViewActive ? 230 : buttonSize,
                                       h: homeViewActive ? 60 : buttonSize))
-    }
-}
-
-struct SeeEntriesButton: View {
-    var action: () -> Void
-    var body: some View {
-        Button(action: action) {
-            Text("See your past entries").underline()
-        }
-        .buttonStyle(MomoTextLinkStyle())
     }
 }
 
