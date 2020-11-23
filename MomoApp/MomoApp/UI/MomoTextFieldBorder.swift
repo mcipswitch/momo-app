@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TextFieldBorder: View {
+struct MomoTextFieldBorder: View {
     @Binding var showHome: Bool
     @Binding var textFieldIsFocused: Bool
     var height: CGFloat = 2

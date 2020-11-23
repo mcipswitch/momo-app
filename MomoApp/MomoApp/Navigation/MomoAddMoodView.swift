@@ -73,7 +73,6 @@ struct MomoAddMoodView: View {
                 self.blurredColorWheelIsActive = false
                 self.isResetting = true
 
-
                 // https://swiftui.diegolavalle.com/posts/animation-ended/
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                     self.isResetting = false
@@ -95,9 +94,9 @@ struct MomoAddMoodView: View {
             GeometryReader { geometry in
                 // Top Navigation
                 HStack {
-                    BackButton(action: self.backButtonPressed)
+                    MomoToolbarButton(type: .back, action: self.backButtonPressed)
                     Spacer()
-                    NextButton(isActive: $emotionTextFieldCompleted, action: self.nextButtonPressed)
+                    MomoButton(isActive: $emotionTextFieldCompleted, type: .next, action: self.nextButtonPressed)
                 }
                 .slideIn(if: $homeViewActive)
                 .padding()
@@ -116,7 +115,7 @@ struct MomoAddMoodView: View {
                             Text("Hi, how are you feeling today?")
                                 .momoTextBold()
                                 .slideOut(if: $homeViewActive)
-                            EmotionTextField(homeViewActive: $homeViewActive, text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
+                            MomoTextField(homeViewActive: $homeViewActive, text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
                         }
                         .onChange(of: emotionText) { field in
                             self.emotionTextFieldCompleted = field.isEmpty ? false : true
@@ -243,37 +242,6 @@ struct MomoAddMoodView: View {
 
 // MARK: - Views
 
-struct EmotionTextField: View {
-    @Binding var homeViewActive: Bool
-    @Binding var text: String
-    @Binding var textFieldIsFocused: Bool
-
-    var body: some View {
-        VStack(spacing: 6) {
-            ZStack(alignment: .center) {
-
-                // Placeholder
-                Text("My day in a word")
-                    .momoTextBold(opacity: text.isEmpty ? 0.6 : 0)
-
-                TextField("", text: $text, onEditingChanged: { editingChanged in
-                    textFieldIsFocused = editingChanged ? true : false
-                }, onCommit: {
-                    // TODO
-                    print(text)
-                })
-                .textFieldStyle(EmotionTextFieldStyle())
-                .onReceive(text.publisher.collect()) { _ in
-                    self.text = String(text.prefix(20))
-                }
-            }
-            .slideIn(if: $homeViewActive)
-
-            TextFieldBorder(showHome: $homeViewActive, textFieldIsFocused: $textFieldIsFocused)
-        }
-    }
-}
-
 struct AddEmotionButton: View {
     @Binding var homeViewActive: Bool
     @Binding var isAnimating: Bool
@@ -298,7 +266,8 @@ struct SeeEntriesButton: View {
     var body: some View {
         Button(action: action) {
             Text("See your past entries").underline()
-        }.buttonStyle(MomoTextLinkStyle())
+        }
+        .buttonStyle(MomoTextLinkStyle())
     }
 }
 

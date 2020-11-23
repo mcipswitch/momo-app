@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+extension View {
+//    func momoButtonStyle() -> some view {
+//
+//    }
+}
+
 struct MomoButtonStyle: ButtonStyle {
     var w: CGFloat
     var h: CGFloat

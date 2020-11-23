@@ -66,7 +66,7 @@ struct LinkText: ViewModifier {
 
 // MARK: - Animations
 
-struct SlideIn: ViewModifier {
+struct AnimateSlideIn: ViewModifier {
     @Binding var observedValue: Bool
 
     func body(content: Content) -> some View {
@@ -83,7 +83,7 @@ struct SlideIn: ViewModifier {
     }
 }
 
-struct SlideOut: ViewModifier {
+struct AnimateSlideOut: ViewModifier {
     @Binding var observedValue: Bool
 
     func body(content: Content) -> some View {

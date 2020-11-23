@@ -22,11 +22,11 @@ struct MomoJournalView: View {
         ZStack {
             GeometryReader { geometry in
                 ZStack {
-                    JournalViewTypeTitle(view: self.isGraphActive ? .graph : .list)
+                    MomoToolbarTitle(type: self.isGraphActive ? .graph : .list)
                     HStack {
-                        BackButton(action: self.backButtonPressed)
+                        MomoToolbarButton(type: .back, action: self.backButtonPressed)
                         Spacer()
-                        JournalViewTypeButton(view: self.isGraphActive ? .graph : .list, action: self.journalTypeButtonPressed)
+                        MomoToolbarButton(type: self.isGraphActive ? .graph : .list, action: self.journalTypeButtonPressed)
                     }
                 }.padding()
 
@@ -92,12 +92,6 @@ struct MiniBlobView: View {
     }
 }
 
-struct JournalViewTypeTitle: View {
-    var view: JournalViewType
-    var body: some View {
-        Text(view.title).calendarMonthText()
-    }
-}
 
 // MARK: - Previews
 

@@ -7,12 +7,24 @@
 
 import SwiftUI
 
-struct BackButton: View {
+enum ToolbarButton {
+    case back
+
+    var imageName: String {
+        switch self {
+        case .back:
+            return "chevron.backward"
+        }
+    }
+}
+
+struct ToolbarButton: View {
+    var button: ToolbarButton
     var action: () -> Void
     
     var body: some View {
         Button(action: action) {
-            Image(systemName: "chevron.backward")
+            Image(systemName: button.imageName)
         }
         .momoTextRegular()
     }

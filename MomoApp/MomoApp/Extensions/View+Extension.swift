@@ -19,11 +19,11 @@ extension View {
     }
 
     func slideIn(if value: Binding<Bool>) -> some View {
-        return modifier(SlideIn(observedValue: value))
+        return modifier(AnimateSlideIn(observedValue: value))
     }
 
     func slideOut(if value: Binding<Bool>) -> some View {
-        return modifier(SlideOut(observedValue: value))
+        return modifier(AnimateSlideOut(observedValue: value))
     }
 
     // MARK: - Text Modifiers
