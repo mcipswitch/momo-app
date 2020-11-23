@@ -34,10 +34,4 @@ extension View {
     func momoTextRegular(textStyle: MomoTextStyle) -> some View {
         return self.modifier(MomoTextRegular(textStyle: textStyle))
     }
-//    func calendarMonthText(size: CGFloat = 16) -> some View {
-//        return self.modifier(CalendarMonthText(size: size))
-//    }
-    func momoButtonText(size: CGFloat) -> some View {
-        return self.modifier(MomoButtonText(size: size))
-    }
 }

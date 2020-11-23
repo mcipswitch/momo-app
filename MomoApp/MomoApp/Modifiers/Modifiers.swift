@@ -15,7 +15,6 @@ struct MomoText: ViewModifier {
             .font(.custom("DMSans-Bold", size: size))
             .foregroundColor(Color.white.opacity(opacity))
             .multilineTextAlignment(.center)
-        //.lineSpacing(4)
     }
 }
 
@@ -23,37 +22,25 @@ struct MomoTextRegular: ViewModifier {
     var textStyle: MomoTextStyle
     func body(content: Content) -> some View {
         content
-            .font(.custom(textStyle.font, size: textStyle.size))
+            .font(.custom(textStyle.font.rawValue, size: textStyle.size))
             .foregroundColor(Color.white.opacity(textStyle.opacity))
             .multilineTextAlignment(.center)
-    }
-}
-
-//struct CalendarMonthText: ViewModifier {
-//    var size: CGFloat
-//    func body(content: Content) -> some View {
-//        content
-//            .font(.custom("DMSans-Bold", size: size))
-//            .foregroundColor(.white)
-//    }
-//}
-
-struct MomoButtonText: ViewModifier {
-    var size: CGFloat
-    func body(content: Content) -> some View {
-        content
-            .font(.custom("DMSans-Bold", size: size))
+            //.lineSpacing(4)
     }
 }
 
 // MARK: - Helpers
 
 enum MomoTextStyle {
-    case date, toolbarButton, toolbarTitle, link
+    case date, toolbarButton, toolbarTitle, link, button
     var size: CGFloat {
         switch self {
-        case .date, .link, .toolbarTitle: return 16
-        case .toolbarButton: return 22
+        case .date, .link, .toolbarTitle:
+            return 16
+        case .button:
+            return 14
+        case .toolbarButton:
+            return 22
         }
     }
     var opacity: Double {
@@ -62,12 +49,19 @@ enum MomoTextStyle {
         default: return 1
         }
     }
-    var font: String {
+    var font: FontWeight {
         switch self {
-        case .link, .toolbarTitle: return "DMSans-Bold"
-        default: return "DMSans-Medium"
+        case .link, .toolbarTitle, .button:
+            return .bold
+        default:
+            return .medium
         }
     }
+}
+
+enum FontWeight: String {
+    case medium = "DMSans-Medium"
+    case bold = "DMSans-Bold"
 }
 
 // MARK: - Animations
