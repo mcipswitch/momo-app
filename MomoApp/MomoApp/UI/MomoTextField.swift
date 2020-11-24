@@ -31,7 +31,7 @@ struct MomoTextField: View {
                     self.text = String(text.prefix(20))
                 }
             }
-            .slideIn(if: $homeViewActive)
+            .slideInAnimation(if: $homeViewActive, delay: true)
 
             MomoTextFieldBorder(showHome: $homeViewActive, textFieldIsFocused: $textFieldIsFocused)
         }

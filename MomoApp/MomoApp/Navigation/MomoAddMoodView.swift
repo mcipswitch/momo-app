@@ -100,7 +100,7 @@ struct MomoAddMoodView: View {
                     Spacer()
                     MomoButton(isActive: $emotionTextFieldCompleted, type: .next, action: self.nextButtonPressed)
                 }
-                .slideIn(if: $homeViewActive)
+                .slideInAnimation(if: $homeViewActive, delay: true)
                 .padding()
                 .disabled(isResetting)
 
@@ -111,12 +111,12 @@ struct MomoAddMoodView: View {
                     VStack(spacing: 36) {
                         Text(Date(), formatter: DateFormatter.shortDate)
                             .momoText(.date)
-                            .slideOut(if: $homeViewActive)
+                            .slideOutAnimation(if: $homeViewActive, delay: true)
                             .padding(.top, 16)
                         ZStack {
                             Text("Hi, how are you feeling today?")
                                 .momoText(.main)
-                                .slideOut(if: $homeViewActive)
+                                .slideOutAnimation(if: $homeViewActive, delay: true)
                             MomoTextField(homeViewActive: $homeViewActive, text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
                         }
                         .onChange(of: emotionText) { field in
@@ -177,7 +177,7 @@ struct MomoAddMoodView: View {
 
                                 MomoTextLinkButton(link: .pastEntries, action: self.seePastEntriesButtonPressed)
                                     .offset(y: 60)
-                                    .slideOut(if: $homeViewActive)
+                                    .slideOutAnimation(if: $homeViewActive, delay: true)
                             }
                             .offset(x: self.dragValue.width * 0.5, y: self.dragValue.height * 0.5)
                             .position(self.buttonLocation ?? CGPoint(x: geometry.size.width / 2,
@@ -230,8 +230,7 @@ struct MomoAddMoodView: View {
     private func seePastEntriesButtonPressed() {
         self.viewRouter.currentPage = .journal
     }
-    
-    // Navigation Buttons
+
     private func backButtonPressed() {
         self.homeViewActive = true
     }

@@ -67,28 +67,45 @@ enum FontWeight: String {
 
 struct AnimateSlideIn: ViewModifier {
     @Binding var observedValue: Bool
+    var delay: Bool
 
     func body(content: Content) -> some View {
         content
-            .offset(y: observedValue ? -5 : 0)
-            .opacity(observedValue ? 0 : 1)
-            .animation(Animation
-                        .ease()
-                        .delay(if: !observedValue, 0.5)
+            .modifier(SlideIn(observedValue: $observedValue))
+            .animation(delay
+                        ? Animation.ease().delay(if: !observedValue, 0.5)
+                        : .ease()
             )
     }
 }
 
 struct AnimateSlideOut: ViewModifier {
     @Binding var observedValue: Bool
+    var delay: Bool
 
+    func body(content: Content) -> some View {
+        content
+            .modifier(SlideOut(observedValue: $observedValue))
+            .animation(delay
+                        ? Animation.ease().delay(if: observedValue, 0.5)
+                        : .ease()
+            )
+    }
+}
+
+struct SlideIn: ViewModifier {
+    @Binding var observedValue: Bool
+    func body(content: Content) -> some View {
+        content
+            .offset(y: observedValue ? -5 : 0)
+            .opacity(observedValue ? 0 : 1)
+    }
+}
+struct SlideOut: ViewModifier {
+    @Binding var observedValue: Bool
     func body(content: Content) -> some View {
         content
             .offset(y: observedValue ? 0 : 5)
             .opacity(observedValue ? 1 : 0)
-            .animation(Animation
-                        .ease()
-                        .delay(if: observedValue, 0.5)
-            )
     }
 }

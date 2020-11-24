@@ -18,12 +18,12 @@ extension View {
         return modifier(AnimationCompletionObserverModifier(observedValue: value, completion: completion))
     }
 
-    func slideIn(if value: Binding<Bool>) -> some View {
-        return modifier(AnimateSlideIn(observedValue: value))
+    func slideInAnimation(if value: Binding<Bool>, delay: Bool) -> some View {
+        return modifier(AnimateSlideIn(observedValue: value, delay: delay))
     }
 
-    func slideOut(if value: Binding<Bool>) -> some View {
-        return modifier(AnimateSlideOut(observedValue: value))
+    func slideOutAnimation(if value: Binding<Bool>, delay: Bool) -> some View {
+        return modifier(AnimateSlideOut(observedValue: value, delay: delay))
     }
 
     // MARK: - Text Modifiers

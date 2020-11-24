@@ -9,15 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var viewRouter: ViewRouter
+    @State var offset: CGFloat = UIScreen.screenWidth
 
     var body: some View {
         ZStack {
-            switch self.viewRouter.currentPage {
-            case .home:
-                MomoAddMoodView()
-            case .journal:
-                MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
-            }
+            MomoAddMoodView()
+            MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
+                .offset(x: self.viewRouter.currentPage == .journal ? 0 : self.offset)
+                .animation(Animation.easeInOut(duration: 0.2))
         }
     }
 }
