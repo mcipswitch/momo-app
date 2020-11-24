@@ -71,13 +71,14 @@ struct JournalGraphView: View {
                             }
                         }
 
-                        // Animate on the graph lines
-                        .blur(radius: animateGraph ? 0 : 2)
-                        .opacity(animateGraph ? 1 : 0)
-                        .animation(Animation
-                                    .spring()
-                                    .delay(Double(index) * 0.02)
-                        )
+//                        // Animate on the graph lines
+//                        .blur(radius: animateGraph ? 0 : 2)
+//                        .opacity(animateGraph ? 1 : 0)
+//                        .animation(Animation
+//                                    .spring()
+//                                    .delay(Double(index) * 0.02)
+//                        )
+
                         .frame(minWidth: itemWidth, minHeight: geometry.size.height)
 
                         // Make whole stack tappable
@@ -165,7 +166,7 @@ struct JournalGraphView: View {
                 }
             }
         }
-        .padding()
+        .padding(.horizontal)
         .onAppear {
             // Current day is default selection
             self.indexSelection = self.entries.count - 1

@@ -15,38 +15,51 @@ struct MomoJournalView: View {
     @State var blobValue: CGFloat = 0.5
     @State var animateList: Bool = false
     @State var animateGraph: Bool = false
-
-
     @State var isGraphActive: Bool = true
+
+
+
+
+    /// The journal button on the toolbar.
+    var journalButton: ToolbarButtonType {
+        self.isGraphActive ? .graph : .list
+    }
     
     var body: some View {
         VStack {
-            GeometryReader { geometry in
-                // Toolbar
-                ZStack {
-                    MomoToolbarTitle(type: self.isGraphActive ? .graph : .list)
-                    HStack {
-                        MomoToolbarButton(type: .back, action: self.backButtonPressed)
-                        Spacer()
-                        MomoToolbarButton(type: self.isGraphActive ? .graph : .list, action: self.journalTypeButtonPressed)
-                    }
+            // Toolbar
+            // TODO: - fix toolbar animation
+            ZStack {
+                MomoToolbarTitle(type: self.journalButton)
+                HStack(alignment: .top) {
+                    MomoToolbarButton(type: .back, action: self.backButtonPressed)
+                    Spacer()
+                    MomoToolbarButton(type: self.journalButton, action: self.journalTypeButtonPressed)
                 }
-                .padding()
-
-                // Main View
-                ZStack {
-                    VStack(spacing: 48) {
-                        JournalGraphView(numOfEntries: numOfEntries, value: blobValue, animateGraph: $animateGraph)
-                        MiniBlobView(blobValue: $blobValue, entry: selectedEntry)
-                    }
-                    .simpleSlideOut(if: $isGraphActive)
-
-                    JournalListView(animate: $animateList)
-                        .simpleSlideIn(if: $isGraphActive)
-                }
-                .padding(.top, 48)
             }
+            .padding()
+
+            // Main View
+            ZStack {
+                VStack(spacing: 48) {
+                    JournalGraphView(numOfEntries: numOfEntries, value: blobValue, animateGraph: $animateGraph)
+                    MiniBlobView(blobValue: $blobValue, entry: selectedEntry)
+                }
+                .simpleSlideOut(if: $isGraphActive)
+
+                JournalListView(animate: $animateList)
+                    .simpleSlideIn(if: $isGraphActive)
+            }
+            //.padding(.top, 48)
         }
+
+
+        // Add a delayed animation when `MomoJournalView` transitions on
+        .animation(Animation.spring().delay(self.viewRouter.currentPage == .home ? 0 : 0.2))
+
+
+
+
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
         .onChange(of: self.isGraphActive) { graph in
             if graph == false {
