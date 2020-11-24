@@ -14,11 +14,13 @@ struct MomoJournalView: View {
     @State var numOfEntries: Int = 7
     @State var blobValue: CGFloat = 0.5
     @State var animateList: Bool = false
+    @State var animateGraph: Bool = false
 
-    @State var isGraphActive: Bool = false
+
+    @State var isGraphActive: Bool = true
     
     var body: some View {
-        ZStack {
+        VStack {
             GeometryReader { geometry in
                 // Toolbar
                 ZStack {
@@ -34,13 +36,13 @@ struct MomoJournalView: View {
                 // Main View
                 ZStack {
                     VStack(spacing: 48) {
-                        JournalGraphView(numOfEntries: numOfEntries, value: blobValue)
+                        JournalGraphView(numOfEntries: numOfEntries, value: blobValue, animateGraph: $animateGraph)
                         MiniBlobView(blobValue: $blobValue, entry: selectedEntry)
                     }
-                    .simpleSlideIn(if: $isGraphActive)
+                    .simpleSlideOut(if: $isGraphActive)
 
                     JournalListView(animate: $animateList)
-                        .simpleSlideOut(if: $isGraphActive)
+                        .simpleSlideIn(if: $isGraphActive)
                 }
                 .padding(.top, 48)
             }
@@ -52,8 +54,10 @@ struct MomoJournalView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.animateList.toggle()
                 }
-            } else {
-                self.animateList.toggle()
+            } else if graph == true {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.animateGraph.toggle()
+                }
             }
         }
     }
@@ -67,6 +71,7 @@ struct MomoJournalView: View {
     }
     
     private func journalTypeButtonPressed() {
+        // TODO: - // Add delay if we are switching from list to graph
         self.isGraphActive.toggle()
     }
 }
@@ -97,9 +102,7 @@ struct MiniBlobView: View {
 #if DEBUG
 struct MomoJournalView_Previews: PreviewProvider {
     static var previews: some View {
-        let env = GlobalEnvironment()
         MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
-            .environmentObject(env)
     }
 }
 #endif

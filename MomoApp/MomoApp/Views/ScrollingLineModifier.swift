@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ScrollingLineModifier: ViewModifier {
-    @EnvironmentObject var env: GlobalEnvironment
     @State private var currentOffset: CGFloat
     @State private var dragOffset: CGFloat
 
