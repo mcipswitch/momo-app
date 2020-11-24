@@ -8,10 +8,13 @@
 import SwiftUI
 
 @main
-struct MomoAppApp: App {
+struct MomoApp: App {
+    @StateObject var viewRouter = ViewRouter()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(viewRouter)
         }
     }
 }

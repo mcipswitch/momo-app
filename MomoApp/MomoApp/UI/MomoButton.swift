@@ -41,7 +41,7 @@ struct MomoButtonStyle: ButtonStyle {
     var isActive: Bool = true
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .momoTextRegular(textStyle: .button)
+            .momoText(.button)
             .frame(width: w, height: h)
             .background(Color.momo)
             .cornerRadius(h / 2)

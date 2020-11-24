@@ -13,10 +13,7 @@ struct MomoJournalView: View {
     @State var numOfEntries: Int = 7
     @State var isGraphActive: Bool = true
     @State var blobValue: CGFloat = 0.5
-
     @State var animateList: Bool = false
-
-    @State var isDisabled: Bool = false
     
     var body: some View {
         ZStack {
@@ -28,7 +25,8 @@ struct MomoJournalView: View {
                         Spacer()
                         MomoToolbarButton(type: self.isGraphActive ? .graph : .list, action: self.journalTypeButtonPressed)
                     }
-                }.padding()
+                }
+                .padding()
 
                 ZStack {
                     VStack(spacing: 48) {
@@ -47,9 +45,8 @@ struct MomoJournalView: View {
             self.selectedEntry = viewModel.entries.first ?? Entry(emotion: "Sunflower", date: Date(), value: 0.68)
         }
         .onChange(of: self.isGraphActive) { graph in
-            // Add delay so we can see the cascading animation
-
             if graph == false {
+                // Add delay so we can see the cascading animation
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.animateList.toggle()
                 }
@@ -81,10 +78,10 @@ struct MiniBlobView: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(self.entry.date, formatter: DateFormatter.shortDate)
-                .momoTextRegular(textStyle: .date)
+                .momoText(.date)
                 .padding(.bottom, 12)
             Text(self.entry.emotion)
-                .momoTextBold()
+                .momoText(.main)
             BlobView(blobValue: $blobValue, isStatic: false)
                 .scaleEffect(0.60)
             Spacer()
@@ -95,6 +92,7 @@ struct MiniBlobView: View {
 
 // MARK: - Previews
 
+#if DEBUG
 struct MomoJournalView_Previews: PreviewProvider {
     static var previews: some View {
         let env = GlobalEnvironment()
@@ -102,3 +100,4 @@ struct MomoJournalView_Previews: PreviewProvider {
             .environmentObject(env)
     }
 }
+#endif

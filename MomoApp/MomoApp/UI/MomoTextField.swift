@@ -18,8 +18,8 @@ struct MomoTextField: View {
 
                 // Placeholder
                 Text("My day in a word")
-                    .momoTextBold(opacity: text.isEmpty ? 0.6 : 0)
-
+                    .momoText(.main)
+                    .opacity(text.isEmpty ? 0.6 : 0)
                 TextField("", text: $text, onEditingChanged: { editingChanged in
                     textFieldIsFocused = editingChanged ? true : false
                 }, onCommit: {
@@ -41,7 +41,7 @@ struct MomoTextField: View {
 struct MomoTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .momoTextBold()
+            .momoText(.main)
             .autocapitalization(.none)
             .disableAutocorrection(true)
             .accentColor(Color.momo)

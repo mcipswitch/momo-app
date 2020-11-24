@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct JournalListView: View {
-
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     @Binding var animate: Bool
 

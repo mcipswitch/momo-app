@@ -31,7 +31,7 @@ struct MomoToolbarTitle: View {
     var type: ToolbarButtonType
     var body: some View {
         Text(type.title)
-            .momoTextRegular(textStyle: .toolbarTitle)
+            .momoText(.toolbarTitle)
     }
 }
 
@@ -43,6 +43,6 @@ struct MomoToolbarButton: View {
         Button(action: action) {
             Image(systemName: type.imageName)
         }
-        .momoTextRegular(textStyle: .toolbarButton)
+        .momoText(.toolbarButton)
     }
 }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MomoAddMoodView: View {
+    @EnvironmentObject var viewRouter: ViewRouter
+    
 
     @State private var homeViewActive: Bool = true
     
@@ -108,12 +110,12 @@ struct MomoAddMoodView: View {
                     // Date + EmotionTextField
                     VStack(spacing: 36) {
                         Text(Date(), formatter: DateFormatter.shortDate)
-                            .momoTextRegular(textStyle: .date)
+                            .momoText(.date)
                             .slideOut(if: $homeViewActive)
                             .padding(.top, 16)
                         ZStack {
                             Text("Hi, how are you feeling today?")
-                                .momoTextBold()
+                                .momoText(.main)
                                 .slideOut(if: $homeViewActive)
                             MomoTextField(homeViewActive: $homeViewActive, text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
                         }
@@ -173,7 +175,7 @@ struct MomoAddMoodView: View {
                                                 .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
                                     )
 
-                                MomoTextLinkButton(link: .pastEntries, action: self.seeEntriesButtonPressed)
+                                MomoTextLinkButton(link: .pastEntries, action: self.seePastEntriesButtonPressed)
                                     .offset(y: 60)
                                     .slideOut(if: $homeViewActive)
                             }
@@ -225,8 +227,8 @@ struct MomoAddMoodView: View {
         self.homeViewActive ? self.homeViewActive.toggle() : nil
     }
     
-    private func seeEntriesButtonPressed() {
-        //self.showJournalView.toggle()
+    private func seePastEntriesButtonPressed() {
+        self.viewRouter.currentPage = .journal
     }
     
     // Navigation Buttons
@@ -256,7 +258,8 @@ struct AddEmotionButton: View {
                             ? .none
                             : Animation.ease().delay(0.5)
                 )
-        }.buttonStyle(MomoButtonStyle(w: homeViewActive ? 230 : buttonSize,
+        }
+        .buttonStyle(MomoButtonStyle(w: homeViewActive ? 230 : buttonSize,
                                       h: homeViewActive ? 60 : buttonSize))
     }
 }

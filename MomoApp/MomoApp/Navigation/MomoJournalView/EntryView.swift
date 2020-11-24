@@ -23,9 +23,9 @@ struct EntryView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(entry.date, formatter: DateFormatter.shortDate)
-                            .momoTextRegular(textStyle: .date)
+                            .momoText(.date)
                         Text(entry.emotion)
-                            .momoTextBold()
+                            .momoText(.main)
                     }
                     Spacer()
                     BlobView(blobValue: $blobValue, isStatic: true, scale: 0.2)

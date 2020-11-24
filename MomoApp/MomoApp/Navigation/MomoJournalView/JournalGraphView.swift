@@ -15,7 +15,6 @@ import SwiftUI
 class GlobalEnvironment: ObservableObject {
     @Published var entrySelection: Entry?
     @Published var indexSelection: Int = 6
-
     func shiftIndex(by amount: Int) {
         withAnimation(Animation.easeInOut(duration: 0.05)) {
             self.indexSelection += amount
@@ -77,9 +76,9 @@ struct JournalGraphView: View {
                             }
                             VStack(spacing: 8) {
                                 Text("\(self.entries[index].date.getWeekday())")
-                                    .momoTextBold(size: 12, opacity: 0.4)
+                                    .momoText(.graphWeekday)
                                 Text("\(self.entries[index].date.getDay())")
-                                    .momoTextBold(size: 14)
+                                    .momoText(.graphDay)
                             }
                         }
 

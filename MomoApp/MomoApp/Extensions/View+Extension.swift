@@ -28,10 +28,7 @@ extension View {
 
     // MARK: - Text Modifiers
 
-    func momoTextBold(size: CGFloat = 22, opacity: Double = 1) -> some View {
-        return self.modifier(MomoText(size: size, opacity: opacity))
-    }
-    func momoTextRegular(textStyle: MomoTextStyle) -> some View {
-        return self.modifier(MomoTextRegular(textStyle: textStyle))
+    func momoText(_ textStyle: MomoTextStyle) -> some View {
+        return self.modifier(MomoText(textStyle: textStyle))
     }
 }

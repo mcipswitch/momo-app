@@ -8,53 +8,52 @@
 import SwiftUI
 
 struct MomoText: ViewModifier {
-    var size: CGFloat
-    var opacity: Double
-    func body(content: Content) -> some View {
-        content
-            .font(.custom("DMSans-Bold", size: size))
-            .foregroundColor(Color.white.opacity(opacity))
-            .multilineTextAlignment(.center)
-    }
-}
-
-struct MomoTextRegular: ViewModifier {
     var textStyle: MomoTextStyle
     func body(content: Content) -> some View {
         content
             .font(.custom(textStyle.font.rawValue, size: textStyle.size))
-            .foregroundColor(Color.white.opacity(textStyle.opacity))
+            .foregroundColor(textStyle.color.opacity(textStyle.opacity))
             .multilineTextAlignment(.center)
-            //.lineSpacing(4)
+            .lineSpacing(4)
     }
 }
 
 // MARK: - Helpers
 
 enum MomoTextStyle {
-    case date, toolbarButton, toolbarTitle, link, button
+    case date, toolbarButton, toolbarTitle, link, button, main
+    case graphWeekday, graphDay
     var size: CGFloat {
         switch self {
+        case .main, .toolbarButton:
+            return 22
         case .date, .link, .toolbarTitle:
             return 16
-        case .button:
+        case .button, .graphDay:
             return 14
-        case .toolbarButton:
-            return 22
+        case .graphWeekday:
+            return 12
         }
     }
     var opacity: Double {
         switch self {
         case .date: return 0.6
+        case .graphWeekday: return 0.4
         default: return 1
         }
     }
     var font: FontWeight {
         switch self {
-        case .link, .toolbarTitle, .button:
+        case .link, .toolbarTitle, .button, .main, .graphWeekday, .graphDay:
             return .bold
         default:
             return .medium
+        }
+    }
+    var color: Color {
+        switch self {
+        case .button: return .black
+        default: return .white
         }
     }
 }

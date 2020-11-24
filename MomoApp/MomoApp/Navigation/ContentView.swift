@@ -8,24 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        //MomoAddMoodView()
-//        let env = GlobalEnvironment()
-//
-//        JournalGraphView(numOfEntries: 7, value: CGFloat(0.5))
-//            .background(
-//                Image("background")
-//                    .edgesIgnoringSafeArea(.all)
-//            )
-//            .environmentObject(env)
-//    }
+    @EnvironmentObject var viewRouter: ViewRouter
 
-        MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
+    var body: some View {
+        ZStack {
+            switch self.viewRouter.currentPage {
+            case .home:
+                MomoAddMoodView()
+            case .journal:
+                MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
+            }
+        }
     }
 }
 
+// MARK: - Previews
+
+#if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MomoAddMoodView()
+        ContentView()
+            .environmentObject(ViewRouter())
     }
 }
+#endif
