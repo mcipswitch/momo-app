@@ -12,25 +12,21 @@ struct MomoJournalView: View {
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     @State var selectedEntry: Entry
     @State var numOfEntries: Int = 7
-
-
-
     @State var blobValue: CGFloat = 0.5
     @State var animateList: Bool = false
 
     @State var isGraphActive: Bool = false
-    @State var journalViewType: ToolbarButtonType = .graph
     
     var body: some View {
         ZStack {
             GeometryReader { geometry in
                 // Toolbar
                 ZStack {
-                    MomoToolbarTitle(type: self.journalViewType)
+                    MomoToolbarTitle(type: self.isGraphActive ? .graph : .list)
                     HStack {
                         MomoToolbarButton(type: .back, action: self.backButtonPressed)
                         Spacer()
-                        MomoToolbarButton(type: self.journalViewType, action: self.journalTypeButtonPressed)
+                        MomoToolbarButton(type: self.isGraphActive ? .graph : .list, action: self.journalTypeButtonPressed)
                     }
                 }
                 .padding()
@@ -41,10 +37,10 @@ struct MomoJournalView: View {
                         JournalGraphView(numOfEntries: numOfEntries, value: blobValue)
                         MiniBlobView(blobValue: $blobValue, entry: selectedEntry)
                     }
-                    .slideInAnimation(if: $isGraphActive, delay: false)
+                    .simpleSlideIn(if: $isGraphActive)
 
                     JournalListView(animate: $animateList)
-                        .slideOutAnimation(if: $isGraphActive, delay: false)
+                        .simpleSlideOut(if: $isGraphActive)
                 }
                 .padding(.top, 48)
             }
@@ -71,12 +67,7 @@ struct MomoJournalView: View {
     }
     
     private func journalTypeButtonPressed() {
-        if self.journalViewType == .graph {
-            self.journalViewType = .list
-        }
-        else if self.journalViewType == .list {
-            self.journalViewType = .graph
-        }
+        self.isGraphActive.toggle()
     }
 }
 

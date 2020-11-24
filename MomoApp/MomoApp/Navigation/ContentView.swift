@@ -16,7 +16,7 @@ struct ContentView: View {
             MomoAddMoodView()
             MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
                 .offset(x: self.viewRouter.currentPage == .journal ? 0 : self.offset)
-                .animation(Animation.easeInOut(duration: 0.2))
+                .animation(.spring())
         }
     }
 }
