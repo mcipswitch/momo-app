@@ -45,12 +45,11 @@ struct JournalGraphView: View {
         ZStack {
             GeometryReader { geo in
 
-                // TODO: - Fix graph implementation
+                // TODO: - graph is not showing up?
                 LinearGradient(gradient: Gradient(colors: [Color.momo, Color.momoOrange, Color.momoPurple]),
                                startPoint: .top, endPoint: .bottom)
-                    .mask(
-                        LineGraphView(on: true, sampleData: self.viewModel.dataPoints)
-                            .padding(.horizontal, 16)
+                    .mask(LineGraphView(on: true, dataPoints: self.viewModel.dataPoints)
+                            .padding()
                     )
 
                 // Calculate the spacing between graph lines
@@ -62,30 +61,30 @@ struct JournalGraphView: View {
                     count: numOfEntries)
 
                 LazyVGrid(columns: columnLayout, alignment: .center) {
-                    ForEach(0 ..< numOfEntries) { index in
+                    ForEach(0 ..< numOfEntries) { idx in
                         VStack {
-                            GraphLine(value: self.entries[index].value)
+                            GraphLine(value: self.entries[idx].value)
                                 .anchorPreference(
                                     key: SelectionPreferenceKey.self,
                                     value: .bounds,
                                     transform: { anchor in
-                                        self.indexSelection == index ? anchor : nil
+                                        self.indexSelection == idx ? anchor : nil
                                     })
                             VStack(spacing: 8) {
-                                Text("\(self.entries[index].date.getWeekday())")
+                                Text("\(self.entries[idx].date.getWeekday())")
                                     .momoText(.graphWeekday)
-                                Text("\(self.entries[index].date.getDay())")
+                                Text("\(self.entries[idx].date.getDay())")
                                     .momoText(.graphDay)
                             }
                         }
 
-//                        // Animate on the graph lines
-//                        .blur(radius: animateGraph ? 0 : 2)
-//                        .opacity(animateGraph ? 1 : 0)
-//                        .animation(Animation
-//                                    .spring()
-//                                    .delay(Double(index) * 0.02)
-//                        )
+                        //                        // Animate on the graph lines
+                        //                        .blur(radius: animateGraph ? 0 : 2)
+                        //                        .opacity(animateGraph ? 1 : 0)
+                        //                        .animation(Animation
+                        //                                    .spring()
+                        //                                    .delay(Double(index) * 0.02)
+                        //                        )
 
                         .frame(minWidth: itemWidth, minHeight: geo.size.height)
 
@@ -97,7 +96,7 @@ struct JournalGraphView: View {
                                 .updating($isLongPress) { value, state, transaction in
 
                                 }.onEnded { _ in
-                                    let indexShift = index - self.indexSelection
+                                    let indexShift = idx - self.indexSelection
                                     let newOffset = itemSpacing * CGFloat(indexShift)
                                     self.snap(to: newOffset)
                                     self.updateIndexSelection(by: indexShift)
@@ -109,68 +108,68 @@ struct JournalGraphView: View {
 
 
 
-//                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-//                            SelectionLine(value: $value, preferences: preferences)
-//                                .position(x: self.location.x + itemWidth / 2, y: geometry.size.height / 2)
-//                                .offset(x: self.totalOffset)
-//                                .gesture(
-//                                    DragGesture()
-//                                        .onChanged { value in
-//                                            var newLocation = self.location
-//
-//                                            // Protect from scrolling out of bounds
-//                                            let maxShiftLeft = self.indexSelection * Int(itemSpacing)
-//                                            let maxShiftRight = (self.numOfEntries - self.indexSelection - 1) * Int(itemSpacing)
-//
-//                                            print(maxShiftLeft)
-//                                            print(maxShiftRight)
-//
-//                                            newLocation.x = min(
-//                                                0,
-//                                                newLocation.x + CGFloat(maxShiftRight)
-//                                            )
-//
-//                                            self.location = newLocation
-//
-//
-//
-//                                            // Calculate out of bounds threshold
-////                                            let indexShift = Int(round(value.translation.width / itemSpacing))
-////                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
-////                                            let boundsThreshold = 0 * itemSpacing
-////                                            let bounds = (
-////                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
-////                                                max: boundsThreshold
-////                                            )
-////
-////                                            // Protect from scrolling out of bounds
-////                                            if value.translation.width > bounds.max {
-////                                                self.dragOffset = offsetDistance + boundsThreshold
-////                                            }
-////                                            else if value.translation.width < bounds.min {
-////                                                self.dragOffset = offsetDistance - boundsThreshold
-////                                            }
-//
-//                                        }.updating($startLocation) { value, state, _ in
-//                                            state = startLocation ?? location
-//                                        }.onEnded { value in
-////                                            let indexShift = Int(round(value.translation.width / itemSpacing))
-////                                            let newOffset = itemSpacing * CGFloat(indexShift)
-////                                            self.snap(to: newOffset)
-////                                            self.updateIndexSelection(by: indexShift)
-//                                        }
-//                                )
-//
-//
-//
-//                            //                                .modifier(
-//                            //                                    ScrollingLineModifier(
-//                            //                                        items: numOfEntries,
-//                            //                                        itemWidth: itemWidth,
-//                            //                                        itemSpacing: itemSpacing,
-//                            //                                        index: index,
-//                            //                                        prevIndex: indexSelection))
-//                        })
+                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
+                            SelectionLine(value: $value, preferences: preferences)
+                                .position(x: self.location.x + itemWidth / 2, y: geo.size.height / 2)
+                                .offset(x: self.totalOffset)
+                                .gesture(
+                                    DragGesture()
+                                        .onChanged { value in
+                                            var newLocation = self.location
+
+                                            // Protect from scrolling out of bounds
+                                            let maxShiftLeft = self.indexSelection * Int(itemSpacing)
+                                            let maxShiftRight = (self.numOfEntries - self.indexSelection - 1) * Int(itemSpacing)
+
+                                            print(maxShiftLeft)
+                                            print(maxShiftRight)
+
+                                            newLocation.x = min(
+                                                0,
+                                                newLocation.x + CGFloat(maxShiftRight)
+                                            )
+
+                                            self.location = newLocation
+
+
+
+                                            // Calculate out of bounds threshold
+                                            //                                            let indexShift = Int(round(value.translation.width / itemSpacing))
+                                            //                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
+                                            //                                            let boundsThreshold = 0 * itemSpacing
+                                            //                                            let bounds = (
+                                            //                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
+                                            //                                                max: boundsThreshold
+                                            //                                            )
+                                            //
+                                            //                                            // Protect from scrolling out of bounds
+                                            //                                            if value.translation.width > bounds.max {
+                                            //                                                self.dragOffset = offsetDistance + boundsThreshold
+                                            //                                            }
+                                            //                                            else if value.translation.width < bounds.min {
+                                            //                                                self.dragOffset = offsetDistance - boundsThreshold
+                                            //                                            }
+
+                                        }.updating($startLocation) { value, state, _ in
+                                            state = startLocation ?? location
+                                        }.onEnded { value in
+                                            //                                            let indexShift = Int(round(value.translation.width / itemSpacing))
+                                            //                                            let newOffset = itemSpacing * CGFloat(indexShift)
+                                            //                                            self.snap(to: newOffset)
+                                            //                                            self.updateIndexSelection(by: indexShift)
+                                        }
+                                )
+
+
+
+                            //                                .modifier(
+                            //                                    ScrollingLineModifier(
+                            //                                        items: numOfEntries,
+                            //                                        itemWidth: itemWidth,
+                            //                                        itemSpacing: itemSpacing,
+                            //                                        index: index,
+                            //                                        prevIndex: indexSelection))
+                        })
                     }
                 }
 
@@ -182,13 +181,11 @@ struct JournalGraphView: View {
                 }
             }
         }
-        .padding(.horizontal)
+        .padding()
         .onAppear {
             // Current day is default selection
             self.indexSelection = self.entries.count - 1
             self.animateGraph.toggle()
-
-            self.viewModel.fetchDataPoints()
         }
     }
 
@@ -242,6 +239,13 @@ struct SelectionLine: View {
                         alignment: .center
                     )
                     .contentShape(Rectangle())
+
+                    // Data Point
+                    .overlay(
+                        Circle()
+                            .strokeBorder(Color.momo, lineWidth: 4)
+                            .frame(width: 16)
+                    )
             }
         }
     }
@@ -251,26 +255,14 @@ struct GraphLine: View {
     var value: CGFloat
 
     var body: some View {
-//        GeometryReader { geo in
-
-//            let totalHeight = geo.size.height / 2
-//            let offset = value * totalHeight
-
-            Rectangle()
-                .foregroundColor(.clear).frame(width: 1)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [.gray, .clear]),
-                        startPoint: .bottom,
-                        endPoint: .top)
-                )
-//                .overlay(
-//                    Circle()
-//                        .strokeBorder(Color.momo, lineWidth: 4)
-//                        .frame(width: 18)
-//                        .offset(y: offset)
-//                )
-//        }
+        Rectangle()
+            .foregroundColor(.clear).frame(width: 1)
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [.gray, .clear]),
+                    startPoint: .bottom,
+                    endPoint: .top)
+            )
     }
 }
 

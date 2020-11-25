@@ -13,16 +13,13 @@ import SwiftUI
 final class EntriesViewModel: ObservableObject {
     @Published var entries: [Entry] = []
     @Published var dataPoints: [CGFloat] = []
-
-    func fetchDataPoints() {
-        self.entries.suffix(7).forEach{ self.dataPoints.append($0.value) }
-    }
     
     var dataManager: DataManagerProtocol
     
     init(dataManager: DataManagerProtocol = DataManager.shared) {
         self.dataManager = dataManager
         fetchEntries()
+        fetchDataPoints()
     }
 }
 
@@ -32,6 +29,9 @@ extension EntriesViewModel: EntriesViewModelProtocol {
     func fetchEntries() {
         entries = dataManager.fetchEntries()
     }
+    func fetchDataPoints() {
+        self.entries.suffix(7).forEach{ self.dataPoints.append($0.value) }
+    }
 }
 
 // MARK: - Protocol
@@ -39,6 +39,7 @@ extension EntriesViewModel: EntriesViewModelProtocol {
 protocol EntriesViewModelProtocol {
     var entries: [Entry] { get }
     func fetchEntries()
+    func fetchDataPoints()
 }
 
 // MARK: - Model

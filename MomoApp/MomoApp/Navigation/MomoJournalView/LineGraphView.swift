@@ -15,19 +15,17 @@ import SwiftUI
 
 struct LineGraphView: View {
     @State var on = true
-
-    // TODO: - First Point should be off screen
-    var sampleData: [CGFloat] = [0.02, 0.87, 0.33, 0.15, 0.73, 0.25, 0.93]
+    let dataPoints: [CGFloat]// = [0.46, 0.6, 0.24, 0.9, 0.7, 0.3, 1]
 
     var body: some View {
-        GeometryReader {geo in
-            LineGraph(dataPoints: sampleData)
-                .trim(to: on ? 0 : 1)
-                .stroke(Color.red, lineWidth: 6)
+        GeometryReader { geo in
+            LineGraph(dataPoints: self.dataPoints)
+                .trim(to: on ? 1 : 0)
+                .stroke(Color.purple, lineWidth: 6)
                 // .aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
                 .onAppear {
-                    withAnimation(.easeInOut(duration: 2.0)) {
-                        self.on.toggle()
+                    withAnimation(.easeInOut(duration: 1.0)) {
+//                        self.on.toggle()
                     }
                 }
         }
@@ -56,8 +54,9 @@ struct LineGraph: Shape {
             guard dataPoints.count > 1 else { return }
             let start = dataPoints[0]
 
-            // x is negative so that line will start from the edge of the screen
-            p.move(to: CGPoint(x: -100, y: (1-start) * rect.height))
+            /// Origin point so that the line will start from the edge of the screen. At this moment, this point is arbitrary.
+            let origin = CGPoint(x: -32, y: (1-start) * rect.height)
+            p.move(to: origin)
 
             // Previous point used to calculate position of curve points
             var previousPoint = CGPoint(x: 0, y: (1-start) * rect.height)
@@ -87,9 +86,10 @@ struct LineGraph: Shape {
 struct Wave_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { geo in
-            LineGraphView()
+            LineGraphView(dataPoints: [0])
                 .aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
                 .scaleEffect(0.9)
+                .environmentObject(ViewRouter())
         }
     }
 }

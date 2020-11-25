@@ -23,7 +23,7 @@ class MockDataManager {
             Entry(id: UUID(), emotion: "Gloomy", date: date.createDate(year: 2020, month: 11, day: 12), value: 0.56),
             Entry(id: UUID(), emotion: "Candy", date: date.createDate(year: 2020, month: 11, day: 13), value: 0.78),
             Entry(id: UUID(), emotion: "Lights", date: date.createDate(year: 2020, month: 11, day: 14), value: 0.45),
-            Entry(id: UUID(), emotion: "Today", date: date, value: 0.6)
+            Entry(id: UUID(), emotion: "Today", date: date, value: 0.5)
         ]
     }
 }
