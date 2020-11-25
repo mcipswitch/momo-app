@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import SwiftUI
 
 final class EntriesViewModel: ObservableObject {
     @Published var entries: [Entry] = []
@@ -41,5 +42,5 @@ struct Entry: Identifiable, Hashable {
     var id = UUID()
     var emotion: String
     var date: Date
-    var value: Double
+    var value: CGFloat
 }

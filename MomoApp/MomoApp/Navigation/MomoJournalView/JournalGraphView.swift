@@ -4,6 +4,7 @@
 //
 //  Created by Priscilla Ip on 2020-10-28.
 //
+
 /*
  Inspired by: https://levelup.gitconnected.com/snap-to-item-scrolling-debccdcbb22f
  */
@@ -37,6 +38,7 @@ struct JournalGraphView: View {
     @State private var dragOffset: CGFloat = 0
     private var totalOffset: CGFloat { currentOffset + dragOffset }
 
+
     // MARK: - Body
 
     var body: some View {
@@ -55,7 +57,7 @@ struct JournalGraphView: View {
                     ForEach(0 ..< numOfEntries) { index in
                         VStack {
                             ZStack {
-                                GraphLine()
+                                GraphLine(value: self.entries[index].value)
                                     .anchorPreference(
                                         key: SelectionPreferenceKey.self,
                                         value: .bounds,
@@ -225,27 +227,35 @@ struct SelectionLine: View {
                         alignment: .center
                     )
                     .contentShape(Rectangle())
-                
-                //                    .overlay(
-                //                        Circle()
-                //                            .strokeBorder(Color.momo, lineWidth: 4)
-                //                            .frame(width: 18)
-                //                    )
             }
         }
     }
 }
 
 struct GraphLine: View {
+    var value: CGFloat
+
     var body: some View {
-        Rectangle()
-            .foregroundColor(.clear).frame(width: 1)
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [.gray, .clear]),
-                    startPoint: .bottom,
-                    endPoint: .top)
-            )
+        GeometryReader { geo in
+
+            let totalHeight = geo.size.height / 2
+            let offset = value * totalHeight
+
+            Rectangle()
+                .foregroundColor(.clear).frame(width: 1)
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [.gray, .clear]),
+                        startPoint: .bottom,
+                        endPoint: .top)
+                )
+                .overlay(
+                    Circle()
+                        .strokeBorder(Color.momo, lineWidth: 4)
+                        .frame(width: 18)
+                        .offset(y: offset)
+                )
+        }
     }
 }
 
@@ -254,13 +264,6 @@ struct GraphLine: View {
 struct SelectionPreferenceKey: PreferenceKey {
     static var defaultValue: Value = nil
     static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
-        value = nextValue()
-    }
-}
-
-struct ItemSpacingPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat? = nil
-    static func reduce(value: inout CGFloat?, nextValue: () -> CGFloat?) {
         value = nextValue()
     }
 }
@@ -274,5 +277,6 @@ struct JournalGraphView_Previews: PreviewProvider {
                 Image("background")
                     .edgesIgnoringSafeArea(.all)
             )
+            .environmentObject(ViewRouter())
     }
 }

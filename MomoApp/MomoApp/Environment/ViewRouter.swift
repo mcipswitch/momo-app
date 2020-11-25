@@ -8,7 +8,13 @@
 import SwiftUI
 
 class ViewRouter: ObservableObject {
+
     @Published var currentPage: Page = .home
+
+    var isHome: Bool {
+        self.currentPage == .home
+    }
+
 }
 
 // MARK: - Helpers

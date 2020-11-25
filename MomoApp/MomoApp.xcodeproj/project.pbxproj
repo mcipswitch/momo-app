@@ -50,6 +50,7 @@
 		9390FB032563821200E2E53A /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390FB022563821200E2E53A /* HomeScreen.swift */; };
 		93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93976DE624EB6ABF0018C667 /* HomeView.swift */; };
 		93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */; };
+		93AE1884256DCE500024E6A9 /* Wave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE1883256DCE500024E6A9 /* Wave.swift */; };
 		93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DB0F5B253656180074EBB6 /* Binding + Extension.swift */; };
 		93E06EA1256C909500E7264D /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E06EA0256C909500E7264D /* ViewRouter.swift */; };
 		93E9A338251D29900095D48C /* ColorRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E9A337251D29900095D48C /* ColorRing.swift */; };
@@ -107,6 +108,7 @@
 		9390FB022563821200E2E53A /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		93976DE624EB6ABF0018C667 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat + Extension.swift"; sourceTree = "<group>"; };
+		93AE1883256DCE500024E6A9 /* Wave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wave.swift; sourceTree = "<group>"; };
 		93DB0F5B253656180074EBB6 /* Binding + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding + Extension.swift"; sourceTree = "<group>"; };
 		93E06EA0256C909500E7264D /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		93E9A337251D29900095D48C /* ColorRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorRing.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 				930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */,
 				930924FE25582D0800AA3934 /* JournalListView.swift */,
 				9309250125582DB300AA3934 /* EntryView.swift */,
+				93AE1883256DCE500024E6A9 /* Wave.swift */,
 			);
 			path = MomoJournalView;
 			sourceTree = "<group>";
@@ -413,6 +416,7 @@
 				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,
 				9309250225582DB300AA3934 /* EntryView.swift in Sources */,
 				930807792564681100A13156 /* SimpleDrag.swift in Sources */,
+				93AE1884256DCE500024E6A9 /* Wave.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
 				937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */,
 				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,

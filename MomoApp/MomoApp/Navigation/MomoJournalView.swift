@@ -50,12 +50,9 @@ struct MomoJournalView: View {
                 JournalListView(animate: $animateList)
                     .simpleSlideIn(if: $isGraphActive)
             }
-            //.padding(.top, 48)
         }
-
-
-        // Add a delayed animation when `MomoJournalView` transitions on
-        .animation(Animation.spring().delay(self.viewRouter.currentPage == .home ? 0 : 0.2))
+        // Add a delay when `MomoJournalView` transitions on
+        .animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
 
 
 
@@ -116,6 +113,7 @@ struct MiniBlobView: View {
 struct MomoJournalView_Previews: PreviewProvider {
     static var previews: some View {
         MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
+            .environmentObject(ViewRouter())
     }
 }
 #endif

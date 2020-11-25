@@ -70,7 +70,8 @@ struct AnimateSlideIn: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .modifier(SlideIn(observedValue: $observedValue))
+            .offset(y: observedValue ? -5 : 0)
+            .opacity(observedValue ? 0 : 1)
             .animation(Animation.ease().delay(if: !observedValue, 0.5))
     }
 }
@@ -80,7 +81,8 @@ struct AnimateSlideOut: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .modifier(SlideOut(observedValue: $observedValue))
+            .offset(y: observedValue ? 0 : 5)
+            .opacity(observedValue ? 1 : 0)
             .animation(Animation.ease().delay(if: observedValue, 0.5))
     }
 }
