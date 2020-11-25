@@ -15,20 +15,18 @@ import SwiftUI
 
 struct GraphView: View {
     @State var on = true
-
-    let sampleData: [CGFloat] = [0.1, 0.67, 0.23, 0.05, 0.73, 0.25, 0.23]
+    var sampleData: [CGFloat] = [0.02, 0.87, 0.33, 0.15, 0.73, 0.25, 0.93]
 
     var body: some View {
-        GeometryReader { geo in
-            VStack {
-                LineGraph(dataPoints: sampleData)
-                    .trim(to: on ? 1 : 0) // reverse for animation
-                    .stroke(Color.red, lineWidth: 8)
-                    .aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
-                Button("Animate") {
-                    withAnimation(.easeInOut(duration: 1)) {
-                        self.on.toggle()
-                    }
+        VStack {
+            LineGraph(dataPoints: sampleData)
+                .trim(to: on ? 1 : 0)
+                .stroke(Color.red, lineWidth: 8)
+                //.aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
+
+            Button("Animate") {
+                withAnimation(.easeInOut(duration: 1)) {
+                    self.on.toggle()
                 }
             }
         }
@@ -84,10 +82,17 @@ struct LineGraph: Shape {
 
 struct Wave_Previews: PreviewProvider {
     static var previews: some View {
-        LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .top, endPoint: .bottom)
+        GeometryReader { geo in
+            LinearGradient(gradient: Gradient(colors: [
+                Color.momo,
+                Color.momoOrange,
+                Color.momoPurple
+            ]), startPoint: .top, endPoint: .bottom)
             .edgesIgnoringSafeArea(.all)
             .mask(
                 GraphView(on: true)
             )
+            .aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
+        }
     }
 }

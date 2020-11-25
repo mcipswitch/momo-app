@@ -43,11 +43,18 @@ struct JournalGraphView: View {
 
     var body: some View {
         ZStack {
-            GeometryReader { geometry in
+            GeometryReader { geo in
+
+                LinearGradient(gradient: Gradient(colors: [Color.momo, Color.momoOrange, Color.momoPurple]),
+                               startPoint: .top, endPoint: .bottom)
+                    .mask(
+                        GraphView(on: true, sampleData: self.viewModel.dataPoints)
+                            .padding(.horizontal)
+                    )
 
                 // Calculate the spacing between graph lines
                 let itemWidth: CGFloat = 25
-                let itemFrameSpacing = (geometry.size.width - (itemWidth * items)) / (items - 1)
+                let itemFrameSpacing = (geo.size.width - (itemWidth * items)) / (items - 1)
                 let itemSpacing = itemWidth + itemFrameSpacing
                 let columnLayout: [GridItem] = Array(
                     repeating: .init(.flexible(), spacing: itemFrameSpacing),
@@ -56,15 +63,13 @@ struct JournalGraphView: View {
                 LazyVGrid(columns: columnLayout, alignment: .center) {
                     ForEach(0 ..< numOfEntries) { index in
                         VStack {
-                            ZStack {
-                                GraphLine(value: self.entries[index].value)
-                                    .anchorPreference(
-                                        key: SelectionPreferenceKey.self,
-                                        value: .bounds,
-                                        transform: { anchor in
-                                            self.indexSelection == index ? anchor : nil
-                                        })
-                            }
+                            GraphLine(value: self.entries[index].value)
+                                .anchorPreference(
+                                    key: SelectionPreferenceKey.self,
+                                    value: .bounds,
+                                    transform: { anchor in
+                                        self.indexSelection == index ? anchor : nil
+                                    })
                             VStack(spacing: 8) {
                                 Text("\(self.entries[index].date.getWeekday())")
                                     .momoText(.graphWeekday)
@@ -81,7 +86,7 @@ struct JournalGraphView: View {
 //                                    .delay(Double(index) * 0.02)
 //                        )
 
-                        .frame(minWidth: itemWidth, minHeight: geometry.size.height)
+                        .frame(minWidth: itemWidth, minHeight: geo.size.height)
 
                         // Make whole stack tappable
                         .contentShape(Rectangle())
@@ -97,6 +102,12 @@ struct JournalGraphView: View {
                                     self.updateIndexSelection(by: indexShift)
                                 }
                         )
+
+
+
+
+
+
 //                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
 //                            SelectionLine(value: $value, preferences: preferences)
 //                                .position(x: self.location.x + itemWidth / 2, y: geometry.size.height / 2)
@@ -161,6 +172,8 @@ struct JournalGraphView: View {
 //                        })
                     }
                 }
+
+
                 VStack {
                     Text("IDX Selection: \(self.indexSelection)")
                     Text("Location: \(self.location.x)")
@@ -173,13 +186,14 @@ struct JournalGraphView: View {
             // Current day is default selection
             self.indexSelection = self.entries.count - 1
             self.animateGraph.toggle()
+
+            self.viewModel.fetchDataPoints()
         }
     }
 
     // MARK: - Internal Methods
 
     private func onDragEnded(drag: DragGesture.Value) {
-
     }
 
     private func snap(to offset: CGFloat) {
@@ -236,10 +250,10 @@ struct GraphLine: View {
     var value: CGFloat
 
     var body: some View {
-        GeometryReader { geo in
+//        GeometryReader { geo in
 
-            let totalHeight = geo.size.height / 2
-            let offset = value * totalHeight
+//            let totalHeight = geo.size.height / 2
+//            let offset = value * totalHeight
 
             Rectangle()
                 .foregroundColor(.clear).frame(width: 1)
@@ -249,13 +263,13 @@ struct GraphLine: View {
                         startPoint: .bottom,
                         endPoint: .top)
                 )
-                .overlay(
-                    Circle()
-                        .strokeBorder(Color.momo, lineWidth: 4)
-                        .frame(width: 18)
-                        .offset(y: offset)
-                )
-        }
+//                .overlay(
+//                    Circle()
+//                        .strokeBorder(Color.momo, lineWidth: 4)
+//                        .frame(width: 18)
+//                        .offset(y: offset)
+//                )
+//        }
     }
 }
 

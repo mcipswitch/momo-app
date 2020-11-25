@@ -12,6 +12,11 @@ import SwiftUI
 
 final class EntriesViewModel: ObservableObject {
     @Published var entries: [Entry] = []
+    @Published var dataPoints: [CGFloat] = []
+
+    func fetchDataPoints() {
+        self.entries.suffix(7).forEach{ self.dataPoints.append($0.value) }
+    }
     
     var dataManager: DataManagerProtocol
     
