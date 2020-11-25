@@ -14,21 +14,35 @@
 import SwiftUI
 
 struct LineGraphView: View {
-    @State var on = true
+    @EnvironmentObject var viewRouter: ViewRouter
+
+    /// Set as `0` to control animation from `EnvironmentObject`.
+    @State var position: CGFloat = 0
     let dataPoints: [CGFloat]// = [0.46, 0.6, 0.24, 0.9, 0.7, 0.3, 1]
 
     var body: some View {
-        GeometryReader { geo in
-            LineGraph(dataPoints: self.dataPoints)
-                .trim(to: on ? 1 : 0)
-                .stroke(Color.purple, lineWidth: 6)
-                // .aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 1.0)) {
+        LinearGradient(gradient: Gradient(colors: [Color.momo, Color.momoOrange, Color.momoPurple]),
+                       startPoint: .top, endPoint: .bottom)
+            .mask(
+                LineGraph(dataPoints: self.dataPoints)
+//                    .trim(to: on ? 1 : 0)
+                    .trim(to: position)
+                    .stroke(Color.purple, lineWidth: 6)
+            )
+//            .onChange(of: self.viewRouter.isHome, perform: { _ in
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                    withAnimation(.easeInOut(duration: 3.0)) {
 //                        self.on.toggle()
+//                    }
+//                }
+//            })
+            .onChange(of: self.viewRouter.isHome, perform: { isHome in
+                DispatchQueue.main.asyncAfter(deadline: .now() + (isHome ? 0 : 0.2)) {
+                    withAnimation(.spring()) {
+                        self.position = isHome ? 0 : 1
                     }
                 }
-        }
+            })
     }
 }
 

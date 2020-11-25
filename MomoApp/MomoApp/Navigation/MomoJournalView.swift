@@ -24,7 +24,6 @@ struct MomoJournalView: View {
     
     var body: some View {
         VStack {
-            // Toolbar
             // TODO: - fix toolbar animation
             ZStack {
                 MomoToolbarTitle(type: self.journalButton)
@@ -39,7 +38,7 @@ struct MomoJournalView: View {
             // Main View
             ZStack {
                 VStack(spacing: 48) {
-                    JournalGraphView(numOfEntries: numOfEntries, value: blobValue, animateGraph: $animateGraph)
+                    JournalGraphView(numOfEntries: numOfEntries, value: blobValue)
                     MiniBlobView(blobValue: $blobValue, entry: selectedEntry)
                 }
                 .simpleSlideOut(if: $isGraphActive)
@@ -48,7 +47,7 @@ struct MomoJournalView: View {
                     .simpleSlideIn(if: $isGraphActive)
             }
         }
-        // Add a delay when `MomoJournalView` transitions on
+        // Add a cascading delay when `MomoJournalView` transitions on
         .animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
 
 
@@ -60,10 +59,6 @@ struct MomoJournalView: View {
                 // Add delay so we can see the cascading animation
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.animateList.toggle()
-                }
-            } else if graph == true {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.animateGraph.toggle()
                 }
             }
         }
@@ -80,6 +75,7 @@ struct MomoJournalView: View {
     private func journalTypeButtonPressed() {
         // TODO: - // Add delay if we are switching from list to graph
         self.isGraphActive.toggle()
+        //self.animateGraph.toggle()
     }
 }
 

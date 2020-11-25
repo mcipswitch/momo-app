@@ -11,9 +11,8 @@
 
 import SwiftUI
 
-//MARK: - Global Application State
-
 struct JournalGraphView: View {
+    @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     @State var numOfEntries: Int
     @State var indexSelection: Int = 0
@@ -25,7 +24,6 @@ struct JournalGraphView: View {
     private var items: CGFloat { CGFloat(numOfEntries) }
 
     @State var value: CGFloat
-    @Binding var animateGraph: Bool
 
     var date = Date()
 
@@ -39,18 +37,12 @@ struct JournalGraphView: View {
     private var totalOffset: CGFloat { currentOffset + dragOffset }
 
 
+
     // MARK: - Body
 
     var body: some View {
         ZStack {
             GeometryReader { geo in
-
-                // TODO: - graph is not showing up?
-                LinearGradient(gradient: Gradient(colors: [Color.momo, Color.momoOrange, Color.momoPurple]),
-                               startPoint: .top, endPoint: .bottom)
-                    .mask(LineGraphView(on: true, dataPoints: self.viewModel.dataPoints)
-                            .padding()
-                    )
 
                 // Calculate the spacing between graph lines
                 let itemWidth: CGFloat = 25
@@ -77,15 +69,6 @@ struct JournalGraphView: View {
                                     .momoText(.graphDay)
                             }
                         }
-
-                        //                        // Animate on the graph lines
-                        //                        .blur(radius: animateGraph ? 0 : 2)
-                        //                        .opacity(animateGraph ? 1 : 0)
-                        //                        .animation(Animation
-                        //                                    .spring()
-                        //                                    .delay(Double(index) * 0.02)
-                        //                        )
-
                         .frame(minWidth: itemWidth, minHeight: geo.size.height)
 
                         // Make whole stack tappable
@@ -173,6 +156,10 @@ struct JournalGraphView: View {
                     }
                 }
 
+                // TODO: - Fix animation to the line when it appears
+                LineGraphView(dataPoints: self.viewModel.dataPoints)
+                    .padding()
+
 
                 VStack {
                     Text("IDX Selection: \(self.indexSelection)")
@@ -185,7 +172,6 @@ struct JournalGraphView: View {
         .onAppear {
             // Current day is default selection
             self.indexSelection = self.entries.count - 1
-            self.animateGraph.toggle()
         }
     }
 
@@ -279,7 +265,7 @@ struct SelectionPreferenceKey: PreferenceKey {
 
 struct JournalGraphView_Previews: PreviewProvider {
     static var previews: some View {
-        JournalGraphView(numOfEntries: 7, value: CGFloat(0.5), animateGraph: .constant(true))
+        JournalGraphView(numOfEntries: 7, value: CGFloat(0.5))
             .background(
                 Image("background")
                     .edgesIgnoringSafeArea(.all)
