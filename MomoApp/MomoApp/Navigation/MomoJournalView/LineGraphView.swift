@@ -1,5 +1,5 @@
 //
-//  Wave.swift
+//  LineGraphView.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-11-24.
@@ -13,27 +13,29 @@
 
 import SwiftUI
 
-struct GraphView: View {
+struct LineGraphView: View {
     @State var on = true
+
+    // TODO: - First Point should be off screen
     var sampleData: [CGFloat] = [0.02, 0.87, 0.33, 0.15, 0.73, 0.25, 0.93]
 
     var body: some View {
-        VStack {
+        GeometryReader {geo in
             LineGraph(dataPoints: sampleData)
-                .trim(to: on ? 1 : 0)
-                .stroke(Color.red, lineWidth: 8)
-                //.aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
-
-            Button("Animate") {
-                withAnimation(.easeInOut(duration: 1)) {
-                    self.on.toggle()
+                .trim(to: on ? 0 : 1)
+                .stroke(Color.red, lineWidth: 6)
+                // .aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 2.0)) {
+                        self.on.toggle()
+                    }
                 }
-            }
         }
     }
 }
 
 struct LineGraph: Shape {
+
     /// Array of data points normalized to 0...1.
     var dataPoints: [CGFloat]
     /// Value within 0...1 range used to determine how curved the chart should be.
@@ -53,7 +55,9 @@ struct LineGraph: Shape {
         return Path { p in
             guard dataPoints.count > 1 else { return }
             let start = dataPoints[0]
-            p.move(to: CGPoint(x: 0, y: (1-start) * rect.height))
+
+            // x is negative so that line will start from the edge of the screen
+            p.move(to: CGPoint(x: -100, y: (1-start) * rect.height))
 
             // Previous point used to calculate position of curve points
             var previousPoint = CGPoint(x: 0, y: (1-start) * rect.height)
@@ -83,16 +87,9 @@ struct LineGraph: Shape {
 struct Wave_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { geo in
-            LinearGradient(gradient: Gradient(colors: [
-                Color.momo,
-                Color.momoOrange,
-                Color.momoPurple
-            ]), startPoint: .top, endPoint: .bottom)
-            .edgesIgnoringSafeArea(.all)
-            .mask(
-                GraphView(on: true)
-            )
-            .aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
+            LineGraphView()
+                .aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
+                .scaleEffect(0.9)
         }
     }
 }

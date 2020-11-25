@@ -45,11 +45,12 @@ struct JournalGraphView: View {
         ZStack {
             GeometryReader { geo in
 
+                // TODO: - Fix graph implementation
                 LinearGradient(gradient: Gradient(colors: [Color.momo, Color.momoOrange, Color.momoPurple]),
                                startPoint: .top, endPoint: .bottom)
                     .mask(
-                        GraphView(on: true, sampleData: self.viewModel.dataPoints)
-                            .padding(.horizontal)
+                        LineGraphView(on: true, sampleData: self.viewModel.dataPoints)
+                            .padding(.horizontal, 16)
                     )
 
                 // Calculate the spacing between graph lines
