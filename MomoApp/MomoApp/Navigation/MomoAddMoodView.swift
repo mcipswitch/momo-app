@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MomoAddMoodView: View {
     @EnvironmentObject var viewRouter: ViewRouter
-    
 
     @State private var homeViewActive: Bool = true
     
@@ -228,10 +227,11 @@ struct MomoAddMoodView: View {
     }
     
     private func seePastEntriesButtonPressed() {
-        self.viewRouter.currentPage = .journal
+        self.viewRouter.change(to: .journal)
     }
 
     private func backButtonPressed() {
+        // Make sure to set this value and NOT the `ViewRouter`.
         self.homeViewActive = true
     }
     

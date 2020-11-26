@@ -69,7 +69,7 @@ struct MomoJournalView: View {
     var didFinishAnimation: (() -> Void)? = nil
     
     private func backButtonPressed() {
-        self.viewRouter.currentPage = .home
+        self.viewRouter.change(to: .home)
     }
     
     private func journalTypeButtonPressed() {

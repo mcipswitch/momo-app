@@ -17,33 +17,23 @@ struct LineGraphView: View {
     @EnvironmentObject var viewRouter: ViewRouter
 
     /// Set as `0` to control animation from `EnvironmentObject`.
-    @State var position: CGFloat = 0
-    let dataPoints: [CGFloat]// = [0.46, 0.6, 0.24, 0.9, 0.7, 0.3, 1]
+    @State var on = false
+    let dataPoints: [CGFloat]
 
     var body: some View {
         LinearGradient(gradient: Gradient(colors: [Color.momo, Color.momoOrange, Color.momoPurple]),
                        startPoint: .top, endPoint: .bottom)
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
-//                    .trim(to: on ? 1 : 0)
-                    .trim(to: position)
-                    .stroke(Color.purple, lineWidth: 6)
-            )
-//            .onChange(of: self.viewRouter.isHome, perform: { _ in
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                    withAnimation(.easeInOut(duration: 3.0)) {
-//                        self.on.toggle()
-//                    }
-//                }
-//            })
-            .onChange(of: self.viewRouter.isHome, perform: { isHome in
-                DispatchQueue.main.asyncAfter(deadline: .now() + (isHome ? 0 : 0.2)) {
-                    withAnimation(.spring()) {
-                        self.position = isHome ? 0 : 1
-                    }
-                }
-            })
-    }
+                    .trim(to: on ? 1 : 0)
+                    .stroke(Color.purple, lineWidth: 4)
+                    
+                    // Animate graph if it's in journal view, otherwise animate out with view
+                    .animation(self.viewRouter.isJournal ? .easeInOut(duration: 1.0) : .spring())
+                    .onReceive(self.viewRouter.animate) { _ in
+                        self.on.toggle()
+                    })
+            }
 }
 
 struct LineGraph: Shape {
@@ -99,11 +89,7 @@ struct LineGraph: Shape {
 
 struct Wave_Previews: PreviewProvider {
     static var previews: some View {
-        GeometryReader { geo in
-            LineGraphView(dataPoints: [0])
-                .aspectRatio(geo.size.height/geo.size.width, contentMode: .fit)
-                .scaleEffect(0.9)
-                .environmentObject(ViewRouter())
-        }
+        LineGraphView(dataPoints: [0.3, 0.4, 0.5, 0.3, 0.2, 0.3, 0.9])
+            .environmentObject(ViewRouter())
     }
 }
