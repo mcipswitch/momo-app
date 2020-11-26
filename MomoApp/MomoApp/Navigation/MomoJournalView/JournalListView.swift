@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct JournalListView: View {
+    @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
-    @Binding var animate: Bool
+    @State var animate = false
 
     var layout: [GridItem] {
         [GridItem(.flexible())]
@@ -21,13 +22,15 @@ struct JournalListView: View {
                 ForEach(viewModel.entries.indices) { index in
                     EntryView(entry: viewModel.entries[index])
 
-                        // handler when this animation ends...
-                        
+                        // TODO: - handler when this animation ends...
                         .opacity(animate ? 1 : 0)
                         .animation(.cascade(offset: Double(index)))
                 }
             }
             .padding()
+        }
+        .onReceive(self.viewRouter.journalWillChange) {
+            self.animate.toggle()
         }
     }
 }
@@ -36,7 +39,7 @@ struct JournalListView: View {
 
 struct JournalListView_Previews: PreviewProvider {
     static var previews: some View {
-        var view = JournalListView(animate: .constant(true))
+        var view = JournalListView()
         view.viewModel = EntriesViewModel(dataManager: MockDataManager())
         return view
             .background(

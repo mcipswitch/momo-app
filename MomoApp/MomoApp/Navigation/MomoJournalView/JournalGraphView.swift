@@ -14,7 +14,7 @@ import SwiftUI
 struct JournalGraphView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
-    @State var numOfEntries: Int
+    @State var numOfEntries: Int = 7
     @State var indexSelection: Int = 0
 
     private var entries: [Entry] {

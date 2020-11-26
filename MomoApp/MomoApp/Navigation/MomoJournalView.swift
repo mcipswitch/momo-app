@@ -11,11 +11,11 @@ struct MomoJournalView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     @State var selectedEntry: Entry
-    @State var numOfEntries: Int = 7
     @State var blobValue: CGFloat = 0.5
     @State var animateList: Bool = false
-    @State var animateGraph: Bool = false
+    @State var animateGraph = true
     @State var isGraphActive: Bool = true
+
 
     /// The journal button on the toolbar.
     var journalButton: ToolbarButtonType {
@@ -38,44 +38,36 @@ struct MomoJournalView: View {
             // Main View
             ZStack {
                 VStack(spacing: 48) {
-                    JournalGraphView(numOfEntries: numOfEntries, value: blobValue)
+                    JournalGraphView(value: blobValue)
                     MiniBlobView(blobValue: $blobValue, entry: selectedEntry)
                 }
-                .simpleSlideOut(if: $isGraphActive)
 
-                JournalListView(animate: $animateList)
+                // TODO: - Fix so the graph animates back on, add delay
+                .offset(y: animateGraph ? 0 : 5)
+                .opacity(animateGraph ? 1 : 0)
+                .onReceive(self.viewRouter.journalWillChange) {
+                    self.animateGraph.toggle()
+                }
+                //.simpleSlideOut(if: $isGraphActive)
+
+                JournalListView()
                     .simpleSlideIn(if: $isGraphActive)
             }
         }
-        // Add a cascading delay when `MomoJournalView` transitions on
+        // Add a delay when `MomoJournalView` transitions on from right
         .animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
-
-
-
-
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
-        .onChange(of: self.isGraphActive) { graph in
-            if graph == false {
-                // Add delay so we can see the cascading animation
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.animateList.toggle()
-                }
-            }
-        }
     }
     
     // MARK: - Internal Methods
 
-    var didFinishAnimation: (() -> Void)? = nil
-    
     private func backButtonPressed() {
         self.viewRouter.change(to: .home)
     }
     
     private func journalTypeButtonPressed() {
-        // TODO: - // Add delay if we are switching from list to graph
         self.isGraphActive.toggle()
-        //self.animateGraph.toggle()
+        self.viewRouter.toggleJournal()
     }
 }
 
