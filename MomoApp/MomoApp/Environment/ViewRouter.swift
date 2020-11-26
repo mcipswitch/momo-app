@@ -29,6 +29,7 @@ class ViewRouter: ObservableObject {
 
     func toggleJournal() {
         // Add delay so we can see the cascading animation
+        #warning("fix delays with the graph animations >.<")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + (self.isHome ? 0 : 0.5)) {
             self.journalWillChange.send()

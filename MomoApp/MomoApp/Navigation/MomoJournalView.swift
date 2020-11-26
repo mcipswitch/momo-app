@@ -16,7 +16,6 @@ struct MomoJournalView: View {
     @State var animateGraph = true
     @State var isGraphActive: Bool = true
 
-
     /// The journal button on the toolbar.
     var journalButton: ToolbarButtonType {
         self.isGraphActive ? .graph : .list
@@ -54,7 +53,11 @@ struct MomoJournalView: View {
                     .simpleSlideIn(if: $isGraphActive)
             }
         }
-        // Add a delay when `MomoJournalView` transitions on from right
+        /*
+         Animation must be added BEFORE the background.
+         The main content for `MomoJournalView` transitions on with a delay.
+         Remove the delay when it transitions off.
+         */
         .animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
     }

@@ -17,10 +17,15 @@ struct ContentView: View {
             MomoAddMoodView()
             MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
                 .offset(x: on ? 0 : self.offset)
-                .animation(.spring())
         }
         .onReceive(self.viewRouter.objectWillChange) { _ in
-            self.on.toggle()
+            /*
+             The background for `MomoJournalView` transitions on with a delay.
+             Remove the delay when it transitions on.
+             */
+            withAnimation(Animation.spring().delay(self.viewRouter.isHome ? 0.1 : 0)) {
+                self.on.toggle()
+            }
         }
     }
 }

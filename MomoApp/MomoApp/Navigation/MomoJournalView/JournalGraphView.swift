@@ -154,9 +154,18 @@ struct JournalGraphView: View {
                     }
                 }
 
+
+
+
+
+
                 // TODO: - Fix animation to the line when it appears
-                LineGraphView(dataPoints: self.viewModel.dataPoints)
-                    .padding()
+
+                        LineGraphView(dataPoints: self.viewModel.dataPoints)
+                            .padding()
+
+
+
 
                 VStack {
                     Text("IDX Selection: \(self.indexSelection)")

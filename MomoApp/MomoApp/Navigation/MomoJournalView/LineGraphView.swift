@@ -16,8 +16,9 @@ import SwiftUI
 struct LineGraphView: View {
     @EnvironmentObject var viewRouter: ViewRouter
 
-    /// Set as `0` to control animation from `EnvironmentObject`.
+    /// Set as `false` to control animation from `ViewRouter`.
     @State var on = false
+    @State var animate = false
     let dataPoints: [CGFloat]
 
     var body: some View {
@@ -30,12 +31,19 @@ struct LineGraphView: View {
 
                     // Animate line if it's in journal view, otherwise animate out with view transition
                     .animation(self.viewRouter.isJournal ? .easeInOut(duration: 1.0) : .spring())
-                    .onReceive(self.viewRouter.lineWillAnimate) {
-                        self.on.toggle()
-                    }
-                    .onReceive(self.viewRouter.journalWillChange) {
-                        self.on.toggle()
-                    })
+            )
+
+
+
+
+//                            .onReceive(self.viewRouter.lineWillAnimate) {
+//                                withAnimation(.easeInOut(duration: 5.0)) {
+//                                    self.on.toggle()
+//                                }
+//                            }
+        //                    .onReceive(self.viewRouter.journalWillChange) {
+        //                        self.on.toggle()
+        //                    })
     }
 }
 
@@ -61,7 +69,10 @@ struct LineGraph: Shape {
             guard dataPoints.count > 1 else { return }
             let start = dataPoints[0]
 
-            /// Origin point so that the line will start from the edge of the screen. At this moment, this point is arbitrary.
+            /**
+             Set origin point so that the line will start from the edge of the screen.
+             At this moment, this point is arbitrary to give the illusion of continuous data.
+             */
             let origin = CGPoint(x: -32, y: (1-start) * rect.height)
             p.move(to: origin)
 
