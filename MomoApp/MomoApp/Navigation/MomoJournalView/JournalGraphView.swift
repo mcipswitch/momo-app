@@ -153,18 +153,8 @@ struct JournalGraphView: View {
                         })
                     }
                 }
-
-
-
-
-
-
-                // TODO: - Fix Line Animation
                 LineGraphView(dataPoints: self.viewModel.dataPoints)
                     .padding()
-
-
-
 
                 VStack {
                     Text("IDX Selection: \(self.indexSelection)")

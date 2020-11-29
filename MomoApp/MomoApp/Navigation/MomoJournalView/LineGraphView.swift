@@ -6,7 +6,6 @@
 //
 /*
  Resources:
-
  https://www.objc.io/blog/2020/03/16/swiftui-line-graph-animation/
  https://crustlab.com/blog/ios-development-swiftui-experiment-building-custom-chart/
  */
@@ -27,9 +26,10 @@ struct LineGraphView: View {
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
                     .trim(to: on ? 1 : 0)
-                    .stroke(Color.purple, lineWidth: 4)
+                    .stroke(Color.purple, style: StrokeStyle(lineWidth: 4, lineCap: .square))
             )
             .onReceive(self.viewRouter.lineWillAnimate, perform: {
+
                 // Animate line if in JournalView, otherwise no animation
                 withAnimation(Animation.easeInOut(duration: 1.0).delay(0.5)) {
                     self.on.toggle()
