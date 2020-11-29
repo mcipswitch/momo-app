@@ -21,13 +21,11 @@ struct JournalListView: View {
                     EntryView(entry: viewModel.entries[index])
                         .opacity(animate)
                         .onAnimationCompleted(for: animate, completion: {
+                            if index == viewModel.entries.count - 2 {
 
-                            // TODO: - Print on last animation only
-                            // Disable the toggle journal button until this is completed
-                            print("Finished animation.")
-
-
-
+                                // Enable toggle journal button
+                                self.viewRouter.toggleHitTesting(true)
+                            }
                         })
                         .animation(.cascade(offset: Double(index)))
                 }
@@ -35,6 +33,10 @@ struct JournalListView: View {
             .padding()
         }
         .onReceive(self.viewRouter.journalWillChange) {
+
+            // Disable toggle journal button when animating
+            self.viewRouter.toggleHitTesting(false)
+
             // Add delay so we can see the cascading animation
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 // Cascades ON and OFF

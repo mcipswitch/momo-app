@@ -14,6 +14,8 @@ struct MomoJournalView: View {
     @State var blobValue: CGFloat = 0.5
 
     // Animation States
+
+    @State var allowsHitTesting = true
     @State var isGraph = true
     @State var animateList = false
     @State var animateGraph = false
@@ -31,6 +33,10 @@ struct MomoJournalView: View {
                     MomoToolbarButton(type: .back, action: self.backButtonPressed)
                     Spacer()
                     MomoToolbarButton(type: self.journal, action: self.journalTypeButtonPressed)
+                        .allowsHitTesting(self.allowsHitTesting)
+                        .onReceive(self.viewRouter.allowsHitTestingWillChange, perform: { value in
+                            self.allowsHitTesting = value
+                        }) 
                 }
             }
             .padding()
