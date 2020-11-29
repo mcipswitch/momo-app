@@ -12,9 +12,10 @@ struct MomoJournalView: View {
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     @State var selectedEntry: Entry
     @State var blobValue: CGFloat = 0.5
-    @State var animateList: Bool = false
-    @State var animateGraph = true
-    @State var isGraphActive: Bool = true
+    @State var isGraphActive = true
+
+    @State var animateList = false
+    @State var animateGraph = false
 
     /// The journal button on the toolbar.
     var journalButton: ToolbarButtonType {
@@ -23,7 +24,7 @@ struct MomoJournalView: View {
     
     var body: some View {
         VStack {
-            // TODO: - fix toolbar animation
+            // TODO: - Fix toolbar animation, right icon is migrating right
             ZStack {
                 MomoToolbarTitle(type: self.journalButton)
                 HStack(alignment: .top) {
@@ -34,23 +35,28 @@ struct MomoJournalView: View {
             }
             .padding()
 
-            // Main View
             ZStack {
                 VStack(spacing: 48) {
                     JournalGraphView(value: blobValue)
                     MiniBlobView(blobValue: $blobValue, entry: selectedEntry)
                 }
-
-                // TODO: - Fix so the graph animates back on, add delay
                 .offset(y: animateGraph ? 0 : 5)
                 .opacity(animateGraph ? 1 : 0)
                 .onReceive(self.viewRouter.journalWillChange) {
-                    self.animateGraph.toggle()
+                    withAnimation(Animation.ease().delay(if: !animateGraph, 0.5)) {
+                        self.animateGraph.toggle()
+                    }
                 }
-                //.simpleSlideOut(if: $isGraphActive)
-
                 JournalListView()
-                    .simpleSlideIn(if: $isGraphActive)
+                    .offset(y: animateList ? 0 : 5)
+                    .opacity(animateList ? 1 : 0)
+                    .onReceive(self.viewRouter.journalWillChange) {
+                        withAnimation(.ease()) {
+                            withAnimation(Animation.ease().delay(if: !animateList, 0.5)) {
+                                self.animateList.toggle()
+                            }
+                        }
+                    }
             }
         }
         /*
@@ -58,8 +64,11 @@ struct MomoJournalView: View {
          The main content for `MomoJournalView` transitions on with a delay.
          Remove the delay when it transitions off.
          */
-        .animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
+        //.animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
+        .onAppear {
+            self.animateGraph = true
+        }
     }
     
     // MARK: - Internal Methods

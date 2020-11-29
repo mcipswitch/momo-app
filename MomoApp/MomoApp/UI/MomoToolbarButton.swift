@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+enum Journal {
+    case list, graph
+}
+
 enum ToolbarButtonType {
     case back, list, graph
 

@@ -10,27 +10,32 @@ import SwiftUI
 struct JournalListView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
-    @State var animate = false
+    @State var animate: Double = 0
 
-    var layout: [GridItem] {
-        [GridItem(.flexible())]
-    }
+    var layout: [GridItem] { [GridItem(.flexible())] }
     
     var body: some View {
         ScrollView {
             LazyVGrid(columns: layout) {
                 ForEach(viewModel.entries.indices) { index in
                     EntryView(entry: viewModel.entries[index])
-
-                        // TODO: - handler when this animation ends...
-                        .opacity(animate ? 1 : 0)
+                        .opacity(animate)
+                        .onAnimationCompleted(for: animate, completion: {
+                            print("Finished animation.")
+                            // TODO: - Fix only print once
+                            // Disable the toggle journal button until this is completed
+                        })
                         .animation(.cascade(offset: Double(index)))
                 }
             }
             .padding()
         }
         .onReceive(self.viewRouter.journalWillChange) {
-            self.animate.toggle()
+
+            // Add delay so we can see the cascading animation
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.animate = animate == 1 ? 0 : 1
+            }
         }
     }
 }
