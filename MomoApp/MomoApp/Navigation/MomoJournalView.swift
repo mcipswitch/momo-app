@@ -36,7 +36,7 @@ struct MomoJournalView: View {
                         .allowsHitTesting(self.allowsHitTesting)
                         .onReceive(self.viewRouter.allowsHitTestingWillChange, perform: { value in
                             self.allowsHitTesting = value
-                        }) 
+                        })
                 }
             }
             .padding()
@@ -68,6 +68,7 @@ struct MomoJournalView: View {
          Remove the delay when it transitions off.
          */
         //.animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
+        
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
         .onAppear {
             self.animateGraph = true // Graph is the default JournalView

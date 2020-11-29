@@ -28,22 +28,13 @@ struct LineGraphView: View {
                 LineGraph(dataPoints: self.dataPoints)
                     .trim(to: on ? 1 : 0)
                     .stroke(Color.purple, lineWidth: 4)
-
-                    // Animate line if it's in journal view, otherwise animate out with view transition
-                    .animation(self.viewRouter.isJournal ? .easeInOut(duration: 1.0) : .spring())
             )
-
-
-
-
-//                            .onReceive(self.viewRouter.lineWillAnimate) {
-//                                withAnimation(.easeInOut(duration: 5.0)) {
-//                                    self.on.toggle()
-//                                }
-//                            }
-        //                    .onReceive(self.viewRouter.journalWillChange) {
-        //                        self.on.toggle()
-        //                    })
+            .onReceive(self.viewRouter.lineWillAnimate, perform: {
+                // Animate line if in JournalView, otherwise no animation
+                withAnimation(Animation.easeInOut(duration: 1.0).delay(0.5)) {
+                    self.on.toggle()
+                }
+            })
     }
 }
 
