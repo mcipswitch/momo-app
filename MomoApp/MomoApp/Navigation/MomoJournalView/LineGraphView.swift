@@ -31,7 +31,9 @@ struct LineGraphView: View {
             .onReceive(self.viewRouter.lineWillAnimate, perform: {
 
                 // Animate line if in JournalView, otherwise no animation
-                withAnimation(Animation.easeInOut(duration: 1.0).delay(0.5)) {
+                withAnimation(self.viewRouter.isHome ? Animation.linear.delay(0.2) :
+                    Animation.easeInOut(duration: 1.0).delay(0.5)
+                ) {
                     self.on.toggle()
                 }
             })
