@@ -87,21 +87,11 @@ struct AnimateSlideOut: ViewModifier {
     }
 }
 
-struct SlideIn: ViewModifier {
-    @Binding var observedValue: Bool
-    func body(content: Content) -> some View {
-        content
-            .offset(y: observedValue ? -5 : 0)
-            .opacity(observedValue ? 0 : 1)
-            .animation(.ease())
-    }
-}
-struct SlideOut: ViewModifier {
+struct Slide: ViewModifier {
     @Binding var observedValue: Bool
     func body(content: Content) -> some View {
         content
             .offset(y: observedValue ? 0 : 5)
             .opacity(observedValue ? 1 : 0)
-            .animation(.ease())
     }
 }

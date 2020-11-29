@@ -12,25 +12,25 @@ struct MomoJournalView: View {
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     @State var selectedEntry: Entry
     @State var blobValue: CGFloat = 0.5
-    @State var isGraphActive = true
 
+    // Animation States
+    @State var isGraph = true
     @State var animateList = false
     @State var animateGraph = false
 
     /// The journal button on the toolbar.
-    var journalButton: ToolbarButtonType {
-        self.isGraphActive ? .graph : .list
+    var journal: ToolbarButtonType {
+        self.isGraph ? .graph : .list
     }
     
     var body: some View {
         VStack {
-            // TODO: - Fix toolbar animation, right icon is migrating right
             ZStack {
-                MomoToolbarTitle(type: self.journalButton)
+                MomoToolbarTitle(type: self.journal)
                 HStack(alignment: .top) {
                     MomoToolbarButton(type: .back, action: self.backButtonPressed)
                     Spacer()
-                    MomoToolbarButton(type: self.journalButton, action: self.journalTypeButtonPressed)
+                    MomoToolbarButton(type: self.journal, action: self.journalTypeButtonPressed)
                 }
             }
             .padding()
@@ -40,25 +40,22 @@ struct MomoJournalView: View {
                     JournalGraphView(value: blobValue)
                     MiniBlobView(blobValue: $blobValue, entry: selectedEntry)
                 }
-                .offset(y: animateGraph ? 0 : 5)
-                .opacity(animateGraph ? 1 : 0)
+                .slide(if: $animateGraph)
                 .onReceive(self.viewRouter.journalWillChange) {
                     withAnimation(Animation.ease().delay(if: !animateGraph, 0.5)) {
                         self.animateGraph.toggle()
                     }
                 }
                 JournalListView()
-                    .offset(y: animateList ? 0 : 5)
-                    .opacity(animateList ? 1 : 0)
+                    .slide(if: $animateList)
                     .onReceive(self.viewRouter.journalWillChange) {
-                        withAnimation(.ease()) {
-                            withAnimation(Animation.ease().delay(if: !animateList, 0.5)) {
-                                self.animateList.toggle()
-                            }
+                        withAnimation(Animation.ease().delay(if: !animateList, 0.5)) {
+                            self.animateList.toggle()
                         }
                     }
             }
         }
+        // TODO:
         /*
          Animation must be added BEFORE the background.
          The main content for `MomoJournalView` transitions on with a delay.
@@ -67,7 +64,7 @@ struct MomoJournalView: View {
         //.animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
         .onAppear {
-            self.animateGraph = true
+            self.animateGraph = true // Graph is the default JournalView
         }
     }
     
@@ -78,8 +75,8 @@ struct MomoJournalView: View {
     }
     
     private func journalTypeButtonPressed() {
-        self.isGraphActive.toggle()
-        self.viewRouter.toggleJournal()
+        self.isGraph.toggle()
+        self.viewRouter.toggleJournal(to: self.viewRouter.isGraph ? .list : .graph)
     }
 }
 

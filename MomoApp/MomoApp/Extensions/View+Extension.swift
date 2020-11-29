@@ -26,12 +26,8 @@ extension View {
         return modifier(AnimateSlideOut(observedValue: value))
     }
 
-    func simpleSlideIn(if value: Binding<Bool>) -> some View {
-        return modifier(SlideIn(observedValue: value))
-    }
-
-    func simpleSlideOut(if value: Binding<Bool>) -> some View {
-        return modifier(SlideOut(observedValue: value))
+    func slide(if value: Binding<Bool>) -> some View {
+        return modifier(Slide(observedValue: value))
     }
 
     // MARK: - Text Modifiers

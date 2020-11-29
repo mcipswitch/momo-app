@@ -19,7 +19,7 @@ class ViewRouter: ObservableObject {
 
     func change(to page: Page) {
         objectWillChange.send()
-        self.currentPage = self.isHome ? .journal : .home
+        self.currentPage = page
 
         // Add delay to trigger line graph animation after the view has transitioned on
         DispatchQueue.main.asyncAfter(deadline: .now() + (self.isHome ? 0 : 1.0)) {
@@ -27,9 +27,9 @@ class ViewRouter: ObservableObject {
         }
     }
 
-    func toggleJournal() {
-        self.currentJournal = self.isGraph ? .list : .graph
-        self.journalWillChange.send()
+    func toggleJournal(to journal: Journal) {
+        journalWillChange.send()
+        self.currentJournal = journal
     }
 
     // MARK: - Helper vars
