@@ -12,20 +12,18 @@ class ViewRouter: ObservableObject {
 
     let objectWillChange = PassthroughSubject<(), Never>()
     let journalWillChange = PassthroughSubject<(), Never>()
-    let lineWillAnimate = PassthroughSubject<(), Never>()
     let allowsHitTestingWillChange = PassthroughSubject<(Bool), Never>()
+    let textFieldWillChange = PassthroughSubject<String, Never>()
 
     @Published var currentPage: Page = .home
     @Published var currentJournal: Journal = .graph
 
+    /// Default number of entries in `JournalGraphView`
+    @Published var numOfEntries: Int = 7
+
     func change(to page: Page) {
         self.objectWillChange.send()
         self.currentPage = page
-
-        // Add delay to trigger line graph animation after the view has transitioned on
-        //DispatchQueue.main.asyncAfter(deadline: .now() + (self.isHome ? 1.0 : 1.0)) {
-            self.lineWillAnimate.send()
-        //}
     }
 
     func toggleJournal(to journal: Journal) {

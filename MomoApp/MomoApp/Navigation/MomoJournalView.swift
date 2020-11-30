@@ -13,8 +13,8 @@ struct MomoJournalView: View {
     @State var selectedEntry: Entry
     @State var blobValue: CGFloat = 0.5
 
-    // Animation States
 
+    // Animation States
     @State var allowsHitTesting = true
     @State var isGraph = true
     @State var animateList = false
@@ -43,7 +43,7 @@ struct MomoJournalView: View {
 
             ZStack {
                 VStack(spacing: 48) {
-                    JournalGraphView(value: blobValue)
+                    JournalGraphView(blobValue: blobValue)
                     MiniBlobView(blobValue: $blobValue, entry: selectedEntry)
                 }
                 .slide(if: $animateGraph)
@@ -113,7 +113,7 @@ struct MiniBlobView: View {
 #if DEBUG
 struct MomoJournalView_Previews: PreviewProvider {
     static var previews: some View {
-        MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
+        MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.5))
             .environmentObject(ViewRouter())
     }
 }

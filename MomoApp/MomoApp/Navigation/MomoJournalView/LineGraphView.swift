@@ -12,12 +12,13 @@
 
 import SwiftUI
 
+// MARK: - LineGraphView
+
 struct LineGraphView: View {
     @EnvironmentObject var viewRouter: ViewRouter
 
     /// Set as `false` to control animation from `ViewRouter`.
     @State var on = false
-    @State var animate = false
     let dataPoints: [CGFloat]
 
     var body: some View {
@@ -26,19 +27,22 @@ struct LineGraphView: View {
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
                     .trim(to: on ? 1 : 0)
-                    .stroke(Color.purple, style: StrokeStyle(lineWidth: 4, lineCap: .square))
+                    .stroke(Color.purple, style: StrokeStyle(lineWidth: 6, lineCap: .round))
             )
-            .onReceive(self.viewRouter.lineWillAnimate, perform: {
+            .onReceive(self.viewRouter.objectWillChange, perform: {
 
                 // Animate line if in JournalView, otherwise no animation
-                withAnimation(self.viewRouter.isHome ? Animation.linear.delay(0.2) :
-                    Animation.easeInOut(duration: 1.0).delay(0.5)
-                ) {
+                withAnimation(self.viewRouter.isHome
+                                ? Animation.linear.delay(0.2)
+                                : Animation.easeInOut(duration: 1.0).delay(0.6)) {
                     self.on.toggle()
                 }
             })
+            .shadow()
     }
 }
+
+// MARK: - LineGraph
 
 struct LineGraph: Shape {
 
@@ -96,7 +100,7 @@ struct LineGraph: Shape {
 
 struct Wave_Previews: PreviewProvider {
     static var previews: some View {
-        LineGraphView(dataPoints: [0.3, 0.4, 0.5, 0.3, 0.2, 0.3, 0.9])
+        LineGraphView(on: true, dataPoints: [0.3, 0.4, 0.5, 0.3, 0.2, 0.3, 0.9])
             .environmentObject(ViewRouter())
     }
 }

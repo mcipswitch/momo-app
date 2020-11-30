@@ -72,7 +72,11 @@ struct AnimateSlideIn: ViewModifier {
         content
             .offset(y: observedValue ? -5 : 0)
             .opacity(observedValue ? 0 : 1)
-            .animation(Animation.ease().delay(if: !observedValue, 0.5))
+            .animation(
+                Animation.ease()
+                    .delay(if: !observedValue, 0.5)
+                    //.delay(observedValue ? 0 : (delay ? 0.5 : 0))
+            )
     }
 }
 
@@ -93,5 +97,14 @@ struct Slide: ViewModifier {
         content
             .offset(y: observedValue ? 0 : 5)
             .opacity(observedValue ? 1 : 0)
+    }
+}
+
+// MARK: - Shadows
+
+struct Shadow: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .shadow(color: Color.black.opacity(0.6), radius: 20, x: 4, y: 4)
     }
 }

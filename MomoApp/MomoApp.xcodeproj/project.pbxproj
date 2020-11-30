@@ -13,7 +13,6 @@
 		9308077425645EF000A13156 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9308077325645EF000A13156 /* View+Extension.swift */; };
 		930807792564681100A13156 /* SimpleDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930807782564681100A13156 /* SimpleDrag.swift */; };
 		930924FF25582D0800AA3934 /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930924FE25582D0800AA3934 /* JournalListView.swift */; };
-		9309250225582DB300AA3934 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309250125582DB300AA3934 /* EntryView.swift */; };
 		930925052558335C00AA3934 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930925042558335C00AA3934 /* DataManager.swift */; };
 		93092508255834B900AA3934 /* MockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93092507255834B900AA3934 /* MockDataManager.swift */; };
 		930ABB6F254A32E00050C1C4 /* JournalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */; };
@@ -69,7 +68,6 @@
 		9308077325645EF000A13156 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		930807782564681100A13156 /* SimpleDrag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrag.swift; sourceTree = "<group>"; };
 		930924FE25582D0800AA3934 /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
-		9309250125582DB300AA3934 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
 		930925042558335C00AA3934 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		93092507255834B900AA3934 /* MockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManager.swift; sourceTree = "<group>"; };
 		930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalGraphView.swift; sourceTree = "<group>"; };
@@ -287,7 +285,6 @@
 				930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */,
 				930924FE25582D0800AA3934 /* JournalListView.swift */,
 				93AE1883256DCE500024E6A9 /* LineGraphView.swift */,
-				9309250125582DB300AA3934 /* EntryView.swift */,
 			);
 			path = MomoJournalView;
 			sourceTree = "<group>";
@@ -414,7 +411,6 @@
 				930924FF25582D0800AA3934 /* JournalListView.swift in Sources */,
 				93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */,
 				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,
-				9309250225582DB300AA3934 /* EntryView.swift in Sources */,
 				930807792564681100A13156 /* SimpleDrag.swift in Sources */,
 				93AE1884256DCE500024E6A9 /* LineGraphView.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,

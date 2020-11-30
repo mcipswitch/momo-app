@@ -36,6 +36,8 @@ struct MomoAddMoodView: View {
     @State private var dragStart = CGPoint.zero
     @State private var buttonLocation: CGPoint? = nil
 
+    @State var delay = false
+
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
 
@@ -97,7 +99,7 @@ struct MomoAddMoodView: View {
                 HStack {
                     MomoToolbarButton(type: .back, action: self.backButtonPressed)
                     Spacer()
-                    MomoButton(isActive: $emotionTextFieldCompleted, type: .next, action: self.nextButtonPressed)
+                    MomoButton(isActive: self.$emotionTextFieldCompleted, type: .next, action: self.nextButtonPressed)
                 }
                 .slideInAnimation(if: $homeViewActive)
                 .padding()
@@ -116,9 +118,16 @@ struct MomoAddMoodView: View {
                             Text("Hi, how are you feeling today?")
                                 .momoText(.main)
                                 .slideOutAnimation(if: $homeViewActive)
-                            MomoTextField(homeViewActive: $homeViewActive, text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
+                            VStack(spacing: 6) {
+                                MomoTextField(text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
+
+                                    // TODO: - Placeholder should animate out immediately if writing
+                                    .slideInAnimation(if: $homeViewActive)
+
+                                MomoTextFieldBorder(showHome: $homeViewActive, textFieldIsFocused: $textFieldIsFocused)
+                            }
                         }
-                        .onChange(of: emotionText) { field in
+                        .onChange(of: self.emotionText) { field in
                             self.emotionTextFieldCompleted = field.isEmpty ? false : true
                         }
                         .frame(width: 180, height: 80)
