@@ -29,23 +29,22 @@ struct MomoJournalView: View {
             navigationToolbar
 
             ZStack {
-                VStack(spacing: 48) {
-                    JournalGraphView()
-                    JournalMiniBlobView(blobValue: $blobValue, entry: self.viewModel.selectedEntry)
-                }
+                JournalGraphView(
+                    blobValue: $blobValue,
+                    selectedEntry: self.viewModel.selectedEntry
+                )
                 .slide(if: $animateGraph)
-                .onReceive(self.viewRouter.journalWillChange) {
-                    withAnimation(Animation.ease().delay(if: !animateGraph, 0.5)) {
-                        self.animateGraph.toggle()
-                    }
-                }
+
                 JournalListView()
                     .slide(if: $animateList)
-                    .onReceive(self.viewRouter.journalWillChange) {
-                        withAnimation(Animation.ease().delay(if: !animateList, 0.5)) {
-                            self.animateList.toggle()
-                        }
-                    }
+            }
+            .onReceive(self.viewRouter.journalWillChange) {
+                withAnimation(Animation.ease().delay(if: !animateGraph, 0.5)) {
+                    self.animateGraph.toggle()
+                }
+                withAnimation(Animation.ease().delay(if: !animateList, 0.5)) {
+                    self.animateList.toggle()
+                }
             }
         }
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))

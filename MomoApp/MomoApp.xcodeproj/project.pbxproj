@@ -15,7 +15,7 @@
 		930924FF25582D0800AA3934 /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930924FE25582D0800AA3934 /* JournalListView.swift */; };
 		930925052558335C00AA3934 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930925042558335C00AA3934 /* DataManager.swift */; };
 		93092508255834B900AA3934 /* MockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93092507255834B900AA3934 /* MockDataManager.swift */; };
-		930ABB6F254A32E00050C1C4 /* JournalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */; };
+		930ABB6F254A32E00050C1C4 /* MiniGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */; };
 		930AE6B725633B520091EDA7 /* DragState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930AE6B625633B520091EDA7 /* DragState.swift */; };
 		9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9318888125582B870004CD4F /* EntriesViewModel.swift */; };
 		9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9331230724F94C17008B6DD2 /* Animation + Extension.swift */; };
@@ -33,7 +33,8 @@
 		937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615872512527100AEF59C /* UIScreen + Extension.swift */; };
 		937688E124F98E9500CC0B10 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937688E024F98E9500CC0B10 /* CustomView.swift */; };
 		9382CFE32576090600ED46D8 /* MomoLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */; };
-		9382CFE625760A8400ED46D8 /* JournalMiniBlobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFE525760A8400ED46D8 /* JournalMiniBlobView.swift */; };
+		9382CFE625760A8400ED46D8 /* MiniBlobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFE525760A8400ED46D8 /* MiniBlobView.swift */; };
+		9382CFEB25760CD000ED46D8 /* JournalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFEA25760CD000ED46D8 /* JournalGraphView.swift */; };
 		9383FBD02514E48E00E38E95 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBC92514E48E00E38E95 /* DMSans-Regular.ttf */; };
 		9383FBD12514E48E00E38E95 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBCA2514E48E00E38E95 /* DMSans-Medium.ttf */; };
 		9383FBD22514E48E00E38E95 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBCB2514E48E00E38E95 /* DMSans-Bold.ttf */; };
@@ -72,7 +73,7 @@
 		930924FE25582D0800AA3934 /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
 		930925042558335C00AA3934 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		93092507255834B900AA3934 /* MockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManager.swift; sourceTree = "<group>"; };
-		930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalGraphView.swift; sourceTree = "<group>"; };
+		930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGraphView.swift; sourceTree = "<group>"; };
 		930AE6B625633B520091EDA7 /* DragState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragState.swift; sourceTree = "<group>"; };
 		9318888125582B870004CD4F /* EntriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesViewModel.swift; sourceTree = "<group>"; };
 		9331230724F94C17008B6DD2 /* Animation + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation + Extension.swift"; sourceTree = "<group>"; };
@@ -92,7 +93,8 @@
 		937615872512527100AEF59C /* UIScreen + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen + Extension.swift"; sourceTree = "<group>"; };
 		937688E024F98E9500CC0B10 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoLoadingIndicator.swift; sourceTree = "<group>"; };
-		9382CFE525760A8400ED46D8 /* JournalMiniBlobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalMiniBlobView.swift; sourceTree = "<group>"; };
+		9382CFE525760A8400ED46D8 /* MiniBlobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniBlobView.swift; sourceTree = "<group>"; };
+		9382CFEA25760CD000ED46D8 /* JournalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalGraphView.swift; sourceTree = "<group>"; };
 		9383FBC92514E48E00E38E95 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		9383FBCA2514E48E00E38E95 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		9383FBCB2514E48E00E38E95 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -286,8 +288,9 @@
 		9390FB0A2563889200E2E53A /* MomoJournalView */ = {
 			isa = PBXGroup;
 			children = (
-				930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */,
-				9382CFE525760A8400ED46D8 /* JournalMiniBlobView.swift */,
+				930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */,
+				9382CFE525760A8400ED46D8 /* MiniBlobView.swift */,
+				9382CFEA25760CD000ED46D8 /* JournalGraphView.swift */,
 				930924FE25582D0800AA3934 /* JournalListView.swift */,
 				93AE1883256DCE500024E6A9 /* LineGraphView.swift */,
 			);
@@ -402,7 +405,7 @@
 				938A0923256C307100D53D9A /* MomoTextLink.swift in Sources */,
 				93347DF52551091F0015629B /* SelectionLineModifier.swift in Sources */,
 				930925052558335C00AA3934 /* DataManager.swift in Sources */,
-				9382CFE625760A8400ED46D8 /* JournalMiniBlobView.swift in Sources */,
+				9382CFE625760A8400ED46D8 /* MiniBlobView.swift in Sources */,
 				930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */,
 				93EF7980254A146A0062571F /* MomoToolbarButton.swift in Sources */,
 				93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */,
@@ -438,12 +441,13 @@
 				9363153A2513A6B6005E20EA /* BlurredColorWheel.swift in Sources */,
 				93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */,
 				93E06EA1256C909500E7264D /* ViewRouter.swift in Sources */,
+				9382CFEB25760CD000ED46D8 /* JournalGraphView.swift in Sources */,
 				93519F5024E8CF630095DA38 /* MomoApp.swift in Sources */,
 				937688E124F98E9500CC0B10 /* CustomView.swift in Sources */,
 				936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */,
 				93EF797D254A07F20062571F /* MomoJournalView.swift in Sources */,
 				93388BE0250FAAA700766633 /* ForceButton.swift in Sources */,
-				930ABB6F254A32E00050C1C4 /* JournalGraphView.swift in Sources */,
+				930ABB6F254A32E00050C1C4 /* MiniGraphView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
