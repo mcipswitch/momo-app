@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - BlurredColorWheel
+
 struct BlurredColorWheel: View {
     @Binding var isActive: Bool
     @Binding var degrees: Double

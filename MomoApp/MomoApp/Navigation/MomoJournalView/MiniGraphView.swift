@@ -13,7 +13,6 @@ import SwiftUI
 
 struct MiniGraphView: View {
     let entries: [Entry]
-    let numOfEntries: Int
     let selectedEntry: Entry
     let dataPoints: [CGFloat]
 
@@ -29,19 +28,9 @@ struct MiniGraphView: View {
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
     private var totalOffset: CGFloat { currentOffset + dragOffset }
+    private var items: CGFloat { CGFloat(self.entries.count) }
 
     // MARK: - Body
-
-    var graphLine: some View {
-        Rectangle()
-            .foregroundColor(.clear).frame(width: 1)
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [.gray, .clear]),
-                    startPoint: .bottom,
-                    endPoint: .top)
-            )
-    }
 
     var body: some View {
         ZStack {
@@ -49,13 +38,13 @@ struct MiniGraphView: View {
 
                 // Calculate the spacing between graph lines
                 let itemWidth: CGFloat = 25
-                let itemFrameSpacing = (geo.size.width - (itemWidth * numOfEntries.floatValue)) / (numOfEntries.floatValue - 1)
+                let itemFrameSpacing = (geo.size.width - (itemWidth * items)) / (items - 1)
                 let itemSpacing = itemWidth + itemFrameSpacing
                 let columnLayout: [GridItem] = Array(repeating: .init(.flexible(), spacing: itemFrameSpacing),
-                                                     count: self.numOfEntries)
+                                                     count: self.entries.count)
 
                 LazyVGrid(columns: columnLayout, alignment: .center) {
-                    ForEach(0 ..< self.numOfEntries) { idx in
+                    ForEach(0 ..< self.entries.count) { idx in
                         VStack {
                             graphLine
                                 .anchorPreference(
@@ -177,6 +166,17 @@ struct MiniGraphView: View {
             // Current day is default selection
             //self.indexSelection = self.entries.count - 1
         }
+    }
+
+    var graphLine: some View {
+        Rectangle()
+            .foregroundColor(.clear).frame(width: 1)
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [.gray, .clear]),
+                    startPoint: .bottom,
+                    endPoint: .top)
+            )
     }
 
     // MARK: - Internal Methods

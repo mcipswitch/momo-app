@@ -46,7 +46,7 @@ struct MomoAddMoodView: View {
             .onChanged { value in
                 self.isDragging = true
 
-                // The lower the limit, the tighter the resistance
+                /// The lower the limit, the tigher the resistance
                 let limit: CGFloat = 200
                 let xOff = value.translation.width
                 let yOff = value.translation.height
@@ -76,7 +76,6 @@ struct MomoAddMoodView: View {
                 self.blurredColorWheelIsActive = false
                 self.isResetting = true
 
-                // https://swiftui.diegolavalle.com/posts/animation-ended/
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                     self.isResetting = false
                 }
@@ -91,27 +90,21 @@ struct MomoAddMoodView: View {
     }
     
     // MARK: - Body
-    
+
     var body: some View {
         ZStack {
             GeometryReader { geometry in
-                // Top Navigation
-                HStack {
-                    MomoToolbarButton(type: .back, action: self.backButtonPressed)
-                    Spacer()
-                    MomoButton(isActive: self.$emotionTextFieldCompleted, type: .next, action: self.nextButtonPressed)
-                }
-                .slideInAnimation(if: $homeViewActive)
-                .padding()
-                .disabled(isResetting)
+                topNavigation
+                    .slideInAnimation(if: $homeViewActive)
+                    .padding()
+                    .disabled(isResetting)
 
                 // Main View
                 VStack(spacing: 48) {
 
                     // Date + EmotionTextField
                     VStack(spacing: 36) {
-                        Text(Date(), formatter: DateFormatter.shortDate)
-                            .momoText(.date)
+                        currentDate
                             .slideOutAnimation(if: $homeViewActive)
                             .padding(.top, 16)
                         ZStack {
@@ -193,7 +186,6 @@ struct MomoAddMoodView: View {
                             .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
                             .disabled(self.isResetting)
 
-                            // Temp gesture to show finger location
                             if let dragState = dragState {
                                 Circle()
                                     .stroke(Color.red, lineWidth: 2)
@@ -227,6 +219,21 @@ struct MomoAddMoodView: View {
             case 120..<240: blurredColorWheelDegrees = 120
             case 240..<360: blurredColorWheelDegrees = 240
             default: blurredColorWheelDegrees = 0 }}
+    }
+
+    // MARK: - Views
+
+    var topNavigation: some View {
+        HStack {
+            MomoToolbarButton(type: .back, action: self.backButtonPressed)
+            Spacer()
+            MomoButton(isActive: self.$emotionTextFieldCompleted, type: .next, action: self.nextButtonPressed)
+        }
+    }
+
+    var currentDate: some View {
+        Text(Date(), formatter: DateFormatter.shortDate)
+            .momoText(.date)
     }
     
     // MARK: - Internal Methods

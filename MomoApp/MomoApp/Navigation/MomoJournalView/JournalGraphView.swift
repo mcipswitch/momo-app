@@ -20,7 +20,6 @@ struct JournalGraphView: View {
         VStack(spacing: 48) {
             MiniGraphView(
                 entries: self.viewModel.latestEntries,
-                numOfEntries: self.viewModel.numOfEntries,
                 selectedEntry: self.selectedEntry,
                 dataPoints: self.viewModel.dataPoints)
             MiniBlobView(

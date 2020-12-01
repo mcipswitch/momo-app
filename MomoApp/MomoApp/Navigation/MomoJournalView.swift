@@ -15,7 +15,6 @@ struct MomoJournalView: View {
     @State var blobValue: CGFloat = 0.5
 
     // Animation States
-
     // TODO: - remove isGraph, redundant
     @State var isGraph = true
     @State var animateList = false
