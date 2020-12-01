@@ -21,8 +21,11 @@ struct JournalGraphView: View {
             MiniGraphView(
                 entries: self.viewModel.latestEntries,
                 numOfEntries: self.viewModel.numOfEntries,
+                selectedEntry: self.selectedEntry,
                 dataPoints: self.viewModel.dataPoints)
-            MiniBlobView(blobValue: $blobValue, entry: self.selectedEntry)
+            MiniBlobView(
+                blobValue: $blobValue,
+                entry: self.selectedEntry)
         }
     }
 }

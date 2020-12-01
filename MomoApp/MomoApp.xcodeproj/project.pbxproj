@@ -35,6 +35,7 @@
 		9382CFE32576090600ED46D8 /* MomoLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */; };
 		9382CFE625760A8400ED46D8 /* MiniBlobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFE525760A8400ED46D8 /* MiniBlobView.swift */; };
 		9382CFEB25760CD000ED46D8 /* JournalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFEA25760CD000ED46D8 /* JournalGraphView.swift */; };
+		9382CFF02576DE5100ED46D8 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFEF2576DE5100ED46D8 /* Int+Extension.swift */; };
 		9383FBD02514E48E00E38E95 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBC92514E48E00E38E95 /* DMSans-Regular.ttf */; };
 		9383FBD12514E48E00E38E95 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBCA2514E48E00E38E95 /* DMSans-Medium.ttf */; };
 		9383FBD22514E48E00E38E95 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBCB2514E48E00E38E95 /* DMSans-Bold.ttf */; };
@@ -95,6 +96,7 @@
 		9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoLoadingIndicator.swift; sourceTree = "<group>"; };
 		9382CFE525760A8400ED46D8 /* MiniBlobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniBlobView.swift; sourceTree = "<group>"; };
 		9382CFEA25760CD000ED46D8 /* JournalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalGraphView.swift; sourceTree = "<group>"; };
+		9382CFEF2576DE5100ED46D8 /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		9383FBC92514E48E00E38E95 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		9383FBCA2514E48E00E38E95 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		9383FBCB2514E48E00E38E95 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 				938E537024E983F3002653F0 /* UIColor + Extension.swift */,
 				937615852511D22300AEF59C /* CGPoint + Extension.swift */,
 				93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */,
+				9382CFEF2576DE5100ED46D8 /* Int+Extension.swift */,
 				9301058F2513F8A1007F0E7A /* Date + Extensions.swift */,
 				93EB5C602527891900087D0B /* UIApplication + Extension.swift */,
 				937615872512527100AEF59C /* UIScreen + Extension.swift */,
@@ -441,6 +444,7 @@
 				9363153A2513A6B6005E20EA /* BlurredColorWheel.swift in Sources */,
 				93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */,
 				93E06EA1256C909500E7264D /* ViewRouter.swift in Sources */,
+				9382CFF02576DE5100ED46D8 /* Int+Extension.swift in Sources */,
 				9382CFEB25760CD000ED46D8 /* JournalGraphView.swift in Sources */,
 				93519F5024E8CF630095DA38 /* MomoApp.swift in Sources */,
 				937688E124F98E9500CC0B10 /* CustomView.swift in Sources */,

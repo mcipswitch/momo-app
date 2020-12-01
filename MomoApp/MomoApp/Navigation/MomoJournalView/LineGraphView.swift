@@ -33,7 +33,7 @@ struct LineGraphView: View {
                 // Animate line if in JournalView, otherwise no animation
                 withAnimation(self.viewRouter.isHome
                                 ? Animation.linear.delay(0.2)
-                                : Animation.easeInOut(duration: 1.0).delay(0.6)) {
+                                : Animation.easeInOut(duration: 1.5).delay(0.6)) {
                     self.on.toggle()
                 }
             })
