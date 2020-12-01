@@ -25,14 +25,11 @@ struct LineGraphView: View {
         LinearGradient(gradient: Gradient(colors: [Color.momo, Color.momoOrange, Color.momoPurple]),
                        startPoint: .top, endPoint: .bottom)
             .mask(
-                LineGraph(
-                    dataPoints: self.dataPoints
-                )
-                .trim(to: on ? 1 : 0)
-                .stroke(Color.purple, style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                LineGraph(dataPoints: self.dataPoints)
+                    .trim(to: on ? 1 : 0)
+                    .stroke(Color.purple, style: StrokeStyle(lineWidth: 6, lineCap: .round))
             )
             .onReceive(self.viewRouter.objectWillChange, perform: {
-
                 // Animate line if in JournalView, otherwise no animation
                 withAnimation(self.viewRouter.isHome
                                 ? Animation.linear.delay(0.2)

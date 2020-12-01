@@ -12,14 +12,10 @@ class ViewRouter: ObservableObject {
 
     let objectWillChange = PassthroughSubject<(), Never>()
     let journalWillChange = PassthroughSubject<(), Never>()
-    let allowsHitTestingWillChange = PassthroughSubject<(Bool), Never>()
     let textFieldWillChange = PassthroughSubject<String, Never>()
 
     @Published var currentPage: Page = .home
     @Published var currentJournal: Journal = .graph
-
-    /// Default number of entries in `JournalGraphView`
-    @Published var numOfEntries: Int = 7
 
     func change(to page: Page) {
         self.objectWillChange.send()
@@ -29,10 +25,6 @@ class ViewRouter: ObservableObject {
     func toggleJournal(to journal: Journal) {
         self.journalWillChange.send()
         self.currentJournal = journal
-    }
-
-    func toggleHitTesting(_ value: Bool) {
-        self.allowsHitTestingWillChange.send(value)
     }
 
     // MARK: - Helper vars

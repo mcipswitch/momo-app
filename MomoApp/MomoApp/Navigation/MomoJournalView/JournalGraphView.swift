@@ -17,12 +17,10 @@ struct JournalGraphView: View {
     @State var indexSelection: Int = 0
 
     private var entries: [Entry] {
-        return viewModel.entries.suffix(self.viewRouter.numOfEntries)
+        return viewModel.entries.suffix(self.viewModel.numOfEntries)
     }
 
-    private var items: CGFloat { CGFloat(self.viewRouter.numOfEntries) }
-
-    @State var blobValue: CGFloat
+    private var items: CGFloat { CGFloat(self.viewModel.numOfEntries) }
 
     var date = Date()
 
@@ -47,10 +45,10 @@ struct JournalGraphView: View {
                 let itemSpacing = itemWidth + itemFrameSpacing
                 let columnLayout: [GridItem] = Array(
                     repeating: .init(.flexible(), spacing: itemFrameSpacing),
-                    count: self.viewRouter.numOfEntries)
+                    count: self.viewModel.numOfEntries)
 
                 LazyVGrid(columns: columnLayout, alignment: .center) {
-                    ForEach(0 ..< self.viewRouter.numOfEntries) { idx in
+                    ForEach(0 ..< self.viewModel.numOfEntries) { idx in
                         VStack {
                             GraphLine(value: self.entries[idx].value)
                                 .anchorPreference(
@@ -191,16 +189,6 @@ struct JournalGraphView: View {
 
 // MARK: - Views
 
-struct SelectionLineTest: View {
-    let width: CGFloat = 4
-
-    var body: some View {
-        RoundedRectangle(cornerRadius: width / 2)
-            .fill(Color.momo)
-            .frame(width: width)
-    }
-}
-
 struct SelectionLine: View {
     @Binding var value: CGFloat
     let preferences: Anchor<CGRect>?
@@ -259,7 +247,7 @@ struct SelectionPreferenceKey: PreferenceKey {
 
 struct JournalGraphView_Previews: PreviewProvider {
     static var previews: some View {
-        JournalGraphView(blobValue: CGFloat(0.5))
+        JournalGraphView()
             .background(
                 Image("background")
                     .edgesIgnoringSafeArea(.all)

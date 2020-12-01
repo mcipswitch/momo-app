@@ -13,10 +13,12 @@ import SwiftUI
 final class EntriesViewModel: ObservableObject {
     @Published private(set) var state = InfiniteScrollState()
     @Published var entries = [Entry]()
+    @Published var selectedEntry: Entry = Entry(emotion: "Sunflower", date: Date(), value: 0.9)
     @Published var dataPoints = [CGFloat]()
 
-    private var fetchedEntries = [Entry]()
-
+    /// Default number of entries in `JournalGraphView`
+    var numOfEntries: Int = 7
+    
     var dataManager: DataManagerProtocol
     
     init(dataManager: DataManagerProtocol = DataManager.shared) {

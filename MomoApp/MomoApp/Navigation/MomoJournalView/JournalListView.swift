@@ -25,7 +25,6 @@ struct JournalListView: View {
                     isLoading: self.viewModel.state.canLoadNextPage,
                     onScrolledAtBottom: self.viewModel.fetchNextPageIfPossible
                 )
-                //.onAppear(perform: self.viewModel.fetchNextPageIfPossible)
             }
             .padding()
         }
@@ -49,19 +48,14 @@ struct EntriesList: View {
                     if self.entries.last == self.entries[idx] {
                         self.onScrolledAtBottom()
                     }
+
+                    // TODO: - Fix when switched back to home screen
                 }
         }
 
         if self.isLoading {
-            loadingIndicator
+            MomoLoadingIndicator()
         }
-    }
-
-    private var loadingIndicator: some View {
-        ProgressView()
-            .progressViewStyle(CircularProgressViewStyle(tint: .momo))
-            .scaleEffect(1.5, anchor: .center)
-            .padding()
     }
 }
 

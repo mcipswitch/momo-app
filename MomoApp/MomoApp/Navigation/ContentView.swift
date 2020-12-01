@@ -15,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             MomoAddMoodView()
-            MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.68))
+            MomoJournalView()
                 .offset(x: on ? 0 : self.offset)
         }
         .onReceive(self.viewRouter.objectWillChange) { _ in

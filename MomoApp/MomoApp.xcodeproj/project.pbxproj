@@ -32,6 +32,8 @@
 		937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615852511D22300AEF59C /* CGPoint + Extension.swift */; };
 		937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615872512527100AEF59C /* UIScreen + Extension.swift */; };
 		937688E124F98E9500CC0B10 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937688E024F98E9500CC0B10 /* CustomView.swift */; };
+		9382CFE32576090600ED46D8 /* MomoLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */; };
+		9382CFE625760A8400ED46D8 /* JournalMiniBlobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFE525760A8400ED46D8 /* JournalMiniBlobView.swift */; };
 		9383FBD02514E48E00E38E95 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBC92514E48E00E38E95 /* DMSans-Regular.ttf */; };
 		9383FBD12514E48E00E38E95 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBCA2514E48E00E38E95 /* DMSans-Medium.ttf */; };
 		9383FBD22514E48E00E38E95 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9383FBCB2514E48E00E38E95 /* DMSans-Bold.ttf */; };
@@ -89,6 +91,8 @@
 		937615852511D22300AEF59C /* CGPoint + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint + Extension.swift"; sourceTree = "<group>"; };
 		937615872512527100AEF59C /* UIScreen + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen + Extension.swift"; sourceTree = "<group>"; };
 		937688E024F98E9500CC0B10 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
+		9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoLoadingIndicator.swift; sourceTree = "<group>"; };
+		9382CFE525760A8400ED46D8 /* JournalMiniBlobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalMiniBlobView.swift; sourceTree = "<group>"; };
 		9383FBC92514E48E00E38E95 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		9383FBCA2514E48E00E38E95 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		9383FBCB2514E48E00E38E95 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -283,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				930ABB6E254A32E00050C1C4 /* JournalGraphView.swift */,
+				9382CFE525760A8400ED46D8 /* JournalMiniBlobView.swift */,
 				930924FE25582D0800AA3934 /* JournalListView.swift */,
 				93AE1883256DCE500024E6A9 /* LineGraphView.swift */,
 			);
@@ -313,6 +318,7 @@
 				93EF797F254A146A0062571F /* MomoToolbarButton.swift */,
 				93EF7984254A14BE0062571F /* MomoButton.swift */,
 				938A0922256C307100D53D9A /* MomoTextLink.swift */,
+				9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -396,6 +402,7 @@
 				938A0923256C307100D53D9A /* MomoTextLink.swift in Sources */,
 				93347DF52551091F0015629B /* SelectionLineModifier.swift in Sources */,
 				930925052558335C00AA3934 /* DataManager.swift in Sources */,
+				9382CFE625760A8400ED46D8 /* JournalMiniBlobView.swift in Sources */,
 				930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */,
 				93EF7980254A146A0062571F /* MomoToolbarButton.swift in Sources */,
 				93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */,
@@ -409,6 +416,7 @@
 				93FAEB9B2514FCDC00C057AC /* MomoAddMoodView.swift in Sources */,
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
 				930924FF25582D0800AA3934 /* JournalListView.swift in Sources */,
+				9382CFE32576090600ED46D8 /* MomoLoadingIndicator.swift in Sources */,
 				93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */,
 				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,
 				930807792564681100A13156 /* SimpleDrag.swift in Sources */,

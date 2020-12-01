@@ -12,11 +12,9 @@ import SwiftUI
 struct MomoJournalView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
-    @State var selectedEntry: Entry
     @State var blobValue: CGFloat = 0.5
 
     // Animation States
-    @State var allowsHitTesting = true
     @State var isGraph = true
     @State var animateList = false
     @State var animateGraph = false
@@ -32,13 +30,8 @@ struct MomoJournalView: View {
 
             ZStack {
                 VStack(spacing: 48) {
-                    JournalGraphView(
-                        blobValue: blobValue
-                    )
-                    MiniBlobView(
-                        blobValue: $blobValue,
-                        entry: selectedEntry
-                    )
+                    JournalGraphView()
+                    JournalMiniBlobView(blobValue: $blobValue, entry: self.viewModel.selectedEntry)
                 }
                 .slide(if: $animateGraph)
                 .onReceive(self.viewRouter.journalWillChange) {
@@ -55,17 +48,10 @@ struct MomoJournalView: View {
                     }
             }
         }
-        // TODO:
-        /*
-         Animation must be added BEFORE the background.
-         The main content for `MomoJournalView` transitions on with a delay.
-         Remove the delay when it transitions off.
-         */
-        //.animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
-        
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
         .onAppear {
-            self.animateGraph = true // Graph is the default JournalView
+            // Default JournalView
+            self.animateGraph = true
         }
     }
 
@@ -76,10 +62,6 @@ struct MomoJournalView: View {
                 MomoToolbarButton(type: .back, action: self.backButtonPressed)
                 Spacer()
                 MomoToolbarButton(type: self.journal, action: self.journalTypeButtonPressed)
-                    .allowsHitTesting(self.allowsHitTesting)
-                    .onReceive(self.viewRouter.allowsHitTestingWillChange, perform: { value in
-                        self.allowsHitTesting = value
-                    })
             }
         }
         .padding()
@@ -97,34 +79,21 @@ struct MomoJournalView: View {
     }
 }
 
-// MARK: - Views
-
-struct MiniBlobView: View {
-    @Binding var blobValue: CGFloat
-    let entry: Entry
-
-    var body: some View {
-        VStack(spacing: 0) {
-            Text(self.entry.date, formatter: DateFormatter.shortDate)
-                .momoText(.date)
-                .padding(.bottom, 12)
-            Text(self.entry.emotion)
-                .momoText(.main)
-            BlobView(blobValue: $blobValue, isStatic: false)
-                .scaleEffect(0.60)
-            Spacer()
-        }
-    }
-}
-
-
 // MARK: - Previews
 
 #if DEBUG
 struct MomoJournalView_Previews: PreviewProvider {
     static var previews: some View {
-        MomoJournalView(selectedEntry: Entry(emotion: "Sunflower", date: Date(), value: 0.5))
+        MomoJournalView()
             .environmentObject(ViewRouter())
     }
 }
 #endif
+
+// TODO:
+/*
+ Animation must be added BEFORE the background.
+ The main content for `MomoJournalView` transitions on with a delay.
+ Remove the delay when it transitions off.
+ */
+//.animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
