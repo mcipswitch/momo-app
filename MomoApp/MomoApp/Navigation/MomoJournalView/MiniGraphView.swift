@@ -12,15 +12,17 @@ import SwiftUI
 // MARK: - MiniGraphView
 
 struct MiniGraphView: View {
+    let entries: [Entry]
+    let numOfEntries: Int
+    let dataPoints: [CGFloat]
+
     @EnvironmentObject var viewRouter: ViewRouter
-    @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
+
     @State var indexSelection: Int = 0
 
-    private var entries: [Entry] {
-        return viewModel.entries.suffix(self.viewModel.numOfEntries)
+    private var items: CGFloat {
+        CGFloat(self.numOfEntries)
     }
-
-    private var items: CGFloat { CGFloat(self.viewModel.numOfEntries) }
 
     var date = Date()
 
@@ -45,10 +47,10 @@ struct MiniGraphView: View {
                 let itemSpacing = itemWidth + itemFrameSpacing
                 let columnLayout: [GridItem] = Array(
                     repeating: .init(.flexible(), spacing: itemFrameSpacing),
-                    count: self.viewModel.numOfEntries)
+                    count: self.numOfEntries)
 
                 LazyVGrid(columns: columnLayout, alignment: .center) {
-                    ForEach(0 ..< self.viewModel.numOfEntries) { idx in
+                    ForEach(0 ..< self.numOfEntries) { idx in
                         VStack {
                             GraphLine(value: self.entries[idx].value)
                                 .anchorPreference(
@@ -150,7 +152,12 @@ struct MiniGraphView: View {
 //                        })
                     }
                 }
-                LineGraphView(dataPoints: self.viewModel.dataPoints)
+
+
+
+
+
+                LineGraphView(dataPoints: self.dataPoints)
                     .padding()
 
                 VStack {
@@ -163,7 +170,7 @@ struct MiniGraphView: View {
         .padding()
         .onAppear {
             // Current day is default selection
-            self.indexSelection = self.entries.count - 1
+            //self.indexSelection = self.entries.count - 1
         }
     }
 
@@ -245,13 +252,13 @@ struct SelectionPreferenceKey: PreferenceKey {
 
 // MARK: - Previews
 
-struct JournalGraphView_Previews: PreviewProvider {
-    static var previews: some View {
-        MiniGraphView()
-            .background(
-                Image("background")
-                    .edgesIgnoringSafeArea(.all)
-            )
-            .environmentObject(ViewRouter())
-    }
-}
+//struct JournalGraphView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MiniGraphView(entries: <#[Entry]#>, numOfEntries: <#Int#>, dataPoints: <#[CGFloat]#>)
+//            .background(
+//                Image("background")
+//                    .edgesIgnoringSafeArea(.all)
+//            )
+//            .environmentObject(ViewRouter())
+//    }
+//}

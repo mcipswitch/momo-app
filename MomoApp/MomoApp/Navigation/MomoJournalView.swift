@@ -15,6 +15,8 @@ struct MomoJournalView: View {
     @State var blobValue: CGFloat = 0.5
 
     // Animation States
+
+    // TODO: - remove isGraph, redundant
     @State var isGraph = true
     @State var animateList = false
     @State var animateGraph = false
@@ -30,7 +32,7 @@ struct MomoJournalView: View {
 
             ZStack {
                 JournalGraphView(
-                    blobValue: $blobValue,
+                    blobValue: .constant(self.viewModel.selectedEntry.value),
                     selectedEntry: self.viewModel.selectedEntry
                 )
                 .slide(if: $animateGraph)

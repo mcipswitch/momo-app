@@ -38,18 +38,13 @@ struct EntriesList: View {
     let isLoading: Bool
     let onScrolledAtBottom: () -> Void
 
-    @State var animate: Double = 0
-
     var body: some View {
         ForEach(self.entries.indices, id: \.self) { idx in
             EntryRow(entry: self.entries[idx])
                 .onAppear {
-                    // Call `onScrolledAtBottom()` when the last entry appears on the screen.
                     if self.entries.last == self.entries[idx] {
                         self.onScrolledAtBottom()
                     }
-
-                    // TODO: - Fix when switched back to home screen
                 }
         }
 

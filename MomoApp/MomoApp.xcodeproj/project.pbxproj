@@ -288,9 +288,9 @@
 		9390FB0A2563889200E2E53A /* MomoJournalView */ = {
 			isa = PBXGroup;
 			children = (
+				9382CFEA25760CD000ED46D8 /* JournalGraphView.swift */,
 				930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */,
 				9382CFE525760A8400ED46D8 /* MiniBlobView.swift */,
-				9382CFEA25760CD000ED46D8 /* JournalGraphView.swift */,
 				930924FE25582D0800AA3934 /* JournalListView.swift */,
 				93AE1883256DCE500024E6A9 /* LineGraphView.swift */,
 			);

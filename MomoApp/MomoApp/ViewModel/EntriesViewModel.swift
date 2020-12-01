@@ -14,10 +14,17 @@ final class EntriesViewModel: ObservableObject {
     @Published private(set) var state = InfiniteScrollState()
     @Published var entries = [Entry]()
     @Published var selectedEntry: Entry = Entry(emotion: "Sunflower", date: Date(), value: 0.9)
-    @Published var dataPoints = [CGFloat]()
 
-    /// Default number of entries in `JournalGraphView`
+    /// Default number of entries shown in `JournalGraphView`
     var numOfEntries: Int = 7
+
+    /// Latest entries shown in `JournalGraphView`
+    var latestEntries: [Entry] {
+        self.entries.suffix(self.numOfEntries)
+    }
+
+    /// Data points for `MiniGraphView`
+    var dataPoints = [CGFloat]()
     
     var dataManager: DataManagerProtocol
     
@@ -73,7 +80,7 @@ extension EntriesViewModel: EntriesViewModelProtocol {
     }
 
     func fetchDataPoints() {
-        self.entries.suffix(7).forEach{ self.dataPoints.append($0.value) }
+        self.entries.suffix(self.numOfEntries).forEach{ self.dataPoints.append($0.value) }
     }
 }
 
@@ -100,4 +107,5 @@ struct InfiniteScrollState {
     var pageSize: Int = 10
     var page: Int = 1
     var canLoadNextPage = true
+    var isLoading = false
 }
