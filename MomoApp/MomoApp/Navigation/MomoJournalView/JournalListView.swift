@@ -45,34 +45,12 @@ struct EntriesList: View {
         ForEach(self.entries.indices, id: \.self) { idx in
             EntryRow(entry: self.entries[idx])
                 .onAppear {
-
                     // Call `onScrolledAtBottom()` when the last entry appears on the screen.
                     if self.entries.last == self.entries[idx] {
                         self.onScrolledAtBottom()
                     }
                 }
-
-
-
-//                .opacity(animate)
-//                .onAnimationCompleted(for: animate, completion: {
-//                    // TODO: - Wait for the ENTIRE animation to finish
-//                    // Enable toggle journal button on animation completion
-//                    self.viewRouter.toggleHitTesting(true)
-//                })
-//                .animation(.cascade(offset: Double(idx)))
         }
-//        .onReceive(self.viewRouter.journalWillChange) {
-//
-//            // Disable toggle journal button when animating
-//            self.viewRouter.toggleHitTesting(false)
-//
-//            // Add delay so we can see the cascading animation
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                // Cascades ON and OFF
-//                self.animate = animate == 1 ? 0 : 1
-//            }
-//        }
 
         if self.isLoading {
             loadingIndicator
@@ -108,16 +86,21 @@ struct EntryRow: View {
                             .momoText(.main)
                     }
                     Spacer()
-                    BlobView(blobValue: $blobValue, isStatic: true, scale: 0.2)
-                        .padding(.trailing, 16)
+                    BlobView(
+                        blobValue: $blobValue,
+                        isStatic: true,
+                        scale: 0.2
+                    )
+                    .padding(.trailing, 16)
                 }
             }
             .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-            .padding([.leading, .trailing], 24)
-            .padding([.top, .bottom], 16)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 16)
             .background(VisualEffectBlur(blurStyle: .dark))
             .clipShape(
-                RoundedRectangle(cornerRadius: 8, style: .continuous))
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+            )
         }
     }
 }

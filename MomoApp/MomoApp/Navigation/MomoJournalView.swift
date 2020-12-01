@@ -7,12 +7,13 @@
 
 import SwiftUI
 
+// MARK: - MomoJournalView
+
 struct MomoJournalView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     @State var selectedEntry: Entry
     @State var blobValue: CGFloat = 0.5
-
 
     // Animation States
     @State var allowsHitTesting = true
@@ -24,27 +25,20 @@ struct MomoJournalView: View {
     var journal: ToolbarButtonType {
         self.isGraph ? .graph : .list
     }
-    
+
     var body: some View {
         VStack {
-            ZStack {
-                MomoToolbarTitle(type: self.journal)
-                HStack(alignment: .top) {
-                    MomoToolbarButton(type: .back, action: self.backButtonPressed)
-                    Spacer()
-                    MomoToolbarButton(type: self.journal, action: self.journalTypeButtonPressed)
-                        .allowsHitTesting(self.allowsHitTesting)
-                        .onReceive(self.viewRouter.allowsHitTestingWillChange, perform: { value in
-                            self.allowsHitTesting = value
-                        })
-                }
-            }
-            .padding()
+            navigationToolbar
 
             ZStack {
                 VStack(spacing: 48) {
-                    JournalGraphView(blobValue: blobValue)
-                    MiniBlobView(blobValue: $blobValue, entry: selectedEntry)
+                    JournalGraphView(
+                        blobValue: blobValue
+                    )
+                    MiniBlobView(
+                        blobValue: $blobValue,
+                        entry: selectedEntry
+                    )
                 }
                 .slide(if: $animateGraph)
                 .onReceive(self.viewRouter.journalWillChange) {
@@ -73,6 +67,22 @@ struct MomoJournalView: View {
         .onAppear {
             self.animateGraph = true // Graph is the default JournalView
         }
+    }
+
+    var navigationToolbar: some View {
+        ZStack {
+            MomoToolbarTitle(type: self.journal)
+            HStack(alignment: .top) {
+                MomoToolbarButton(type: .back, action: self.backButtonPressed)
+                Spacer()
+                MomoToolbarButton(type: self.journal, action: self.journalTypeButtonPressed)
+                    .allowsHitTesting(self.allowsHitTesting)
+                    .onReceive(self.viewRouter.allowsHitTestingWillChange, perform: { value in
+                        self.allowsHitTesting = value
+                    })
+            }
+        }
+        .padding()
     }
     
     // MARK: - Internal Methods

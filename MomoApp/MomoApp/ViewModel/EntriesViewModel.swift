@@ -28,8 +28,8 @@ final class EntriesViewModel: ObservableObject {
     func fetchNextPageIfPossible() {
         guard state.canLoadNextPage else { return }
 
-        // Simulated async behaviour
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        // Add delay to simulate async behaviour
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.fetchEntries(page: self.state.page)
         }
     }
@@ -39,6 +39,8 @@ final class EntriesViewModel: ObservableObject {
 
 extension EntriesViewModel: EntriesViewModelProtocol {
     func fetchEntries(page: Int) {
+
+        // TODO: - fix this ugly shit!!!!!!!
 
         var idx: (start: Int, end: Int?)
 
@@ -64,7 +66,7 @@ extension EntriesViewModel: EntriesViewModelProtocol {
         self.entries.append(contentsOf: fetchedEntries)
         self.state.page += 1
 
-        // TODO: - What happens if the next page is only 4???? It will crash.
+
         self.state.canLoadNextPage = fetchedEntries.count == 10
     }
 
