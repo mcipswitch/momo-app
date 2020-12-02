@@ -21,7 +21,7 @@ struct JournalListView: View {
         ScrollView {
             LazyVGrid(columns: layout) {
                 EntriesList(
-                    entries: self.viewModel.entries
+                    entries: self.viewModel.entries.reversed()
                 )
             }
             .padding()

@@ -12,163 +12,183 @@ import SwiftUI
 // MARK: - MiniGraphView
 
 struct MiniGraphView: View {
+    @EnvironmentObject var viewRouter: ViewRouter
+
     let entries: [Entry]
     let selectedEntry: Entry
     let dataPoints: [CGFloat]
 
-    @State var indexSelection: Int = 0
-
+    /// Default selection is current day
+    @State var idxSelection: Int = 6
+    
     var date = Date()
 
     // Selection Line
     @State private var location: CGPoint = .zero
     @GestureState private var startLocation: CGPoint? = nil
-    @GestureState private var isLongPress: Bool = false
 
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
-    private var totalOffset: CGFloat { currentOffset + dragOffset }
-    private var items: CGFloat { CGFloat(self.entries.count) }
+    @State var value: CGFloat = 0.5
+    @State var opacity: Bool = false
 
     // MARK: - Body
+
+    private func changeIdxSelection(to idx: Int) {
+        withAnimation(.ease()) {
+            self.idxSelection = idx
+        }
+    }
 
     var body: some View {
         ZStack {
             GeometryReader { geo in
 
+                LineGraphView(dataPoints: self.dataPoints)
+                    .padding()
+
                 // Calculate the spacing between graph lines
+                let numOfItems: CGFloat = self.entries.count.floatValue
+                let numOfSpaces: CGFloat = numOfItems - 1
                 let itemWidth: CGFloat = 25
-                let itemFrameSpacing = (geo.size.width - (itemWidth * items)) / (items - 1)
-                let itemSpacing = itemWidth + itemFrameSpacing
+                let totalItemWidth: CGFloat = itemWidth * numOfItems
+                let itemFrameSpacing: CGFloat = (geo.size.width - totalItemWidth) / numOfSpaces
+                let itemSpacing: CGFloat = itemWidth + itemFrameSpacing
                 let columnLayout: [GridItem] = Array(repeating: .init(.flexible(), spacing: itemFrameSpacing),
                                                      count: self.entries.count)
 
                 LazyVGrid(columns: columnLayout, alignment: .center) {
                     ForEach(0 ..< self.entries.count) { idx in
-                        VStack {
-                            graphLine
-                                .anchorPreference(
-                                    key: SelectionPreferenceKey.self,
-                                    value: .bounds,
-                                    transform: { anchor in
-                                        self.indexSelection == idx ? anchor : nil
-                                    })
-                            VStack(spacing: 8) {
-                                Text("\(self.entries[idx].date.getWeekday())")
-                                    .momoText(.graphWeekday)
-                                Text("\(self.entries[idx].date.getDay())")
-                                    .momoText(.graphDay)
-                            }
-                        }
-                        .frame(minWidth: itemWidth, minHeight: geo.size.height)
-
+                        GraphLine(
+                            idxSelection: self.$idxSelection,
+                            idx: idx,
+                            entries: self.entries
+                        )
+                        .frame(minWidth: itemWidth, idealHeight: geo.size.height, maxHeight: geo.size.height)
                         // Make whole stack tappable
                         .contentShape(Rectangle())
-                        .gesture(
-                            // Using 'LongPressGesture' to avoid multiple quick taps
-                            LongPressGesture(minimumDuration: 0.1)
-                                .updating($isLongPress) { value, state, transaction in
+                        .onTapGesture {
+                            self.changeIdxSelection(to: idx)
+                        }
+                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
+                            SelectionLine(preferences: preferences)
+                                .opacity(self.opacity ? 1 : 0)
+                                //.position(x: self.location.x + itemWidth / 2, y: geo.size.height / 2)
+                                .offset(x: self.currentOffset + self.dragOffset)
+                        })
+                        .onReceive(self.viewRouter.objectWillChange, perform: {
+                            // Animate in selection line after graph line animation
+                            withAnimation(self.viewRouter.isHome
+                                            ? Animation.linear.delay(0.2)
+                                            : Animation.easeInOut(duration: 1.5).delay(1.8)) {
+                                self.opacity.toggle()
+                            }
+                        })
 
-                                }.onEnded { _ in
-                                    let indexShift = idx - self.indexSelection
-                                    let newOffset = itemSpacing * CGFloat(indexShift)
-                                    self.snap(to: newOffset)
-                                    self.updateIndexSelection(by: indexShift)
-                                }
-                        )
 
-
-
-
-
-
-//                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-//                            SelectionLine(value: $value, preferences: preferences)
-//                                .position(x: self.location.x + itemWidth / 2, y: geo.size.height / 2)
-//                                .offset(x: self.totalOffset)
-//                                .gesture(
-//                                    DragGesture()
-//                                        .onChanged { value in
-//                                            var newLocation = self.location
-//
-//                                            // Protect from scrolling out of bounds
-//                                            let maxShiftLeft = self.indexSelection * Int(itemSpacing)
-//                                            let maxShiftRight = (self.numOfEntries - self.indexSelection - 1) * Int(itemSpacing)
-//
-//                                            print(maxShiftLeft)
-//                                            print(maxShiftRight)
-//
-//                                            newLocation.x = min(
-//                                                0,
-//                                                newLocation.x + CGFloat(maxShiftRight)
-//                                            )
-//
-//                                            self.location = newLocation
-//
-//
-//
-//                                            // Calculate out of bounds threshold
-//                                            //                                            let indexShift = Int(round(value.translation.width / itemSpacing))
-//                                            //                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
-//                                            //                                            let boundsThreshold = 0 * itemSpacing
-//                                            //                                            let bounds = (
-//                                            //                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
-//                                            //                                                max: boundsThreshold
-//                                            //                                            )
-//                                            //
-//                                            //                                            // Protect from scrolling out of bounds
-//                                            //                                            if value.translation.width > bounds.max {
-//                                            //                                                self.dragOffset = offsetDistance + boundsThreshold
-//                                            //                                            }
-//                                            //                                            else if value.translation.width < bounds.min {
-//                                            //                                                self.dragOffset = offsetDistance - boundsThreshold
-//                                            //                                            }
-//
-//                                        }.updating($startLocation) { value, state, _ in
-//                                            state = startLocation ?? location
-//                                        }.onEnded { value in
-//                                            //                                            let indexShift = Int(round(value.translation.width / itemSpacing))
-//                                            //                                            let newOffset = itemSpacing * CGFloat(indexShift)
-//                                            //                                            self.snap(to: newOffset)
-//                                            //                                            self.updateIndexSelection(by: indexShift)
-//                                        }
-//                                )
-//
-//
-//
-//                            //                                .modifier(
-//                            //                                    ScrollingLineModifier(
-//                            //                                        items: numOfEntries,
-//                            //                                        itemWidth: itemWidth,
-//                            //                                        itemSpacing: itemSpacing,
-//                            //                                        index: index,
-//                            //                                        prevIndex: indexSelection))
+////                                .gesture(
+////                                    DragGesture()
+////                                        .onChanged { value in
+////
+//////                                            // Protect from scrolling out of bounds
+//////                                            let maxShiftLeft = self.idxSelection * Int(itemSpacing)
+//////                                            let maxShiftRight = (self.numOfEntries - self.idxSelection - 1) * Int(itemSpacing)
+//////
+//////                                            newLocation.x = min(
+//////                                                0,
+//////                                                newLocation.x + CGFloat(maxShiftRight)
+//////                                            )
+//////
+//////                                            self.location = newLocation
+//////
+//////
+//////
+//////                                            Calculate out of bounds threshold
+//////                                            let indexShift = Int(round(value.translation.width / itemSpacing))
+//////                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
+//////                                            let boundsThreshold = 0 * itemSpacing
+//////                                            let bounds = (
+//////                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
+//////                                                max: boundsThreshold
+//////                                            )
+//////
+//////                                            // Protect from scrolling out of bounds
+//////                                            if value.translation.width > bounds.max {
+//////                                                self.dragOffset = offsetDistance + boundsThreshold
+//////                                            }
+//////                                            else if value.translation.width < bounds.min {
+//////                                                self.dragOffset = offsetDistance - boundsThreshold
+//////                                            }
+////
+////                                        }.updating($startLocation) { value, state, _ in
+////                                            //state = startLocation ?? location
+////                                        }.onEnded { value in
+//////                                            let indexShift = Int(round(value.translation.width / itemSpacing))
+//////                                            let newOffset = itemSpacing * CGFloat(indexShift)
+//////                                            self.snap(to: newOffset)
+//////                                            self.updateIndexSelection(by: indexShift)
+////                                        }
+////                                )
 //                        })
                     }
                 }
 
-
-
-
-
-                LineGraphView(dataPoints: self.dataPoints)
-                    .padding()
-
                 VStack {
-                    Text("IDX Selection: \(self.indexSelection)")
+                    Text("IDX Selection: \(self.idxSelection)")
                     Text("Location: \(self.location.x)")
                     Text("Drag: \(self.dragOffset)")
                 }
             }
         }
         .padding()
-        .onAppear {
-            // Current day is default selection
-            //self.indexSelection = self.entries.count - 1
+    }
+
+    // MARK: - Internal Methods
+
+//    private func onDragEnded(drag: DragGesture.Value) {
+//    }
+//
+//    private func snap(to offset: CGFloat) {
+//        withAnimation(.ease()) {
+//            self.currentOffset += CGFloat(offset)
+//            self.dragOffset = 0
+//        }
+//    }
+//
+//    private func updateIndexSelection(by indexShift: Int) {
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//            self.currentOffset = 0
+//            self.idxSelection += indexShift
+//        }
+//    }
+}
+
+// MARK: - Views
+
+struct GraphLine: View {
+    @Binding var idxSelection: Int
+    let idx: Int
+    let entries: [Entry]
+
+    var body: some View {
+        VStack {
+            line
+                .anchorPreference(
+                    key: SelectionPreferenceKey.self,
+                    value: .bounds,
+                    transform: { anchor in
+                        self.idxSelection == idx ? anchor : nil
+                    })
+            VStack(spacing: 8) {
+                Text("\(self.entries[idx].date.weekday)")
+                    .momoText(.graphWeekday)
+                Text("\(self.entries[idx].date.day)")
+                    .momoText(.graphDay)
+            }
         }
     }
 
-    var graphLine: some View {
+    var line: some View {
         Rectangle()
             .foregroundColor(.clear).frame(width: 1)
             .background(
@@ -178,31 +198,9 @@ struct MiniGraphView: View {
                     endPoint: .top)
             )
     }
-
-    // MARK: - Internal Methods
-
-    private func onDragEnded(drag: DragGesture.Value) {
-    }
-
-    private func snap(to offset: CGFloat) {
-        withAnimation(.ease()) {
-            self.currentOffset += CGFloat(offset)
-            self.dragOffset = 0
-        }
-    }
-
-    private func updateIndexSelection(by indexShift: Int) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.currentOffset = 0
-            self.indexSelection += indexShift
-        }
-    }
 }
 
-// MARK: - Views
-
 struct SelectionLine: View {
-    @Binding var value: CGFloat
     let preferences: Anchor<CGRect>?
     
     var body: some View {
@@ -218,31 +216,8 @@ struct SelectionLine: View {
                         height: geometry[$0].height,
                         alignment: .center
                     )
-                    .contentShape(Rectangle())
-
-                    // Data Point
-                    .overlay(
-                        Circle()
-                            .strokeBorder(Color.momo, lineWidth: 4)
-                            .frame(width: 16)
-                    )
             }
         }
-    }
-}
-
-struct GraphLine: View {
-    var value: CGFloat
-
-    var body: some View {
-        Rectangle()
-            .foregroundColor(.clear).frame(width: 1)
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [.gray, .clear]),
-                    startPoint: .bottom,
-                    endPoint: .top)
-            )
     }
 }
 
@@ -255,15 +230,10 @@ struct SelectionPreferenceKey: PreferenceKey {
     }
 }
 
-// MARK: - Previews
-
-//struct JournalGraphView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MiniGraphView(entries: <#[Entry]#>, numOfEntries: <#Int#>, dataPoints: <#[CGFloat]#>)
-//            .background(
-//                Image("background")
-//                    .edgesIgnoringSafeArea(.all)
-//            )
-//            .environmentObject(ViewRouter())
-//    }
-//}
+//                                .modifier(
+//                                    ScrollingLineModifier(
+//                                        items: numOfEntries,
+//                                        itemWidth: itemWidth,
+//                                        itemSpacing: itemSpacing,
+//                                        index: index,
+//                                        prevIndex: indexSelection))

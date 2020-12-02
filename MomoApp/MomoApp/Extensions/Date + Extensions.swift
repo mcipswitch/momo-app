@@ -31,13 +31,12 @@ extension Date {
         return dateFormatter.string(from: self)
     }
 
-    func getWeekday() -> String {
+    var weekday: String {
         return self.toString(withFormat: .weekday)
     }
 
-    func getDay() -> String {
-        let dayString = self.toString(withFormat: .day)
-        return dayString
+    var day: String {
+        return self.toString(withFormat: .day)
     }
     
     func getDates(forLastNDays nDays: Int) -> [String] {
