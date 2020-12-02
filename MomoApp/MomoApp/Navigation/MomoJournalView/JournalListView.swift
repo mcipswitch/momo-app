@@ -21,9 +21,7 @@ struct JournalListView: View {
         ScrollView {
             LazyVGrid(columns: layout) {
                 EntriesList(
-                    entries: self.viewModel.entries,
-                    isLoading: self.viewModel.state.canLoadNextPage,
-                    onScrolledAtBottom: self.viewModel.fetchNextPageIfPossible
+                    entries: self.viewModel.entries
                 )
             }
             .padding()
@@ -35,21 +33,12 @@ struct JournalListView: View {
 
 struct EntriesList: View {
     let entries: [Entry]
-    let isLoading: Bool
-    let onScrolledAtBottom: () -> Void
+    //let isLoading: Bool
+    //let onScrolledAtBottom: () -> Void
 
     var body: some View {
-        ForEach(self.entries.indices, id: \.self) { idx in
-            EntryRow(entry: self.entries[idx])
-                .onAppear {
-                    if self.entries.last == self.entries[idx] {
-                        self.onScrolledAtBottom()
-                    }
-                }
-        }
-
-        if self.isLoading {
-            MomoLoadingIndicator()
+        ForEach(self.entries, id: \.self) { entry in
+            EntryRow(entry: entry)
         }
     }
 }

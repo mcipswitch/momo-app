@@ -50,7 +50,6 @@ struct MomoJournalView: View {
         }
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
         .onAppear {
-            // Default JournalView
             self.animateGraph = true
         }
     }

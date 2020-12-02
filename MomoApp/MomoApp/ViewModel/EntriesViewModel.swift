@@ -11,7 +11,7 @@ import Foundation
 import SwiftUI
 
 final class EntriesViewModel: ObservableObject {
-    @Published private(set) var state = InfiniteScrollState()
+    @Published private(set) var state = State()
     @Published var entries = [Entry]()
     @Published var selectedEntry: Entry = Entry(emotion: "Sunflower", date: Date(), value: 0.9)
 
@@ -30,57 +30,26 @@ final class EntriesViewModel: ObservableObject {
     
     init(dataManager: DataManagerProtocol = DataManager.shared) {
         self.dataManager = dataManager
-        self.fetchEntries(page: state.page)
+        self.fetchEntries()
         self.fetchDataPoints()
     }
 
-    func fetchNextPageIfPossible() {
-        guard state.canLoadNextPage else { return }
-
-        // Add delay to simulate async behaviour
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.fetchEntries(page: self.state.page)
-        }
+    struct State {
+        var page: Int = 1
+        var canLoadNextPage = true
+        var isLoading = false
     }
 }
 
 // MARK: - EntriesViewModelProtocol
 
 extension EntriesViewModel: EntriesViewModelProtocol {
-    func fetchEntries(page: Int) {
-
-        // TODO: - fix this ugly shit!!!!!!!
-
-        var idx: (start: Int, end: Int?)
-
-        if page == 1 {
-            idx = (0, state.pageSize * page)
-        }
-        else if state.pageSize * page > dataManager.fetchEntries().count {
-            idx = (state.pageSize * page - state.pageSize, nil)
-        }
-        else {
-            idx = (state.pageSize * page - state.pageSize, state.pageSize * page)
-        }
-
-
-        let fetchedEntries: ArraySlice<Entry>
-
-        if let end = idx.end {
-            fetchedEntries = dataManager.fetchEntries()[idx.start ..< end]
-        } else {
-            fetchedEntries = dataManager.fetchEntries()[idx.start...]
-        }
-
-        self.entries.append(contentsOf: fetchedEntries)
-        self.state.page += 1
-
-
-        self.state.canLoadNextPage = fetchedEntries.count == 10
+    func fetchEntries() {
+        self.entries = dataManager.fetchEntries()
     }
 
     func fetchDataPoints() {
-        self.entries.suffix(self.numOfEntries).forEach{ self.dataPoints.append($0.value) }
+        self.latestEntries.forEach{ self.dataPoints.append($0.value) }
     }
 }
 
@@ -88,7 +57,7 @@ extension EntriesViewModel: EntriesViewModelProtocol {
 
 protocol EntriesViewModelProtocol {
     var entries: [Entry] { get }
-    func fetchEntries(page: Int)
+    func fetchEntries()
     func fetchDataPoints()
 }
 
@@ -99,13 +68,4 @@ struct Entry: Identifiable, Hashable {
     var emotion: String
     var date: Date
     var value: CGFloat
-}
-
-// MARK: - State
-
-struct InfiniteScrollState {
-    var pageSize: Int = 10
-    var page: Int = 1
-    var canLoadNextPage = true
-    var isLoading = false
 }
