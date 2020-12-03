@@ -24,9 +24,7 @@ struct MiniGraphView: View {
     var date = Date()
 
     // Selection Line
-    @State private var location: CGPoint = .zero
-    @GestureState private var startLocation: CGPoint? = nil
-
+    @GestureState private var dragState: DragState = .inactive
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
     @State var value: CGFloat = 0.5
@@ -40,7 +38,23 @@ struct MiniGraphView: View {
         }
     }
 
+
+
+    let pressGesture = LongPressGesture(minimumDuration: 0.5, maximumDistance: 0)
+
+    var dragGesture: some Gesture {
+        DragGesture(minimumDistance: 0)
+            .onChanged { value in
+                self.dragOffset = value.translation.width
+            }.onEnded { value in
+                self.dragOffset = .zero
+            }
+    }
+
     var body: some View {
+        // A combined gesture that forces the user to long press then drag
+        let combined = pressGesture.sequenced(before: dragGesture)
+
         ZStack {
             GeometryReader { geo in
 
@@ -65,16 +79,40 @@ struct MiniGraphView: View {
                             entries: self.entries
                         )
                         .frame(minWidth: itemWidth, idealHeight: geo.size.height, maxHeight: geo.size.height)
+
                         // Make whole stack tappable
                         .contentShape(Rectangle())
-                        .onTapGesture {
-                            self.changeIdxSelection(to: idx)
-                        }
+                        //                        .onTapGesture {
+                        //                            self.changeIdxSelection(to: idx)
+                        //                        }
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(preferences: preferences)
                                 .opacity(self.opacity ? 1 : 0)
+                                .offset(x: self.currentOffset)
                                 //.position(x: self.location.x + itemWidth / 2, y: geo.size.height / 2)
-                                .offset(x: self.currentOffset + self.dragOffset)
+
+                                // TODO: - make this work alongside tap gesture
+                                .gesture(
+                                    DragGesture(minimumDistance: 0)
+                                        .onChanged { value in
+                                            self.dragOffset = value.translation.width
+                                        }
+                                        .updating($dragState) { value, state, transaction in
+                                            state = .active(location: value.location, translation: value.translation)
+                                        }
+                                        .onEnded { value in
+                                            // Calculate the index shift to the closest entry
+                                            let indexShift = Int(round(value.translation.width / itemSpacing))
+
+                                            // Protect from scrolling out of bounds
+                                            var newIndex = self.idxSelection + indexShift
+                                            newIndex = max(0, newIndex)
+                                            newIndex = min(self.entries.count - 1, newIndex)
+
+                                            self.changeIdxSelection(to: newIndex)
+                                            self.dragOffset = .zero
+                                        }
+                                )
                         })
                         .onReceive(self.viewRouter.objectWillChange, perform: {
                             // Animate in selection line after graph line animation
@@ -84,58 +122,10 @@ struct MiniGraphView: View {
                                 self.opacity.toggle()
                             }
                         })
-
-
-////                                .gesture(
-////                                    DragGesture()
-////                                        .onChanged { value in
-////
-//////                                            // Protect from scrolling out of bounds
-//////                                            let maxShiftLeft = self.idxSelection * Int(itemSpacing)
-//////                                            let maxShiftRight = (self.numOfEntries - self.idxSelection - 1) * Int(itemSpacing)
-//////
-//////                                            newLocation.x = min(
-//////                                                0,
-//////                                                newLocation.x + CGFloat(maxShiftRight)
-//////                                            )
-//////
-//////                                            self.location = newLocation
-//////
-//////
-//////
-//////                                            Calculate out of bounds threshold
-//////                                            let indexShift = Int(round(value.translation.width / itemSpacing))
-//////                                            let offsetDistance = itemSpacing * CGFloat(indexShift)
-//////                                            let boundsThreshold = 0 * itemSpacing
-//////                                            let bounds = (
-//////                                                min: -(itemSpacing * CGFloat(items - 1) + boundsThreshold),
-//////                                                max: boundsThreshold
-//////                                            )
-//////
-//////                                            // Protect from scrolling out of bounds
-//////                                            if value.translation.width > bounds.max {
-//////                                                self.dragOffset = offsetDistance + boundsThreshold
-//////                                            }
-//////                                            else if value.translation.width < bounds.min {
-//////                                                self.dragOffset = offsetDistance - boundsThreshold
-//////                                            }
-////
-////                                        }.updating($startLocation) { value, state, _ in
-////                                            //state = startLocation ?? location
-////                                        }.onEnded { value in
-//////                                            let indexShift = Int(round(value.translation.width / itemSpacing))
-//////                                            let newOffset = itemSpacing * CGFloat(indexShift)
-//////                                            self.snap(to: newOffset)
-//////                                            self.updateIndexSelection(by: indexShift)
-////                                        }
-////                                )
-//                        })
                     }
                 }
-
                 VStack {
                     Text("IDX Selection: \(self.idxSelection)")
-                    Text("Location: \(self.location.x)")
                     Text("Drag: \(self.dragOffset)")
                 }
             }
@@ -145,22 +135,8 @@ struct MiniGraphView: View {
 
     // MARK: - Internal Methods
 
-//    private func onDragEnded(drag: DragGesture.Value) {
-//    }
-//
-//    private func snap(to offset: CGFloat) {
-//        withAnimation(.ease()) {
-//            self.currentOffset += CGFloat(offset)
-//            self.dragOffset = 0
-//        }
-//    }
-//
-//    private func updateIndexSelection(by indexShift: Int) {
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-//            self.currentOffset = 0
-//            self.idxSelection += indexShift
-//        }
-//    }
+    //    private func onDragEnded(drag: DragGesture.Value) {
+    //    }
 }
 
 // MARK: - Views
@@ -216,6 +192,7 @@ struct SelectionLine: View {
                         height: geometry[$0].height,
                         alignment: .center
                     )
+                    .shadow()
             }
         }
     }
