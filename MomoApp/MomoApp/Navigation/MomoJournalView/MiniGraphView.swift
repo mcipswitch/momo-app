@@ -186,7 +186,10 @@ struct GraphLine: View {
             .foregroundColor(.clear).frame(width: 1)
             .background(
                 LinearGradient(
-                    gradient: Gradient(colors: [.gray, .clear]),
+                    gradient: Gradient(colors: [
+                        Color.gray.opacity(0.4),
+                        Color.gray.opacity(0)
+                    ]),
                     startPoint: .bottom,
                     endPoint: .top)
             )
