@@ -19,7 +19,7 @@ struct MiniGraphView: View {
     let dataPoints: [CGFloat]
 
     /// Default selection is current day
-    @State var idxSelection: Int = 6
+    @State private var idxSelection: Int = 6
     @State private var indexShift: Int = 0
     @State private var newIndex: Int = 6
 
@@ -27,18 +27,14 @@ struct MiniGraphView: View {
     @GestureState private var dragState: DragState = .inactive
     @State private var currentOffset: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
-    @State var value: CGFloat = 0.5
-    @State var opacity: Bool = false
+    @State private var value: CGFloat = 0.5
+    @State private var opacity = false
 
     var date = Date()
 
     // MARK: - Body
 
     var body: some View {
-        // A combined gesture that forces the user to long press then drag
-        //let pressGesture = LongPressGesture(minimumDuration: 0.5, maximumDistance: 0)
-        //let combined = pressGesture.sequenced(before: dragGesture)
-
         ZStack {
             GeometryReader { geo in
 
@@ -53,65 +49,98 @@ struct MiniGraphView: View {
                     repeating: .init(.flexible(), spacing: itemFrameSpacing),
                     count: self.entries.count)
 
+                // Drag Gesture
+                let dragGesture = DragGesture(minimumDistance: 0)
+                    .onChanged { value in
+                        self.dragOffset = value.translation.width
+
+                        // Calculate the index shift to the closest entry
+                        self.indexShift = Int(round(value.translation.width / itemSpacing))
+                        let newOffset = itemSpacing * CGFloat(indexShift)
+                        self.currentOffset = newOffset
+
+                        // Protect from scrolling out of bounds
+                        self.newIndex = self.idxSelection + self.indexShift
+                        self.newIndex = max(0, self.newIndex)
+                        self.newIndex = min(self.entries.count - 1, self.newIndex)
+                    }
+                    .updating($dragState) { value, state, transaction in
+                        state = .active(location: value.location, translation: value.translation)
+                        //transaction.animation = Animation.resist()
+                    }
+                    .onEnded { value in
+                        self.currentOffset = 0
+                        self.idxSelection = newIndex
+                        self.dragOffset = .zero
+                    }
+
+                //                // A long press gesture that enables isDragging
+                //                let pressGesture = LongPressGesture(minimumDuration: 0.2, maximumDistance: 0)
+                //                    .onEnded { _ in
+                //                        //self.isDragging = true
+                //                    }
+                //                // A combined gesture that forces the user to long press then drag
+                //                let combined = pressGesture.sequenced(before: dragGesture)
+
+
+
+
+
                 LazyVGrid(columns: columnLayout, alignment: .center) {
                     ForEach(0 ..< self.entries.count) { idx in
-
-                        ZStack {
-                            GraphLine(
-                                idxSelection: self.idxSelection,
-                                newIdx: self.newIndex,
-                                idx: idx,
-                                entries: self.entries
-                            )
-                            .frame(minWidth: itemWidth, idealHeight: geo.size.height, maxHeight: geo.size.height)
-                            .border(Color.yellow.opacity(0.2))
-                            .onTapGesture {
-                                self.changeIdxSelection(to: idx)
-                            }
-                            .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-                                SelectionLine(preferences: preferences)
-                                    .opacity(self.opacity ? 1 : 0)
-                                    .offset(x: self.currentOffset)
-
-                                    // TODO: - make this work alongside tap gesture
-                                    .gesture(
-                                        DragGesture(minimumDistance: 0)
-                                            .onChanged { value in
-                                                self.dragOffset = value.translation.width
-
-                                                // Calculate the index shift to the closest entry
-                                                self.indexShift = Int(round(value.translation.width / itemSpacing))
-                                                let newOffset = itemSpacing * CGFloat(indexShift)
-                                                self.currentOffset = newOffset
-
-                                                // Protect from scrolling out of bounds
-                                                self.newIndex = self.idxSelection + self.indexShift
-                                                self.newIndex = max(0, self.newIndex)
-                                                self.newIndex = min(self.entries.count - 1, self.newIndex)
-                                            }
-                                            .updating($dragState) { value, state, transaction in
-                                                state = .active(location: value.location, translation: value.translation)
-                                            }
-                                            .onEnded { value in
-                                                self.currentOffset = 0
-                                                self.idxSelection = newIndex
-                                                self.dragOffset = .zero
-                                            }
-                                    )
-                            })
-                            .onReceive(self.viewRouter.objectWillChange, perform: {
-                                // Animate in selection line after graph line aniamtes in
-                                withAnimation(self.viewRouter.isHome
-                                                ? Animation.linear.delay(0.2)
-                                                : Animation.easeInOut(duration: 0.8).delay(1.8)) {
-                                    self.opacity.toggle()
-                                }
-                            })
-
-
+                        GraphLine(
+                            idxSelection: self.idxSelection,
+                            newIdx: self.newIndex,
+                            idx: idx,
+                            entries: self.entries
+                        )
+                        .frame(minWidth: itemWidth, idealHeight: geo.size.height, maxHeight: geo.size.height)
+                        .border(Color.yellow.opacity(0.2))
+                        .onTapGesture {
+                            self.changeIdxSelection(to: idx)
                         }
 
+                        // This is needed to make whole stack tappable
+                        .contentShape(Rectangle())
+                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
+                            SelectionLine(preferences: preferences)
+                                .opacity(self.opacity ? 1 : 0)
+                                .offset(x: self.currentOffset)
 
+                                // TODO: - make this work alongside tap gesture
+                                .gesture(dragGesture
+                                         //                                        DragGesture(minimumDistance: 0)
+                                         //                                            .onChanged { value in
+                                         //                                                self.dragOffset = value.translation.width
+                                         //
+                                         //                                                // Calculate the index shift to the closest entry
+                                         //                                                self.indexShift = Int(round(value.translation.width / itemSpacing))
+                                         //                                                let newOffset = itemSpacing * CGFloat(indexShift)
+                                         //                                                self.currentOffset = newOffset
+                                         //
+                                         //                                                // Protect from scrolling out of bounds
+                                         //                                                self.newIndex = self.idxSelection + self.indexShift
+                                         //                                                self.newIndex = max(0, self.newIndex)
+                                         //                                                self.newIndex = min(self.entries.count - 1, self.newIndex)
+                                         //                                            }
+                                         //                                            .updating($dragState) { value, state, transaction in
+                                         //                                                state = .active(location: value.location, translation: value.translation)
+                                         //                                            }
+                                         //                                            .onEnded { value in
+                                         //                                                self.currentOffset = 0
+                                         //                                                self.idxSelection = newIndex
+                                         //                                                self.dragOffset = .zero
+                                         //                                            }
+                                )
+                        })
+                        .onReceive(self.viewRouter.objectWillChange, perform: {
+                            // Animate in selection line after graph line aniamtes in
+                            withAnimation(self.viewRouter.isHome
+                                            ? Animation.linear.delay(0.2)
+                                            : Animation.easeInOut(duration: 0.8).delay(1.8)) {
+                                self.opacity.toggle()
+                            }
+                        })
                     }
                 }
 
@@ -121,6 +150,7 @@ struct MiniGraphView: View {
 
                 VStack {
                     Text("IDX Selection: \(self.idxSelection)")
+                    Text(self.dragState.isActive ? "dragging" : "")
                     Text("Drag: \(self.dragOffset)")
                 }
             }
