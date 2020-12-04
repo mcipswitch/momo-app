@@ -13,7 +13,7 @@ import SwiftUI
 final class EntriesViewModel: ObservableObject {
     @Published private(set) var state = State()
     @Published var entries = [Entry]()
-    @Published var selectedEntry: Entry = Entry(emotion: "Sunflower", date: Date(), value: 0.9)
+    @Published var selectedIdx = Int()
 
     /// Default number of entries shown in `JournalGraphView`
     var numOfEntries: Int = 7
@@ -21,6 +21,10 @@ final class EntriesViewModel: ObservableObject {
     /// Latest entries shown in `JournalGraphView`
     var latestEntries: [Entry] {
         self.entries.suffix(self.numOfEntries)
+    }
+
+    var selectedEntry: Entry {
+        self.latestEntries[self.selectedIdx]
     }
 
     /// Data points for `MiniGraphView`
@@ -44,6 +48,13 @@ final class EntriesViewModel: ObservableObject {
 // MARK: - EntriesViewModelProtocol
 
 extension EntriesViewModel: EntriesViewModelProtocol {
+
+
+
+    func changeSelectedIdx(to idx: Int) {
+        self.selectedIdx = idx
+    }
+
     func fetchEntries() {
         self.entries = dataManager.fetchEntries()
     }
@@ -59,6 +70,7 @@ protocol EntriesViewModelProtocol {
     var entries: [Entry] { get }
     func fetchEntries()
     func fetchDataPoints()
+    func changeSelectedIdx(to idx: Int)
 }
 
 // MARK: - Model
