@@ -40,6 +40,9 @@ struct MiniGraphView: View {
         //let combined = pressGesture.sequenced(before: dragGesture)
 
         ZStack {
+            LineGraphView(dataPoints: self.dataPoints)
+                .padding()
+
             GeometryReader { geo in
 
                 // Calculate the spacing between graph lines
@@ -64,9 +67,11 @@ struct MiniGraphView: View {
 
                         // Make whole stack tappable
                         .contentShape(Rectangle())
-                        //                        .onTapGesture {
-                        //                            self.changeIdxSelection(to: idx)
-                        //                        }
+
+                        // TODO: - make this gesture work with the drag gesture
+                        .onTapGesture {
+                            self.changeIdxSelection(to: idx)
+                        }
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(preferences: preferences)
                                 .opacity(self.opacity ? 1 : 0)
@@ -86,7 +91,7 @@ struct MiniGraphView: View {
                                             // Protect from scrolling out of bounds
                                             self.newIndex = self.idxSelection + self.indexShift
                                             self.newIndex = max(0, self.newIndex)
-                                            self.newIndex = min(self.entries.count - 1, newIndex)
+                                            self.newIndex = min(self.entries.count - 1, self.newIndex)
                                         }
                                         .updating($dragState) { value, state, transaction in
                                             state = .active(location: value.location, translation: value.translation)
@@ -108,17 +113,13 @@ struct MiniGraphView: View {
                         })
                     }
                 }
-
-                LineGraphView(dataPoints: self.dataPoints)
-                    .padding()
-
                 VStack {
                     Text("IDX Selection: \(self.idxSelection)")
                     Text("Drag: \(self.dragOffset)")
                 }
             }
         }
-        .padding()
+        .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8))
     }
 
     // MARK: - Internal Methods
