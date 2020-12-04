@@ -15,16 +15,13 @@ struct MiniGraphView: View {
     @EnvironmentObject var viewRouter: ViewRouter
 
     let entries: [Entry]
-    let selectedEntry: Entry
     let dataPoints: [CGFloat]
-
     let onEntrySelected: (Int) -> Void
 
     /// Default selection is current day
-    @State private var idxSelection: Int = 6
-
-    @State private var indexShift: Int = 0
-    @State private var newIndex: Int = 6
+    @State private var selectedIdx: Int = 6
+    @State private var idxShift: Int = 0
+    @State private var newIdx: Int = 6
 
     // Selection Line
     @GestureState private var dragState: DragState = .inactive
@@ -55,47 +52,38 @@ struct MiniGraphView: View {
                 // Drag Gesture
                 let dragGesture = DragGesture(minimumDistance: 0)
                     .onChanged { value in
-                        self.dragOffset = value.translation.width
 
                         // Calculate the index shift to the closest entry
-                        self.indexShift = Int(round(value.translation.width / itemSpacing))
-                        let newOffset = itemSpacing * CGFloat(indexShift)
-                        self.currentOffset = newOffset
+                        self.idxShift = Int(round(value.translation.width / itemSpacing))
+                        let newOffset = itemSpacing * CGFloat(idxShift)
+                        self.dragOffset = newOffset
 
                         // Protect from scrolling out of bounds
-                        self.newIndex = self.idxSelection + self.indexShift
-                        self.newIndex = max(0, self.newIndex)
-                        self.newIndex = min(self.entries.count - 1, self.newIndex)
+                        self.newIdx = self.selectedIdx + self.idxShift
+                        self.newIdx = max(0, self.newIdx)
+                        self.newIdx = min(self.entries.count - 1, self.newIdx)
                     }
                     .updating($dragState) { value, state, transaction in
                         state = .active(location: value.location, translation: value.translation)
                         //transaction.animation = Animation.resist()
                     }
                     .onEnded { value in
-                        self.currentOffset = 0
-                        self.idxSelection = newIndex
-
-                        // call handler
-                        self.onEntrySelected(newIndex)
-
                         self.dragOffset = .zero
+                        self.changeSelectedIdx(to: self.newIdx)
                     }
 
                 LazyVGrid(columns: columnLayout, alignment: .center) {
                     ForEach(0 ..< self.entries.count) { idx in
                         GraphLine(
-                            idxSelection: self.idxSelection,
-                            newIdx: self.newIndex,
+                            idxSelection: self.selectedIdx,
+                            newIdx: self.newIdx,
                             idx: idx,
                             entries: self.entries
                         )
                         .frame(minWidth: itemWidth, idealHeight: geo.size.height, maxHeight: geo.size.height)
-                        .border(Color.yellow.opacity(0.2))
                         .onTapGesture {
-                            self.changeIdxSelection(to: idx)
-
-                            // call handler
-                            self.onEntrySelected(idx)
+                            self.newIdx = idx
+                            self.changeSelectedIdx(to: self.newIdx)
                         }
 
                         // This is needed to make whole stack tappable
@@ -103,7 +91,7 @@ struct MiniGraphView: View {
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(preferences: preferences)
                                 .opacity(self.opacity ? 1 : 0)
-                                .offset(x: self.currentOffset)
+                                .offset(x: self.dragOffset)
                                 .gesture(dragGesture)
 
 //                                .modifier(
@@ -114,8 +102,6 @@ struct MiniGraphView: View {
 //                                        idxSelection: self.idxSelection)
 //                                    )
 //                                )
-
-                            
                         })
                         .onReceive(self.viewRouter.objectWillChange, perform: {
                             // Animate in selection line after graph line aniamtes in
@@ -133,7 +119,7 @@ struct MiniGraphView: View {
                     .allowsHitTesting(false)
 
                 VStack {
-                    Text("IDX Selection: \(self.idxSelection)")
+                    Text("IDX Selection: \(self.selectedIdx)")
                     Text("Drag: \(self.dragOffset)")
                 }
             }
@@ -143,25 +129,10 @@ struct MiniGraphView: View {
 
     // MARK: - Internal Methods
 
-    private func changeIdxSelection(to idx: Int) {
-        withAnimation(.ease()) {
-            self.idxSelection = idx
-        }
+    private func changeSelectedIdx(to idx: Int) {
+        self.selectedIdx = idx
+        self.onEntrySelected(idx)
     }
-
-    //    private func snap(to offset: CGFloat) {
-    //        withAnimation(.ease()) {
-    //            self.currentOffset += CGFloat(offset)
-    //            self.dragOffset = 0
-    //        }
-    //    }
-    //
-    //    private func updateIndexSelection(by indexShift: Int) {
-    //        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-    //            self.currentOffset = 0
-    //            self.idxSelection += indexShift
-    //        }
-    //    }
 }
 
 // MARK: - Views

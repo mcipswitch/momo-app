@@ -12,7 +12,6 @@ import SwiftUI
 struct MomoJournalView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
-    @State var blobValue: CGFloat = 0.5
 
     // Animation States
     // TODO: - remove isGraph, redundant
@@ -30,12 +29,8 @@ struct MomoJournalView: View {
             navigationToolbar
 
             ZStack {
-                JournalGraphView(
-                    blobValue: .constant(self.viewModel.selectedEntry.value),
-                    selectedEntry: self.viewModel.selectedEntry
-                )
-                .slide(if: $animateGraph)
-
+                JournalGraphView()
+                    .slide(if: $animateGraph)
                 JournalListView()
                     .slide(if: $animateList)
             }

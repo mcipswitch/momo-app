@@ -13,29 +13,32 @@ import SwiftUI
 final class EntriesViewModel: ObservableObject {
     @Published private(set) var state = State()
     @Published var entries = [Entry]()
-    @Published var selectedIdx = Int()
+    @Published var selectedEntry = Entry(emotion: "Random", date: Date(), value: 1.0)
 
-    /// Default number of entries shown in `JournalGraphView`
-    var numOfEntries: Int = 7
+    /// Set the default number of entries to show in `JournalGraphView`
+    private var numOfEntries: Int = 7
 
     /// Latest entries shown in `JournalGraphView`
     var latestEntries: [Entry] {
         self.entries.suffix(self.numOfEntries)
     }
 
-    var selectedEntry: Entry {
-        self.latestEntries[self.selectedIdx]
+    var selectedIdx: Int = 0 {
+        didSet {
+            fetchSelectedEntry()
+        }
     }
 
     /// Data points for `MiniGraphView`
     var dataPoints = [CGFloat]()
-    
+
     var dataManager: DataManagerProtocol
-    
+
     init(dataManager: DataManagerProtocol = DataManager.shared) {
         self.dataManager = dataManager
         self.fetchEntries()
         self.fetchDataPoints()
+        self.fetchSelectedEntry()
     }
 
     struct State {
@@ -49,7 +52,9 @@ final class EntriesViewModel: ObservableObject {
 
 extension EntriesViewModel: EntriesViewModelProtocol {
 
-
+    func fetchSelectedEntry() {
+        self.selectedEntry = self.latestEntries[self.selectedIdx]
+    }
 
     func changeSelectedIdx(to idx: Int) {
         self.selectedIdx = idx
@@ -71,6 +76,7 @@ protocol EntriesViewModelProtocol {
     func fetchEntries()
     func fetchDataPoints()
     func changeSelectedIdx(to idx: Int)
+    func fetchSelectedEntry()
 }
 
 // MARK: - Model
