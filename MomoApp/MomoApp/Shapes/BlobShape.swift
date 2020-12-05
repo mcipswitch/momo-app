@@ -15,6 +15,7 @@
  */
 
 import SwiftUI
+import Neumorphic
 
 struct BlobView: View {
     @Binding var blobValue: CGFloat
@@ -61,6 +62,7 @@ struct BlobView: View {
             }
             .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
             .mask(
+                ZStack {
                 BlobShape(bezier: .blob3, pathBounds: pathBounds)
                     .modifier(BlobEffect(
                         skewValue: isAnimating ? 2 : 0
@@ -82,28 +84,28 @@ struct BlobView: View {
                                 .linear(duration: 50)
                                 .repeatForever(autoreverses: false)
                     )
+                }
             )
 
-
-            // Blob: Inner Shadow - Top Left
             BlobShape(bezier: .blob3, pathBounds: pathBounds)
-                .foregroundColor(.red)
-                .inverseMask(
-                    BlobShape(bezier: .blob3, pathBounds: pathBounds)
-                )
+                .fill(Color.clear)
+
+                // Top left
+                .softInnerShadow(BlobShape(bezier: .blob3, pathBounds: pathBounds),
+                                 darkShadow: Color.white.opacity(0.2),
+                                 lightShadow: .clear,
+                                 spread: 0.5,
+                                 radius: 50)
+
+                // Bottom right
+                .softInnerShadow(BlobShape(bezier: .blob3, pathBounds: pathBounds),
+                                 darkShadow: .clear,
+                                 lightShadow: Color.momoShadow.opacity(0.4),
+                                 spread: 0.5,
+                                 radius: 50)
 
 
-            // Top left inner shadow
-//                .shadow(
-//                    color: Color.black.opacity(0.2),
-//                    radius: 50, x: 0, y: 20
-//                )
 
-            //inner shadow: black
-//                .shadow(
-//                    color: Color.momoShadow.opacity(0.4),
-//                    radius: 50, x: 0, y: -20
-//                )
 
 
 
@@ -174,6 +176,6 @@ struct BlobShape: Shape {
 
 struct BlobShape_Previews: PreviewProvider {
     static var previews: some View {
-        BlobView(blobValue: .constant(0.8), scale: 1)
+        BlobView(blobValue: .constant(1), scale: 1)
     }
 }

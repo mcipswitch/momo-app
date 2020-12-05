@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,6 +18,7 @@
 		930ABB6F254A32E00050C1C4 /* MiniGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */; };
 		930AE6B725633B520091EDA7 /* DragState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930AE6B625633B520091EDA7 /* DragState.swift */; };
 		9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9318888125582B870004CD4F /* EntriesViewModel.swift */; };
+		932B3C8E257C425B00C6C67B /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = 932B3C8D257C425B00C6C67B /* Neumorphic */; };
 		9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9331230724F94C17008B6DD2 /* Animation + Extension.swift */; };
 		93347DF52551091F0015629B /* SelectionLineModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93347DF42551091F0015629B /* SelectionLineModifier.swift */; };
 		93388BE0250FAAA700766633 /* ForceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93388BDF250FAAA700766633 /* ForceButton.swift */; };
@@ -131,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				932B3C8E257C425B00C6C67B /* Neumorphic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +347,9 @@
 			dependencies = (
 			);
 			name = MomoApp;
+			packageProductDependencies = (
+				932B3C8D257C425B00C6C67B /* Neumorphic */,
+			);
 			productName = MomoApp;
 			productReference = 93519F4C24E8CF630095DA38 /* MomoApp.app */;
 			productType = "com.apple.product-type.application";
@@ -372,6 +377,9 @@
 				Base,
 			);
 			mainGroup = 93519F4324E8CF630095DA38;
+			packageReferences = (
+				932B3C8C257C425B00C6C67B /* XCRemoteSwiftPackageReference "neumorphic" */,
+			);
 			productRefGroup = 93519F4D24E8CF630095DA38 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -640,6 +648,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		932B3C8C257C425B00C6C67B /* XCRemoteSwiftPackageReference "neumorphic" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/costachung/neumorphic.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		932B3C8D257C425B00C6C67B /* Neumorphic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 932B3C8C257C425B00C6C67B /* XCRemoteSwiftPackageReference "neumorphic" */;
+			productName = Neumorphic;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 93519F4424E8CF630095DA38 /* Project object */;
 }

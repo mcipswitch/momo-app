@@ -19,9 +19,9 @@ extension UIColor {
         return UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
     }
 
-    public static let gradientMomo: [UIColor] = [#colorLiteral(red: 0.78, green: 1, blue: 0.934, alpha: 1), #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1), #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)]
-    public static let gradientPurple: [UIColor] = [#colorLiteral(red: 0.9921568627, green: 0.9960784314, blue: 0.8, alpha: 1), #colorLiteral(red: 0.9960784314, green: 0.4745098039, blue: 0.6078431373, alpha: 1), #colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1)]
-    public static let gradientOrange: [UIColor] = [#colorLiteral(red: 1, green: 0.9019607843, blue: 0.8196078431, alpha: 1), #colorLiteral(red: 1, green: 0.6705882353, blue: 0.5411764706, alpha: 1), #colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1)]
+    public static let gradientMomo: [UIColor] = [#colorLiteral(red: 0.568627451, green: 0.9882352941, blue: 0.9960784314, alpha: 1), #colorLiteral(red: 0.4156862745, green: 0.8666666667, blue: 0.8039215686, alpha: 1), #colorLiteral(red: 0.3568627451, green: 0.6823529412, blue: 0.9490196078, alpha: 1)]
+    public static let gradientPurple: [UIColor] = [#colorLiteral(red: 0.8588235294, green: 0.2745098039, blue: 0.7568627451, alpha: 1), #colorLiteral(red: 0.7882352941, green: 0.2823529412, blue: 0.8274509804, alpha: 1), #colorLiteral(red: 0.7137254902, green: 0.2941176471, blue: 0.8980392157, alpha: 1)]
+    public static let gradientOrange: [UIColor] = [#colorLiteral(red: 0.968627451, green: 0.8549019608, blue: 0.5921568627, alpha: 1), #colorLiteral(red: 0.8196078431, green: 0.8588235294, blue: 0.4705882353, alpha: 1), #colorLiteral(red: 0.6941176471, green: 0.8392156863, blue: 0.4431372549, alpha: 1)]
 }
 
 extension Color {
