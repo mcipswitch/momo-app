@@ -146,7 +146,10 @@ struct MomoAddMoodView: View {
 
                     // Bottom Navigation
                     ZStack {
-                        BlurredColorWheel(isActive: $blurredColorWheelIsActive, degrees: $blurredColorWheelDegrees)
+                        BlurredColorWheel(
+                            isActive: $blurredColorWheelIsActive,
+                            degrees: $blurredColorWheelDegrees
+                        )
                             .position(self.dragStart)
 
                         // TODO: CLEAN UP ANIMATION HERE
@@ -165,7 +168,11 @@ struct MomoAddMoodView: View {
                                     )
 
                                 // TODO: Remove $isAnimating
-                                ColorRing(size: buttonSize, shiftColors: $isAnimating, isDragging: $isDragging)
+                                ColorRing(
+                                    size: buttonSize,
+                                    shiftColors: $isAnimating,
+                                    isDragging: $isDragging
+                                )
                                     /*
                                      Add delay so the 'Color Ring' appears after button morph.
                                      Remove delay if the button is resetting position.

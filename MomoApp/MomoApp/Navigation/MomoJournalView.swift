@@ -21,7 +21,7 @@ struct MomoJournalView: View {
 
     /// The journal button on the toolbar.
     var journal: ToolbarButtonType {
-        self.isGraph ? .graph : .list
+        self.isGraph ? .list : .graph
     }
 
     var body: some View {

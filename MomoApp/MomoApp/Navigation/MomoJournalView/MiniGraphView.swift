@@ -29,9 +29,7 @@ struct MiniGraphView: View {
     @State private var dragOffset: CGFloat = 0
     @State private var value: CGFloat = 0.5
     @State private var opacity = false
-
-    var date = Date()
-
+    
     // MARK: - Body
 
     var body: some View {
@@ -52,7 +50,6 @@ struct MiniGraphView: View {
                 // Drag Gesture
                 let dragGesture = DragGesture(minimumDistance: 0)
                     .onChanged { value in
-
                         // Calculate the index shift to the closest entry
                         self.idxShift = Int(round(value.translation.width / itemSpacing))
                         let newOffset = itemSpacing * CGFloat(idxShift)
@@ -62,6 +59,10 @@ struct MiniGraphView: View {
                         self.newIdx = self.selectedIdx + self.idxShift
                         self.newIdx = max(0, self.newIdx)
                         self.newIdx = min(self.entries.count - 1, self.newIdx)
+
+
+                        // TODO: - Selected Entry should change during drag
+
                     }
                     .updating($dragState) { value, state, transaction in
                         state = .active(location: value.location, translation: value.translation)
