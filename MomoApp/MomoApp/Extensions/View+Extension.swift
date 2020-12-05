@@ -41,4 +41,17 @@ extension View {
     func shadow() -> some View {
         return self.modifier(Shadow())
     }
+
+    /// Mimics `mask`
+    /// - Parameter mask: The input mask.
+    /// - Returns: A modified `View` instance masked with the input mask.
+    /// - Reference: https://www.raywenderlich.com/7589178-how-to-create-a-neumorphic-design-with-swiftui
+    func inverseMask<Mask>(_ mask: Mask) -> some View where Mask: View {
+        self.mask(mask
+          .foregroundColor(.black)
+          .background(Color.white)
+          .compositingGroup()
+          .luminanceToAlpha()
+        )
+      }
 }

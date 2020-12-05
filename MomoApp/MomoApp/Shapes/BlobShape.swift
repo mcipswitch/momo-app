@@ -83,6 +83,30 @@ struct BlobView: View {
                                 .repeatForever(autoreverses: false)
                     )
             )
+
+
+            // Blob: Inner Shadow - Top Left
+            BlobShape(bezier: .blob3, pathBounds: pathBounds)
+                .foregroundColor(.red)
+                .inverseMask(
+                    BlobShape(bezier: .blob3, pathBounds: pathBounds)
+                )
+
+
+            // Top left inner shadow
+//                .shadow(
+//                    color: Color.black.opacity(0.2),
+//                    radius: 50, x: 0, y: 20
+//                )
+
+            //inner shadow: black
+//                .shadow(
+//                    color: Color.momoShadow.opacity(0.4),
+//                    radius: 50, x: 0, y: -20
+//                )
+
+
+
         }
         .frame(width: scaledFrame, height: scaledFrame * (pathBounds.width / pathBounds.height))
         .onAppear {
