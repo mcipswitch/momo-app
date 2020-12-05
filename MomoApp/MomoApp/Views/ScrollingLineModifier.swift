@@ -58,6 +58,4 @@ struct ScrollingLineModifier: ViewModifier {
             .offset(x: self.currentOffset)
             .gesture(dragGesture)
     }
-
-    // MARK: - Internal Methods
 }
