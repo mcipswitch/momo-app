@@ -25,13 +25,12 @@ struct MomoButton: View {
     var body: some View {
         Button(action: action) {
             HStack {
-                Text("Next")
+                Text("Done")
                 Image(systemName: type.imageName)
             }
         }
         .momoButtonStyle(w: 90, h: 34, isActive: isActive)
         .disabled(!isActive)
-        .animation(.ease())
     }
 }
 

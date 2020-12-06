@@ -21,10 +21,12 @@ struct MomoText: ViewModifier {
 // MARK: - Helpers
 
 enum MomoTextStyle {
-    case date, toolbarButton, toolbarTitle, link, button, main
+    case date, toolbarButton, toolbarTitle, link, button, main, doneMessage
     case graphWeekday, graphDay
     var size: CGFloat {
         switch self {
+        case .doneMessage:
+            return 32
         case .main, .toolbarButton:
             return 22
         case .date, .link, .toolbarTitle:
@@ -44,7 +46,7 @@ enum MomoTextStyle {
     }
     var font: FontWeight {
         switch self {
-        case .link, .toolbarTitle, .button, .main, .graphWeekday, .graphDay:
+        case .link, .toolbarTitle, .button, .main, .graphWeekday, .graphDay, .doneMessage:
             return .bold
         default:
             return .medium
@@ -65,22 +67,39 @@ enum FontWeight: String {
 
 // MARK: - Animations
 
-struct AnimateSlideIn: ViewModifier {
-    @Binding var observedValue: Bool
+struct AnimateHomeState: ViewModifier {
+    @Binding var observedValueForSlideIn: Bool
+    @Binding var observedValueForSlideOut: Bool
 
     func body(content: Content) -> some View {
         content
-            .offset(y: observedValue ? -5 : 0)
-            .opacity(observedValue ? 0 : 1)
+            .offset(y: self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 0 : 5) : -5)
+            .opacity(self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 1 : 0) : 0)
             .animation(
-                Animation.ease()
-                    .delay(if: !observedValue, 0.5)
-                    //.delay(observedValue ? 0 : (delay ? 0.5 : 0))
+                Animation
+                    .ease()
+                    .delay(if: self.observedValueForSlideIn, (!self.observedValueForSlideOut ? 0.5 : 0))
             )
     }
 }
 
-struct AnimateSlideOut: ViewModifier {
+struct AnimateTextFieldBorder: ViewModifier {
+    @Binding var observedValueForSlideIn: Bool
+    @Binding var observedValueForSlideOut: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 1 : 0) : 0)
+            .frame(maxWidth: self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? .infinity : 0) : 0)
+            .animation(
+                Animation
+                    .bounce()
+                    .delay(if: self.observedValueForSlideIn, (!self.observedValueForSlideOut ? 0.6 : 0))
+            )
+    }
+}
+
+struct AnimateSlideIn: ViewModifier {
     @Binding var observedValue: Bool
 
     func body(content: Content) -> some View {

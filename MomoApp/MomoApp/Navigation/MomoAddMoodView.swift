@@ -10,24 +10,25 @@ import SwiftUI
 struct MomoAddMoodView: View {
     @EnvironmentObject var viewRouter: ViewRouter
 
-    @State private var homeViewActive: Bool = true
-    @State private var doneViewActive: Bool = false
+    @State private var homeViewActive = true
+    @State private var addViewActive = false
+    @State private var doneViewActive = false
     
     @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
     @State private var colorWheelSection: ColorWheelSection = .momo
     
-    @State private var isDragging: Bool = false
-    @State private var isAnimating: Bool = false
-    @State private var isResetting: Bool = false
+    @State private var isDragging = false
+    @State private var isAnimating = false
+    @State private var isResetting = false
     
     // Emotion Text Field
     @State private var emotionText = ""
-    @State private var textFieldIsFocused: Bool = false
-    @State private var emotionTextFieldCompleted: Bool = false
+    @State private var textFieldIsFocused = false
+    @State private var emotionTextFieldCompleted = false
 
     // Blurred Color Wheel
-    @State private var blurredColorWheelIsActive: Bool = false
+    @State private var blurredColorWheelIsActive = false
 
     private var buttonSize: CGFloat = 80
 
@@ -95,7 +96,6 @@ struct MomoAddMoodView: View {
     var body: some View {
         ZStack {
             GeometryReader { geometry in
-
                 let centerPoint = CGPoint(x: geometry.size.width / 2, y: self.buttonSize / 2)
 
                 // Main View
@@ -104,19 +104,43 @@ struct MomoAddMoodView: View {
                     // Date + EmotionTextField
                     VStack(spacing: 36) {
                         currentDate
-                            .slideOutAnimation(if: $homeViewActive)
+                            .slideInAnimation(if: self.$homeViewActive)
                             .padding(.top, 16)
+
+                            // Animate in controls after done view
+                            .opacity(self.doneViewActive ? 0 : 1)
+                            .animation(
+                                Animation.easeInOut(duration: 1.0)
+                                    .delay(self.doneViewActive ? 0 : 2.0)
+                            )
+
+
                         ZStack {
+                            // TODO: - Placeholder should animate out immediately if writing
                             Text("Hi, how are you feeling today?")
                                 .momoText(.main)
-                                .slideOutAnimation(if: $homeViewActive)
+                                .slideInAnimation(if: self.$homeViewActive)
+
+                                // Animate in controls after done view
+                                .opacity(self.doneViewActive ? 0 : 1)
+                                .animation(
+                                    Animation.easeInOut(duration: 1.0)
+                                        .delay(self.doneViewActive ? 0 : 2.0)
+                                )
+
+
+                            Text("Done!")
+                                .momoText(.doneMessage)
+                                .opacity(self.doneViewActive ? 1 : 0)
+                                .animation(
+                                    Animation.easeInOut(duration: 1.0)
+                                        .delay(if: self.doneViewActive, 1.5)
+                                )
                             VStack(spacing: 6) {
                                 MomoTextField(text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
-
-                                    // TODO: - Placeholder should animate out immediately if writing
-                                    .slideInAnimation(if: self.$homeViewActive)
-
-                                MomoTextFieldBorder(showHome: $homeViewActive, textFieldIsFocused: $textFieldIsFocused)
+                                    .animateHomeState(inValue: self.$addViewActive, outValue: self.$doneViewActive)
+                                MomoTextFieldBorder(textFieldIsFocused: self.$textFieldIsFocused)
+                                    .animateTextFieldBorder(inValue: self.$addViewActive, outValue: self.$doneViewActive)
                             }
                         }
                         .onChange(of: self.emotionText) { field in
@@ -185,8 +209,21 @@ struct MomoAddMoodView: View {
 
                                 MomoTextLinkButton(link: .pastEntries, action: self.seePastEntriesButtonPressed)
                                     .offset(y: 60)
-                                    .slideOutAnimation(if: $homeViewActive)
+                                    .slideInAnimation(if: self.$homeViewActive)
                             }
+                            // Animate in controls after done view
+                            .opacity(self.doneViewActive ? 0 : 1)
+                            .animation(
+                                Animation.easeInOut(duration: self.doneViewActive ? 0.2 : 1.0)
+                                    .delay(self.doneViewActive ? 0 : 2.0)
+                            )
+
+
+
+
+
+
+
                             .offset(x: self.dragValue.width * 0.5, y: self.dragValue.height * 0.5)
                             .position(self.buttonLocation ?? centerPoint)
                             .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
@@ -199,6 +236,7 @@ struct MomoAddMoodView: View {
                                     .position(dragState.location)
                                     .opacity(dragState.isActive ? 1 : 0)
                             }
+                            
                         }
                         .onAppear {
                             self.dragStart = centerPoint
@@ -210,13 +248,23 @@ struct MomoAddMoodView: View {
                 // END: - Main View
 
                 topNavigation
-                    .slideInAnimation(if: self.$homeViewActive)
+                    .animateHomeState(inValue: self.$addViewActive, outValue: self.$doneViewActive)
                     .padding()
                     .disabled(self.isResetting)
             }
         }
-        //.background(RadialGradient.done.edgesIgnoringSafeArea(.all))
-        .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
+        .background(
+            ZStack {
+                RadialGradient.momo
+                RadialGradient.done
+                    .opacity(self.doneViewActive ? 1 : 0)
+                    .animation(
+                        Animation.easeInOut(duration: 1.5)
+                            .delay(if: self.doneViewActive, 0)
+                    )
+            }
+            .edgesIgnoringSafeArea(.all)
+        )
 
         .onChange(of: self.homeViewActive) { _ in
             self.isAnimating.toggle()
@@ -228,6 +276,21 @@ struct MomoAddMoodView: View {
             case 120..<240: self.colorWheelSection = .momoPurple
             case 240..<360: self.colorWheelSection = .momoOrange
             default: break
+            }
+        }
+
+        .onReceive(self.viewRouter.homeWillChange) { state in
+            switch state {
+            case .home:
+                self.homeViewActive = true
+                self.addViewActive = false
+                self.doneViewActive = false
+            case .add:
+                self.homeViewActive = false
+                self.addViewActive = true
+                self.doneViewActive = false
+            case .done:
+                self.doneViewActive = true
             }
         }
     }
@@ -250,7 +313,9 @@ struct MomoAddMoodView: View {
     // MARK: - Internal Methods
     
     private func addEmotionButtonPressed() {
-        self.homeViewActive ? self.homeViewActive.toggle() : nil
+        self.viewRouter.changeHomeState(.add)
+
+        //self.homeViewActive ? self.homeViewActive.toggle() : nil
     }
     
     private func seePastEntriesButtonPressed() {
@@ -258,13 +323,19 @@ struct MomoAddMoodView: View {
     }
 
     private func backButtonPressed() {
-        self.homeViewActive = true
+        //self.homeViewActive = true
+        self.viewRouter.changeHomeState(.home)
     }
     
     private func nextButtonPressed() {
-        self.doneViewActive = true
+        self.viewRouter.changeHomeState(.done)
 
         print("Emotion: \(self.emotionText), Value: \(self.pct)")
+
+        // Reset to home page after a delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            self.viewRouter.changeHomeState(.home)
+        }
     }
 }
 

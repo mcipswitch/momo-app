@@ -12,10 +12,12 @@ class ViewRouter: ObservableObject {
 
     let objectWillChange = PassthroughSubject<(), Never>()
     let journalWillChange = PassthroughSubject<(), Never>()
+    let homeWillChange = PassthroughSubject<(HomeState), Never>()
     let textFieldWillChange = PassthroughSubject<String, Never>()
 
     @Published var currentPage: Page = .home
     @Published var currentJournal: Journal = .graph
+    @Published var currentHomeState: HomeState = .home
 
     func change(to page: Page) {
         self.objectWillChange.send()
@@ -25,6 +27,11 @@ class ViewRouter: ObservableObject {
     func toggleJournal(to journal: Journal) {
         self.journalWillChange.send()
         self.currentJournal = journal
+    }
+
+    func changeHomeState(_ state: HomeState) {
+        self.homeWillChange.send(state)
+        self.currentHomeState = state
     }
 
     // MARK: - Helper vars
@@ -50,4 +57,8 @@ class ViewRouter: ObservableObject {
 
 enum Page {
     case home, journal
+}
+
+enum HomeState {
+    case home, add, done
 }
