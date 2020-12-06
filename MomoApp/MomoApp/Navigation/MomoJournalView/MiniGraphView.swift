@@ -114,10 +114,11 @@ struct MiniGraphView: View {
                         })
                     }
                 }
-
-                LineGraphView(dataPoints: self.dataPoints)
-                    .padding(EdgeInsets(top: 16, leading: 12, bottom: 16, trailing: 12))
-                    .allowsHitTesting(false)
+                .background(
+                    LineGraphView(dataPoints: self.dataPoints)
+                        .padding(EdgeInsets(top: 16, leading: 12, bottom: 16, trailing: 12))
+                        .allowsHitTesting(false)
+                )
 
                 VStack {
                     Text("IDX Selection: \(self.selectedIdx)")

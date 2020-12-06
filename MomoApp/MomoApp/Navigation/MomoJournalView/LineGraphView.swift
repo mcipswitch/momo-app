@@ -22,7 +22,7 @@ struct LineGraphView: View {
     let dataPoints: [CGFloat]
 
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [Color.momo, Color.momoOrange, Color.momoPurple]),
+        LinearGradient(gradient: Gradient(colors: [Color.momo, Color.momoOrange, Color.momoPurple, Color.momo]),
                        startPoint: .top, endPoint: .bottom)
             .mask(
                 LineGraph(dataPoints: self.dataPoints)

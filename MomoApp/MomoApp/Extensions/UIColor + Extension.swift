@@ -29,6 +29,10 @@ extension Color {
     public static let momoPurple = Color(#colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1))
     public static let momoOrange = Color(#colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1))
     public static let momoShadow = Color(#colorLiteral(red: 0.03921568627, green: 0.03921568627, blue: 0.1294117647, alpha: 1))
+
+    public static let mBlue = Color(#colorLiteral(red: 0.3568627451, green: 0.6823529412, blue: 0.9490196078, alpha: 1))
+    public static let mPurple = Color(#colorLiteral(red: 0.7137254902, green: 0.2941176471, blue: 0.8980392157, alpha: 1))
+    public static let mGreen = Color(#colorLiteral(red: 0.6941176471, green: 0.8392156863, blue: 0.4431372549, alpha: 1))
 }
 
 extension Gradient {
