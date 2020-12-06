@@ -8,10 +8,10 @@
 import SwiftUI
 
 enum MomoButtonType {
-    case next
+    case done
     var imageName: String {
         switch self {
-        case .next:
+        case .done:
             return "arrow.right"
         }
     }
@@ -58,6 +58,6 @@ extension View {
 
 struct NextButton_Previews: PreviewProvider {
     static var previews: some View {
-        MomoButton(isActive: .constant(true), type: .next, action: {})
+        MomoButton(isActive: .constant(true), type: .done, action: {})
     }
 }

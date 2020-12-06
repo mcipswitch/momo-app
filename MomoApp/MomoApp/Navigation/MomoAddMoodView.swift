@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+enum EmotionState {
+    case add, edit
+    var text: String {
+        switch self {
+        case .add:
+            return "Add today's emotion"
+        case .edit:
+            return "Edit today's emotion"
+        }
+    }
+}
+
 struct MomoAddMoodView: View {
     @EnvironmentObject var viewRouter: ViewRouter
 
@@ -30,15 +42,15 @@ struct MomoAddMoodView: View {
     // Blurred Color Wheel
     @State private var blurredColorWheelIsActive = false
 
-    private var buttonSize: CGFloat = 80
-
     // Add Emotion Button
     @GestureState private var dragState: DragState = .inactive
     @State private var dragValue = CGSize.zero
     @State private var dragStart = CGPoint.zero
     @State private var buttonLocation: CGPoint? = nil
 
-    @State var delay = false
+    @State private var state: EmotionState = .add
+
+    private var buttonSize: CGFloat = 80
     
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
@@ -113,6 +125,7 @@ struct MomoAddMoodView: View {
                                 Animation.easeInOut(duration: 1.0)
                                     .delay(self.doneViewActive ? 0 : 2.0)
                             )
+
                         ZStack {
                             // TODO: - Placeholder should animate out immediately if writing
                             Text("Hi, how are you feeling today?")
@@ -171,7 +184,7 @@ struct MomoAddMoodView: View {
                             ZStack(alignment: .center) {
 
                                 // TODO: Remove $isAnimating
-                                AddEmotionButton(homeViewActive: self.$homeViewActive, isAnimating: self.$isAnimating, buttonSize: self.buttonSize, action: self.addEmotionButtonPressed)
+                                AddEmotionButton(emotionState: self.$state, homeViewActive: self.$homeViewActive, isAnimating: self.$isAnimating, buttonSize: self.buttonSize, action: self.addEmotionButtonPressed)
                                     /*
                                      Add delay so the 'Color Ring' disappears first.
                                      Remove delay if the button is resetting position.
@@ -299,7 +312,7 @@ struct MomoAddMoodView: View {
         HStack {
             MomoToolbarButton(type: .back, action: self.backButtonPressed)
             Spacer()
-            MomoButton(isActive: self.$emotionTextFieldCompleted, type: .next, action: self.nextButtonPressed)
+            MomoButton(isActive: self.$emotionTextFieldCompleted, type: .done, action: self.doneButtonPressed)
         }
     }
 
@@ -325,7 +338,7 @@ struct MomoAddMoodView: View {
         self.viewRouter.changeHomeState(.home)
     }
     
-    private func nextButtonPressed() {
+    private func doneButtonPressed() {
         self.viewRouter.changeHomeState(.done)
 
         print("Emotion: \(self.emotionText), Value: \(self.pct)")
@@ -340,6 +353,7 @@ struct MomoAddMoodView: View {
 // MARK: - Views
 
 struct AddEmotionButton: View {
+    @Binding var emotionState: EmotionState
     @Binding var homeViewActive: Bool
     @Binding var isAnimating: Bool
     @State var buttonSize: CGFloat
@@ -347,7 +361,7 @@ struct AddEmotionButton: View {
 
     var body: some View {
         Button(action: action) {
-            Text("Add today's emotion")
+            Text(self.emotionState.text)
                 .opacity(isAnimating ? 0 : 1)
                 .animation(isAnimating
                             ? .none

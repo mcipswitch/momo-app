@@ -79,33 +79,11 @@ struct BlobView: View {
                                      lightShadow: Color.momoShadow.opacity(0.4),
                                      spread: 1,
                                      radius: 50)
+                    .blendMode(.multiply)
             }
             .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
             .mask(self.animatingBlob)
 
-//            #warning("Refactor this")
-//            BlobShape(bezier: .blob3, pathBounds: pathBounds)
-//                .fill(Color.clear)
-//                // Top left
-//                .softInnerShadow(BlobShape(bezier: .blob3, pathBounds: pathBounds),
-//                                 darkShadow: .red,
-//                                 //darkShadow: Color.white.opacity(0.2),
-//                                 lightShadow: .clear,
-//                                 spread: 0.5,
-//                                 radius: 50)
-//                // Bottom right
-//                .softInnerShadow(BlobShape(bezier: .blob3, pathBounds: pathBounds),
-//                                 darkShadow: .clear,
-//                                 lightShadow: Color.momoShadow.opacity(0.4),
-//                                 spread: 0.5,
-//                                 radius: 50)
-//                .modifier(BlobEffect(skewValue: isAnimating ? 2 : 0))
-//                .modifier(BlobAnimationModifier(
-//                            skew: true,
-//                            breathe: true,
-//                            rotate: true,
-//                            isAnimating: $isAnimating)
-//                )
         }
         .frame(width: scaledFrame, height: scaledFrame * (pathBounds.width / pathBounds.height))
         .onAppear {

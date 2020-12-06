@@ -7,15 +7,19 @@
 
 import SwiftUI
 
-// https://swiftui-lab.com/swiftui-animations-part3/
-
+/**
+ Animate gradient fills.
+ Please see: https://swiftui-lab.com/swiftui-animations-part3/
+ */
 struct AnimatableGradient: AnimatableModifier {
+
+    /// Both `to` and `from` color arrays should contain the same number of colors.
     let from: [UIColor]
     let to: [UIColor]
-    var pct: CGFloat
+    var pct: CGFloat = 0
     
-    var startRadius: CGFloat
-    var endRadius: CGFloat
+    let startRadius: CGFloat
+    let endRadius: CGFloat
     
     var animatableData: CGFloat {
         get { pct }
@@ -36,7 +40,7 @@ struct AnimatableGradient: AnimatableModifier {
                                  endRadius: endRadius))
     }
     
-    // Basic color interpolation between two values
+    // Basic implementation of a color interpolation between two values.
     func colorMixer(c1: UIColor, c2: UIColor, pct: CGFloat) -> Color {
         guard let cc1 = c1.cgColor.components else { return Color(c1) }
         guard let cc2 = c2.cgColor.components else { return Color(c2) }
