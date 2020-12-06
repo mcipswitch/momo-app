@@ -54,7 +54,7 @@ struct BlobView: View {
                 .modifier(BlobAnimationModifier(
                             skew: true,
                             breathe: true,
-                            rotate: true,
+                            rotate: false,
                             isAnimating: $isAnimating)
                 )
             // Blob: Gradient Layer

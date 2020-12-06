@@ -113,8 +113,6 @@ struct MomoAddMoodView: View {
                                 Animation.easeInOut(duration: 1.0)
                                     .delay(self.doneViewActive ? 0 : 2.0)
                             )
-
-
                         ZStack {
                             // TODO: - Placeholder should animate out immediately if writing
                             Text("Hi, how are you feeling today?")
@@ -128,14 +126,6 @@ struct MomoAddMoodView: View {
                                         .delay(self.doneViewActive ? 0 : 2.0)
                                 )
 
-
-                            Text("Done!")
-                                .momoText(.doneMessage)
-                                .opacity(self.doneViewActive ? 1 : 0)
-                                .animation(
-                                    Animation.easeInOut(duration: 1.0)
-                                        .delay(if: self.doneViewActive, 1.5)
-                                )
                             VStack(spacing: 6) {
                                 MomoTextField(text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
                                     .animateHomeState(inValue: self.$addViewActive, outValue: self.$doneViewActive)
@@ -214,7 +204,7 @@ struct MomoAddMoodView: View {
                             // Animate in controls after done view
                             .opacity(self.doneViewActive ? 0 : 1)
                             .animation(
-                                Animation.easeInOut(duration: self.doneViewActive ? 0.2 : 1.0)
+                                Animation.easeInOut(duration: 1.0)
                                     .delay(self.doneViewActive ? 0 : 2.0)
                             )
 
@@ -251,6 +241,14 @@ struct MomoAddMoodView: View {
                     .animateHomeState(inValue: self.$addViewActive, outValue: self.$doneViewActive)
                     .padding()
                     .disabled(self.isResetting)
+
+                    .opacity(self.doneViewActive ? 0 : 1)
+                    .animation(
+                        Animation.easeInOut(duration: 1.0)
+                            .delay(self.doneViewActive ? 0 : 2.0)
+                    )
+
+
             }
         }
         .background(

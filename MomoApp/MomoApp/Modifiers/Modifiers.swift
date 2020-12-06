@@ -73,8 +73,8 @@ struct AnimateHomeState: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .offset(y: self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 0 : 5) : -5)
-            .opacity(self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 1 : 0) : 0)
+            .offset(y: self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 0 : 0) : -5)
+            .opacity(self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 1 : 1) : 0)
             .animation(
                 Animation
                     .ease()
