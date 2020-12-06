@@ -38,9 +38,7 @@ struct MomoAddMoodView: View {
     @State private var buttonLocation: CGPoint? = nil
 
     @State var delay = false
-
-    @State var blurOn = false
-
+    
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
 
@@ -232,16 +230,6 @@ struct MomoAddMoodView: View {
             default: break
             }
         }
-
-        .overlay(
-            VisualEffectBlur(blurStyle: .dark).edgesIgnoringSafeArea(.all)
-                .opacity(self.blurOn ? 1 : 0)
-        )
-        .onReceive(self.viewRouter.objectWillChange, perform: {
-            withAnimation {
-                self.blurOn.toggle()
-            }
-        })
     }
 
     // MARK: - Views

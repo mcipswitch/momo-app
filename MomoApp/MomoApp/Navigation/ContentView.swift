@@ -11,10 +11,15 @@ struct ContentView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @State var offset: CGFloat = UIScreen.screenWidth
     @State var on = false
+    @State var blurOn = false
 
     var body: some View {
         ZStack {
             MomoAddMoodView()
+                .overlay(
+                    VisualEffectBlur(blurStyle: .dark).edgesIgnoringSafeArea(.all)
+                        .opacity(self.blurOn ? 1 : 0)
+                )
             MomoJournalView()
                 .offset(x: self.on ? 0 : self.offset)
         }
@@ -25,6 +30,10 @@ struct ContentView: View {
              */
             withAnimation(Animation.spring().delay(self.viewRouter.isHome ? 0.1 : 0)) {
                 self.on.toggle()
+            }
+
+            withAnimation {
+                self.blurOn.toggle()
             }
         }
     }
