@@ -16,7 +16,7 @@ struct ContentView: View {
         ZStack {
             MomoAddMoodView()
             MomoJournalView()
-                .offset(x: on ? 0 : self.offset)
+                .offset(x: self.on ? 0 : self.offset)
         }
         .onReceive(self.viewRouter.objectWillChange) { _ in
             /*

@@ -69,7 +69,7 @@ struct LineGraph: Shape {
              Set origin point so that the line will start from the edge of the screen.
              At this moment, this point is arbitrary to give the illusion of continuous data.
              */
-            let origin = CGPoint(x: -32, y: (1-start) * rect.height)
+            let origin = CGPoint(x: -16, y: (1-start) * rect.height)
             p.move(to: origin)
 
             // Previous point used to calculate position of curve points

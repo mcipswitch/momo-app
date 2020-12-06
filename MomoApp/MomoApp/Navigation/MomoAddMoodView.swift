@@ -11,6 +11,7 @@ struct MomoAddMoodView: View {
     @EnvironmentObject var viewRouter: ViewRouter
 
     @State private var homeViewActive: Bool = true
+    @State private var doneViewActive: Bool = false
     
     @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
@@ -37,6 +38,8 @@ struct MomoAddMoodView: View {
     @State private var buttonLocation: CGPoint? = nil
 
     @State var delay = false
+
+    @State var blurOn = false
 
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
@@ -113,7 +116,7 @@ struct MomoAddMoodView: View {
                                 MomoTextField(text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
 
                                     // TODO: - Placeholder should animate out immediately if writing
-                                    .slideInAnimation(if: $homeViewActive)
+                                    .slideInAnimation(if: self.$homeViewActive)
 
                                 MomoTextFieldBorder(showHome: $homeViewActive, textFieldIsFocused: $textFieldIsFocused)
                             }
@@ -214,7 +217,9 @@ struct MomoAddMoodView: View {
                     .disabled(self.isResetting)
             }
         }
+        //.background(RadialGradient.done.edgesIgnoringSafeArea(.all))
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
+
         .onChange(of: self.homeViewActive) { _ in
             self.isAnimating.toggle()
             UIApplication.shared.endEditing()
@@ -227,6 +232,16 @@ struct MomoAddMoodView: View {
             default: break
             }
         }
+
+        .overlay(
+            VisualEffectBlur(blurStyle: .dark).edgesIgnoringSafeArea(.all)
+                .opacity(self.blurOn ? 1 : 0)
+        )
+        .onReceive(self.viewRouter.objectWillChange, perform: {
+            withAnimation {
+                self.blurOn.toggle()
+            }
+        })
     }
 
     // MARK: - Views
@@ -255,15 +270,14 @@ struct MomoAddMoodView: View {
     }
 
     private func backButtonPressed() {
-        // Make sure to set this value and NOT the `ViewRouter`.
-        print("backButtonPressed")
         self.homeViewActive = true
     }
     
     private func nextButtonPressed() {
-        print("Confirmation Page")
+        self.doneViewActive = true
+
+        print("Emotion: \(self.emotionText), Value: \(self.pct)")
     }
-    
 }
 
 // MARK: - Views
