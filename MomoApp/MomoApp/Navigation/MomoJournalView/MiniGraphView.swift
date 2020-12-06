@@ -29,6 +29,8 @@ struct MiniGraphView: View {
     @State private var dragOffset: CGFloat = 0
     @State private var value: CGFloat = 0.5
     @State private var opacity = false
+
+    @State private var lineGraphBottomPadding: CGFloat = 0
     
     // MARK: - Body
 
@@ -59,10 +61,6 @@ struct MiniGraphView: View {
                         self.newIdx = self.selectedIdx + self.idxShift
                         self.newIdx = max(0, self.newIdx)
                         self.newIdx = min(self.entries.count - 1, self.newIdx)
-
-
-                        // TODO: - Selected Entry should change during drag
-
                     }
                     .updating($dragState) { value, state, transaction in
                         state = .active(location: value.location, translation: value.translation)
@@ -79,7 +77,8 @@ struct MiniGraphView: View {
                             idxSelection: self.selectedIdx,
                             newIdx: self.newIdx,
                             idx: idx,
-                            entries: self.entries
+                            entries: self.entries,
+                            onDateLabelHeightChange: self.updateBottomPadding
                         )
                         .frame(minWidth: itemWidth, idealHeight: geo.size.height, maxHeight: geo.size.height)
                         .onTapGesture {
@@ -94,15 +93,6 @@ struct MiniGraphView: View {
                                 .opacity(self.opacity ? 1 : 0)
                                 .offset(x: self.dragOffset)
                                 .gesture(dragGesture)
-
-//                                .modifier(
-//                                    ScrollingLineModifier(
-//                                        items: Int(numOfItems),
-//                                        itemWidth: itemWidth,
-//                                        itemSpacing: itemSpacing,
-//                                        idxSelection: self.idxSelection)
-//                                    )
-//                                )
                         })
                         .onReceive(self.viewRouter.objectWillChange, perform: {
                             // Animate in selection line after graph line aniamtes in
@@ -114,9 +104,8 @@ struct MiniGraphView: View {
                         })
                     }
                 }
-                // calculate the graph date label height for the bottom padding
                 LineGraphView(dataPoints: self.dataPoints)
-                    .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
+                    .padding(EdgeInsets(top: 0, leading: 12, bottom: self.lineGraphBottomPadding, trailing: 12))
                     .allowsHitTesting(false)
 
                 VStack {
@@ -129,6 +118,10 @@ struct MiniGraphView: View {
     }
 
     // MARK: - Internal Methods
+
+    private func updateBottomPadding(_ padding: CGFloat) {
+        self.lineGraphBottomPadding = padding
+    }
 
     private func changeSelectedIdx(to idx: Int) {
         self.selectedIdx = idx
@@ -143,6 +136,7 @@ struct GraphLine: View {
     let newIdx: Int
     let idx: Int
     let entries: [Entry]
+    let onDateLabelHeightChange: (CGFloat) -> Void
 
     @State private var on = false
 
@@ -164,9 +158,14 @@ struct GraphLine: View {
                     self.on = true
                 }
             dateLabel
+                /*
+                 Track the height of the date label
+                 in order to calculate the correct bottom padding
+                 needed for the graph line.
+                 */
                 .modifier(SizeModifier())
                 .onPreferenceChange(SizePreferenceKey.self) {
-                    print($0.height)
+                    self.onDateLabelHeightChange($0.height + 8)
                 }
         }
         // This is needed to make whole stack tappable
