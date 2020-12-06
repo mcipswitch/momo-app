@@ -78,7 +78,7 @@ struct MiniGraphView: View {
                             newIdx: self.newIdx,
                             idx: idx,
                             entries: self.entries,
-                            onDateLabelHeightChange: self.updateBottomPadding
+                            onDateLabelHeightChange: self.updateLineGraphBottomPadding
                         )
                         .frame(minWidth: itemWidth, idealHeight: geo.size.height, maxHeight: geo.size.height)
                         .onTapGesture {
@@ -119,7 +119,7 @@ struct MiniGraphView: View {
 
     // MARK: - Internal Methods
 
-    private func updateBottomPadding(_ padding: CGFloat) {
+    private func updateLineGraphBottomPadding(_ padding: CGFloat) {
         self.lineGraphBottomPadding = padding
     }
 

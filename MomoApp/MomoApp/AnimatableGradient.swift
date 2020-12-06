@@ -12,7 +12,7 @@ import SwiftUI
 struct AnimatableGradient: AnimatableModifier {
     let from: [UIColor]
     let to: [UIColor]
-    var pct: CGFloat = 0
+    var pct: CGFloat
     
     var startRadius: CGFloat
     var endRadius: CGFloat

@@ -18,6 +18,7 @@ import SwiftUI
 import Neumorphic
 
 struct BlobView: View {
+    // TODO: - This is binding, but maybe create another blob view that is not
     @Binding var blobValue: CGFloat
     @State var isStatic = true
     @State var isAnimating = false

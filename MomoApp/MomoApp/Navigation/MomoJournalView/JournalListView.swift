@@ -33,12 +33,10 @@ struct JournalListView: View {
 
 struct EntriesList: View {
     let entries: [Entry]
-    //let isLoading: Bool
-    //let onScrolledAtBottom: () -> Void
 
     var body: some View {
         ForEach(self.entries, id: \.self) { entry in
-            EntryRow(entry: entry)
+            EntryRow(entry: entry, blobValue: entry.value)
         }
     }
 }
@@ -47,10 +45,12 @@ struct EntriesList: View {
 
 struct EntryRow: View {
     private let entry: Entry
-    @State var blobValue: CGFloat = 0
+    @State var blobValue: CGFloat
 
-    init(entry: Entry) {
+    init(entry: Entry, blobValue: CGFloat) {
         self.entry = entry
+
+        self._blobValue = State(wrappedValue: blobValue)
     }
 
     var body: some View {
@@ -58,14 +58,14 @@ struct EntryRow: View {
             VStack {
                 HStack {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(entry.date, formatter: DateFormatter.shortDate)
+                        Text(self.entry.date, formatter: DateFormatter.shortDate)
                             .momoText(.date)
-                        Text(entry.emotion)
+                        Text(self.entry.emotion)
                             .momoText(.main)
                     }
                     Spacer()
                     BlobView(
-                        blobValue: $blobValue,
+                        blobValue: self.$blobValue,
                         isStatic: true,
                         scale: 0.2
                     )
