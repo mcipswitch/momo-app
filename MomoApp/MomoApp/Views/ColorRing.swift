@@ -12,9 +12,8 @@ struct ColorRing: View {
     @Binding var shiftColors: Bool
     @Binding var isDragging: Bool
 
-    @State private var introRingOpacity = 0.0
-    
     var body: some View {
+        // TODO: - Maybe adjust colors later
         let gradient = Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))])
         let ring = LinearGradient(gradient: gradient,
                                   startPoint: .topLeading,

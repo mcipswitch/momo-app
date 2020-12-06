@@ -14,6 +14,7 @@ struct MomoAddMoodView: View {
     
     @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
+    @State private var colorWheelSection: ColorWheelSection = .momo
     
     @State private var isDragging: Bool = false
     @State private var isAnimating: Bool = false
@@ -26,7 +27,6 @@ struct MomoAddMoodView: View {
 
     // Blurred Color Wheel
     @State private var blurredColorWheelIsActive: Bool = false
-    @State private var blurredColorWheelDegrees: Double = 0
 
     private var buttonSize: CGFloat = 80
 
@@ -94,10 +94,8 @@ struct MomoAddMoodView: View {
     var body: some View {
         ZStack {
             GeometryReader { geometry in
-                topNavigation
-                    .slideInAnimation(if: $homeViewActive)
-                    .padding()
-                    .disabled(isResetting)
+
+                let centerPoint = CGPoint(x: geometry.size.width / 2, y: self.buttonSize / 2)
 
                 // Main View
                 VStack(spacing: 48) {
@@ -130,7 +128,7 @@ struct MomoAddMoodView: View {
                     ZStack {
                         BlobView(blobValue: $pct, isStatic: false)
                         VStack {
-                            Text(self.homeViewActive ? "Home Active" : "")
+                            Text(self.homeViewActive ? "Home Active" : "Home Inactive")
                             Text("Pct: \(pct)")
                             Text("Original Pos: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
                             Text("Button Pos: x:\(Int(buttonLocation?.x ?? 0)), y:\(Int(buttonLocation?.y ?? 0))")
@@ -142,22 +140,23 @@ struct MomoAddMoodView: View {
 
                             Text("\(dragValue.width), \(dragValue.height)")
                         }
+                        .font(.system(size: 12.0))
                     }
 
                     // Bottom Navigation
                     ZStack {
                         BlurredColorWheel(
-                            isActive: $blurredColorWheelIsActive,
-                            degrees: $blurredColorWheelDegrees
+                            isActive: self.$blurredColorWheelIsActive,
+                            section: self.$colorWheelSection
                         )
-                            .position(self.dragStart)
+                        .position(self.dragStart)
 
                         // TODO: CLEAN UP ANIMATION HERE
                         GeometryReader { geometry in
                             ZStack(alignment: .center) {
 
                                 // TODO: Remove $isAnimating
-                                AddEmotionButton(homeViewActive: $homeViewActive, isAnimating: $isAnimating, buttonSize: buttonSize, action: self.addEmotionButtonPressed)
+                                AddEmotionButton(homeViewActive: self.$homeViewActive, isAnimating: self.$isAnimating, buttonSize: self.buttonSize, action: self.addEmotionButtonPressed)
                                     /*
                                      Add delay so the 'Color Ring' disappears first.
                                      Remove delay if the button is resetting position.
@@ -169,9 +168,9 @@ struct MomoAddMoodView: View {
 
                                 // TODO: Remove $isAnimating
                                 ColorRing(
-                                    size: buttonSize,
-                                    shiftColors: $isAnimating,
-                                    isDragging: $isDragging
+                                    size: self.buttonSize,
+                                    shiftColors: self.$isAnimating,
+                                    isDragging: self.$isDragging
                                 )
                                     /*
                                      Add delay so the 'Color Ring' appears after button morph.
@@ -188,8 +187,7 @@ struct MomoAddMoodView: View {
                                     .slideOutAnimation(if: $homeViewActive)
                             }
                             .offset(x: self.dragValue.width * 0.5, y: self.dragValue.height * 0.5)
-                            .position(self.buttonLocation ?? CGPoint(x: geometry.size.width / 2,
-                                                                     y: buttonSize / 2))
+                            .position(self.buttonLocation ?? centerPoint)
                             .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
                             .disabled(self.isResetting)
 
@@ -202,13 +200,18 @@ struct MomoAddMoodView: View {
                             }
                         }
                         .onAppear {
-                            self.dragStart = CGPoint(x: geometry.size.width / 2, y: buttonSize / 2)
+                            self.dragStart = centerPoint
                             self.buttonLocation = self.dragStart
                         }
                     }
                     .padding(.top, 64)
                 }
                 // END: - Main View
+
+                topNavigation
+                    .slideInAnimation(if: self.$homeViewActive)
+                    .padding()
+                    .disabled(self.isResetting)
             }
         }
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
@@ -216,12 +219,14 @@ struct MomoAddMoodView: View {
             self.isAnimating.toggle()
             UIApplication.shared.endEditing()
         }
-        .onChange(of: degrees) { value in
-            switch value {
-            case 0..<120: blurredColorWheelDegrees = 0
-            case 120..<240: blurredColorWheelDegrees = 120
-            case 240..<360: blurredColorWheelDegrees = 240
-            default: blurredColorWheelDegrees = 0 }}
+        .onChange(of: self.degrees) { degrees in
+            switch degrees {
+            case 0..<120: self.colorWheelSection = .momo
+            case 120..<240: self.colorWheelSection = .momoPurple
+            case 240..<360: self.colorWheelSection = .momoOrange
+            default: break
+            }
+        }
     }
 
     // MARK: - Views
@@ -251,6 +256,7 @@ struct MomoAddMoodView: View {
 
     private func backButtonPressed() {
         // Make sure to set this value and NOT the `ViewRouter`.
+        print("backButtonPressed")
         self.homeViewActive = true
     }
     
@@ -277,8 +283,8 @@ struct AddEmotionButton: View {
                             : Animation.ease().delay(0.5)
                 )
         }
-        .buttonStyle(MomoButtonStyle(w: homeViewActive ? 230 : buttonSize,
-                                      h: homeViewActive ? 60 : buttonSize))
+        .buttonStyle(MomoButtonStyle(w: homeViewActive ? 230 : self.buttonSize,
+                                     h: homeViewActive ? 60 : self.buttonSize))
     }
 }
 

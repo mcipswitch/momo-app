@@ -11,7 +11,8 @@ import SwiftUI
 
 struct BlurredColorWheel: View {
     @Binding var isActive: Bool
-    @Binding var degrees: Double
+    //@Binding var degrees: Double
+    @Binding var section: ColorWheelSection
     
     var body: some View {
         let gradient = Gradient(colors: [Color.momo, Color.momoPurple, Color.momoOrange, Color.momo])
@@ -27,17 +28,23 @@ struct BlurredColorWheel: View {
                     .trim(from: 0.0, to: 1/3)
                     .stroke(ring, lineWidth: 40)
                     .rotationEffect(Angle(degrees: 210))
-                    .rotationEffect(Angle(degrees: degrees))
+                    .rotationEffect(Angle(degrees: self.section.degrees))
             )
             .blur(radius: 40)
             //.frame(width: 180)
     }
 }
 
-// MARK: - Previews
+// MARK: - Helpers
 
-struct RainbowRing_Previews: PreviewProvider {
-    static var previews: some View {
-        BlurredColorWheel(isActive: .constant(true), degrees: .constant(90))
+enum ColorWheelSection {
+    case momo, momoPurple, momoOrange
+
+    var degrees: Double {
+        switch self {
+        case .momo: return 0
+        case .momoPurple: return 120
+        case .momoOrange: return 240
+        }
     }
 }
