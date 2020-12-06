@@ -211,11 +211,7 @@ struct MomoAddMoodView: View {
                 // END: - Main View
             }
         }
-        .background(Image("background")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .edgesIgnoringSafeArea(.all)
-        )
+        .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
         .onChange(of: self.homeViewActive) { _ in
             self.isAnimating.toggle()
             UIApplication.shared.endEditing()
