@@ -114,11 +114,10 @@ struct MiniGraphView: View {
                         })
                     }
                 }
-                .background(
-                    LineGraphView(dataPoints: self.dataPoints)
-                        .padding(EdgeInsets(top: 16, leading: 12, bottom: 16, trailing: 12))
-                        .allowsHitTesting(false)
-                )
+                // calculate the graph date label height for the bottom padding
+                LineGraphView(dataPoints: self.dataPoints)
+                    .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
+                    .allowsHitTesting(false)
 
                 VStack {
                     Text("IDX Selection: \(self.selectedIdx)")
@@ -148,7 +147,7 @@ struct GraphLine: View {
     @State private var on = false
 
     var body: some View {
-        VStack {
+        VStack(spacing: 8) {
             line
                 .anchorPreference(
                     key: SelectionPreferenceKey.self,
@@ -165,6 +164,10 @@ struct GraphLine: View {
                     self.on = true
                 }
             dateLabel
+                .modifier(SizeModifier())
+                .onPreferenceChange(SizePreferenceKey.self) {
+                    print($0.height)
+                }
         }
         // This is needed to make whole stack tappable
         .contentShape(Rectangle())
@@ -173,7 +176,6 @@ struct GraphLine: View {
     var line: some View {
         Rectangle()
             .foregroundColor(.clear).frame(width: 1)
-
             .background(
                 LinearGradient(
                     gradient: Gradient(colors: [
@@ -225,14 +227,3 @@ struct SelectionPreferenceKey: PreferenceKey {
         value = nextValue()
     }
 }
-
-
-
-
-//                // A long press gesture that enables isDragging
-//                let pressGesture = LongPressGesture(minimumDuration: 0.2, maximumDistance: 0)
-//                    .onEnded { _ in
-//                        //self.isDragging = true
-//                    }
-//                // A combined gesture that forces the user to long press then drag
-//                let combined = pressGesture.sequenced(before: dragGesture)
