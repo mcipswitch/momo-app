@@ -5,6 +5,8 @@
 //  Created by Priscilla Ip on 2020-09-24.
 //
 
+// https://nerdyak.tech/development/2019/09/30/animating-gradients-swiftui.html
+
 import SwiftUI
 
 struct ColorRing: View {
@@ -46,6 +48,6 @@ struct ColorRing: View {
 
 struct ColorRing_Previews: PreviewProvider {
     static var previews: some View {
-        ColorRing(size: CGFloat(64), shiftColors: .constant(true), isDragging: .constant(true))
+        ColorRing(size: CGFloat(64), shiftColors: .constant(true), isDragging: .constant(false))
     }
 }

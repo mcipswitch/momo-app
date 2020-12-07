@@ -62,7 +62,7 @@ struct BlobView: View {
                 Rectangle()
                     .modifier(AnimatableGradient(
                                 from: UIColor.gradientMomo,
-                                to: UIColor.gradientOrange,
+                                to: UIColor.gradientPurple,
                                 pct: blobValue,
                                 startRadius: scaledFrame * 0.5, // default: 100
                                 endRadius: scaledFrame // pathBounds.width * 1.3
