@@ -18,11 +18,15 @@ import SwiftUI
 import Neumorphic
 
 struct BlobView: View {
-    // TODO: - This is binding, but maybe create another blob view that is not
+
     @Binding var blobValue: CGFloat
     @State var isStatic = true
     @State var isAnimating = false
     @State var scale: CGFloat = 1
+
+    // AnimatableGradient
+    @State private var fromGradient: [UIColor] = UIColor.gradientPurple
+    @State private var toGradient: [UIColor] = UIColor.gradientOrange
     
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
 
@@ -69,14 +73,16 @@ struct BlobView: View {
                     ))
                     // Top left
                     .softInnerShadow(Rectangle(),
-                                     darkShadow: Color.white.opacity(0.2),
+                                     darkShadow: Color.white.opacity(0.4),
+                                     //darkShadow: Color.white.opacity(0.2),
                                      lightShadow: .clear,
                                      spread: 1,
                                      radius: 50)
                     // Bottom right
                     .softInnerShadow(Rectangle(),
                                      darkShadow: .clear,
-                                     lightShadow: Color.momoShadow.opacity(0.4),
+                                     lightShadow: Color.momoShadow.opacity(0.6),
+                                     //lightShadow: Color.momoShadow.opacity(0.4),
                                      spread: 1,
                                      radius: 50)
                     .blendMode(.multiply)
@@ -88,6 +94,25 @@ struct BlobView: View {
         .frame(width: scaledFrame, height: scaledFrame * (pathBounds.width / pathBounds.height))
         .onAppear {
             isAnimating = isStatic ? false : true
+        }
+
+        .onChange(of: self.blobValue) { blobValue in
+//            switch self.blobValue {
+//            case 0..<0.33:
+//                self.fromGradient = UIColor.gradientMomo
+//                self.toGradient = UIColor.gradientPurple
+//                print("1/3")
+//            case 0.33..<0.66:
+//                self.fromGradient = UIColor.gradientMomo
+//                self.toGradient = UIColor.gradientPurple
+//                print("2/3")
+//            case 0.66...1:
+//                self.fromGradient = UIColor.gradientMomo
+//                self.toGradient = UIColor.gradientPurple
+//                print("3/3")
+//            default:
+//                break
+//            }
         }
     }
 }

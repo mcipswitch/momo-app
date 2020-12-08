@@ -14,11 +14,11 @@ import SwiftUI
  */
 struct AnimatableGradient: AnimatableModifier {
 
-    /// Both `to` and `from` color arrays should contain the same number of colors.
+    /// Color arrays should contain the same number of colors
     let from: [UIColor]
     let to: [UIColor]
     var pct: CGFloat = 0
-
+    
     let startRadius: CGFloat
     let endRadius: CGFloat
 

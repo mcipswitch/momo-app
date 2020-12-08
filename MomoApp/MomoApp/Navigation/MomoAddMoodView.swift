@@ -61,7 +61,7 @@ struct MomoAddMoodView: View {
                 self.isDragging = true
 
                 /// The lower the limit, the tigher the resistance
-                let limit: CGFloat = 200
+                let limit: CGFloat = 400
                 let xOff = value.translation.width
                 let yOff = value.translation.height
                 let dist = sqrt(xOff*xOff + yOff*yOff);

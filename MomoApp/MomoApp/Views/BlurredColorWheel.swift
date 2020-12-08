@@ -48,3 +48,11 @@ enum ColorWheelSection {
         }
     }
 }
+
+// MARK: - Previews
+
+struct BlurredColorWheel_Previews: PreviewProvider {
+    static var previews: some View {
+        BlurredColorWheel(isActive: .constant(true), section: .constant(.momoPurple))
+    }
+}
