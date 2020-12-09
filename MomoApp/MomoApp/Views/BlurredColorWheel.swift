@@ -20,18 +20,17 @@ struct BlurredColorWheel: View {
                                     center: .center,
                                     angle: .degrees(-90))
         Circle()
-            .stroke(ring, lineWidth: 50)
+            .strokeBorder(ring, lineWidth: 50)
             .opacity(isActive ? 1 : 0)
             .animation(.easeInOut(duration: 1.5))
             .mask(
                 Circle()
                     .trim(from: 0.0, to: 1/3)
-                    .stroke(ring, lineWidth: 40)
+                    .stroke(ring, lineWidth: 80)
                     .rotationEffect(Angle(degrees: 210))
                     .rotationEffect(Angle(degrees: self.section.degrees))
             )
             .blur(radius: 40)
-            //.frame(width: 180)
     }
 }
 

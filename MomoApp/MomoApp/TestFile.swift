@@ -32,25 +32,9 @@ struct AnimatableColors: AnimatableModifier {
     func body(content: Content) -> some View {
         var gColors = [Color]()
 
-        var from = [UIColor]()
-        var to = [UIColor]()
-
-        switch pct {
-        case 0..<0.33:
-            from = UIColor.gradientMomo
-            to = UIColor.gradientPurple
-        case 0.33..<0.66:
-            from = UIColor.gradientPurple
-            to = UIColor.gradientOrange
-        case 0.66...1:
-            from = UIColor.gradientOrange
-            to = UIColor.gradientMomo
-        default:
-            break
-        }
-
-        for i in 0..<from.count {
-            gColors.append(colorMixer(c1: from[i], c2: to[i], pct: pct))
+        // Color mix c1 and c2
+        for i in 0..<c1.count {
+            gColors.append(colorMixer(c1: c1[i], c2: c2[i], c3: c3[i], pct: pct))
         }
 
         return Rectangle()
@@ -61,9 +45,10 @@ struct AnimatableColors: AnimatableModifier {
     }
 
     // Basic implementation of a color interpolation between two values.
-    func colorMixer(c1: UIColor, c2: UIColor, pct: CGFloat) -> Color {
+    func colorMixer(c1: UIColor, c2: UIColor, c3: UIColor, pct: CGFloat) -> Color {
         let cc1 = c1.hsbComponents
         let cc2 = c2.hsbComponents
+        let cc3 = c3.hsbComponents
 
         let hue = (cc1.hue + (cc2.hue - cc1.hue) * pct)
         let brightness = (cc1.brightness + (cc2.brightness - cc1.brightness) * pct)

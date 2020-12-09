@@ -61,7 +61,7 @@ struct MomoAddMoodView: View {
                 self.isDragging = true
 
                 /// The lower the limit, the tigher the resistance
-                let limit: CGFloat = 400
+                let limit: CGFloat = 200
                 let xOff = value.translation.width
                 let yOff = value.translation.height
                 let dist = sqrt(xOff*xOff + yOff*yOff);
@@ -227,7 +227,7 @@ struct MomoAddMoodView: View {
 
 
 
-                            .offset(x: self.dragValue.width * 0.5, y: self.dragValue.height * 0.5)
+                            .offset(x: self.dragValue.width * 0.8, y: self.dragValue.height * 0.8)
                             .position(self.buttonLocation ?? centerPoint)
                             .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
                             .disabled(self.isResetting)

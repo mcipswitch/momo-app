@@ -64,13 +64,21 @@ struct BlobView: View {
             // Blob: Gradient Layer
             ZStack {
                 Rectangle()
-                    .modifier(AnimatableGradient(
-                                from: UIColor.gradientMomo,
-                                to: UIColor.gradientPurple,
+                    .modifier(AnimatableColors(
+                                c1: UIColor.gradientMomo,
+                                c2: UIColor.gradientPurple,
+                                c3: UIColor.gradientOrange,
                                 pct: blobValue,
-                                startRadius: scaledFrame * 0.5, // default: 100
-                                endRadius: scaledFrame // pathBounds.width * 1.3
-                    ))
+                                startRadius: scaledFrame * 0.5,
+                                endRadius: scaledFrame)
+                    )
+//                    .modifier(AnimatableGradient(
+//                                from: UIColor.gradientMomo,
+//                                to: UIColor.gradientPurple,
+//                                pct: blobValue,
+//                                startRadius: scaledFrame * 0.5, // default: 100
+//                                endRadius: scaledFrame // pathBounds.width * 1.3
+//                    ))
                     // Top left
                     .softInnerShadow(Rectangle(),
                                      darkShadow: Color.white.opacity(0.4),
@@ -97,22 +105,22 @@ struct BlobView: View {
         }
 
         .onChange(of: self.blobValue) { blobValue in
-//            switch self.blobValue {
-//            case 0..<0.33:
-//                self.fromGradient = UIColor.gradientMomo
-//                self.toGradient = UIColor.gradientPurple
-//                print("1/3")
-//            case 0.33..<0.66:
-//                self.fromGradient = UIColor.gradientMomo
-//                self.toGradient = UIColor.gradientPurple
-//                print("2/3")
-//            case 0.66...1:
-//                self.fromGradient = UIColor.gradientMomo
-//                self.toGradient = UIColor.gradientPurple
-//                print("3/3")
-//            default:
-//                break
-//            }
+            switch self.blobValue {
+            case 0..<0.33:
+                self.fromGradient = UIColor.gradientMomo
+                self.toGradient = UIColor.gradientPurple
+                print("1/3")
+            case 0.33..<0.66:
+                self.fromGradient = UIColor.gradientMomo
+                self.toGradient = UIColor.gradientPurple
+                print("2/3")
+            case 0.66...1:
+                self.fromGradient = UIColor.gradientMomo
+                self.toGradient = UIColor.gradientPurple
+                print("3/3")
+            default:
+                break
+            }
         }
     }
 }
