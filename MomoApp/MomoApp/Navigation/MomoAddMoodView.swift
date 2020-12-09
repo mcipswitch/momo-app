@@ -276,7 +276,6 @@ struct MomoAddMoodView: View {
             }
             .edgesIgnoringSafeArea(.all)
         )
-
         .onChange(of: self.homeViewActive) { _ in
             self.isAnimating.toggle()
             UIApplication.shared.endEditing()
@@ -289,7 +288,6 @@ struct MomoAddMoodView: View {
             default: break
             }
         }
-
         .onReceive(self.viewRouter.homeWillChange) { state in
             switch state {
             case .home:
@@ -326,7 +324,12 @@ struct MomoAddMoodView: View {
     private func addEmotionButtonPressed() {
         self.viewRouter.changeHomeState(.add)
 
-        //self.homeViewActive ? self.homeViewActive.toggle() : nil
+        // Joystick is not draggable until animation settles
+        self.isResetting = true
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
+            self.isResetting = false
+        }
     }
     
     private func seePastEntriesButtonPressed() {

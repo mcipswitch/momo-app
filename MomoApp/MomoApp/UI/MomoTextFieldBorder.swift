@@ -17,7 +17,6 @@ struct MomoTextFieldBorder: View {
                 .fill(Color.white)
             RoundedRectangle(cornerRadius: 2)
                 .fill(textFieldIsFocused ? Color.momo : .clear)
-                //.animation(.ease())
         }
         .frame(height: height)
     }
