@@ -33,6 +33,8 @@ struct MomoAddMoodView: View {
     @State private var isDragging = false
     @State private var isAnimating = false
     @State private var isResetting = false
+
+    @State private var isDisabled = false
     
     // Emotion Text Field
     @State private var emotionText = ""
@@ -164,7 +166,7 @@ struct MomoAddMoodView: View {
                             Text(dragState.isActive ? "active drag" : "")
                             Text(isResetting ? "resetting..." : "")
                             Text(isAnimating ? "animating..." : "")
-                            Text(!homeViewActive ? "H.animating..." : "")
+                            Text(!homeViewActive ? "homeViewActive..." : "")
 
                             Text("\(dragValue.width), \(dragValue.height)")
                         }
@@ -195,6 +197,7 @@ struct MomoAddMoodView: View {
                                     )
 
                                 // TODO: Remove $isAnimating
+                                // Can we use preference key here to draw Color Ring to correct size?
                                 ColorRing(
                                     size: self.buttonSize,
                                     shiftColors: self.$isAnimating,
@@ -230,7 +233,7 @@ struct MomoAddMoodView: View {
                             .offset(x: self.dragValue.width * 0.8, y: self.dragValue.height * 0.8)
                             .position(self.buttonLocation ?? centerPoint)
                             .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
-                            .disabled(self.isResetting)
+                            .disabled(self.isResetting || self.isDisabled)
 
                             if let dragState = dragState {
                                 Circle()
@@ -325,10 +328,10 @@ struct MomoAddMoodView: View {
         self.viewRouter.changeHomeState(.add)
 
         // Joystick is not draggable until animation settles
-        self.isResetting = true
+        self.isDisabled = true
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
-            self.isResetting = false
+            self.isDisabled = false
         }
     }
     

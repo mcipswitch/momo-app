@@ -13,30 +13,21 @@ struct MomoTextField: View {
     @Binding var text: String
     @Binding var textFieldIsFocused: Bool
 
-    @State var isTyping = false
-
     var body: some View {
         ZStack(alignment: .center) {
-
             // Placeholder
             Text("My day in a word")
                 .momoText(.main)
-                .opacity(text.isEmpty ? 0.6 : 0)
-
-
-
+                .opacity(self.text.isEmpty ? 0.6 : 0)
+                .animation(nil, value: self.text)
             TextField("", text: $text, onEditingChanged: { editingChanged in
-                textFieldIsFocused = editingChanged ? true : false
+                self.textFieldIsFocused = editingChanged ? true : false
             }, onCommit: {
-
                 // TODO
                 print(text)
             })
             .momoTextFieldStyle()
-            .onReceive(text.publisher.collect()) { _ in
-
-                self.isTyping = true
-
+            .onReceive(text.publisher.collect()) { char in
                 self.text = String(text.prefix(20))
             }
         }
