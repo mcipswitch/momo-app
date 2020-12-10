@@ -5,6 +5,7 @@
 //  Created by Priscilla Ip on 2020-11-08.
 //
 
+// Blur Effect Materials: https://pspdfkit.com/blog/2020/blur-effect-materials-on-ios/
 // https://www.vadimbulavin.com/infinite-list-scroll-swiftui-combine/
 
 import SwiftUI
@@ -55,31 +56,31 @@ struct EntryRow: View {
 
     var body: some View {
         ZStack {
-            VStack {
-                HStack {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(self.entry.date, formatter: DateFormatter.shortDate)
-                            .momoText(.date)
-                        Text(self.entry.emotion)
-                            .momoText(.main)
-                    }
-                    Spacer()
-                    BlobView(
-                        blobValue: self.$blobValue,
-                        isStatic: true,
-                        scale: 0.2
-                    )
-                    .padding(.trailing, 16)
+            HStack {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(self.entry.date, formatter: DateFormatter.shortDate)
+                        .momoText(.date)
+                    Text(self.entry.emotion)
+                        .momoText(.main)
                 }
+                Spacer()
+                BlobView(
+                    blobValue: self.$blobValue,
+                    isStatic: true,
+                    scale: 0.2
+                )
+                .padding(.trailing, 16)
             }
-            .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-            .padding(.horizontal, 24)
-            .padding(.vertical, 16)
-            .background(VisualEffectBlur(blurStyle: .dark))
-            .clipShape(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-            )
         }
+        .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+        .padding(.horizontal, 24)
+        .padding(.vertical, 16)
+        .background(
+            VisualEffectBlur(blurStyle: .dark)
+        )
+        .clipShape(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+        )
     }
 }
 

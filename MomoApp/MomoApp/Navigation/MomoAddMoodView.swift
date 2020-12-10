@@ -314,6 +314,7 @@ struct MomoAddMoodView: View {
             MomoToolbarButton(type: .back, action: self.backButtonPressed)
             Spacer()
             MomoButton(isActive: self.$emotionTextFieldCompleted, type: .done, action: self.doneButtonPressed)
+                .animation(.ease(), value: self.emotionTextFieldCompleted)
         }
     }
 

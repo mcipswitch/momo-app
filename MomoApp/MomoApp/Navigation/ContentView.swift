@@ -9,19 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var viewRouter: ViewRouter
-    @State var offset: CGFloat = UIScreen.screenWidth
-    @State var on = false
-    @State var blurOn = false
+    @State private var offset: CGFloat = UIScreen.screenWidth
+    @State private var on = false
+    @State private var blurOn = false
 
     var body: some View {
         ZStack {
             MomoAddMoodView()
-                .overlay(
+            MomoJournalView()
+                .offset(x: self.on ? 0 : self.offset)
+                .background(
                     VisualEffectBlur(blurStyle: .dark).edgesIgnoringSafeArea(.all)
                         .opacity(self.blurOn ? 1 : 0)
                 )
-            MomoJournalView()
-                .offset(x: self.on ? 0 : self.offset)
         }
         .onReceive(self.viewRouter.objectWillChange) { _ in
             /*

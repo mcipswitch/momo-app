@@ -15,11 +15,10 @@ struct MomoTextField: View {
 
     var body: some View {
         ZStack(alignment: .center) {
-            // Placeholder
             Text("My day in a word")
                 .momoText(.main)
                 .opacity(self.text.isEmpty ? 0.6 : 0)
-                .animation(nil, value: self.text)
+                .animation(.ease(), value: self.text)
             TextField("", text: $text, onEditingChanged: { editingChanged in
                 self.textFieldIsFocused = editingChanged ? true : false
             }, onCommit: {
