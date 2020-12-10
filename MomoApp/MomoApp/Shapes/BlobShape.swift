@@ -64,35 +64,35 @@ struct BlobView: View {
             // Blob: Gradient Layer
             ZStack {
                 Rectangle()
-                    .modifier(AnimatableColors(
-                                c1: UIColor.gradientMomo,
-                                c2: UIColor.gradientPurple,
-                                c3: UIColor.gradientOrange,
-                                pct: blobValue,
-                                startRadius: scaledFrame * 0.5,
-                                endRadius: scaledFrame)
-                    )
-//                    .modifier(AnimatableGradient(
-//                                from: UIColor.gradientMomo,
-//                                to: UIColor.gradientPurple,
+//                    .modifier(AnimatableColors(
+//                                c1: UIColor.gradientMomo,
+//                                c2: UIColor.gradientPurple,
+//                                c3: UIColor.gradientOrange,
 //                                pct: blobValue,
-//                                startRadius: scaledFrame * 0.5, // default: 100
-//                                endRadius: scaledFrame // pathBounds.width * 1.3
-//                    ))
+//                                startRadius: scaledFrame * 0.5,
+//                                endRadius: scaledFrame)
+//                    )
+                    .modifier(AnimatableGradient(
+                                from: UIColor.gradientOrange,
+                                to: UIColor.gradientPurple,
+                                pct: blobValue,
+                                startRadius: scaledFrame * 0.5, // default: 100
+                                endRadius: scaledFrame // pathBounds.width * 1.3
+                    ))
                     // Top left
                     .softInnerShadow(Rectangle(),
-                                     darkShadow: Color.white.opacity(0.4),
-                                     //darkShadow: Color.white.opacity(0.2),
+                                     darkShadow: Color.white.opacity(0.8),
                                      lightShadow: .clear,
-                                     spread: 1,
-                                     radius: 50)
+                                     spread: 1.0,
+                                     radius: 30)
+                    .blendMode(.overlay)
+
                     // Bottom right
                     .softInnerShadow(Rectangle(),
                                      darkShadow: .clear,
-                                     lightShadow: Color.momoShadow.opacity(0.6),
-                                     //lightShadow: Color.momoShadow.opacity(0.4),
-                                     spread: 1,
-                                     radius: 50)
+                                     lightShadow: Color.momoShadow.opacity(0.8),
+                                     spread: 0.8,
+                                     radius: 30)
                     .blendMode(.multiply)
             }
             .scaleEffect(x: 1.5, y: 1.5, anchor: .center)

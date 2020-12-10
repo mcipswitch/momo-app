@@ -36,6 +36,11 @@ struct MiniGraphView: View {
 
     var body: some View {
         ZStack {
+
+            LineGraphView(dataPoints: self.dataPoints)
+                .padding(EdgeInsets(top: 0, leading: 12, bottom: self.lineGraphBottomPadding, trailing: 12))
+                .allowsHitTesting(false)
+
             GeometryReader { geo in
 
                 // Calculate the spacing between graph lines
@@ -104,10 +109,6 @@ struct MiniGraphView: View {
                         })
                     }
                 }
-                LineGraphView(dataPoints: self.dataPoints)
-                    .padding(EdgeInsets(top: 0, leading: 12, bottom: self.lineGraphBottomPadding, trailing: 12))
-                    .allowsHitTesting(false)
-
                 VStack {
                     Text("IDX Selection: \(self.selectedIdx)")
                     Text("Drag: \(self.dragOffset)")

@@ -258,13 +258,12 @@ struct MomoAddMoodView: View {
                     .padding()
                     .disabled(self.isResetting)
 
+                    // animate home state
                     .opacity(self.doneViewActive ? 0 : 1)
                     .animation(
                         Animation.easeInOut(duration: 1.0)
                             .delay(self.doneViewActive ? 0 : 2.0)
                     )
-
-
             }
         }
         .background(
@@ -317,6 +316,7 @@ struct MomoAddMoodView: View {
                 .animation(.ease(), value: self.emotionTextFieldCompleted)
         }
     }
+
 
     var currentDate: some View {
         Text(Date(), formatter: DateFormatter.shortDate)

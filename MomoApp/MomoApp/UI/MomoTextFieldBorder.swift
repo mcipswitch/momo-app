@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MomoTextFieldBorder: View {
     @Binding var textFieldIsFocused: Bool
-    private var height: CGFloat = 2
+    var height: CGFloat = 2
 
     var body: some View {
         RoundedRectangle(cornerRadius: self.height / 2)
