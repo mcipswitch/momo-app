@@ -18,7 +18,7 @@ struct MomoTextField: View {
             Text("My day in a word")
                 .momoText(.main)
                 .opacity(self.text.isEmpty ? 0.6 : 0)
-                .animation(.ease(), value: self.text)
+                .animation(nil, value: self.text)
             TextField("", text: $text, onEditingChanged: { editingChanged in
                 self.textFieldIsFocused = editingChanged ? true : false
             }, onCommit: {

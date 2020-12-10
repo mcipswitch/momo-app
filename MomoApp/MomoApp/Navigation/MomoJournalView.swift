@@ -43,6 +43,12 @@ struct MomoJournalView: View {
                 }
             }
         }
+        /*
+         Animation must be added BEFORE the background.
+         The main content for `MomoJournalView` transitions on with a delay.
+         Remove the delay when it transitions off.
+         */
+        //.animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
         .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
         .onAppear {
             self.animateGraph = true
@@ -83,11 +89,3 @@ struct MomoJournalView_Previews: PreviewProvider {
     }
 }
 #endif
-
-// TODO:
-/*
- Animation must be added BEFORE the background.
- The main content for `MomoJournalView` transitions on with a delay.
- Remove the delay when it transitions off.
- */
-//.animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
