@@ -64,21 +64,9 @@ struct BlobView: View {
             // Blob: Gradient Layer
             ZStack {
                 Rectangle()
-//                    .modifier(AnimatableColors(
-//                                c1: UIColor.gradientMomo,
-//                                c2: UIColor.gradientPurple,
-//                                c3: UIColor.gradientOrange,
-//                                pct: blobValue,
-//                                startRadius: scaledFrame * 0.5,
-//                                endRadius: scaledFrame)
-//                    )
-                    .modifier(AnimatableGradient(
-                                from: UIColor.gradientOrange,
-                                to: UIColor.gradientPurple,
-                                pct: blobValue,
-                                startRadius: scaledFrame * 0.5, // default: 100
-                                endRadius: scaledFrame // pathBounds.width * 1.3
-                    ))
+                    .modifier(AnimatableColor(
+                                colors: UIColor.mArray,
+                                pct: self.blobValue))
                     // Top left
                     .softInnerShadow(Rectangle(),
                                      darkShadow: Color.white.opacity(0.8),

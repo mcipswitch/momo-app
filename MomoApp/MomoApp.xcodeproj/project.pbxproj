@@ -30,7 +30,7 @@
 		935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935FD32E24EA2E23008568FA /* ArcShape.swift */; };
 		9363153A2513A6B6005E20EA /* BlurredColorWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936315392513A6B6005E20EA /* BlurredColorWheel.swift */; };
 		936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936C6CD525112E6A00650D4A /* AnimatableGradient.swift */; };
-		936E0696257F2276002B068E /* TestFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E0695257F2276002B068E /* TestFile.swift */; };
+		936E0696257F2276002B068E /* AnimatableColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E0695257F2276002B068E /* AnimatableColor.swift */; };
 		937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615852511D22300AEF59C /* CGPoint + Extension.swift */; };
 		937615882512527100AEF59C /* UIScreen + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615872512527100AEF59C /* UIScreen + Extension.swift */; };
 		937688E124F98E9500CC0B10 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937688E024F98E9500CC0B10 /* CustomView.swift */; };
@@ -94,7 +94,7 @@
 		935FD32E24EA2E23008568FA /* ArcShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcShape.swift; sourceTree = "<group>"; };
 		936315392513A6B6005E20EA /* BlurredColorWheel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredColorWheel.swift; sourceTree = "<group>"; };
 		936C6CD525112E6A00650D4A /* AnimatableGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableGradient.swift; sourceTree = "<group>"; };
-		936E0695257F2276002B068E /* TestFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFile.swift; sourceTree = "<group>"; };
+		936E0695257F2276002B068E /* AnimatableColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableColor.swift; sourceTree = "<group>"; };
 		937615852511D22300AEF59C /* CGPoint + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint + Extension.swift"; sourceTree = "<group>"; };
 		937615872512527100AEF59C /* UIScreen + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen + Extension.swift"; sourceTree = "<group>"; };
 		937688E024F98E9500CC0B10 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 				93E06EA3256C909800E7264D /* Environment */,
 				9318888425582B8C0004CD4F /* ViewModel */,
 				936C6CD525112E6A00650D4A /* AnimatableGradient.swift */,
-				936E0695257F2276002B068E /* TestFile.swift */,
+				936E0695257F2276002B068E /* AnimatableColor.swift */,
 				93EF7982254A14700062571F /* UI */,
 				933B150324F1B30C004E9F1C /* Navigation */,
 				93CC40C82564305D008B765D /* Models */,
@@ -439,7 +439,7 @@
 				93FAEB9B2514FCDC00C057AC /* MomoAddMoodView.swift in Sources */,
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
 				930924FF25582D0800AA3934 /* JournalListView.swift in Sources */,
-				936E0696257F2276002B068E /* TestFile.swift in Sources */,
+				936E0696257F2276002B068E /* AnimatableColor.swift in Sources */,
 				9382CFE32576090600ED46D8 /* MomoLoadingIndicator.swift in Sources */,
 				93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */,
 				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,

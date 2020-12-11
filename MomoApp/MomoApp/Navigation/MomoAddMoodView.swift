@@ -39,7 +39,7 @@ struct MomoAddMoodView: View {
     // Emotion Text Field
     @State private var emotionText = ""
     @State private var textFieldIsFocused = false
-    @State private var emotionTextFieldCompleted = false
+    @State private var textFieldNotEmpty = false
 
     // Blurred Color Wheel
     @State private var blurredColorWheelIsActive = false
@@ -129,7 +129,6 @@ struct MomoAddMoodView: View {
                             )
 
                         ZStack {
-                            // TODO: - Placeholder should animate out immediately if writing
                             Text("Hi, how are you feeling today?")
                                 .momoText(.main)
                                 .slideInAnimation(if: self.$homeViewActive)
@@ -149,8 +148,9 @@ struct MomoAddMoodView: View {
                             }
                         }
                         .onChange(of: self.emotionText) { field in
-                            self.emotionTextFieldCompleted = field.isEmpty ? false : true
+                            self.textFieldNotEmpty = field.isEmpty ? false : true
                         }
+                        // TODO: - make this number dynamic?
                         .frame(width: 180, height: 80)
                     }
 
@@ -184,38 +184,29 @@ struct MomoAddMoodView: View {
                         // TODO: CLEAN UP ANIMATION HERE
                         GeometryReader { geometry in
                             ZStack(alignment: .center) {
-
-                                // TODO: Remove $isAnimating
-                                AddEmotionButton(emotionState: self.$state, homeViewActive: self.$homeViewActive, isAnimating: self.$isAnimating, buttonSize: self.buttonSize, action: self.addEmotionButtonPressed)
-                                    /*
-                                     Add delay so the 'Color Ring' disappears first.
-                                     Remove delay if the button is resetting position.
-                                     */
-                                    .animation(dragState.isActive ? .resist() : Animation
-                                                .bounce()
-                                                .delay(if: self.homeViewActive, (isResetting ? 0 : 0.2))
-                                    )
-
-                                // TODO: Remove $isAnimating
-                                // Can we use preference key here to draw Color Ring to correct size?
-                                ColorRing(
-                                    size: self.buttonSize,
-                                    shiftColors: self.$isAnimating,
-                                    isDragging: self.$isDragging
+                                AddEmotionButton(
+                                    emotionState: self.$state,
+                                    homeViewActive: self.$homeViewActive,
+                                    isAnimating: self.$isAnimating,
+                                    isDragging: self.$isDragging,
+                                    isResetting: self.$isResetting,
+                                    buttonSize: self.buttonSize,
+                                    action: self.addEmotionButtonPressed
                                 )
-                                    /*
-                                     Add delay so the 'Color Ring' appears after button morph.
-                                     Remove delay if the button is resetting position.
-                                     */
-                                    .animation(dragState.isActive ? .resist() :
-                                                self.homeViewActive ? .resist() : Animation
-                                                .bounce()
-                                                .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
-                                    )
-
-                                MomoTextLinkButton(link: .pastEntries, action: self.seePastEntriesButtonPressed)
-                                    .offset(y: 60)
-                                    .slideInAnimation(if: self.$homeViewActive)
+                                /*
+                                 Add delay so the 'Color Ring' disappears first.
+                                 Remove delay if the button is resetting position.
+                                 */
+                                .animation(self.dragState.isActive ? .resist() : Animation
+                                            .bounce()
+                                            .delay(if: self.homeViewActive, (self.isResetting ? 0 : 0.2))
+                                )
+                                MomoTextLinkButton(
+                                    link: .pastEntries,
+                                    action: self.seePastEntriesButtonPressed
+                                )
+                                .offset(y: 60)
+                                .slideInAnimation(if: self.$homeViewActive)
                             }
                             // Animate in controls after done view
                             .opacity(self.doneViewActive ? 0 : 1)
@@ -312,8 +303,8 @@ struct MomoAddMoodView: View {
         HStack {
             MomoToolbarButton(type: .back, action: self.backButtonPressed)
             Spacer()
-            MomoButton(isActive: self.$emotionTextFieldCompleted, type: .done, action: self.doneButtonPressed)
-                .animation(.ease(), value: self.emotionTextFieldCompleted)
+            MomoButton(isActive: self.$textFieldNotEmpty, type: .done, action: self.doneButtonPressed)
+                .animation(.ease(), value: self.textFieldNotEmpty)
         }
     }
 
@@ -363,20 +354,45 @@ struct AddEmotionButton: View {
     @Binding var emotionState: EmotionState
     @Binding var homeViewActive: Bool
     @Binding var isAnimating: Bool
+    @Binding var isDragging: Bool
+    @Binding var isResetting: Bool
     @State var buttonSize: CGFloat
     var action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            Text(self.emotionState.text)
-                .opacity(isAnimating ? 0 : 1)
-                .animation(isAnimating
-                            ? .none
-                            : Animation.ease().delay(0.5)
-                )
+        ZStack {
+            Button(action: self.action) {
+                Text(self.emotionState.text)
+                    .opacity(self.isAnimating ? 0 : 1)
+                    .animation(self.isAnimating
+                                ? .none
+                                : Animation.ease().delay(0.5)
+                    )
+            }
+            .buttonStyle(MomoButtonStyle(w: self.homeViewActive ? 230 : self.buttonSize,
+                                         h: self.homeViewActive ? 60 : self.buttonSize))
+
+            // Can we use preference key here to draw Color Ring to correct size?
+            ColorRing(
+                size: self.buttonSize,
+                shiftColors: self.$isAnimating,
+                isDragging: self.$isDragging
+            )
+            /*
+             Add delay so the 'Color Ring' appears after button morph.
+             Remove delay if the button is resetting position.
+             */
+            .animation(
+                Animation.bounce().delay(if: !self.homeViewActive, (self.isResetting ? 0 : 0.6)),
+                value: self.homeViewActive
+            )
+
+            //                                .animation(dragState.isActive ? .resist() :
+            //                                            self.homeViewActive ? .resist() : Animation
+            //                                            .bounce()
+            //                                            .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
+            //                                )
         }
-        .buttonStyle(MomoButtonStyle(w: homeViewActive ? 230 : self.buttonSize,
-                                     h: homeViewActive ? 60 : self.buttonSize))
     }
 }
 

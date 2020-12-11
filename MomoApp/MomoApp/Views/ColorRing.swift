@@ -30,7 +30,6 @@ struct ColorRing: View {
                             .easeInOut(duration: shiftColors ? 4 : 1)
                             .repeat(while: shiftColors, autoreverses: false)
                 )
-
             // When user drags joystick, ring will turn green
             Circle()
                 .stroke(Color.momo, lineWidth: 6)
