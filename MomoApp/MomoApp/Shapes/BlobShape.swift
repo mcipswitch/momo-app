@@ -64,6 +64,7 @@ struct BlobView: View {
             // Blob: Gradient Layer
             ZStack {
                 Rectangle()
+                    // TODO: - need to rotate this so the MOMO starts at the top middle
                     .modifier(AnimatableColor(
                                 colors: UIColor.mArray,
                                 pct: self.blobValue))

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Please see:
+// MARK: - AnimatableColor
 
 /**
  Animate colors in gradient
@@ -31,6 +31,8 @@ struct AnimatableColor: AnimatableModifier {
             .foregroundColor(color)
     }
 }
+
+// MARK: - Extension
 
 extension Array where Element: UIColor {
     func intermediate(percentage: CGFloat) -> Color {

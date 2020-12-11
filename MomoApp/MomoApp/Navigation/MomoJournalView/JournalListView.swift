@@ -59,9 +59,9 @@ struct EntryRow: View {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(self.entry.date, formatter: DateFormatter.shortDate)
-                        .momoText(.date)
+                        .momoText(.appDate)
                     Text(self.entry.emotion)
-                        .momoText(.main)
+                        .momoText(.appMain)
                 }
                 Spacer()
                 BlobView(

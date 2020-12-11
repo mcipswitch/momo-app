@@ -16,7 +16,7 @@ struct MomoTextField: View {
     var body: some View {
         ZStack(alignment: .center) {
             Text("My day in a word")
-                .momoText(.main)
+                .momoText(.appMain)
                 .opacity(self.text.isEmpty ? 0.6 : 0)
                 .animation(nil, value: self.text)
             TextField("", text: $text, onEditingChanged: { editingChanged in
@@ -38,7 +38,8 @@ struct MomoTextField: View {
 struct MomoTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .momoText(.main)
+            .momoText(.appMain)
+            .multilineTextAlignment(.center)
             .autocapitalization(.none)
             .disableAutocorrection(true)
             .accentColor(Color.momo)

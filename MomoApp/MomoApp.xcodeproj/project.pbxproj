@@ -59,6 +59,7 @@
 		93D434F82581A5FA006BC85E /* BlurModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D434F72581A5FA006BC85E /* BlurModifier.swift */; };
 		93D90F88257C5A8000A7A69F /* SizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D90F87257C5A8000A7A69F /* SizeModifier.swift */; };
 		93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DB0F5B253656180074EBB6 /* Binding + Extension.swift */; };
+		93E0650B258340CD009E7D06 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E0650A258340CD009E7D06 /* Test.swift */; };
 		93E06EA1256C909500E7264D /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E06EA0256C909500E7264D /* ViewRouter.swift */; };
 		93E9A338251D29900095D48C /* ColorRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E9A337251D29900095D48C /* ColorRing.swift */; };
 		93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EB5C602527891900087D0B /* UIApplication + Extension.swift */; };
@@ -123,6 +124,7 @@
 		93D434F72581A5FA006BC85E /* BlurModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurModifier.swift; sourceTree = "<group>"; };
 		93D90F87257C5A8000A7A69F /* SizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeModifier.swift; sourceTree = "<group>"; };
 		93DB0F5B253656180074EBB6 /* Binding + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding + Extension.swift"; sourceTree = "<group>"; };
+		93E0650A258340CD009E7D06 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		93E06EA0256C909500E7264D /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		93E9A337251D29900095D48C /* ColorRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorRing.swift; sourceTree = "<group>"; };
 		93EB5C602527891900087D0B /* UIApplication + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + Extension.swift"; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				93E06EA3256C909800E7264D /* Environment */,
 				9318888425582B8C0004CD4F /* ViewModel */,
 				936C6CD525112E6A00650D4A /* AnimatableGradient.swift */,
+				93E0650A258340CD009E7D06 /* Test.swift */,
 				936E0695257F2276002B068E /* AnimatableColor.swift */,
 				93EF7982254A14700062571F /* UI */,
 				933B150324F1B30C004E9F1C /* Navigation */,
@@ -460,6 +463,7 @@
 				938A0915256C235200D53D9A /* MomoTextField.swift in Sources */,
 				9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */,
 				93D434F82581A5FA006BC85E /* BlurModifier.swift in Sources */,
+				93E0650B258340CD009E7D06 /* Test.swift in Sources */,
 				93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */,
 				9363153A2513A6B6005E20EA /* BlurredColorWheel.swift in Sources */,
 				93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */,

@@ -190,9 +190,9 @@ struct GraphLine: View {
     var dateLabel: some View {
         VStack(spacing: 8) {
             Text("\(self.entries[idx].date.weekday)")
-                .momoText(.graphWeekday)
+                .momoText(.appGraphWeekday)
             Text("\(self.entries[idx].date.day)")
-                .momoText(.graphDay)
+                .momoText(.appGraphDay)
         }
     }
 }

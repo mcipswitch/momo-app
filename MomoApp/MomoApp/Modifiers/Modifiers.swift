@@ -7,63 +7,133 @@
 
 import SwiftUI
 
+// MARK: - MomoText
+
 struct MomoText: ViewModifier {
     var textStyle: MomoTextStyle
+    var font: Font {
+        switch textStyle {
+        case .appMain: return .appMain
+        case .appDate: return .appDate
+        case .appLink: return .appLink
+        case .appButtonText: return .appButtonText
+        case .appToolbarButton: return .appToolbarButton
+        case .appToolbarTitle: return .appToolbarTitle
+        case .appGraphWeekday: return .appGraphWeekday
+        case .appGraphDay: return .appGraphDay
+        }
+    }
     func body(content: Content) -> some View {
         content
-            .font(.custom(textStyle.font.rawValue, size: textStyle.size))
-            .foregroundColor(textStyle.color.opacity(textStyle.opacity))
-            .multilineTextAlignment(.center)
-            .lineSpacing(4)
+            .font(self.font)
+            .foregroundColor(self.textStyle.color
+                                .opacity(self.textStyle.opacity)
+            )
+
+
+//            .multilineTextAlignment(.center)
+//            .lineSpacing(4)
     }
+}
+
+// MARK: - View+Extensions
+
+extension View {
+    func momoText(_ textStyle: MomoTextStyle) -> some View {
+        return self.modifier(MomoText(textStyle: textStyle))
+    }
+}
+
+// MARK: - Font+Extensions
+
+enum AppFontWeight {
+    case medium, bold
+}
+
+extension Font {
+    static func appFont(size: CGFloat, weight: AppFontWeight) -> Font {
+        switch weight {
+        case .medium:
+            return Font.custom("DMSans-Medium", size: size)
+        case .bold:
+            return Font.custom("DMSans-Bold", size: size)
+        }
+    }
+
+    static let appMain = appFont(size: 22, weight: .bold)
+    static let appDate = appFont(size: 16, weight: .medium)
+    static let appLink = appFont(size: 16, weight: .bold)
+    static let appButtonText = appFont(size: 14, weight: .bold)
+
+    static let appToolbarButton = appFont(size: 22, weight: .medium)
+    static let appToolbarTitle = appFont(size: 16, weight: .bold)
+
+    static let appGraphWeekday = appFont(size: 12, weight: .bold)
+    static let appGraphDay = appFont(size: 14, weight: .bold)
 }
 
 // MARK: - Helpers
 
 enum MomoTextStyle {
-    case date, toolbarButton, toolbarTitle, link, button, main, doneMessage
-    case graphWeekday, graphDay
-    var size: CGFloat {
-        switch self {
-        case .doneMessage:
-            return 32
-        case .main, .toolbarButton:
-            return 22
-        case .date, .link, .toolbarTitle:
-            return 16
-        case .button, .graphDay:
-            return 14
-        case .graphWeekday:
-            return 12
-        }
-    }
+    case appMain, appDate, appLink, appButtonText,appToolbarButton,appToolbarTitle, appGraphWeekday, appGraphDay
+
     var opacity: Double {
         switch self {
-        case .date: return 0.6
-        case .graphWeekday: return 0.4
+        case .appDate: return 0.6
+        case .appGraphWeekday: return 0.4
         default: return 1
-        }
-    }
-    var font: FontWeight {
-        switch self {
-        case .link, .toolbarTitle, .button, .main, .graphWeekday, .graphDay, .doneMessage:
-            return .bold
-        default:
-            return .medium
         }
     }
     var color: Color {
         switch self {
-        case .button: return .black
+        case .appButtonText: return .black
         default: return .white
         }
     }
-}
 
-enum FontWeight: String {
-    case medium = "DMSans-Medium"
-    case bold = "DMSans-Bold"
+//    case date, toolbarButton, toolbarTitle, link, button, main, doneMessage
+//    case graphWeekday, graphDay
+//    var size: CGFloat {
+//        switch self {
+//        case .doneMessage:
+//            return 32
+//        case .main, .toolbarButton:
+//            return 22
+//        case .date, .link, .toolbarTitle:
+//            return 16
+//        case .button, .graphDay:
+//            return 14
+//        case .graphWeekday:
+//            return 12
+//        }
+//    }
+//    var opacity: Double {
+//        switch self {
+//        case .date: return 0.6
+//        case .graphWeekday: return 0.4
+//        default: return 1
+//        }
+//    }
+//    var font: FontWeight {
+//        switch self {
+//        case .link, .toolbarTitle, .button, .main, .graphWeekday, .graphDay, .doneMessage:
+//            return .bold
+//        default:
+//            return .medium
+//        }
+//    }
+//    var color: Color {
+//        switch self {
+//        case .button: return .black
+//        default: return .white
+//        }
+//    }
 }
+//
+//enum FontWeight: String {
+//    case medium = "DMSans-Medium"
+//    case bold = "DMSans-Bold"
+//}
 
 // MARK: - Animations
 

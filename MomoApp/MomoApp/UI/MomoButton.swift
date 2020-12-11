@@ -17,6 +17,8 @@ enum MomoButtonType {
     }
 }
 
+// MARK: - MomoButton
+
 struct MomoButton: View {
     @Binding var isActive: Bool
     var type: MomoButtonType
@@ -34,19 +36,29 @@ struct MomoButton: View {
     }
 }
 
+// MARK: - MomoButtonStyle
+
 struct MomoButtonStyle: ButtonStyle {
     var w: CGFloat
     var h: CGFloat
     var isActive: Bool = true
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .momoText(.button)
+            .momoText(.appButtonText)
+            .foregroundColor(.momo)
+            .multilineTextAlignment(.center)
+            .lineLimit(1)
             .frame(width: w, height: h)
             .background(Color.momo)
             .cornerRadius(h / 2)
             .opacity(isActive ? 1 : 0.2)
+
+            // TODO: - add this later
+            //.opacity(configuration.isPressed ? pressedOpacity : 1)
     }
 }
+
+// MARK: - Extension
 
 extension View {
     func momoButtonStyle(w: CGFloat, h: CGFloat, isActive: Bool = true) -> some View {

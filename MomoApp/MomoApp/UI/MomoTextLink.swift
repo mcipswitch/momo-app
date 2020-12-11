@@ -34,7 +34,7 @@ struct MomoTextLinkStyle: ButtonStyle {
             .foregroundColor(Color.momo.opacity(
                 configuration.isPressed ? pressedOpacity : 1
             ))
-            .momoText(.link)
+            .momoText(.appLink)
     }
 }
 

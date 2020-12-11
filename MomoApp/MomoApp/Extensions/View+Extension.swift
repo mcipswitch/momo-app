@@ -34,12 +34,6 @@ extension View {
         return modifier(Slide(observedValue: value))
     }
 
-    // MARK: - Text Modifiers
-
-    func momoText(_ textStyle: MomoTextStyle) -> some View {
-        return self.modifier(MomoText(textStyle: textStyle))
-    }
-
     // MARK: - Shadow
 
     func shadow() -> some View {

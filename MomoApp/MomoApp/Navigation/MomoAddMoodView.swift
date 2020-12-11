@@ -130,7 +130,7 @@ struct MomoAddMoodView: View {
 
                         ZStack {
                             Text("Hi, how are you feeling today?")
-                                .momoText(.main)
+                                .momoText(.appMain)
                                 .slideInAnimation(if: self.$homeViewActive)
 
                                 // Animate in controls after done view
@@ -311,7 +311,7 @@ struct MomoAddMoodView: View {
 
     var currentDate: some View {
         Text(Date(), formatter: DateFormatter.shortDate)
-            .momoText(.date)
+            .momoText(.appDate)
     }
     
     // MARK: - Internal Methods
