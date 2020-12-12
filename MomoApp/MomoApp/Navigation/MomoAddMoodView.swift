@@ -81,7 +81,6 @@ struct MomoAddMoodView: View {
 
                 // Calculate the degrees to activate correct part of 'BlurredColorWheel'
                 self.degrees = newLocation.angle(to: dragStart)
-                self.pct = self.degrees / 360
 
             }.updating($dragState) { value, state, transaction in
                 state = .active(location: value.location, translation: value.translation)
@@ -159,16 +158,16 @@ struct MomoAddMoodView: View {
                         BlobView(blobValue: $pct, isStatic: false)
                         VStack {
                             Text(self.homeViewActive ? "Home Active" : "Home Inactive")
+                            Text("Degrees: \(Int(degrees))")
                             Text("Pct: \(pct)")
                             Text("Original Pos: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
                             Text("Button Pos: x:\(Int(buttonLocation?.x ?? 0)), y:\(Int(buttonLocation?.y ?? 0))")
-                            Text("Angle: \(Int(degrees))")
                             Text(dragState.isActive ? "active drag" : "")
                             Text(isResetting ? "resetting..." : "")
                             Text(isAnimating ? "animating..." : "")
                             Text(!homeViewActive ? "homeViewActive..." : "")
 
-                            Text("\(dragValue.width), \(dragValue.height)")
+                            //Text("\(dragValue.width), \(dragValue.height)")
                         }
                         .font(.system(size: 12.0))
                     }
@@ -274,15 +273,8 @@ struct MomoAddMoodView: View {
             UIApplication.shared.endEditing()
         }
         .onChange(of: self.degrees) { degrees in
-            switch degrees {
-            case 0..<120:
-                self.colorWheelSection = .momo
-            case 120..<240:
-                self.colorWheelSection = .momoPurple
-            case 240..<360:
-                self.colorWheelSection = .momoOrange
-            default: break
-            }
+            self.calculatePct(degrees)
+            self.calculateColorWheelSection(degrees)
         }
         .onReceive(self.viewRouter.homeWillChange) { state in
             switch state {
@@ -297,6 +289,24 @@ struct MomoAddMoodView: View {
             case .done:
                 self.doneViewActive = true
             }
+        }
+    }
+
+    // MARK: - Internal Calculations
+
+    private func calculateColorWheelSection(_ degrees: CGFloat) {
+        switch degrees {
+        case 0..<120: self.colorWheelSection = .momo
+        case 120..<240: self.colorWheelSection = .momoPurple
+        case 240..<360: self.colorWheelSection = .momoOrange
+        default: break
+        }
+    }
+
+    private func calculatePct(_ degrees: CGFloat) {
+        switch degrees {
+        case 0...60: self.pct = (self.degrees + 300) / 360
+        default: self.pct = (self.degrees - 60) / 360
         }
     }
 
