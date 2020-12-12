@@ -10,8 +10,9 @@ import SwiftUI
 // MARK: - Extension
 
 extension View {
-    func momoButtonStyle(w: CGFloat, h: CGFloat, isActive: Bool = true) -> some View {
-        return self.buttonStyle(MomoButtonStyle(w: w, h: h, isActive: isActive))
+    func momoButtonStyle(button: Momo.Button, isActive: Bool = true) -> some View {
+        return self.buttonStyle(MomoButtonStyle(button: button, isActive: isActive))
+        //return self.buttonStyle(MomoButtonStyle(w: w, h: h, isActive: isActive))
     }
 }
 
@@ -19,17 +20,17 @@ extension View {
 
 struct MomoButton: View {
     @Binding var isActive: Bool
-    var type: MomoButtonType
-    var action: () -> Void
+    let button: Momo.Button
+    let action: () -> Void
     
     var body: some View {
         Button(action: action) {
             HStack {
                 Text("Done")
-                Image(systemName: type.imageName)
+                Image(systemName: button.imageName)
             }
         }
-        .momoButtonStyle(w: 90, h: 34, isActive: isActive)
+        .momoButtonStyle(button: button, isActive: isActive)
         .disabled(!isActive)
     }
 }
@@ -37,9 +38,11 @@ struct MomoButton: View {
 // MARK: - MomoButtonStyle
 
 struct MomoButtonStyle: ButtonStyle {
-    var w: CGFloat
-    var h: CGFloat
+    let button: Momo.Button
+    private var w: CGFloat { button.size.w }
+    private var h: CGFloat { button.size.h }
     var isActive: Bool = true
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .momoText(.appButtonText)
@@ -56,22 +59,10 @@ struct MomoButtonStyle: ButtonStyle {
     }
 }
 
-// MARK: - Helpers
-
-enum MomoButtonType {
-    case done
-    var imageName: String {
-        switch self {
-        case .done:
-            return "arrow.right"
-        }
-    }
-}
-
 // MARK: - Previews
 
 struct NextButton_Previews: PreviewProvider {
     static var previews: some View {
-        MomoButton(isActive: .constant(true), type: .done, action: {})
+        MomoButton(isActive: .constant(true), button: .done, action: {})
     }
 }

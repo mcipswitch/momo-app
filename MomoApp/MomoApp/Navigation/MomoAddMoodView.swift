@@ -37,13 +37,11 @@ struct MomoAddMoodView: View {
 
     @State private var isDisabled = false
     
-    // Emotion Text Field
-    @State private var emotionText = ""
+    // UI Elements
+    @State private var text = ""
     @State private var textFieldIsFocused = false
     @State private var textFieldNotEmpty = false
-
-    // Blurred Color Wheel
-    @State private var blurredColorWheelIsActive = false
+    @State private var colorWheelIsActive = false
 
     // Add Emotion Button
     @GestureState private var dragState: DragState = .inactive
@@ -53,8 +51,6 @@ struct MomoAddMoodView: View {
 
     @State private var state: EmotionState = .add
 
-    private var buttonSize: CGFloat = 80
-    
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
 
@@ -78,7 +74,7 @@ struct MomoAddMoodView: View {
                 newLocation.x += value.translation.width
                 newLocation.y += value.translation.height
                 let distance = dragStart.distance(to: newLocation)
-                self.blurredColorWheelIsActive = distance > maxDistance ? true : false
+                self.colorWheelIsActive = distance > maxDistance ? true : false
 
                 // Calculate the degrees to activate correct part of 'BlurredColorWheel'
                 self.degrees = newLocation.angle(to: dragStart)
@@ -89,7 +85,7 @@ struct MomoAddMoodView: View {
             }.onEnded { value in
                 self.isDragging = false
                 self.dragValue = .zero
-                self.blurredColorWheelIsActive = false
+                self.colorWheelIsActive = false
                 self.isResetting = true
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
@@ -109,8 +105,8 @@ struct MomoAddMoodView: View {
 
     var body: some View {
         ZStack {
-            GeometryReader { geometry in
-                let centerPoint = CGPoint(x: geometry.size.width / 2, y: self.buttonSize / 2)
+            GeometryReader { geo in
+                let centerPoint = CGPoint(x: geo.size.width / 2, y: Momo.defaultButtonSize / 2)
 
                 // Main View
                 VStack(spacing: 48) {
@@ -129,7 +125,7 @@ struct MomoAddMoodView: View {
                             )
 
                         ZStack {
-                            Text("Hi, how are you feeling today?")
+                            Text(NSLocalizedString("Hello", comment: "The greeting message if today's entry is empty."))
                                 .momoText(.appMain)
                                 .slideInAnimation(if: self.$homeViewActive)
 
@@ -141,13 +137,13 @@ struct MomoAddMoodView: View {
                                 )
 
                             VStack(spacing: 6) {
-                                MomoTextField(text: $emotionText, textFieldIsFocused: $textFieldIsFocused)
+                                MomoTextField(text: $text, textFieldIsFocused: $textFieldIsFocused)
                                     .animateHomeState(inValue: self.$addViewActive, outValue: self.$doneViewActive)
                                 MomoTextFieldBorder(textFieldIsFocused: self.$textFieldIsFocused)
                                     .animateTextFieldBorder(inValue: self.$addViewActive, outValue: self.$doneViewActive)
                             }
                         }
-                        .onChange(of: self.emotionText) { field in
+                        .onChange(of: self.text) { field in
                             self.textFieldNotEmpty = field.isEmpty ? false : true
                         }
                         // TODO: - make this number dynamic?
@@ -176,7 +172,7 @@ struct MomoAddMoodView: View {
                     // Bottom Navigation
                     ZStack {
                         BlurredColorWheel(
-                            isActive: self.$blurredColorWheelIsActive,
+                            isActive: self.$colorWheelIsActive,
                             section: self.$colorWheelSection
                         )
                         .position(self.dragStart)
@@ -190,7 +186,6 @@ struct MomoAddMoodView: View {
                                     isAnimating: self.$isAnimating,
                                     isDragging: self.$isDragging,
                                     isResetting: self.$isResetting,
-                                    buttonSize: self.buttonSize,
                                     action: self.addEmotionButtonPressed
                                 )
                                 /*
@@ -294,7 +289,7 @@ struct MomoAddMoodView: View {
         HStack {
             MomoToolbarButton(type: .back, action: self.backButtonPressed)
             Spacer()
-            MomoButton(isActive: self.$textFieldNotEmpty, type: .done, action: self.doneButtonPressed)
+            MomoButton(isActive: self.$textFieldNotEmpty, button: .done, action: self.doneButtonPressed)
                 .animation(.ease(), value: self.textFieldNotEmpty)
         }
     }
@@ -329,7 +324,7 @@ struct MomoAddMoodView: View {
     private func doneButtonPressed() {
         self.viewRouter.changeHomeState(.done)
 
-        print("Emotion: \(self.emotionText), Value: \(self.pct)")
+        print("Emotion: \(self.text), Value: \(self.pct)")
 
         // Reset to home page after a delay
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
@@ -346,8 +341,7 @@ struct AddEmotionButton: View {
     @Binding var isAnimating: Bool
     @Binding var isDragging: Bool
     @Binding var isResetting: Bool
-    @State var buttonSize: CGFloat
-    var action: () -> Void
+    let action: () -> Void
 
     var body: some View {
         ZStack {
@@ -359,12 +353,11 @@ struct AddEmotionButton: View {
                                 : Animation.ease().delay(0.5)
                     )
             }
-            .buttonStyle(MomoButtonStyle(w: self.homeViewActive ? 230 : self.buttonSize,
-                                         h: self.homeViewActive ? 60 : self.buttonSize))
+            .buttonStyle(MomoButtonStyle(button: self.homeViewActive ? .standard : .joystick))
 
             // Can we use preference key here to draw Color Ring to correct size?
             ColorRing(
-                size: self.buttonSize,
+                size: Momo.defaultButtonSize,
                 shiftColors: self.$isAnimating,
                 isDragging: self.$isDragging
             )

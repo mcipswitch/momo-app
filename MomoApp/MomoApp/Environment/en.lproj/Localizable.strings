@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  MomoApp
+
+  Created by Priscilla Ip on 2020-12-12.
+  
+*/
+
+// Please see: https://medium.com/better-programming/how-to-easily-localize-your-app-strings-in-swift-fa28a380217b
+
+"Hello" = "Hi, how are you feeling today?";

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - AddMoodViewLogic
+
 struct AddMoodViewLogic {
 
     /// Activate the corresponding color wheel section.
@@ -33,6 +35,35 @@ struct AddMoodViewLogic {
             return (degrees + 300) / 360
         default:
             return (degrees - 60) / 360
+        }
+    }
+}
+
+// MARK: - Momo Design System
+
+struct Momo {
+    public static let defaultButtonSize: CGFloat = 80
+
+    enum Button {
+        typealias SizeTuple = (w: CGFloat, h: CGFloat)
+
+        case done
+        case standard
+        case joystick
+
+        var size: SizeTuple {
+            switch self {
+            case .done: return SizeTuple(90, 34)
+            case .standard: return SizeTuple(230, 60)
+            case .joystick: return SizeTuple(80, 80)
+            }
+        }
+
+        var imageName: String {
+            switch self {
+            case .done: return "arrow.right"
+            default: return ""
+            }
         }
     }
 }
