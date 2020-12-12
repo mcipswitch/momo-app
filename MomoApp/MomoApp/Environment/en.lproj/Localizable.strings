@@ -9,3 +9,10 @@
 // Please see: https://medium.com/better-programming/how-to-easily-localize-your-app-strings-in-swift-fa28a380217b
 
 "Hello" = "Hi, how are you feeling today?";
+
+"See your past entries" = "See your past entries";
+"All entries" = "All entries";
+"Last 7 days" = "Last 7 days";
+
+"Add today's emotion" = "Add today's emotion";
+"Edit today's emotion" = "Edit today's emotion";

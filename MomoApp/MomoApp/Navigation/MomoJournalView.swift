@@ -20,7 +20,7 @@ struct MomoJournalView: View {
     @State var animateGraph = false
 
     /// The journal button on the toolbar.
-    var journal: ToolbarButtonType {
+    var journal: Momo.ToolbarButton {
         self.isGraph ? .list : .graph
     }
 
@@ -57,11 +57,11 @@ struct MomoJournalView: View {
 
     var navigationToolbar: some View {
         ZStack {
-            MomoToolbarTitle(type: self.journal)
+            MomoToolbarTitle(button: self.journal)
             HStack(alignment: .top) {
-                MomoToolbarButton(type: .back, action: self.backButtonPressed)
+                MomoToolbarButton(button: .back, action: self.backButtonPressed)
                 Spacer()
-                MomoToolbarButton(type: self.journal, action: self.journalTypeButtonPressed)
+                MomoToolbarButton(button: self.journal, action: self.journalTypeButtonPressed)
             }
         }
         .padding()

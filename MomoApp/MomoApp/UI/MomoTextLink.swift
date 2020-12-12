@@ -7,28 +7,22 @@
 
 import SwiftUI
 
-enum MomoTextLink {
-    case pastEntries
-    var text: String {
-        switch self {
-        case .pastEntries:
-            return "See your past entries"
-        }
-    }
-}
+// MARK: - MomoTextLinkButton
 
-struct MomoTextLinkButton: View {
-    var link: MomoTextLink
+struct MomoLinkButton: View {
+    var link: Momo.Link
     var action: () -> Void
     var body: some View {
         Button(action: action) {
             Text(link.text).underline()
         }
-        .momoTextLinkStyle()
+        .momoLinkStyle()
     }
 }
 
-struct MomoTextLinkStyle: ButtonStyle {
+// MARK: - MomoTextLinkStyle
+
+struct MomoLinkStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(Color.momo.opacity(
@@ -41,8 +35,8 @@ struct MomoTextLinkStyle: ButtonStyle {
 // MARK: - Extensions
 
 extension View {
-    func momoTextLinkStyle() -> some View {
-        return self.buttonStyle(MomoTextLinkStyle())
+    func momoLinkStyle() -> some View {
+        return self.buttonStyle(MomoLinkStyle())
     }
 }
 

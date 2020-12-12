@@ -11,40 +11,26 @@ enum Journal {
     case list, graph
 }
 
-enum ToolbarButtonType {
-    case back, list, graph
-
-    var imageName: String {
-        switch self {
-        case .back: return "chevron.backward"
-        case .list: return "list.bullet"
-        case .graph: return "chart.bar.xaxis"
-        }
-    }
-
-    var title: String {
-        switch self {
-        case .list: return "All entries"
-        case .graph: return "Last 7 days"
-        default: return ""
-        }
-    }
-}
+// MARK: - MomoToolbarTitle
 
 struct MomoToolbarTitle: View {
-    var type: ToolbarButtonType
+    let button: Momo.ToolbarButton
+    
     var body: some View {
-        Text(type.title)
+        Text(button.title)
             .momoText(.appToolbarTitle)
     }
 }
 
+// MARK: - MomoToolbarButton
+
 struct MomoToolbarButton: View {
-    var type: ToolbarButtonType
-    var action: () -> Void
+    let button: Momo.ToolbarButton
+    let action: () -> Void
+
     var body: some View {
         Button(action: action) {
-            Image(systemName: type.imageName)
+            Image(systemName: button.imageName)
         }
         .momoText(.appToolbarButton)
     }

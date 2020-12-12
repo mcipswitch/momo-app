@@ -14,7 +14,7 @@ struct AddMoodViewLogic {
     /// Activate the corresponding color wheel section.
     /// - Parameter degrees: The angle of the joystick in degrees.
     /// - Returns: `ColorWheelSection`
-    func activateColorWheelSection(degrees: CGFloat) -> ColorWheelSection {
+    func activateColorWheelSection(degrees: CGFloat) -> Momo.ColorWheelSection {
         switch degrees {
         case 0..<120:
             return .momo
@@ -44,12 +44,12 @@ struct AddMoodViewLogic {
 struct Momo {
     public static let defaultButtonSize: CGFloat = 80
 
+    // MARK: Button
     enum Button {
         typealias SizeTuple = (w: CGFloat, h: CGFloat)
 
         case done
-        case standard
-        case joystick
+        case standard, joystick
 
         var size: SizeTuple {
             switch self {
@@ -63,6 +63,63 @@ struct Momo {
             switch self {
             case .done: return "arrow.right"
             default: return ""
+            }
+        }
+    }
+
+    // MARK: ToolbarButton
+    enum ToolbarButton {
+        case back, list, graph
+
+        var imageName: String {
+            switch self {
+            case .back: return "chevron.backward"
+            case .list: return "list.bullet"
+            case .graph: return "chart.bar.xaxis"
+            }
+        }
+
+        var title: String {
+            switch self {
+            case .list: return NSLocalizedString("All entries", comment: "")
+            case .graph: return NSLocalizedString("Last 7 days", comment: "")
+            default: return ""
+            }
+        }
+    }
+
+    // MARK: ToolbarButton
+    enum Link {
+        case pastEntries
+
+        var text: String {
+            switch self {
+            case .pastEntries: return NSLocalizedString("See your past entries", comment: "")
+            }
+        }
+    }
+
+    // MARK: ColorWheelSection
+    enum ColorWheelSection {
+        case momo, momoPurple, momoOrange
+
+        var degrees: Double {
+            switch self {
+            case .momo: return 0
+            case .momoPurple: return 120
+            case .momoOrange: return 240
+            }
+        }
+    }
+
+    // MARK: EntryState
+    enum EntryState {
+        case add, edit
+
+        var text: String {
+            switch self {
+            case .add: return NSLocalizedString("Add today's emotion", comment: "")
+            case .edit: return NSLocalizedString("Edit today's emotion", comment: "")
             }
         }
     }

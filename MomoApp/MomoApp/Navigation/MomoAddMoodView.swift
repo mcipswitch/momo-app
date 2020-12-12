@@ -7,18 +7,6 @@
 
 import SwiftUI
 
-enum EmotionState {
-    case add, edit
-    var text: String {
-        switch self {
-        case .add:
-            return "Add today's emotion"
-        case .edit:
-            return "Edit today's emotion"
-        }
-    }
-}
-
 struct MomoAddMoodView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     private var viewLogic = AddMoodViewLogic()
@@ -29,7 +17,7 @@ struct MomoAddMoodView: View {
     
     @State private var pct: CGFloat = 0
     @State private var degrees: CGFloat = 0
-    @State private var colorWheelSection: ColorWheelSection = .momo
+    @State private var colorWheelSection: Momo.ColorWheelSection = .momo
     
     @State private var isDragging = false
     @State private var isAnimating = false
@@ -49,7 +37,7 @@ struct MomoAddMoodView: View {
     @State private var dragStart = CGPoint.zero
     @State private var buttonLocation: CGPoint? = nil
 
-    @State private var state: EmotionState = .add
+    @State private var state: Momo.EntryState = .add
 
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
@@ -181,7 +169,7 @@ struct MomoAddMoodView: View {
                         GeometryReader { geometry in
                             ZStack(alignment: .center) {
                                 AddEmotionButton(
-                                    emotionState: self.$state,
+                                    entryState: self.$state,
                                     homeViewActive: self.$homeViewActive,
                                     isAnimating: self.$isAnimating,
                                     isDragging: self.$isDragging,
@@ -196,7 +184,7 @@ struct MomoAddMoodView: View {
                                             .bounce()
                                             .delay(if: self.homeViewActive, (self.isResetting ? 0 : 0.2))
                                 )
-                                MomoTextLinkButton(
+                                MomoLinkButton(
                                     link: .pastEntries,
                                     action: self.seePastEntriesButtonPressed
                                 )
@@ -287,7 +275,7 @@ struct MomoAddMoodView: View {
 
     var topNavigation: some View {
         HStack {
-            MomoToolbarButton(type: .back, action: self.backButtonPressed)
+            MomoToolbarButton(button: .back, action: self.backButtonPressed)
             Spacer()
             MomoButton(isActive: self.$textFieldNotEmpty, button: .done, action: self.doneButtonPressed)
                 .animation(.ease(), value: self.textFieldNotEmpty)
@@ -336,7 +324,7 @@ struct MomoAddMoodView: View {
 // MARK: - Views
 
 struct AddEmotionButton: View {
-    @Binding var emotionState: EmotionState
+    @Binding var entryState: Momo.EntryState
     @Binding var homeViewActive: Bool
     @Binding var isAnimating: Bool
     @Binding var isDragging: Bool
@@ -346,7 +334,7 @@ struct AddEmotionButton: View {
     var body: some View {
         ZStack {
             Button(action: self.action) {
-                Text(self.emotionState.text)
+                Text(self.entryState.text)
                     .opacity(self.isAnimating ? 0 : 1)
                     .animation(self.isAnimating
                                 ? .none

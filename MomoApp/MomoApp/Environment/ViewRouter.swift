@@ -51,14 +51,9 @@ class ViewRouter: ObservableObject {
     var isJournal: Bool {
         self.currentPage == .journal
     }
-}
 
-// MARK: - Helpers
-
-enum Page {
-    case home, journal
-}
-
-enum HomeState {
-    case home, add, done
+    // MARK: - Enums
+    
+    enum Page { case home, journal }
+    enum HomeState { case home, add, done }
 }

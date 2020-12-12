@@ -1,5 +1,5 @@
 //
-//  RainbowRing.swift
+//  BlurredColorWheel.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-09-17.
@@ -11,8 +11,7 @@ import SwiftUI
 
 struct BlurredColorWheel: View {
     @Binding var isActive: Bool
-    //@Binding var degrees: Double
-    @Binding var section: ColorWheelSection
+    @Binding var section: Momo.ColorWheelSection
     
     var body: some View {
         let gradient = Gradient(colors: [Color.momo, Color.momoPurple, Color.momoOrange, Color.momo])
@@ -31,27 +30,5 @@ struct BlurredColorWheel: View {
                     .rotationEffect(Angle(degrees: self.section.degrees))
             )
             .blur(radius: 40)
-    }
-}
-
-// MARK: - Helpers
-
-enum ColorWheelSection {
-    case momo, momoPurple, momoOrange
-
-    var degrees: Double {
-        switch self {
-        case .momo: return 0
-        case .momoPurple: return 120
-        case .momoOrange: return 240
-        }
-    }
-}
-
-// MARK: - Previews
-
-struct BlurredColorWheel_Previews: PreviewProvider {
-    static var previews: some View {
-        BlurredColorWheel(isActive: .constant(true), section: .constant(.momoPurple))
     }
 }
