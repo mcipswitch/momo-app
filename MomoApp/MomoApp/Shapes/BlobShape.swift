@@ -70,7 +70,7 @@ struct BlobView: View {
                                 pct: self.blobValue))
                     // Top left
                     .softInnerShadow(Rectangle(),
-                                     darkShadow: Color.white.opacity(0.8),
+                                     //darkShadow: Color.white.opacity(0.8),
                                      lightShadow: .clear,
                                      spread: 1.0,
                                      radius: 30)
@@ -79,7 +79,8 @@ struct BlobView: View {
                     // Bottom right
                     .softInnerShadow(Rectangle(),
                                      darkShadow: .clear,
-                                     lightShadow: Color.momoShadow.opacity(0.8),
+                                     lightShadow: Color.momoShadow.opacity(0.6),
+                                     //lightShadow: Color.momoShadow.opacity(0.8),
                                      spread: 0.8,
                                      radius: 30)
                     .blendMode(.multiply)
@@ -218,6 +219,6 @@ struct BlobShape: Shape {
 
 struct BlobShape_Previews: PreviewProvider {
     static var previews: some View {
-        BlobView(blobValue: .constant(1.0), isStatic: false, isAnimating: false, scale: 1.0)
+        BlobView(blobValue: .constant(0.33), isStatic: false, isAnimating: false, scale: 1.0)
     }
 }

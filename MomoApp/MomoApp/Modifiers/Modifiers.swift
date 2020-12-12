@@ -29,10 +29,8 @@ struct MomoText: ViewModifier {
             .foregroundColor(self.textStyle.color
                                 .opacity(self.textStyle.opacity)
             )
-
-
-//            .multilineTextAlignment(.center)
-//            .lineSpacing(4)
+            .multilineTextAlignment(.center)
+            .lineSpacing(4)
     }
 }
 
@@ -90,50 +88,7 @@ enum MomoTextStyle {
         default: return .white
         }
     }
-
-//    case date, toolbarButton, toolbarTitle, link, button, main, doneMessage
-//    case graphWeekday, graphDay
-//    var size: CGFloat {
-//        switch self {
-//        case .doneMessage:
-//            return 32
-//        case .main, .toolbarButton:
-//            return 22
-//        case .date, .link, .toolbarTitle:
-//            return 16
-//        case .button, .graphDay:
-//            return 14
-//        case .graphWeekday:
-//            return 12
-//        }
-//    }
-//    var opacity: Double {
-//        switch self {
-//        case .date: return 0.6
-//        case .graphWeekday: return 0.4
-//        default: return 1
-//        }
-//    }
-//    var font: FontWeight {
-//        switch self {
-//        case .link, .toolbarTitle, .button, .main, .graphWeekday, .graphDay, .doneMessage:
-//            return .bold
-//        default:
-//            return .medium
-//        }
-//    }
-//    var color: Color {
-//        switch self {
-//        case .button: return .black
-//        default: return .white
-//        }
-//    }
 }
-//
-//enum FontWeight: String {
-//    case medium = "DMSans-Medium"
-//    case bold = "DMSans-Bold"
-//}
 
 // MARK: - Animations
 

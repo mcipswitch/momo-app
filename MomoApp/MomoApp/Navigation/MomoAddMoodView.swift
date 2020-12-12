@@ -250,11 +250,11 @@ struct MomoAddMoodView: View {
                     .disabled(self.isResetting)
 
                     // animate home state
-                    .opacity(self.doneViewActive ? 0 : 1)
-                    .animation(
-                        Animation.easeInOut(duration: 1.0)
-                            .delay(self.doneViewActive ? 0 : 2.0)
-                    )
+//                    .opacity(self.doneViewActive ? 0 : 1)
+//                    .animation(
+//                        Animation.easeInOut(duration: 1.0)
+//                            .delay(self.doneViewActive ? 0 : 2.0)
+//                    )
             }
         }
         .background(
@@ -275,9 +275,12 @@ struct MomoAddMoodView: View {
         }
         .onChange(of: self.degrees) { degrees in
             switch degrees {
-            case 0..<120: self.colorWheelSection = .momo
-            case 120..<240: self.colorWheelSection = .momoPurple
-            case 240..<360: self.colorWheelSection = .momoOrange
+            case 0..<120:
+                self.colorWheelSection = .momo
+            case 120..<240:
+                self.colorWheelSection = .momoPurple
+            case 240..<360:
+                self.colorWheelSection = .momoOrange
             default: break
             }
         }
@@ -307,7 +310,6 @@ struct MomoAddMoodView: View {
                 .animation(.ease(), value: self.textFieldNotEmpty)
         }
     }
-
 
     var currentDate: some View {
         Text(Date(), formatter: DateFormatter.shortDate)

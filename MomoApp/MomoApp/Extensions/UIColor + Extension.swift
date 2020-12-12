@@ -1,6 +1,8 @@
 import UIKit
 import SwiftUI
 
+// https://qvik.com/news/building-swiftui-design-system-colors-typography-iconography-animation/
+
 extension UIColor {
 
     static func fromHexString(_ hexString: String, alpha: CGFloat = 1.0) -> UIColor {
@@ -19,13 +21,13 @@ extension UIColor {
         return UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
     }
 
-//    public static let gradientMomo: [UIColor] = [#colorLiteral(red: 0.568627451, green: 0.9882352941, blue: 0.9960784314, alpha: 1), #colorLiteral(red: 0.4156862745, green: 0.8666666667, blue: 0.8039215686, alpha: 1), #colorLiteral(red: 0.3568627451, green: 0.6823529412, blue: 0.9490196078, alpha: 1)]
-//    public static let gradientPurple: [UIColor] = [#colorLiteral(red: 0.8588235294, green: 0.2745098039, blue: 0.7568627451, alpha: 1), #colorLiteral(red: 0.7882352941, green: 0.2823529412, blue: 0.8274509804, alpha: 1), #colorLiteral(red: 0.7137254902, green: 0.2941176471, blue: 0.8980392157, alpha: 1)]
-//    public static let gradientOrange: [UIColor] = [#colorLiteral(red: 0.968627451, green: 0.8549019608, blue: 0.5921568627, alpha: 1), #colorLiteral(red: 0.8196078431, green: 0.8588235294, blue: 0.4705882353, alpha: 1), #colorLiteral(red: 0.6941176471, green: 0.8392156863, blue: 0.4431372549, alpha: 1)]
+    public static let gradientMomo: [UIColor] = [#colorLiteral(red: 0.568627451, green: 0.9882352941, blue: 0.9960784314, alpha: 1), #colorLiteral(red: 0.4156862745, green: 0.8666666667, blue: 0.8039215686, alpha: 1), #colorLiteral(red: 0.3568627451, green: 0.6823529412, blue: 0.9490196078, alpha: 1)]
+    public static let gradientPurple: [UIColor] = [#colorLiteral(red: 0.8588235294, green: 0.2745098039, blue: 0.7568627451, alpha: 1), #colorLiteral(red: 0.7882352941, green: 0.2823529412, blue: 0.8274509804, alpha: 1), #colorLiteral(red: 0.7137254902, green: 0.2941176471, blue: 0.8980392157, alpha: 1)]
+    public static let gradientOrange: [UIColor] = [#colorLiteral(red: 0.968627451, green: 0.8549019608, blue: 0.5921568627, alpha: 1), #colorLiteral(red: 0.8196078431, green: 0.8588235294, blue: 0.4705882353, alpha: 1), #colorLiteral(red: 0.6941176471, green: 0.8392156863, blue: 0.4431372549, alpha: 1)]
 
-    public static let gradientMomo: [UIColor] = [#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)]
-    public static let gradientPurple: [UIColor] = [#colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1)]
-    public static let gradientOrange: [UIColor] = [#colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1)]
+//    public static let gradientMomo: [UIColor] = [#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)]
+//    public static let gradientPurple: [UIColor] = [#colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1)]
+//    public static let gradientOrange: [UIColor] = [#colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1)]
 
     public static let mArray: [UIColor] = [#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1), #colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1), #colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1), #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)]
 }
@@ -40,7 +42,6 @@ extension Color {
 extension Gradient {
     public static let momoBackgroundGradient = Gradient(colors: [Color(#colorLiteral(red: 0.2588235294, green: 0.2039215686, blue: 0.5019607843, alpha: 1)), Color(#colorLiteral(red: 0.1098039216, green: 0.09411764706, blue: 0.2509803922, alpha: 1))])
     public static let doneBackgroundGradient = Gradient(colors: [Color(#colorLiteral(red: 0.4509803922, green: 0.3607843137, blue: 0.8666666667, alpha: 1)), Color(#colorLiteral(red: 0.1921568627, green: 0.1529411765, blue: 0.3882352941, alpha: 1)), Color(#colorLiteral(red: 0.03921568627, green: 0.03921568627, blue: 0.1294117647, alpha: 1))])
-    public static let mGradient = Gradient(colors: [.momo, .momoPurple, .momoShadow, .momo])
 }
 
 extension RadialGradient {

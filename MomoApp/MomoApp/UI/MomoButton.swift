@@ -7,13 +7,11 @@
 
 import SwiftUI
 
-enum MomoButtonType {
-    case done
-    var imageName: String {
-        switch self {
-        case .done:
-            return "arrow.right"
-        }
+// MARK: - Extension
+
+extension View {
+    func momoButtonStyle(w: CGFloat, h: CGFloat, isActive: Bool = true) -> some View {
+        return self.buttonStyle(MomoButtonStyle(w: w, h: h, isActive: isActive))
     }
 }
 
@@ -58,11 +56,15 @@ struct MomoButtonStyle: ButtonStyle {
     }
 }
 
-// MARK: - Extension
+// MARK: - Helpers
 
-extension View {
-    func momoButtonStyle(w: CGFloat, h: CGFloat, isActive: Bool = true) -> some View {
-        return self.buttonStyle(MomoButtonStyle(w: w, h: h, isActive: isActive))
+enum MomoButtonType {
+    case done
+    var imageName: String {
+        switch self {
+        case .done:
+            return "arrow.right"
+        }
     }
 }
 

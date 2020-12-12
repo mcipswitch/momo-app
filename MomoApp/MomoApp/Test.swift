@@ -24,21 +24,49 @@ struct AnimatableGradientTest: AnimatableModifier {
     }
 
     func body(content: Content) -> some View {
-        var gColors = [Color]()
-
-//        for i in 0..<from.count {
-//            gColors.append(colorMixer(c1: from[i], c2: to[i], pct: pct))
-//        }
+        let cArray: [[UIColor]] = [c1, c2, c3, c1]
+        let gColors = cArray.inter(percentage: self.pct)
 
         return Rectangle()
             .fill(RadialGradient(gradient: Gradient(colors: gColors),
                                  center: .topLeading,
                                  startRadius: startRadius,
                                  endRadius: endRadius))
+//            .fill(LinearGradient(gradient: Gradient(colors: gColors),
+//                                 startPoint: .topLeading,
+//                                 endPoint: .bottomTrailing))
+    }
+}
+
+// MARK: - Extension
+
+extension Array where Element == [UIColor] {
+    func inter(percentage: CGFloat) -> [Color] {
+        let percentage = Swift.max(Swift.min(percentage, 1), 0)
+        switch percentage {
+        case 0: return [Color(#colorLiteral(red: 0.568627451, green: 0.9882352941, blue: 0.9960784314, alpha: 1)), Color(#colorLiteral(red: 0.4156862745, green: 0.8666666667, blue: 0.8039215686, alpha: 1)), Color(#colorLiteral(red: 0.3568627451, green: 0.6823529412, blue: 0.9490196078, alpha: 1))]
+        case 1: return [Color(#colorLiteral(red: 0.568627451, green: 0.9882352941, blue: 0.9960784314, alpha: 1)), Color(#colorLiteral(red: 0.4156862745, green: 0.8666666667, blue: 0.8039215686, alpha: 1)), Color(#colorLiteral(red: 0.3568627451, green: 0.6823529412, blue: 0.9490196078, alpha: 1))]
+        default:
+            let approxIndex = percentage / (1 / CGFloat(count - 1))
+            let firstIndex = Int(approxIndex.rounded(.down))
+            let secondIndex = Int(approxIndex.rounded(.up))
+
+            let ca1 = self[firstIndex]
+            let ca2 = self[secondIndex]
+
+            /// Array of gradient colors
+            var gColors = [Color]()
+            let intermediatePercentage = approxIndex - CGFloat(firstIndex)
+
+            for i in 0..<ca1.count {
+                gColors.append(self.colorMixer(c1: ca1[i], c2: ca2[i], pct: intermediatePercentage))
+            }
+
+            return gColors
+        }
     }
 
-    // Basic implementation of a color interpolation between two values.
-    func colorMixer(c1: UIColor, c2: UIColor, pct: CGFloat) -> Color {
+    private func colorMixer(c1: UIColor, c2: UIColor, pct: CGFloat) -> Color {
         let cc1 = c1.hsbComponents
         let cc2 = c2.hsbComponents
 
@@ -52,33 +80,62 @@ struct AnimatableGradientTest: AnimatableModifier {
     }
 }
 
-// MARK: - Extension
+// MARK: - Previews
 
-extension Array where Element: UIColor {
-    func inter(percentage: CGFloat) -> Color {
-        let percentage = Swift.max(Swift.min(percentage, 100), 0) / 100
-        switch percentage {
-        case 0: return Color(first ?? .clear)
-        case 1: return Color(last ?? .clear)
-        default:
-            let approxIndex = percentage / (1 / CGFloat(count - 1))
-            let firstIndex = Int(approxIndex.rounded(.down))
-            let secondIndex = Int(approxIndex.rounded(.up))
-
-            let firstColor = self[firstIndex]
-            let secondColor = self[secondIndex]
-
-            let c1 = firstColor.rgbComponents
-            let c2 = secondColor.rgbComponents
-
-            let intermediatePercentage = approxIndex - CGFloat(firstIndex)
-
-            let uiColor = UIColor(red: CGFloat(c1.red + (c2.red - c1.red) * intermediatePercentage),
-                                  green: CGFloat(c1.green + (c2.green - c1.green) * intermediatePercentage),
-                                  blue: CGFloat(c1.blue + (c2.blue - c1.blue) * intermediatePercentage),
-                                  alpha: CGFloat(c1.alpha + (c2.alpha - c1.alpha) * intermediatePercentage))
-
-            return Color(uiColor)
+struct Test_Previews: PreviewProvider {
+    static var previews: some View {
+        HStack(spacing: 0) {
+            VStack(alignment: .center, spacing: 2) {
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.0, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.025, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.05, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.075, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.1, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.125, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.15, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.175, startRadius: 0, endRadius: 250))
+            }
+            VStack(alignment: .center, spacing: 2) {
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.2, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.225, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.25, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.275, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.3, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.325, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.35, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.375, startRadius: 0, endRadius: 250))
+            }
+            VStack(alignment: .center, spacing: 2) {
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.4, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.425, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.45, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.475, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.5, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.525, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.55, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.575, startRadius: 0, endRadius: 250))
+            }
+            VStack(alignment: .center, spacing: 2) {
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.6, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.625, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.65, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.675, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.7, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.725, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.75, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.775, startRadius: 0, endRadius: 250))
+            }
+            VStack(alignment: .center, spacing: 2) {
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.8, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.825, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.85, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.875, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.9, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.925, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.95, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.927, startRadius: 0, endRadius: 250))
+                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 1.0, startRadius: 0, endRadius: 250))
+            }
         }
     }
 }

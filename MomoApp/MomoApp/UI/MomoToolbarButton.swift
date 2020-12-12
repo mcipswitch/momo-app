@@ -42,7 +42,6 @@ struct MomoToolbarTitle: View {
 struct MomoToolbarButton: View {
     var type: ToolbarButtonType
     var action: () -> Void
-    
     var body: some View {
         Button(action: action) {
             Image(systemName: type.imageName)
