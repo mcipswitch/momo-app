@@ -21,6 +21,7 @@ enum EmotionState {
 
 struct MomoAddMoodView: View {
     @EnvironmentObject var viewRouter: ViewRouter
+    private var viewLogic = AddMoodViewLogic()
 
     @State private var homeViewActive = true
     @State private var addViewActive = false
@@ -215,11 +216,6 @@ struct MomoAddMoodView: View {
                             )
 
 
-
-
-
-
-
                             .offset(x: self.dragValue.width * 0.8, y: self.dragValue.height * 0.8)
                             .position(self.buttonLocation ?? centerPoint)
                             .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
@@ -232,7 +228,6 @@ struct MomoAddMoodView: View {
                                     .position(dragState.location)
                                     .opacity(dragState.isActive ? 1 : 0)
                             }
-                            
                         }
                         .onAppear {
                             self.dragStart = centerPoint
@@ -273,10 +268,11 @@ struct MomoAddMoodView: View {
             UIApplication.shared.endEditing()
         }
         .onChange(of: self.degrees) { degrees in
-            self.calculatePct(degrees)
-            self.calculateColorWheelSection(degrees)
+            self.colorWheelSection = self.viewLogic.activateColorWheelSection(degrees: degrees)
+            self.pct = self.viewLogic.calculatePct(degrees: degrees)
         }
         .onReceive(self.viewRouter.homeWillChange) { state in
+            // TODO: - need to fix this up
             switch state {
             case .home:
                 self.homeViewActive = true
@@ -289,24 +285,6 @@ struct MomoAddMoodView: View {
             case .done:
                 self.doneViewActive = true
             }
-        }
-    }
-
-    // MARK: - Internal Calculations
-
-    private func calculateColorWheelSection(_ degrees: CGFloat) {
-        switch degrees {
-        case 0..<120: self.colorWheelSection = .momo
-        case 120..<240: self.colorWheelSection = .momoPurple
-        case 240..<360: self.colorWheelSection = .momoOrange
-        default: break
-        }
-    }
-
-    private func calculatePct(_ degrees: CGFloat) {
-        switch degrees {
-        case 0...60: self.pct = (self.degrees + 300) / 360
-        default: self.pct = (self.degrees - 60) / 360
         }
     }
 

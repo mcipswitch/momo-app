@@ -18,6 +18,7 @@
 		930ABB6F254A32E00050C1C4 /* MiniGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */; };
 		930AE6B725633B520091EDA7 /* DragState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930AE6B625633B520091EDA7 /* DragState.swift */; };
 		9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9318888125582B870004CD4F /* EntriesViewModel.swift */; };
+		9327E7FA25855EE40027C638 /* AddMoodViewLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */; };
 		932B3C8E257C425B00C6C67B /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = 932B3C8D257C425B00C6C67B /* Neumorphic */; };
 		9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9331230724F94C17008B6DD2 /* Animation + Extension.swift */; };
 		93347DF52551091F0015629B /* SelectionLineModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93347DF42551091F0015629B /* SelectionLineModifier.swift */; };
@@ -82,6 +83,7 @@
 		930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGraphView.swift; sourceTree = "<group>"; };
 		930AE6B625633B520091EDA7 /* DragState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragState.swift; sourceTree = "<group>"; };
 		9318888125582B870004CD4F /* EntriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesViewModel.swift; sourceTree = "<group>"; };
+		9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoodViewLogic.swift; sourceTree = "<group>"; };
 		9331230724F94C17008B6DD2 /* Animation + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation + Extension.swift"; sourceTree = "<group>"; };
 		93347DF42551091F0015629B /* SelectionLineModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionLineModifier.swift; sourceTree = "<group>"; };
 		93388BDF250FAAA700766633 /* ForceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceButton.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 			children = (
 				9318888125582B870004CD4F /* EntriesViewModel.swift */,
 				930925042558335C00AA3934 /* DataManager.swift */,
+				9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */,
 				9309250A255834BC00AA3934 /* Mock */,
 			);
 			path = ViewModel;
@@ -439,6 +442,7 @@
 				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
 				9390FB032563821200E2E53A /* HomeScreen.swift in Sources */,
 				938BBD0E2527B59000759092 /* MomoTextFieldBorder.swift in Sources */,
+				9327E7FA25855EE40027C638 /* AddMoodViewLogic.swift in Sources */,
 				93FAEB9B2514FCDC00C057AC /* MomoAddMoodView.swift in Sources */,
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
 				930924FF25582D0800AA3934 /* JournalListView.swift in Sources */,
