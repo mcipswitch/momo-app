@@ -10,9 +10,9 @@ import SwiftUI
 // MARK: - MomoButton
 
 struct MomoButton: View {
-    @Binding var isActive: Bool
     let button: Momo.Button
     let action: () -> Void
+    @Binding var isActive: Bool
     
     var body: some View {
         Button(action: action) {
@@ -30,10 +30,10 @@ struct MomoButton: View {
 
 struct MomoButtonStyle: ButtonStyle {
     let button: Momo.Button
+    var isActive: Bool = true
     private var w: CGFloat { button.size.w }
     private var h: CGFloat { button.size.h }
     private var cornerRadius: CGFloat { h / 2 }
-    var isActive: Bool = true
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -56,13 +56,5 @@ struct MomoButtonStyle: ButtonStyle {
 extension View {
     func momoButtonStyle(button: Momo.Button, isActive: Bool = true) -> some View {
         return self.buttonStyle(MomoButtonStyle(button: button, isActive: isActive))
-    }
-}
-
-// MARK: - Previews
-
-struct NextButton_Previews: PreviewProvider {
-    static var previews: some View {
-        MomoButton(isActive: .constant(true), button: .done, action: {})
     }
 }

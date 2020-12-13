@@ -35,10 +35,10 @@ struct MomoJournalView: View {
                     .slide(if: $animateList)
             }
             .onReceive(self.viewRouter.journalWillChange) {
-                withAnimation(Animation.ease().delay(if: !animateGraph, 0.5)) {
+                withAnimation(Animation.ease.delay(if: !animateGraph, 0.5)) {
                     self.animateGraph.toggle()
                 }
-                withAnimation(Animation.ease().delay(if: !animateList, 0.5)) {
+                withAnimation(Animation.ease.delay(if: !animateList, 0.5)) {
                     self.animateList.toggle()
                 }
             }

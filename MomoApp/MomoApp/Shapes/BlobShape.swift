@@ -145,7 +145,7 @@ struct BlobAnimationModifier: ViewModifier {
             .scaleEffect(isAnimating ? 1.05 : 1)
             .animation(self.breathe ?
                 Animation
-                    .breathe()
+                    .breathe
                     .repeat(while: isAnimating)
                 : nil
             )

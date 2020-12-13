@@ -67,7 +67,7 @@ struct Momo {
         }
     }
 
-    // MARK: ToolbarButton
+    // MARK: Link
     enum Link {
         case pastEntries
 
@@ -76,6 +76,13 @@ struct Momo {
             case .pastEntries: return NSLocalizedString("See your past entries", comment: "")
             }
         }
+
+//        var action: () -> Void {
+//            switch self {
+//            case .pastEntries :
+//                return 
+//            }
+//        }
     }
 
     // MARK: ColorWheelSection

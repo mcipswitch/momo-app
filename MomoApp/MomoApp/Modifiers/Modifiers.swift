@@ -92,46 +92,52 @@ enum MomoTextStyle {
 
 // MARK: - Animations
 
-struct AnimateHomeState: ViewModifier {
-    @Binding var observedValueForSlideIn: Bool
-    @Binding var observedValueForSlideOut: Bool
-
-    func body(content: Content) -> some View {
-        content
-            .offset(y: self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 0 : 0) : -5)
-            .opacity(self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 1 : 1) : 0)
-            .animation(
-                Animation
-                    .ease()
-                    .delay(if: self.observedValueForSlideIn, (!self.observedValueForSlideOut ? 0.5 : 0))
-            )
-    }
-}
+//struct AnimateHomeState: ViewModifier {
+//    @Binding var observedValueForSlideIn: Bool
+//    @Binding var observedValueForSlideOut: Bool
+//
+//    func body(content: Content) -> some View {
+//        content
+//            .offset(y: self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 0 : 0) : -5)
+//            .opacity(self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 1 : 1) : 0)
+//            .animation(
+//                Animation
+//                    .ease
+//                    .delay(if: self.observedValueForSlideIn, (!self.observedValueForSlideOut ? 0.5 : 0))
+//            )
+//    }
+//}
 
 struct AnimateTextFieldBorder: ViewModifier {
-    @Binding var observedValueForSlideIn: Bool
-    @Binding var observedValueForSlideOut: Bool
+    @Binding var value: Bool
 
     func body(content: Content) -> some View {
         content
-            .opacity(self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 1 : 0) : 0)
-            .frame(maxWidth: self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? .infinity : 0) : 0)
-            .animation(
-                Animation
-                    .bounce()
-                    .delay(if: self.observedValueForSlideIn, (!self.observedValueForSlideOut ? 0.6 : 0))
-            )
+            .opacity(value ? 0 : 1)
+            .frame(maxWidth: value ? 0 : .infinity)
+            .animation(Animation.bounce.delay(if: !value, 0.6))
     }
 }
 
 struct AnimateSlideIn: ViewModifier {
-    @Binding var observedValue: Bool
+    @Binding var value: Bool
 
     func body(content: Content) -> some View {
         content
-            .offset(y: observedValue ? 0 : 5)
-            .opacity(observedValue ? 1 : 0)
-            .animation(Animation.ease().delay(if: observedValue, 0.5))
+            .offset(y: value ? 0 : 5)
+            .opacity(value ? 1 : 0)
+            .animation(Animation.ease.delay(if: value, 0.5))
+    }
+}
+
+struct AnimateSlideOut: ViewModifier {
+    @Binding var value: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .offset(y: value ? -5 : 0)
+            .opacity(value ? 0 : 1)
+            .animation(Animation.ease.delay(if: !value, 0.5))
     }
 }
 

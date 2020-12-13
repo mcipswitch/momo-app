@@ -24,25 +24,25 @@ extension Animation {
 
     /// Creates a resisting band animation effect.
     /// - Returns: An `Animation` instance.
-    public static func resist() -> Animation {
+    public static var resist: Animation {
         return self.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)
     }
 
     /// Creates a spring bouncing animation effect.
     /// - Returns: An `Animation` instance.
-    public static func bounce() -> Animation {
+    public static var bounce: Animation {
         return self.interpolatingSpring(stiffness: 180, damping: 16)
     }
 
     /// Creates a standard ease in out animation effect.
     /// - Returns: An `Animation` instance.
-    public static func ease() -> Animation {
+    public static var ease: Animation {
         return self.easeInOut(duration: 0.2)
     }
 
     /// Creates a breathing animation effect.
     /// - Returns: An `Animation` instance.
-    public static func breathe() -> Animation {
+    public static var breathe: Animation {
         return self.timingCurve(0.4, 0, 0.4, 1, duration: 4)
     }
 
@@ -61,5 +61,10 @@ extension Animation {
         return Animation
             .easeInOut(duration: expression ? 4 : 0)
             .repeat(while: expression, autoreverses: false)
+    }
+
+    /// Animate in `BlurredColorWheel`.
+    static var activateColorWheel: Animation {
+        return self.easeInOut(duration: 1.0)
     }
 }

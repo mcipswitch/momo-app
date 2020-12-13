@@ -18,16 +18,16 @@ extension View {
         return modifier(AnimationCompletionObserverModifier(observedValue: value, completion: completion))
     }
 
-    func animateHomeState(inValue: Binding<Bool>, outValue: Binding<Bool>) -> some View {
-        return modifier(AnimateHomeState(observedValueForSlideIn: inValue, observedValueForSlideOut: outValue))
+    func animateTextFieldBorder(value: Binding<Bool>) -> some View {
+        return modifier(AnimateTextFieldBorder(value: value))
     }
 
-    func animateTextFieldBorder(inValue: Binding<Bool>, outValue: Binding<Bool>) -> some View {
-        return modifier(AnimateTextFieldBorder(observedValueForSlideIn: inValue, observedValueForSlideOut: outValue))
+    func slideInAnimation(value: Binding<Bool>) -> some View {
+        return modifier(AnimateSlideIn(value: value))
     }
 
-    func slideInAnimation(if value: Binding<Bool>) -> some View {
-        return modifier(AnimateSlideIn(observedValue: value))
+    func slideOutAnimation(value: Binding<Bool>) -> some View {
+        return modifier(AnimateSlideOut(value: value))
     }
 
     func slide(if value: Binding<Bool>) -> some View {
