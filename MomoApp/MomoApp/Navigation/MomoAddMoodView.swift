@@ -84,6 +84,8 @@ struct MomoAddMoodView: View {
                 fingerLocation = .active(location: value.location, translation: value.translation)
             }
     }
+
+    @State private var textFieldBorderWidth: CGFloat = 180
     
     // MARK: - Body
 
@@ -104,21 +106,16 @@ struct MomoAddMoodView: View {
                         ZStack {
                             helloMessage
                                 .slideInAnimation(value: self.$homeViewActive)
-
-                                // Animate in controls after done view
-                                .opacity(self.doneViewActive ? 0 : 1)
-                                .animation(
-                                    Animation.easeInOut(duration: 1.0)
-                                        .delay(self.doneViewActive ? 0 : 2.0)
-                                )
-
-                            textField
-                                .onChange(of: self.text) { text in
-                                    self.textFieldNotEmpty = !text.isEmpty
-                                }
+                                .frame(width: 180, height: 80)
+                            VStack(spacing: 6) {
+                                textField
+                                    .slideOutAnimation(value: self.$homeViewActive)
+                                textFieldBorder
+                                    .animateTextFieldBorder(value: self.$homeViewActive)
+                            }
+                            .frame(width: geo.size.width / 2, height: 80)
                         }
-                        //#warning("make this number not fixed")
-                        .frame(width: 180, height: 80)
+                        //.frame(width: 180, height: 80)
                     }
 
                     // Blob
@@ -253,12 +250,21 @@ struct MomoAddMoodView: View {
     }
 
     var textField: some View {
-        VStack(spacing: 6) {
-            MomoTextField(text: $text, textFieldIsFocused: $textFieldIsFocused)
-                .slideOutAnimation(value: self.$homeViewActive)
-            MomoTextFieldBorder(textFieldIsFocused: self.$textFieldIsFocused)
-                .animateTextFieldBorder(value: $homeViewActive)
+        MomoTextField(text: $text,
+                      textFieldIsFocused: $textFieldIsFocused,
+                      onTextFieldChange: self.onTextFieldChange
+        )
+        .onChange(of: self.text) { text in
+            self.textFieldNotEmpty = !text.isEmpty
         }
+    }
+
+    var textFieldBorder: some View {
+        MomoTextFieldBorder(textFieldIsFocused: self.$textFieldIsFocused)
+    }
+
+    private func onTextFieldChange(_ width: CGFloat) {
+        self.textFieldBorderWidth = width
     }
 }
 

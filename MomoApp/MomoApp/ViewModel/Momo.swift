@@ -57,14 +57,6 @@ struct Momo {
             case .graph: return "chart.bar.xaxis"
             }
         }
-
-        var title: String {
-            switch self {
-            case .list: return NSLocalizedString("All entries", comment: "")
-            case .graph: return NSLocalizedString("Last 7 days", comment: "")
-            default: return ""
-            }
-        }
     }
 
     // MARK: Link
@@ -80,7 +72,7 @@ struct Momo {
 //        var action: () -> Void {
 //            switch self {
 //            case .pastEntries :
-//                return 
+//                return
 //            }
 //        }
     }
@@ -117,6 +109,16 @@ extension Momo.Journal {
     struct Graph {
         static let selectionLineWidth: CGFloat = 4
         static let spacing: CGFloat = 8
+    }
+
+    enum View {
+        case list, graph
+        var title: String {
+            switch self {
+            case .list: return NSLocalizedString("All entries", comment: "")
+            case .graph: return NSLocalizedString("Last 7 days", comment: "")
+            }
+        }
     }
 }
 

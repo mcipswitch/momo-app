@@ -7,17 +7,13 @@
 
 import SwiftUI
 
-enum Journal {
-    case list, graph
-}
-
 // MARK: - MomoToolbarTitle
 
 struct MomoToolbarTitle: View {
-    let button: Momo.ToolbarButton
+    let view: Momo.Journal.View
     
     var body: some View {
-        Text(button.title)
+        Text(view.title)
             .momoText(.appToolbarTitle)
     }
 }

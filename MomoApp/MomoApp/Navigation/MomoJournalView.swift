@@ -57,7 +57,7 @@ struct MomoJournalView: View {
 
     var navigationToolbar: some View {
         ZStack {
-            MomoToolbarTitle(button: self.journal)
+            MomoToolbarTitle(view: self.viewRouter.currentJournal)
             HStack(alignment: .top) {
                 MomoToolbarButton(button: .back, action: self.backButtonPressed)
                 Spacer()

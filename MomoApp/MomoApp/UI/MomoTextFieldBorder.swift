@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MomoTextFieldBorder: View {
     typealias TextFieldBorder = Momo.TextField.Border
+
     @Binding var textFieldIsFocused: Bool
     private var cornerRadius: CGFloat { TextFieldBorder.height / 2 }
 

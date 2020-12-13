@@ -10,16 +10,39 @@ import SwiftUI
 // MARK: - MomoTextField
 
 struct MomoTextField: View {
+    typealias MomoTextField = Momo.TextField
+
     @Binding var text: String
     @Binding var textFieldIsFocused: Bool
-    let charLimit = Momo.TextField.charLimit
+    let charLimit = MomoTextField.charLimit
+    let onTextFieldChange: (CGFloat) -> Void
 
     var body: some View {
         ZStack(alignment: .center) {
-            Text("My day in a word")
+
+            // Placeholder
+            Text(NSLocalizedString("Ma journée en un mot", comment: ""))
+            //Text(NSLocalizedString("My day in a word", comment: ""))
                 .momoText(.appMain)
+
+                .lineLimit(1)
+
                 .opacity(self.text.isEmpty ? placeHolderOpacity : 0)
                 .animation(nil, value: self.text)
+
+
+                // Track the width of the placeholder text and draw the border accordingly.
+                .modifier(TextFieldSizeModifier())
+                .onPreferenceChange(TextFieldSizePreferenceKey.self) {
+                    print($0.width)
+                    self.onTextFieldChange($0.width)
+                }
+
+
+
+
+
+            // TextField
             TextField("", text: $text, onEditingChanged: { editingChanged in
                 self.textFieldIsFocused = editingChanged ? true : false
             }, onCommit: {
@@ -41,6 +64,7 @@ struct MomoTextFieldStyle: TextFieldStyle {
         configuration
             .momoText(.appMain)
             .multilineTextAlignment(.center)
+            .lineLimit(1)
             .autocapitalization(.none)
             .disableAutocorrection(true)
             .accentColor(Color.momo)

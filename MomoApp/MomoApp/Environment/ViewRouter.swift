@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 
 class ViewRouter: ObservableObject {
+    typealias Journal = Momo.Journal.View
 
     let objectWillChange = PassthroughSubject<(), Never>()
     let journalWillChange = PassthroughSubject<(), Never>()
@@ -54,6 +55,11 @@ class ViewRouter: ObservableObject {
 
     // MARK: - Enums
     
-    enum Page { case home, journal }
-    enum HomeState { case home, add, done }
+    enum Page {
+        case home, journal
+    }
+
+    enum HomeState {
+        case home, add, done
+    }
 }
