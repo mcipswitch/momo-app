@@ -40,11 +40,11 @@ struct MomoButtonStyle: ButtonStyle {
             .momoText(.appButtonText)
             .foregroundColor(.momo)
             .multilineTextAlignment(.center)
-            .lineLimit(1)
+            .lineLimit(lineLimit)
             .frame(width: w, height: h)
             .background(Color.momo)
             .cornerRadius(cornerRadius)
-            .opacity(isActive ? 1 : inactiveOpacity)
+            .opacity(isActive ? activeOpacity : inactiveOpacity)
 
             // TODO: - add this later
             //.opacity(configuration.isPressed ? pressedOpacity : 1)

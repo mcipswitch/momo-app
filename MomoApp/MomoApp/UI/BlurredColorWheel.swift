@@ -10,7 +10,6 @@ import SwiftUI
 // MARK: - BlurredColorWheel
 
 struct BlurredColorWheel: View {
-    @Binding var isActive: Bool
     @Binding var section: Momo.ColorWheelSection
     
     var body: some View {
@@ -20,7 +19,6 @@ struct BlurredColorWheel: View {
                                     angle: .degrees(-90))
         Circle()
             .strokeBorder(ring, lineWidth: 50)
-            .opacity(isActive ? 1 : 0)
             .animation(.easeInOut(duration: 1.5))
             .mask(
                 Circle()

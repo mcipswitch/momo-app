@@ -54,6 +54,9 @@ extension Animation {
             .delay(offset * 0.05)
     }
 
+    /// Creates a shifting color animation effect.
+    /// - Parameter expression: Animate while this expression is `true`.
+    /// - Returns: An `Animation` instance.
     public static func shiftColors(while expression: Bool) -> Animation {
         return Animation
             .easeInOut(duration: expression ? 4 : 0)

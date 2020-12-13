@@ -42,7 +42,13 @@ extension View {
 
 extension ButtonStyle {
     var pressedOpacity: Double { 0.5 }
+    var activeOpacity: Double { 1.0 }
     var inactiveOpacity: Double { 0.2 }
+    var lineLimit: Int { 1 }
+}
+
+extension TextFieldStyle {
+    var minimumScaleFactor: CGFloat { 0.8 }
 }
 
 extension View {

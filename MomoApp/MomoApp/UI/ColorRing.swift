@@ -11,10 +11,9 @@ import SwiftUI
 
 struct ColorRing: View {
     typealias Ring = Momo.Joystick.Ring
-    @Binding var shiftColors: Bool
+    @Binding var isAnimating: Bool
     @Binding var isDragging: Bool
-
-    @State var on: Bool = true
+    @State var on: Bool = false
 
     var body: some View {
         // TODO: - Maybe adjust colors later
@@ -32,12 +31,12 @@ struct ColorRing: View {
                 .hueRotation(.degrees(on ? 360 : 0))
                 .animation(.shiftColors(while: on))
         }
-        .blur(radius: shiftColors ? 0 : Ring.blur)
-        .opacity(shiftColors ? 1 : 0)
-        .scaleEffect(shiftColors ? 1 : Ring.scaleEffect)
+        .onAppear { on = true }
+        .blur(radius: isAnimating ? 0 : Ring.blur)
+        .opacity(isAnimating ? 1 : 0)
+        .scaleEffect(isAnimating ? 1 : Ring.scaleEffect)
         .onChange(of: isDragging) { isDragging in
             on = isDragging ? false : true
         }
-
     }
 }

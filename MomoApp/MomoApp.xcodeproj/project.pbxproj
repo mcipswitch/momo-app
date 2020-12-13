@@ -154,21 +154,12 @@
 			isa = PBXGroup;
 			children = (
 				9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */,
+				938693912559073E00C7F79D /* VisualEffectBlur.swift */,
 				93D90F87257C5A8000A7A69F /* SizeModifier.swift */,
 				930105912514E0B9007F0E7A /* Modifiers.swift */,
 				930AE6B625633B520091EDA7 /* DragState.swift */,
 			);
 			path = Modifiers;
-			sourceTree = "<group>";
-		};
-		9305EBF324EB69DB00E1DB0F /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				938693912559073E00C7F79D /* VisualEffectBlur.swift */,
-				93E9A337251D29900095D48C /* ColorRing.swift */,
-				936315392513A6B6005E20EA /* BlurredColorWheel.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		9309250A255834BC00AA3934 /* Mock */ = {
@@ -229,7 +220,6 @@
 				93EF7982254A14700062571F /* UI */,
 				933B150324F1B30C004E9F1C /* Navigation */,
 				93CC40C82564305D008B765D /* Models */,
-				9305EBF324EB69DB00E1DB0F /* Views */,
 				93722F3724F7E43B00274E9F /* Shapes */,
 				930105932514E0BF007F0E7A /* Modifiers */,
 				938E537324E983F8002653F0 /* Extensions */,
@@ -343,6 +333,8 @@
 				93EF7984254A14BE0062571F /* MomoButton.swift */,
 				938A0922256C307100D53D9A /* MomoTextLink.swift */,
 				9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */,
+				93E9A337251D29900095D48C /* ColorRing.swift */,
+				936315392513A6B6005E20EA /* BlurredColorWheel.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";

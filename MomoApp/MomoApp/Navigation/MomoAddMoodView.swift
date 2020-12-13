@@ -160,10 +160,10 @@ struct MomoAddMoodView: View {
                     // Bottom Navigation
                     ZStack {
                         BlurredColorWheel(
-                            isActive: self.$colorWheelIsActive,
                             section: self.$colorWheelSection
                         )
                         .position(self.dragStart)
+                        .opacity(self.colorWheelIsActive ? 1 : 0)
 
                         // TODO: CLEAN UP ANIMATION HERE
                         GeometryReader { geometry in
@@ -345,7 +345,7 @@ struct AddEmotionButton: View {
 
             // Can we use preference key here to draw Color Ring to correct size?
             ColorRing(
-                shiftColors: self.$isAnimating,
+                isAnimating: self.$isAnimating,
                 isDragging: self.$isDragging
             )
             /*

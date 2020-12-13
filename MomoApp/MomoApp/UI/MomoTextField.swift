@@ -44,7 +44,7 @@ struct MomoTextFieldStyle: TextFieldStyle {
             .autocapitalization(.none)
             .disableAutocorrection(true)
             .accentColor(Color.momo)
-            .minimumScaleFactor(Momo.TextField.minimumScaleFactor)
+            .minimumScaleFactor(minimumScaleFactor)
     }
 }
 

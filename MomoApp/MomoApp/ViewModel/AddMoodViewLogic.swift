@@ -42,7 +42,7 @@ struct AddMoodViewLogic {
 // MARK: - Momo Design System
 
 struct Momo {
-    public static let defaultJoystickSize: CGFloat = 80
+    static let defaultJoystickSize: CGFloat = 80
 
     struct TextField {}
     struct Joystick {}
@@ -137,7 +137,6 @@ struct Momo {
 
 extension Momo.TextField {
     static let charLimit: Int = 20
-    static let minimumScaleFactor: CGFloat = 0.8
 
     struct Border {
         static let height: CGFloat = 2
