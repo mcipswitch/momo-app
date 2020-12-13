@@ -171,14 +171,10 @@ struct MomoAddMoodView: View {
                                     isResetting: self.$isResetting,
                                     action: self.addEmotionButtonPressed
                                 )
-                                /*
-                                 Add delay so the 'Color Ring' disappears first.
-                                 Remove delay if the button is resetting position.
-                                 */
+                                // Add delay so the 'Color Ring' disappears first.
+                                // Remove delay if the button is resetting position.
                                 .animation(.resist(), value: self.dragState.isActive)
                                 .animation(Animation.bounce().delay(if: self.homeViewActive, 0.2), value: self.homeViewActive)
-
-
 
                                 MomoLinkButton(
                                     link: .pastEntries,
@@ -358,16 +354,7 @@ struct AddEmotionButton: View {
             )
             // Add delay so it appears after button morph.
             // Remove delay if the button is resetting position.
-            .animation(
-                Animation.bounce().delay(if: !self.homeViewActive, (self.isResetting ? 0 : 0.6)),
-                value: self.homeViewActive
-            )
-
-            //                                .animation(dragState.isActive ? .resist() :
-            //                                            self.homeViewActive ? .resist() : Animation
-            //                                            .bounce()
-            //                                            .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
-            //                                )
+            .animation(Animation.bounce().delay(if: !homeViewActive, 0.6), value: self.homeViewActive)
         }
     }
 }
@@ -385,7 +372,17 @@ struct AddMoodProfile_Previews: PreviewProvider {
 
 // MARK: - Old Animations (keep for now)
 
+// joystick
+
 //.animation(self.dragState.isActive ? .resist() : Animation
 //            .bounce()
 //            .delay(if: self.homeViewActive, (self.isResetting ? 0 : 0.2))
+//)
+
+// colorRing
+
+//.animation(dragState.isActive ? .resist() :
+//            self.homeViewActive ? .resist() : Animation
+//            .bounce()
+//            .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
 //)
