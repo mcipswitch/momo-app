@@ -51,6 +51,7 @@
 		9389A35825603E3E008AC500 /* ScrollingLineModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9389A35725603E3E008AC500 /* ScrollingLineModifier.swift */; };
 		938A0915256C235200D53D9A /* MomoTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938A0914256C235200D53D9A /* MomoTextField.swift */; };
 		938A0923256C307100D53D9A /* MomoTextLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938A0922256C307100D53D9A /* MomoTextLink.swift */; };
+		938B350D2585C31C00225DBE /* Momo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B350C2585C31C00225DBE /* Momo.swift */; };
 		938BBD0E2527B59000759092 /* MomoTextFieldBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938BBD0D2527B59000759092 /* MomoTextFieldBorder.swift */; };
 		938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */; };
 		938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E537024E983F3002653F0 /* UIColor + Extension.swift */; };
@@ -118,6 +119,7 @@
 		9389A35725603E3E008AC500 /* ScrollingLineModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingLineModifier.swift; sourceTree = "<group>"; };
 		938A0914256C235200D53D9A /* MomoTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoTextField.swift; sourceTree = "<group>"; };
 		938A0922256C307100D53D9A /* MomoTextLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoTextLink.swift; sourceTree = "<group>"; };
+		938B350C2585C31C00225DBE /* Momo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Momo.swift; sourceTree = "<group>"; };
 		938BBD0D2527B59000759092 /* MomoTextFieldBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoTextFieldBorder.swift; sourceTree = "<group>"; };
 		938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath + Extension.swift"; sourceTree = "<group>"; };
 		938E537024E983F3002653F0 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				9318888125582B870004CD4F /* EntriesViewModel.swift */,
 				930925042558335C00AA3934 /* DataManager.swift */,
 				9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */,
+				938B350C2585C31C00225DBE /* Momo.swift */,
 				9309250A255834BC00AA3934 /* Mock */,
 			);
 			path = ViewModel;
@@ -444,6 +447,7 @@
 				936E0696257F2276002B068E /* AnimatableColor.swift in Sources */,
 				9382CFE32576090600ED46D8 /* MomoLoadingIndicator.swift in Sources */,
 				93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */,
+				938B350D2585C31C00225DBE /* Momo.swift in Sources */,
 				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,
 				930807792564681100A13156 /* SimpleDrag.swift in Sources */,
 				93AE1884256DCE500024E6A9 /* LineGraphView.swift in Sources */,

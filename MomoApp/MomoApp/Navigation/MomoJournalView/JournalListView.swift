@@ -16,11 +16,9 @@ struct JournalListView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
 
-    var layout: [GridItem] { [GridItem(.flexible())] }
-
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: layout) {
+            LazyVGrid(columns: Momo.Journal.listLayout) {
                 EntriesList(
                     entries: self.viewModel.entries.reversed()
                 )

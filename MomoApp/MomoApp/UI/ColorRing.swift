@@ -16,17 +16,14 @@ struct ColorRing: View {
     @State var on: Bool = false
 
     var body: some View {
+
         // TODO: - Maybe adjust colors later
-        let ring = LinearGradient(gradient: .colorRingGradient,
-                                  startPoint: .topLeading,
-                                  endPoint: .bottomTrailing)
-        let momoRing = LinearGradient(gradient: .momoRingGradient,
-                                  startPoint: .topLeading,
-                                  endPoint: .bottomTrailing)
-        
+        let colorRing = LinearGradient.colorRing
+        let momoRing = LinearGradient.momoRing
+
         ZStack {
             Circle()
-                .stroke(isDragging ? momoRing : ring, lineWidth: Ring.lineWidth)
+                .stroke(isDragging ? momoRing : colorRing, lineWidth: Ring.lineWidth)
                 .frame(width: Ring.size, height: Ring.size)
                 .hueRotation(.degrees(on ? 360 : 0))
                 .animation(.shiftColors(while: on))

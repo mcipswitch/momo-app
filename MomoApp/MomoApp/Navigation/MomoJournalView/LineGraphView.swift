@@ -16,18 +16,15 @@ import SwiftUI
 
 struct LineGraphView: View {
     @EnvironmentObject var viewRouter: ViewRouter
-
-    /// Set as `false` to control animation from `ViewRouter`.
     @State var on = false
     let dataPoints: [CGFloat]
 
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [Color.momo, Color.momoOrange, Color.momoPurple, Color.momo]),
-                       startPoint: .top, endPoint: .bottom)
+        LinearGradient.lineGraph
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
-                    .trim(to: on ? 1 : 0)
-                    .stroke(Color.purple, style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                    .trim(to: self.on ? 1 : 0)
+                    .stroke(style: StrokeStyle(lineWidth: 6, lineCap: .round))
             )
             .onReceive(self.viewRouter.objectWillChange, perform: {
                 // Animate line if in JournalView, otherwise no animation

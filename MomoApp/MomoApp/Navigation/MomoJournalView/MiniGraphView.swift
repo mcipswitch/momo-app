@@ -12,7 +12,10 @@ import SwiftUI
 // MARK: - MiniGraphView
 
 struct MiniGraphView: View {
+    typealias Graph = Momo.Journal.Graph
+
     @EnvironmentObject var viewRouter: ViewRouter
+    var viewLogic = GraphViewLogic()
 
     let entries: [Entry]
     let dataPoints: [CGFloat]
@@ -36,7 +39,6 @@ struct MiniGraphView: View {
 
     var body: some View {
         ZStack {
-
             LineGraphView(dataPoints: self.dataPoints)
                 .padding(EdgeInsets(top: 0, leading: 12, bottom: self.lineGraphBottomPadding, trailing: 12))
                 .allowsHitTesting(false)
@@ -79,6 +81,7 @@ struct MiniGraphView: View {
                 LazyVGrid(columns: columnLayout, alignment: .center) {
                     ForEach(0 ..< self.entries.count) { idx in
                         GraphLine(
+                            spacing: Graph.spacing,
                             idxSelection: self.selectedIdx,
                             newIdx: self.newIdx,
                             idx: idx,
@@ -94,10 +97,13 @@ struct MiniGraphView: View {
                         // This is needed to make whole stack tappable
                         .contentShape(Rectangle())
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-                            SelectionLine(preferences: preferences)
-                                .opacity(self.opacity ? 1 : 0)
-                                .offset(x: self.dragOffset)
-                                .gesture(dragGesture)
+                            SelectionLine(
+                                preferences: preferences,
+                                width: Graph.selectionLineWidth
+                            )
+                            .opacity(self.opacity ? 1 : 0)
+                            .offset(x: self.dragOffset)
+                            .gesture(dragGesture)
                         })
                         .onReceive(self.viewRouter.objectWillChange, perform: {
                             // Animate in selection line after graph line aniamtes in
@@ -133,6 +139,7 @@ struct MiniGraphView: View {
 // MARK: - Views
 
 struct GraphLine: View {
+    let spacing: CGFloat
     let idxSelection: Int
     let newIdx: Int
     let idx: Int
@@ -142,7 +149,7 @@ struct GraphLine: View {
     @State private var on = false
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: spacing) {
             line
                 .anchorPreference(
                     key: SelectionPreferenceKey.self,
@@ -160,35 +167,26 @@ struct GraphLine: View {
                 }
             dateLabel
                 /*
-                 Track the height of the date label
-                 in order to calculate the correct bottom padding
-                 needed for the graph line.
+                 Track the height of the date label and calculate the correct
+                 bottom padding needed for the graph line.
                  */
                 .modifier(SizeModifier())
                 .onPreferenceChange(SizePreferenceKey.self) {
-                    self.onDateLabelHeightChange($0.height + 8)
+                    self.onDateLabelHeightChange($0.height + spacing)
                 }
         }
-        // This is needed to make whole stack tappable
+        // Needed to make whole stack tappable
         .contentShape(Rectangle())
     }
 
     var line: some View {
         Rectangle()
             .foregroundColor(.clear).frame(width: 1)
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [
-                        Color.gray.opacity(0.4),
-                        Color.gray.opacity(0)
-                    ]),
-                    startPoint: .bottom,
-                    endPoint: .top)
-            )
+            .background(LinearGradient.graphLine)
     }
 
     var dateLabel: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: spacing) {
             Text("\(self.entries[idx].date.weekday)")
                 .momoText(.appGraphWeekday)
             Text("\(self.entries[idx].date.day)")
@@ -197,20 +195,21 @@ struct GraphLine: View {
     }
 }
 
+// MARK: - SelectionLine
+
 struct SelectionLine: View {
     let preferences: Anchor<CGRect>?
+    let width: CGFloat
     
     var body: some View {
-        let width: CGFloat = 4
-        
-        GeometryReader { geometry in
+        GeometryReader { geo in
             preferences.map {
                 RoundedRectangle(cornerRadius: width / 2)
                     .fill(Color.momo)
-                    .frame(width: width, height: geometry[$0].height)
+                    .frame(width: width, height: geo[$0].height)
                     .frame(
-                        width: geometry.size.width,
-                        height: geometry[$0].height,
+                        width: geo.size.width,
+                        height: geo[$0].height,
                         alignment: .center
                     )
                     .shadow()

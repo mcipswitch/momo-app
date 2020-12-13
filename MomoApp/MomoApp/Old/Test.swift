@@ -32,9 +32,6 @@ struct AnimatableGradientTest: AnimatableModifier {
                                  center: .topLeading,
                                  startRadius: startRadius,
                                  endRadius: endRadius))
-//            .fill(LinearGradient(gradient: Gradient(colors: gColors),
-//                                 startPoint: .topLeading,
-//                                 endPoint: .bottomTrailing))
     }
 }
 
