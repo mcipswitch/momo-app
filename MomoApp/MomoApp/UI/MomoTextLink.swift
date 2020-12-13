@@ -42,4 +42,9 @@ extension View {
 
 extension ButtonStyle {
     var pressedOpacity: Double { 0.5 }
+    var inactiveOpacity: Double { 0.2 }
+}
+
+extension View {
+    var placeHolderOpacity: Double { 0.6 }
 }

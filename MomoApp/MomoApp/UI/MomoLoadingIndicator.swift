@@ -14,6 +14,5 @@ struct MomoLoadingIndicator: View {
         ProgressView()
             .progressViewStyle(CircularProgressViewStyle(tint: .momo))
             .scaleEffect(1.5, anchor: .center)
-            .padding()
     }
 }

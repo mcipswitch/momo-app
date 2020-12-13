@@ -58,7 +58,6 @@
 		93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93976DE624EB6ABF0018C667 /* HomeView.swift */; };
 		93A65BFE250FE0EE00BF756A /* CGFloat + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */; };
 		93AE1884256DCE500024E6A9 /* LineGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE1883256DCE500024E6A9 /* LineGraphView.swift */; };
-		93D434F82581A5FA006BC85E /* BlurModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D434F72581A5FA006BC85E /* BlurModifier.swift */; };
 		93D90F88257C5A8000A7A69F /* SizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D90F87257C5A8000A7A69F /* SizeModifier.swift */; };
 		93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DB0F5B253656180074EBB6 /* Binding + Extension.swift */; };
 		93E0650B258340CD009E7D06 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E0650A258340CD009E7D06 /* Test.swift */; };
@@ -126,7 +125,6 @@
 		93976DE624EB6ABF0018C667 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		93A65BFD250FE0EE00BF756A /* CGFloat + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat + Extension.swift"; sourceTree = "<group>"; };
 		93AE1883256DCE500024E6A9 /* LineGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphView.swift; sourceTree = "<group>"; };
-		93D434F72581A5FA006BC85E /* BlurModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurModifier.swift; sourceTree = "<group>"; };
 		93D90F87257C5A8000A7A69F /* SizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeModifier.swift; sourceTree = "<group>"; };
 		93DB0F5B253656180074EBB6 /* Binding + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding + Extension.swift"; sourceTree = "<group>"; };
 		93E0650A258340CD009E7D06 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
@@ -167,7 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				938693912559073E00C7F79D /* VisualEffectBlur.swift */,
-				93D434F72581A5FA006BC85E /* BlurModifier.swift */,
 				93E9A337251D29900095D48C /* ColorRing.swift */,
 				936315392513A6B6005E20EA /* BlurredColorWheel.swift */,
 			);
@@ -472,7 +469,6 @@
 				9308077425645EF000A13156 /* View+Extension.swift in Sources */,
 				938A0915256C235200D53D9A /* MomoTextField.swift in Sources */,
 				9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */,
-				93D434F82581A5FA006BC85E /* BlurModifier.swift in Sources */,
 				93E0650B258340CD009E7D06 /* Test.swift in Sources */,
 				93F0760024F1D9BC000B6449 /* TextLimiter.swift in Sources */,
 				9363153A2513A6B6005E20EA /* BlurredColorWheel.swift in Sources */,

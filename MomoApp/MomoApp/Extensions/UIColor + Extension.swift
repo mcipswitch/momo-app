@@ -40,8 +40,11 @@ extension Color {
 }
 
 extension Gradient {
-    public static let momoBackgroundGradient = Gradient(colors: [Color(#colorLiteral(red: 0.2588235294, green: 0.2039215686, blue: 0.5019607843, alpha: 1)), Color(#colorLiteral(red: 0.1098039216, green: 0.09411764706, blue: 0.2509803922, alpha: 1))])
-    public static let doneBackgroundGradient = Gradient(colors: [Color(#colorLiteral(red: 0.4509803922, green: 0.3607843137, blue: 0.8666666667, alpha: 1)), Color(#colorLiteral(red: 0.1921568627, green: 0.1529411765, blue: 0.3882352941, alpha: 1)), Color(#colorLiteral(red: 0.03921568627, green: 0.03921568627, blue: 0.1294117647, alpha: 1))])
+    static let momoBackgroundGradient = Gradient(colors: [Color(#colorLiteral(red: 0.2588235294, green: 0.2039215686, blue: 0.5019607843, alpha: 1)), Color(#colorLiteral(red: 0.1098039216, green: 0.09411764706, blue: 0.2509803922, alpha: 1))])
+    static let doneBackgroundGradient = Gradient(colors: [Color(#colorLiteral(red: 0.4509803922, green: 0.3607843137, blue: 0.8666666667, alpha: 1)), Color(#colorLiteral(red: 0.1921568627, green: 0.1529411765, blue: 0.3882352941, alpha: 1)), Color(#colorLiteral(red: 0.03921568627, green: 0.03921568627, blue: 0.1294117647, alpha: 1))])
+
+    static let colorRingGradient = Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))])
+    static let momoRingGradient = Gradient(colors: [.momo])
 }
 
 extension RadialGradient {

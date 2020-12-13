@@ -42,7 +42,10 @@ struct AddMoodViewLogic {
 // MARK: - Momo Design System
 
 struct Momo {
-    public static let defaultButtonSize: CGFloat = 80
+    public static let defaultJoystickSize: CGFloat = 80
+
+    struct TextField {}
+    struct Joystick {}
 
     // MARK: Button
     enum Button {
@@ -50,6 +53,13 @@ struct Momo {
 
         case done
         case standard, joystick
+
+        var text: String {
+            switch self {
+            case .done: return NSLocalizedString("Done", comment: "")
+            default: return ""
+            }
+        }
 
         var size: SizeTuple {
             switch self {
@@ -122,5 +132,25 @@ struct Momo {
             case .edit: return NSLocalizedString("Edit today's emotion", comment: "")
             }
         }
+    }
+}
+
+extension Momo.TextField {
+    static let charLimit: Int = 20
+    static let minimumScaleFactor: CGFloat = 0.8
+
+    struct Border {
+        static let height: CGFloat = 2
+    }
+}
+
+extension Momo.Joystick {
+    static let defaultSize: CGFloat = 80
+
+    struct Ring {
+        static let blur: CGFloat = 2
+        static let lineWidth: CGFloat = 6
+        static let scaleEffect: CGFloat = 1.1
+        static let size: CGFloat = Momo.Joystick.defaultSize + 16
     }
 }

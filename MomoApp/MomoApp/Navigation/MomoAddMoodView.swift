@@ -74,11 +74,11 @@ struct MomoAddMoodView: View {
                 self.isDragging = false
                 self.dragValue = .zero
                 self.colorWheelIsActive = false
-                self.isResetting = true
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                    self.isResetting = false
-                }
+//                self.isResetting = true
+//
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+//                    self.isResetting = false
+//                }
             }
     }
     
@@ -94,7 +94,7 @@ struct MomoAddMoodView: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                let centerPoint = CGPoint(x: geo.size.width / 2, y: Momo.defaultButtonSize / 2)
+                let centerPoint = CGPoint(x: geo.size.width / 2, y: Momo.defaultJoystickSize / 2)
 
                 // Main View
                 VStack(spacing: 48) {
@@ -345,7 +345,6 @@ struct AddEmotionButton: View {
 
             // Can we use preference key here to draw Color Ring to correct size?
             ColorRing(
-                size: Momo.defaultButtonSize,
                 shiftColors: self.$isAnimating,
                 isDragging: self.$isDragging
             )

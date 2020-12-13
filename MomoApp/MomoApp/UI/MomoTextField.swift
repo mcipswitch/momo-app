@@ -12,12 +12,13 @@ import SwiftUI
 struct MomoTextField: View {
     @Binding var text: String
     @Binding var textFieldIsFocused: Bool
+    let charLimit = Momo.TextField.charLimit
 
     var body: some View {
         ZStack(alignment: .center) {
             Text("My day in a word")
                 .momoText(.appMain)
-                .opacity(self.text.isEmpty ? 0.6 : 0)
+                .opacity(self.text.isEmpty ? placeHolderOpacity : 0)
                 .animation(nil, value: self.text)
             TextField("", text: $text, onEditingChanged: { editingChanged in
                 self.textFieldIsFocused = editingChanged ? true : false
@@ -27,7 +28,7 @@ struct MomoTextField: View {
             })
             .momoTextFieldStyle()
             .onReceive(text.publisher.collect()) { char in
-                self.text = String(text.prefix(20))
+                self.text = String(self.text.prefix(self.charLimit))
             }
         }
     }
@@ -43,7 +44,7 @@ struct MomoTextFieldStyle: TextFieldStyle {
             .autocapitalization(.none)
             .disableAutocorrection(true)
             .accentColor(Color.momo)
-            .minimumScaleFactor(0.8)
+            .minimumScaleFactor(Momo.TextField.minimumScaleFactor)
     }
 }
 

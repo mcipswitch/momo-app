@@ -7,15 +7,6 @@
 
 import SwiftUI
 
-// MARK: - Extension
-
-extension View {
-    func momoButtonStyle(button: Momo.Button, isActive: Bool = true) -> some View {
-        return self.buttonStyle(MomoButtonStyle(button: button, isActive: isActive))
-        //return self.buttonStyle(MomoButtonStyle(w: w, h: h, isActive: isActive))
-    }
-}
-
 // MARK: - MomoButton
 
 struct MomoButton: View {
@@ -26,7 +17,7 @@ struct MomoButton: View {
     var body: some View {
         Button(action: action) {
             HStack {
-                Text("Done")
+                Text(button.text)
                 Image(systemName: button.imageName)
             }
         }
@@ -41,6 +32,7 @@ struct MomoButtonStyle: ButtonStyle {
     let button: Momo.Button
     private var w: CGFloat { button.size.w }
     private var h: CGFloat { button.size.h }
+    private var cornerRadius: CGFloat { h / 2 }
     var isActive: Bool = true
 
     func makeBody(configuration: Configuration) -> some View {
@@ -51,11 +43,19 @@ struct MomoButtonStyle: ButtonStyle {
             .lineLimit(1)
             .frame(width: w, height: h)
             .background(Color.momo)
-            .cornerRadius(h / 2)
-            .opacity(isActive ? 1 : 0.2)
+            .cornerRadius(cornerRadius)
+            .opacity(isActive ? 1 : inactiveOpacity)
 
             // TODO: - add this later
             //.opacity(configuration.isPressed ? pressedOpacity : 1)
+    }
+}
+
+// MARK: - Extension
+
+extension View {
+    func momoButtonStyle(button: Momo.Button, isActive: Bool = true) -> some View {
+        return self.buttonStyle(MomoButtonStyle(button: button, isActive: isActive))
     }
 }
 

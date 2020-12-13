@@ -9,15 +9,13 @@ import SwiftUI
 
 struct MomoTextFieldBorder: View {
     @Binding var textFieldIsFocused: Bool
-    var height: CGFloat = 2
+    let height = Momo.TextField.Border.height
+    private var cornerRadius: CGFloat { height / 2 }
 
     var body: some View {
-        RoundedRectangle(cornerRadius: self.height / 2)
-            .fill(self.textFieldIsFocused ? Color.momo : .white)
-            .animation(.ease(), value: self.textFieldIsFocused)
-            .frame(height: self.height)
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .fill(textFieldIsFocused ? Color.momo : .white)
+            .animation(.ease(), value: textFieldIsFocused)
+            .frame(height: height)
     }
 }
-
-//            RoundedRectangle(cornerRadius: height / 2)
-//                .fill(Color.white)

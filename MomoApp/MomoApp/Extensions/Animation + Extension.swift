@@ -53,4 +53,10 @@ extension Animation {
         return self.easeInOut(duration: 0.8)
             .delay(offset * 0.05)
     }
+
+    public static func shiftColors(while expression: Bool) -> Animation {
+        return Animation
+            .easeInOut(duration: expression ? 4 : 0)
+            .repeat(while: expression, autoreverses: false)
+    }
 }
