@@ -26,11 +26,6 @@ struct MiniGraphView: View {
     @State private var idxShift: Int = 0
     @State private var newIdx: Int = 6
 
-    // Selection Line
-    @GestureState private var dragState: DragState = .inactive
-    @State private var currentOffset: CGFloat = 0
-    @State private var dragOffset: CGFloat = 0
-    @State private var value: CGFloat = 0.5
     @State private var opacity = false
 
     @State private var lineGraphBottomPadding: CGFloat = 0
@@ -50,10 +45,10 @@ struct MiniGraphView: View {
 
                 // Calculate the spacing between graph lines
                 let numOfItems: CGFloat = self.entries.count.floatValue
+                let numOfSpaces: CGFloat = numOfItems - 1
                 let itemWidth: CGFloat = 25
                 let totalItemWidth: CGFloat = itemWidth * numOfItems
-                let itemFrameSpacing: CGFloat = (geo.size.width - totalItemWidth) / (numOfItems - 1)
-
+                let itemFrameSpacing: CGFloat = (geo.size.width - totalItemWidth) / numOfSpaces
                 let itemSpacing: CGFloat = itemWidth + itemFrameSpacing
 
 //                let columnLayout: [GridItem] = Array(
@@ -66,7 +61,7 @@ struct MiniGraphView: View {
                     ForEach(0 ..< self.entries.count) { idx in
                         GraphLine(
                             spacing: Graph.spacing,
-                            idxSelection: self.selectedIdx,
+                            selectedIdx: self.selectedIdx,
                             newIdx: self.newIdx,
                             idx: idx,
                             entries: self.entries,
@@ -86,7 +81,7 @@ struct MiniGraphView: View {
                             )
                             .opacity(self.opacity ? 1 : 0)
                             .modifier(
-                                ScrollingLineModifier(items: entries.count,
+                                SelectionLineModifier(items: entries.count,
                                                       itemWidth: itemWidth,
                                                       itemSpacing: itemSpacing,
                                                       selectedIdx: selectedIdx,
@@ -94,7 +89,8 @@ struct MiniGraphView: View {
                             )
                         })
                         .onReceive(self.viewRouter.objectWillChange, perform: {
-                            // Animate in selection line after graph line aniamtes in
+
+                            // Animate SelectionLine after line graph animates in
                             withAnimation(self.viewRouter.isHome
                                             ? Animation.linear.delay(0.2)
                                             : Animation.easeInOut(duration: 0.8).delay(1.8)) {
@@ -105,7 +101,6 @@ struct MiniGraphView: View {
                 }
                 VStack {
                     Text("IDX Selection: \(self.selectedIdx)")
-                    Text("Drag: \(self.dragOffset)")
                 }
             }
         }
@@ -128,7 +123,7 @@ struct MiniGraphView: View {
 
 struct GraphLine: View {
     let spacing: CGFloat
-    let idxSelection: Int
+    let selectedIdx: Int
     let newIdx: Int
     let idx: Int
     let entries: [Entry]
@@ -143,7 +138,7 @@ struct GraphLine: View {
                     key: SelectionPreferenceKey.self,
                     value: .bounds,
                     transform: { anchor in
-                        self.idxSelection == idx ? anchor : nil
+                        self.selectedIdx == idx ? anchor : nil
                     })
                 /*
                  There is a bug that shows the selection line behind the graph line.
@@ -156,7 +151,7 @@ struct GraphLine: View {
             dateLabel
                 /*
                  Track the height of the date label and calculate the correct
-                 bottom padding needed for the graph line.
+                 bottom padding needed for the graph line to stay within bounds.
                  */
                 .modifier(SizeModifier())
                 .onPreferenceChange(SizePreferenceKey.self) {

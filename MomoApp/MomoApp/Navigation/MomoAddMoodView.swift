@@ -44,42 +44,47 @@ struct MomoAddMoodView: View {
 
     var resistanceDrag: some Gesture {
         DragGesture(minimumDistance: 0)
-            .onChanged { value in
-                self.isDragging = true
-
-                /// The lower the limit, the tigher the resistance
-                let limit: CGFloat = 200
-                let xOff = value.translation.width
-                let yOff = value.translation.height
-                let dist = sqrt(xOff*xOff + yOff*yOff);
-                let factor = 1 / (dist / limit + 1)
-                self.dragValue = CGSize(width: value.translation.width * factor,
-                                        height: value.translation.height * factor)
-
-                // Calculate distance to activate 'BlurredColorWheel'
-                let maxDistance: CGFloat = 40
-                var newLocation = self.dragStart
-                newLocation.x += value.translation.width
-                newLocation.y += value.translation.height
-                let distance = dragStart.distance(to: newLocation)
-                self.colorWheelIsActive = distance > maxDistance ? true : false
-
-                // Calculate the degrees to activate correct part of 'BlurredColorWheel'
-                self.degrees = newLocation.angle(to: dragStart)
-
-            }.updating($dragState) { value, state, transaction in
+            .onChanged(onDragChanged(drag:))
+            .updating($dragState) { value, state, transaction in
                 state = .active(location: value.location, translation: value.translation)
                 //transaction.animation = Animation.resist()
-            }.onEnded { value in
-                self.isDragging = false
-                self.dragValue = .zero
-                self.colorWheelIsActive = false
+            }
+            .onEnded(onDragEnded(drag:))
+    }
+
+    private func onDragChanged(drag: DragGesture.Value) {
+        self.isDragging = true
+
+        /// The lower the limit, the tigher the resistance
+        let limit: CGFloat = 200
+        let xOff = drag.translation.width
+        let yOff = drag.translation.height
+        let dist = sqrt(xOff*xOff + yOff*yOff);
+        let factor = 1 / (dist / limit + 1)
+        self.dragValue = CGSize(width: xOff * factor,
+                                height: yOff * factor)
+
+        // Calculate distance to activate 'BlurredColorWheel'
+        let maxDistance: CGFloat = 50
+        var newLocation = self.dragStart
+        newLocation.x += xOff
+        newLocation.y += yOff
+        let distance = self.dragStart.distance(to: newLocation)
+        self.colorWheelIsActive = distance > maxDistance ? true : false
+
+        // Calculate the degrees to activate correct part of 'BlurredColorWheel'
+        self.degrees = newLocation.angle(to: self.dragStart)
+    }
+
+    private func onDragEnded(drag: DragGesture.Value) {
+        self.isDragging = false
+        self.dragValue = .zero
+        self.colorWheelIsActive = false
 //                self.isResetting = true
 //
 //                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
 //                    self.isResetting = false
 //                }
-            }
     }
     
     var fingerDrag: some Gesture {
@@ -99,7 +104,7 @@ struct MomoAddMoodView: View {
                 // Main View
                 VStack(spacing: 48) {
 
-                    // Date + EmotionTextField
+                    // Date + TextField
                     VStack(spacing: 36) {
                         currentDate
                             .slideInAnimation(if: self.$homeViewActive)
@@ -113,8 +118,7 @@ struct MomoAddMoodView: View {
                             )
 
                         ZStack {
-                            Text(NSLocalizedString("Hello", comment: "The greeting message if today's entry is empty."))
-                                .momoText(.appMain)
+                            helloMessage
                                 .slideInAnimation(if: self.$homeViewActive)
 
                                 // Animate in controls after done view
@@ -124,16 +128,12 @@ struct MomoAddMoodView: View {
                                         .delay(self.doneViewActive ? 0 : 2.0)
                                 )
 
-                            VStack(spacing: 6) {
-                                MomoTextField(text: $text, textFieldIsFocused: $textFieldIsFocused)
-                                    .animateHomeState(inValue: self.$addViewActive, outValue: self.$doneViewActive)
-                                MomoTextFieldBorder(textFieldIsFocused: self.$textFieldIsFocused)
-                                    .animateTextFieldBorder(inValue: self.$addViewActive, outValue: self.$doneViewActive)
-                            }
+                            textField
+                                .onChange(of: self.text) { text in
+                                    self.textFieldNotEmpty = !text.isEmpty
+                                }
                         }
-                        .onChange(of: self.text) { field in
-                            self.textFieldNotEmpty = field.isEmpty ? false : true
-                        }
+
                         // TODO: - make this number dynamic?
                         .frame(width: 180, height: 80)
                     }
@@ -147,23 +147,18 @@ struct MomoAddMoodView: View {
                             Text("Pct: \(pct)")
                             Text("Original Pos: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
                             Text("Button Pos: x:\(Int(buttonLocation?.x ?? 0)), y:\(Int(buttonLocation?.y ?? 0))")
-                            Text(dragState.isActive ? "active drag" : "")
+                            Text(dragState.isActive ? "dragging..." : "")
                             Text(isResetting ? "resetting..." : "")
                             Text(isAnimating ? "animating..." : "")
-                            Text(!homeViewActive ? "homeViewActive..." : "")
-
-                            //Text("\(dragValue.width), \(dragValue.height)")
                         }
                         .font(.system(size: 12.0))
                     }
 
                     // Bottom Navigation
                     ZStack {
-                        BlurredColorWheel(
-                            section: self.$colorWheelSection
-                        )
-                        .position(self.dragStart)
-                        .opacity(self.colorWheelIsActive ? 1 : 0)
+                        BlurredColorWheel(section: self.$colorWheelSection)
+                            .position(self.dragStart)
+                            .opacity(self.colorWheelIsActive ? 1 : 0)
 
                         // TODO: CLEAN UP ANIMATION HERE
                         GeometryReader { geometry in
@@ -180,10 +175,11 @@ struct MomoAddMoodView: View {
                                  Add delay so the 'Color Ring' disappears first.
                                  Remove delay if the button is resetting position.
                                  */
-                                .animation(self.dragState.isActive ? .resist() : Animation
-                                            .bounce()
-                                            .delay(if: self.homeViewActive, (self.isResetting ? 0 : 0.2))
-                                )
+                                .animation(.resist(), value: self.dragState.isActive)
+                                .animation(Animation.bounce().delay(if: self.homeViewActive, 0.2), value: self.homeViewActive)
+
+
+
                                 MomoLinkButton(
                                     link: .pastEntries,
                                     action: self.seePastEntriesButtonPressed
@@ -192,11 +188,11 @@ struct MomoAddMoodView: View {
                                 .slideInAnimation(if: self.$homeViewActive)
                             }
                             // Animate in controls after done view
-                            .opacity(self.doneViewActive ? 0 : 1)
-                            .animation(
-                                Animation.easeInOut(duration: 1.0)
-                                    .delay(self.doneViewActive ? 0 : 2.0)
-                            )
+//                            .opacity(self.doneViewActive ? 0 : 1)
+//                            .animation(
+//                                Animation.easeInOut(duration: 1.0)
+//                                    .delay(self.doneViewActive ? 0 : 2.0)
+//                            )
 
 
                             .offset(x: self.dragValue.width * 0.8, y: self.dragValue.height * 0.8)
@@ -282,9 +278,23 @@ struct MomoAddMoodView: View {
         }
     }
 
+    var helloMessage: some View {
+        Text(NSLocalizedString("Hi, how are you feeling today?", comment: ""))
+            .momoText(.appMain)
+    }
+
     var currentDate: some View {
         Text(Date(), formatter: DateFormatter.shortDate)
             .momoText(.appDate)
+    }
+
+    var textField: some View {
+        VStack(spacing: 6) {
+            MomoTextField(text: $text, textFieldIsFocused: $textFieldIsFocused)
+                .animateHomeState(inValue: self.$addViewActive, outValue: self.$doneViewActive)
+            MomoTextFieldBorder(textFieldIsFocused: self.$textFieldIsFocused)
+                .animateTextFieldBorder(inValue: self.$addViewActive, outValue: self.$doneViewActive)
+        }
     }
     
     // MARK: - Internal Methods
@@ -340,18 +350,14 @@ struct AddEmotionButton: View {
                                 ? .none
                                 : Animation.ease().delay(0.5)
                     )
-            }
-            .buttonStyle(MomoButtonStyle(button: self.homeViewActive ? .standard : .joystick))
+            }.momoButtonStyle(button: self.homeViewActive ? .standard : .joystick)
 
-            // Can we use preference key here to draw Color Ring to correct size?
             ColorRing(
                 isAnimating: self.$isAnimating,
                 isDragging: self.$isDragging
             )
-            /*
-             Add delay so the 'Color Ring' appears after button morph.
-             Remove delay if the button is resetting position.
-             */
+            // Add delay so it appears after button morph.
+            // Remove delay if the button is resetting position.
             .animation(
                 Animation.bounce().delay(if: !self.homeViewActive, (self.isResetting ? 0 : 0.6)),
                 value: self.homeViewActive
@@ -373,3 +379,13 @@ struct AddMoodProfile_Previews: PreviewProvider {
         MomoAddMoodView()
     }
 }
+
+
+
+
+// MARK: - Old Animations (keep for now)
+
+//.animation(self.dragState.isActive ? .resist() : Animation
+//            .bounce()
+//            .delay(if: self.homeViewActive, (self.isResetting ? 0 : 0.2))
+//)

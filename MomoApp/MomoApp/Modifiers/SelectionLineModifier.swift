@@ -1,5 +1,5 @@
 //
-//  ScrollingLineModifier.swift
+//  SelectionLineModifier.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-11-14.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ScrollingLineModifier: ViewModifier {
+struct SelectionLineModifier: ViewModifier {
     @State private var dragOffset: CGFloat
     @State private var newIdx: Int
 
@@ -30,29 +30,36 @@ struct ScrollingLineModifier: ViewModifier {
 
     var dragGesture: some Gesture {
         DragGesture(minimumDistance: 0)
-            .onChanged { value in
-
-                // Calculate the index shift to the closest entry
-                let indexShift = Int(round(value.translation.width / itemSpacing))
-                let newOffset = itemSpacing * CGFloat(indexShift)
-                self.dragOffset = newOffset
-
-                // Protect from scrolling out of bounds
-                self.newIdx = self.selectedIdx + indexShift
-                self.newIdx = max(0, self.newIdx)
-                self.newIdx = min(self.items - 1, self.newIdx)
-
-            }.onEnded { value in
-                self.dragOffset = .zero
-                self.onDragEnded(self.newIdx)
-
-                //self.idxSelection = self.idx
-            }
+            .onChanged(onDragChanged(drag:))
+            .onEnded(onDragEnded(drag:))
     }
 
     func body(content: Content) -> some View {
         content
             .offset(x: self.dragOffset)
             .gesture(dragGesture)
+    }
+
+    // MARK: - Internal Methods
+
+    private func onDragChanged(drag: DragGesture.Value) {
+
+        // Calculate the index shift to the closest entry
+        let indexShift = Int(round(drag.translation.width / itemSpacing))
+        let newOffset = itemSpacing * CGFloat(indexShift)
+        self.dragOffset = newOffset
+        self.newIdx = self.selectedIdx + indexShift
+
+        self.protectFromScrollingOutOfBounds()
+    }
+
+    private func protectFromScrollingOutOfBounds() {
+        self.newIdx = max(0, self.newIdx)
+        self.newIdx = min(self.items - 1, self.newIdx)
+    }
+
+    private func onDragEnded(drag: DragGesture.Value) {
+        self.dragOffset = .zero
+        self.onDragEnded(self.newIdx)
     }
 }

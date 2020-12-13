@@ -41,7 +41,7 @@ extension Gradient {
     static let colorRingGradient = Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))])
     static let momoRingGradient = Gradient(colors: [.momo])
 
-    static let lineGraphGradient = Gradient(colors: [.momo, .momoPurple, .momoOrange, .momo])
+    static let lineGraphGradient = Gradient(colors: [.momo, .momoOrange, .momoPurple, .momo])
     static let graphLineGradient = Gradient(colors: [Color.gray.opacity(0.4), Color.gray.opacity(0)])
 }
 
