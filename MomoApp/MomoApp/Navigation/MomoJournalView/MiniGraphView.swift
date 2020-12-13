@@ -40,43 +40,27 @@ struct MiniGraphView: View {
     var body: some View {
         ZStack {
             LineGraphView(dataPoints: self.dataPoints)
-                .padding(EdgeInsets(top: 0, leading: 12, bottom: self.lineGraphBottomPadding, trailing: 12))
+                .padding(EdgeInsets(top: 0,
+                                    leading: 12,
+                                    bottom: self.lineGraphBottomPadding,
+                                    trailing: 12))
                 .allowsHitTesting(false)
 
             GeometryReader { geo in
 
                 // Calculate the spacing between graph lines
                 let numOfItems: CGFloat = self.entries.count.floatValue
-                let numOfSpaces: CGFloat = numOfItems - 1
                 let itemWidth: CGFloat = 25
                 let totalItemWidth: CGFloat = itemWidth * numOfItems
-                let itemFrameSpacing: CGFloat = (geo.size.width - totalItemWidth) / numOfSpaces
+                let itemFrameSpacing: CGFloat = (geo.size.width - totalItemWidth) / (numOfItems - 1)
+
                 let itemSpacing: CGFloat = itemWidth + itemFrameSpacing
-                let columnLayout: [GridItem] = Array(
-                    repeating: .init(.flexible(), spacing: itemFrameSpacing),
-                    count: self.entries.count)
 
-                // Drag Gesture
-                let dragGesture = DragGesture(minimumDistance: 0)
-                    .onChanged { value in
-                        // Calculate the index shift to the closest entry
-                        self.idxShift = Int(round(value.translation.width / itemSpacing))
-                        let newOffset = itemSpacing * CGFloat(idxShift)
-                        self.dragOffset = newOffset
+//                let columnLayout: [GridItem] = Array(
+//                    repeating: .init(.flexible(), spacing: itemFrameSpacing),
+//                    count: self.entries.count)
 
-                        // Protect from scrolling out of bounds
-                        self.newIdx = self.selectedIdx + self.idxShift
-                        self.newIdx = max(0, self.newIdx)
-                        self.newIdx = min(self.entries.count - 1, self.newIdx)
-                    }
-                    .updating($dragState) { value, state, transaction in
-                        state = .active(location: value.location, translation: value.translation)
-                        //transaction.animation = Animation.resist()
-                    }
-                    .onEnded { value in
-                        self.dragOffset = .zero
-                        self.changeSelectedIdx(to: self.newIdx)
-                    }
+                let columnLayout = viewLogic.columnLayout(itemFrameSpacing, entries.count)
 
                 LazyVGrid(columns: columnLayout, alignment: .center) {
                     ForEach(0 ..< self.entries.count) { idx in
@@ -93,8 +77,7 @@ struct MiniGraphView: View {
                             self.newIdx = idx
                             self.changeSelectedIdx(to: self.newIdx)
                         }
-
-                        // This is needed to make whole stack tappable
+                        // Needed to make whole stack tappable
                         .contentShape(Rectangle())
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(
@@ -102,8 +85,13 @@ struct MiniGraphView: View {
                                 width: Graph.selectionLineWidth
                             )
                             .opacity(self.opacity ? 1 : 0)
-                            .offset(x: self.dragOffset)
-                            .gesture(dragGesture)
+                            .modifier(
+                                ScrollingLineModifier(items: entries.count,
+                                                      itemWidth: itemWidth,
+                                                      itemSpacing: itemSpacing,
+                                                      selectedIdx: selectedIdx,
+                                                      onDragEnded: changeSelectedIdx(to:))
+                            )
                         })
                         .onReceive(self.viewRouter.objectWillChange, perform: {
                             // Animate in selection line after graph line aniamtes in

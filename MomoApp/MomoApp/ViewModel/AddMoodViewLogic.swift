@@ -10,7 +10,15 @@ import SwiftUI
 // MARK: - JournalGraphViewLogic
 
 struct GraphViewLogic {
-    
+    var idxShift: Int = 0
+
+    var columnLayout: (CGFloat, Int) -> [GridItem] = { (spacing, count) -> [GridItem] in
+        Array(
+            repeating: .init(.flexible(), spacing: spacing),
+            count: count)
+    }
+
+
 }
 
 // MARK: - AddMoodViewLogic
