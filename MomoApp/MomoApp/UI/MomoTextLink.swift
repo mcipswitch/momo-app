@@ -10,13 +10,15 @@ import SwiftUI
 // MARK: - MomoTextLinkButton
 
 struct MomoLinkButton: View {
-    var link: Momo.Link
+    var link: MSK.Link
     var action: () -> Void
+
     var body: some View {
         Button(action: action) {
-            Text(link.text).underline()
+            Text(link.text)
+                .underline()
         }
-        .momoLinkStyle()
+        .msk_applyMomoLinkStyle()
     }
 }
 
@@ -26,31 +28,16 @@ struct MomoLinkStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(Color.momo.opacity(
-                configuration.isPressed ? pressedOpacity : 1
+                configuration.isPressed ? pressed : 1
             ))
-            .momoText(.appLink)
+            .msk_applyStyle(.standardLinkFont)
     }
 }
 
-// MARK: - Extensions
+// MARK: - View+Extension
 
 extension View {
-    func momoLinkStyle() -> some View {
+    func msk_applyMomoLinkStyle() -> some View {
         return self.buttonStyle(MomoLinkStyle())
     }
-}
-
-extension ButtonStyle {
-    var pressedOpacity: Double { 0.5 }
-    var activeOpacity: Double { 1.0 }
-    var inactiveOpacity: Double { 0.2 }
-    var lineLimit: Int { 1 }
-}
-
-extension TextFieldStyle {
-    var minimumScaleFactor: CGFloat { 0.8 }
-}
-
-extension View {
-    var placeHolderOpacity: Double { 0.6 }
 }

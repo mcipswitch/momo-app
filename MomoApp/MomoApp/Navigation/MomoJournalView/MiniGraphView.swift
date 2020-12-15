@@ -12,7 +12,7 @@ import SwiftUI
 // MARK: - MiniGraphView
 
 struct MiniGraphView: View {
-    typealias Graph = Momo.Journal.Graph
+    typealias Graph = MSK.Journal.Graph
 
     @EnvironmentObject var viewRouter: ViewRouter
     var viewLogic = GraphViewLogic()
@@ -162,18 +162,24 @@ struct GraphLine: View {
         .contentShape(Rectangle())
     }
 
-    var line: some View {
+    private var line: some View {
         Rectangle()
             .foregroundColor(.clear).frame(width: 1)
-            .background(LinearGradient.graphLine)
+            .background(graphLineGradient)
     }
 
-    var dateLabel: some View {
+    private var graphLineGradient: some View {
+        LinearGradient(gradient: .graphLineGradient,
+                       startPoint: .bottom,
+                       endPoint: .top)
+    }
+
+    private var dateLabel: some View {
         VStack(spacing: spacing) {
             Text("\(self.entries[idx].date.weekday)")
-                .momoText(.appGraphWeekday)
+                .msk_applyStyle(.graphWeekdayDetailFont)
             Text("\(self.entries[idx].date.day)")
-                .momoText(.appGraphDay)
+                .msk_applyStyle(.graphDayDetailFont)
         }
     }
 }
@@ -195,7 +201,7 @@ struct SelectionLine: View {
                         height: geo[$0].height,
                         alignment: .center
                     )
-                    .shadow()
+                    .msk_applyDropShadow()
             }
         }
     }

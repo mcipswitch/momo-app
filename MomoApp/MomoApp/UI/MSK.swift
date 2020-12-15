@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-// MARK: - Momo Design System
+struct MSK {
 
-struct Momo {
-    static let defaultJoystickSize: CGFloat = 80
-
+    struct Button {}
+    struct DropShadow {}
     struct Journal {}
     struct Joystick {}
     struct TextField {}
 
-    // MARK: Button
-    enum Button {
+    // MARK: - Button
+
+    enum ButtonType {
         typealias SizeTuple = (w: CGFloat, h: CGFloat)
 
         case done
@@ -46,51 +46,59 @@ struct Momo {
         }
     }
 
-    // MARK: ToolbarButton
+    // MARK: - ToolbarButton
+
     enum ToolbarButton {
-        case back, list, graph
+        case back
+        case list
+        case graph
 
         var imageName: String {
             switch self {
-            case .back: return "chevron.backward"
-            case .list: return "list.bullet"
-            case .graph: return "chart.bar.xaxis"
+            case .back:
+                return "chevron.backward"
+            case .list:
+                return "list.bullet"
+            case .graph:
+                return "chart.bar.xaxis"
             }
         }
     }
 
-    // MARK: Link
+    // MARK: - Link
+
     enum Link {
         case pastEntries
 
         var text: String {
             switch self {
-            case .pastEntries: return NSLocalizedString("See your past entries", comment: "")
+            case .pastEntries:
+                return NSLocalizedString("See your past entries", comment: "")
             }
         }
-
-//        var action: () -> Void {
-//            switch self {
-//            case .pastEntries :
-//                return
-//            }
-//        }
     }
 
-    // MARK: ColorWheelSection
+    // MARK: - ColorWheelSection
+
     enum ColorWheelSection {
-        case momo, momoPurple, momoOrange
+        case momo
+        case momoPurple
+        case momoOrange
 
         var degrees: Double {
             switch self {
-            case .momo: return 0
-            case .momoPurple: return 120
-            case .momoOrange: return 240
+            case .momo:
+                return 0
+            case .momoPurple:
+                return 120
+            case .momoOrange:
+                return 240
             }
         }
     }
 
-    // MARK: EntryState
+    // MARK: - EntryState
+    
     enum EntryState {
         case add, edit
 
@@ -103,7 +111,10 @@ struct Momo {
     }
 }
 
-extension Momo.Journal {
+
+// MARK: - Journal
+
+extension MSK.Journal {
     static var listLayout: [GridItem] { [GridItem(.flexible())] }
 
     struct Graph {
@@ -112,31 +123,26 @@ extension Momo.Journal {
     }
 
     enum View {
-        case list, graph
+        case list
+        case graph
+
         var title: String {
             switch self {
-            case .list: return NSLocalizedString("All entries", comment: "")
-            case .graph: return NSLocalizedString("Last 7 days", comment: "")
+            case .list:
+                return NSLocalizedString("All entries", comment: "")
+            case .graph:
+                return NSLocalizedString("Last 7 days", comment: "")
             }
         }
     }
 }
 
-extension Momo.Joystick {
-    static let defaultSize: CGFloat = 80
 
-    struct Ring {
-        static let blur: CGFloat = 2
-        static let lineWidth: CGFloat = 6
-        static let scaleEffect: CGFloat = 1.1
-        static let size: CGFloat = Momo.Joystick.defaultSize + 16
-    }
-}
 
-extension Momo.TextField {
-    static let charLimit: Int = 20
 
-    struct Border {
-        static let height: CGFloat = 2
-    }
+
+extension ButtonStyle {
+    public var pressed: Double { 0.5 }
+    public var active: Double { 1.0 }
+    public var inactive: Double { 0.2 }
 }

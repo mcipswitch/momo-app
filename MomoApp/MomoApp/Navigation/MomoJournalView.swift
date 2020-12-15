@@ -14,13 +14,13 @@ struct MomoJournalView: View {
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
 
     // Animation States
-    // TODO: - remove isGraph, redundant
+    // TODO: - remove, redundant
     @State var isGraph = true
     @State var animateList = false
     @State var animateGraph = false
 
     /// The journal button on the toolbar.
-    var journal: Momo.ToolbarButton {
+    var journal: MSK.ToolbarButton {
         self.isGraph ? .list : .graph
     }
 
@@ -49,7 +49,10 @@ struct MomoJournalView: View {
          Remove the delay when it transitions off.
          */
         //.animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
-        .background(RadialGradient.momo.edgesIgnoringSafeArea(.all))
+
+
+        .msk_applyMomoBackground()
+
         .onAppear {
             self.animateGraph = true
         }
@@ -75,7 +78,7 @@ struct MomoJournalView: View {
     
     private func journalTypeButtonPressed() {
         self.isGraph.toggle()
-        self.viewRouter.toggleJournal(to: self.viewRouter.isGraph ? .list : .graph)
+        self.viewRouter.toggleJournal()
     }
 }
 

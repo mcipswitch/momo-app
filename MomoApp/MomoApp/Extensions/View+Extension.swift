@@ -34,12 +34,6 @@ extension View {
         return modifier(Slide(observedValue: value))
     }
 
-    // MARK: - Shadow
-
-    func shadow() -> some View {
-        return self.modifier(Shadow())
-    }
-
     /// Mimics `mask`
     /// - Parameter mask: The input mask.
     /// - Returns: A modified `View` instance masked with the input mask.

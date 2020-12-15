@@ -20,7 +20,7 @@ struct LineGraphView: View {
     let dataPoints: [CGFloat]
 
     var body: some View {
-        LinearGradient.lineGraph
+        lineGraphBackgroundGradient
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
                     .trim(to: self.on ? 1 : 0)
@@ -35,7 +35,13 @@ struct LineGraphView: View {
                     self.on.toggle()
                 }
             })
-            .shadow()
+            .msk_applyDropShadow()
+    }
+
+    private var lineGraphBackgroundGradient: some View {
+        LinearGradient(gradient: .momoTriColorGradient,
+                       startPoint: .bottom,
+                       endPoint: .top)
     }
 }
 

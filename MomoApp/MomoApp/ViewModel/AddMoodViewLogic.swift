@@ -24,7 +24,7 @@ struct AddMoodViewLogic {
     /// Activate the corresponding color wheel section.
     /// - Parameter degrees: The angle of the joystick in degrees.
     /// - Returns: A `ColorWheelSection` instance.
-    func activateColorWheelSection(degrees: CGFloat) -> Momo.ColorWheelSection {
+    func activateColorWheelSection(degrees: CGFloat) -> MSK.ColorWheelSection {
         switch degrees {
         case 0..<120: return .momo
         case 120..<240: return .momoPurple

@@ -16,10 +16,10 @@ struct MiniBlobView: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(self.entry.date, formatter: DateFormatter.shortDate)
-                .momoText(.appDate)
+                .msk_applyStyle(.mainDateFont)
                 .padding(.bottom, 12)
             Text(self.entry.emotion)
-                .momoText(.appMain)
+                .msk_applyStyle(.mainMessageFont)
             BlobView(blobValue: $blobValue, isStatic: false)
                 .scaleEffect(0.60)
             Spacer()

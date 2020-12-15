@@ -17,7 +17,7 @@ struct MomoAddMoodView: View {
     
     @State private var blobValue: CGFloat = 0
     @State private var degrees: CGFloat = 0
-    @State private var colorWheelSection: Momo.ColorWheelSection = .momo
+    @State private var colorWheelSection: MSK.ColorWheelSection = .momo
     
     @State private var isDragging = false
     @State private var isAnimating = false
@@ -34,7 +34,7 @@ struct MomoAddMoodView: View {
     @State private var dragStart = CGPoint.zero
     @State private var buttonLocation: CGPoint? = nil
 
-    @State private var state: Momo.EntryState = .add
+    @State private var state: MSK.EntryState = .add
 
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
@@ -92,20 +92,20 @@ struct MomoAddMoodView: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                let centerPoint = CGPoint(x: geo.size.width / 2, y: Momo.defaultJoystickSize / 2)
+                let centerPoint = CGPoint(x: geo.size.width / 2, y: MSK.Joystick.defaultSize / 2)
 
                 // Main View
                 VStack(spacing: 48) {
-
                     // Date + TextField
                     VStack(spacing: 36) {
                         currentDate
                             .slideInAnimation(value: self.$homeViewActive)
-                            .padding(.top, 16)
+                            //.padding(.top, 16)
 
                         ZStack {
                             helloMessage
                                 .slideInAnimation(value: self.$homeViewActive)
+                                //.frame(width: 180)
                                 .frame(width: 180, height: 80)
                             VStack(spacing: 6) {
                                 textField
@@ -113,14 +113,20 @@ struct MomoAddMoodView: View {
                                 textFieldBorder
                                     .animateTextFieldBorder(value: self.$homeViewActive)
                             }
+                            //.frame(width: geo.size.width / 2)
                             .frame(width: geo.size.width / 2, height: 80)
                         }
                         //.frame(width: 180, height: 80)
                     }
 
+
+
                     // Blob
                     ZStack {
-                        BlobView(blobValue: $blobValue, isStatic: false)
+                        BlobView(blobValue: $blobValue,
+                                 isStatic: false,
+                                 scale: 1)
+                        #if DEBUG
                         VStack {
                             Text(self.homeViewActive ? "Home Active" : "Home Inactive")
                             Text("Degrees: \(Int(degrees))")
@@ -131,7 +137,10 @@ struct MomoAddMoodView: View {
                             Text(isAnimating ? "animating..." : "")
                         }
                         .font(.system(size: 12.0))
+                        #endif
                     }
+
+                    Spacer()
 
                     // Bottom Navigation
                     ZStack {
@@ -177,27 +186,21 @@ struct MomoAddMoodView: View {
                             self.buttonLocation = self.dragStart
                         }
                     }
-                    .padding(.top, 64)
+                    //.padding(.top, 64)
+
+                    Spacer()
+
                 }
                 // END: - Main View
-
                 topNavigation
                     .slideOutAnimation(value: self.$homeViewActive)
-                    .padding()
+                    .padding(EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16))
             }
         }
-        .background(
-            ZStack {
-                RadialGradient.momo
-                RadialGradient.done
-                    .opacity(self.doneViewActive ? 1 : 0)
-                    .animation(
-                        Animation.easeInOut(duration: 1.5)
-                            .delay(if: self.doneViewActive, 0)
-                    )
-            }
-            .edgesIgnoringSafeArea(.all)
-        )
+        .padding(.vertical)
+
+        .msk_applyMomoBackground()
+
         .onChange(of: self.homeViewActive) { _ in
             self.isAnimating.toggle()
             UIApplication.shared.endEditing()
@@ -241,12 +244,12 @@ struct MomoAddMoodView: View {
 
     var helloMessage: some View {
         Text(NSLocalizedString("Hi, how are you feeling today?", comment: ""))
-            .momoText(.appMain)
+            .msk_applyStyle(.mainMessageFont)
     }
 
     var currentDate: some View {
         Text(Date(), formatter: DateFormatter.shortDate)
-            .momoText(.appDate)
+            .msk_applyStyle(.mainDateFont)
     }
 
     var textField: some View {
@@ -260,7 +263,7 @@ struct MomoAddMoodView: View {
     }
 
     var textFieldBorder: some View {
-        MomoTextFieldBorder(textFieldIsFocused: self.$textFieldIsFocused)
+        MomoTextFieldBorder(isFocused: self.$textFieldIsFocused)
     }
 
     private func onTextFieldChange(_ width: CGFloat) {
@@ -300,7 +303,7 @@ extension MomoAddMoodView {
 // MARK: - Views
 
 struct AddEmotionButton: View {
-    @Binding var entryState: Momo.EntryState
+    @Binding var entryState: MSK.EntryState
     @Binding var homeViewActive: Bool
     @Binding var isAnimating: Bool
     @Binding var isDragging: Bool
@@ -315,7 +318,7 @@ struct AddEmotionButton: View {
                                 ? .none
                                 : Animation.ease.delay(0.5)
                     )
-            }.momoButtonStyle(button: self.homeViewActive ? .standard : .joystick)
+            }.msk_applyMomoButtonStyle(button: self.homeViewActive ? .standard : .joystick)
 
             ColorRing(
                 isAnimating: self.$isAnimating,
@@ -327,15 +330,6 @@ struct AddEmotionButton: View {
         }
     }
 }
-
-// MARK: - Previews
-
-struct AddMoodProfile_Previews: PreviewProvider {
-    static var previews: some View {
-        MomoAddMoodView()
-    }
-}
-
 
 
 

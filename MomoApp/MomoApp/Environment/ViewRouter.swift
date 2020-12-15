@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 class ViewRouter: ObservableObject {
-    typealias Journal = Momo.Journal.View
+    typealias Journal = MSK.Journal.View
 
     let objectWillChange = PassthroughSubject<(), Never>()
     let journalWillChange = PassthroughSubject<(), Never>()
@@ -25,9 +25,9 @@ class ViewRouter: ObservableObject {
         self.currentPage = page
     }
 
-    func toggleJournal(to journal: Journal) {
+    func toggleJournal() {
         self.journalWillChange.send()
-        self.currentJournal = journal
+        self.currentJournal = isGraph ? .list : .graph
     }
 
     func changeHomeState(_ state: HomeState) {

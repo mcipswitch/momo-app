@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - MomoButton
 
 struct MomoButton: View {
-    let button: Momo.Button
+    let button: MSK.ButtonType
     let action: () -> Void
     @Binding var isActive: Bool
     
@@ -21,7 +21,7 @@ struct MomoButton: View {
                 Image(systemName: button.imageName)
             }
         }
-        .momoButtonStyle(button: button, isActive: isActive)
+        .msk_applyMomoButtonStyle(button: button, isActive: isActive)
         .disabled(!isActive)
     }
 }
@@ -29,32 +29,41 @@ struct MomoButton: View {
 // MARK: - MomoButtonStyle
 
 struct MomoButtonStyle: ButtonStyle {
-    let button: Momo.Button
+    let button: MSK.ButtonType
     var isActive: Bool = true
-    private var w: CGFloat { button.size.w }
-    private var h: CGFloat { button.size.h }
-    private var cornerRadius: CGFloat { h / 2 }
+
+    private var w: CGFloat {
+        button.size.w
+    }
+
+    private var h: CGFloat {
+        button.size.h
+    }
+
+    private var cornerRadius: CGFloat {
+        h / 2
+    }
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .momoText(.appButtonText)
+            .msk_applyStyle(.standardButtonFont)
             .foregroundColor(.momo)
             .multilineTextAlignment(.center)
-            .lineLimit(lineLimit)
+            .lineLimit(1)
             .frame(width: w, height: h)
             .background(Color.momo)
             .cornerRadius(cornerRadius)
-            .opacity(isActive ? activeOpacity : inactiveOpacity)
+            .opacity(isActive ? active : inactive)
 
             // TODO: - add this later
             //.opacity(configuration.isPressed ? pressedOpacity : 1)
     }
 }
 
-// MARK: - Extension
+// MARK: - View+Extension
 
 extension View {
-    func momoButtonStyle(button: Momo.Button, isActive: Bool = true) -> some View {
+    func msk_applyMomoButtonStyle(button: MSK.ButtonType, isActive: Bool = true) -> some View {
         return self.buttonStyle(MomoButtonStyle(button: button, isActive: isActive))
     }
 }

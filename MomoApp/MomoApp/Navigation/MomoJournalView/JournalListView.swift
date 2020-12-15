@@ -18,7 +18,7 @@ struct JournalListView: View {
 
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: Momo.Journal.listLayout) {
+            LazyVGrid(columns: MSK.Journal.listLayout) {
                 EntriesList(
                     entries: self.viewModel.entries.reversed()
                 )
@@ -48,7 +48,6 @@ struct EntryRow: View {
 
     init(entry: Entry, blobValue: CGFloat) {
         self.entry = entry
-
         self._blobValue = State(wrappedValue: blobValue)
     }
 
@@ -57,9 +56,9 @@ struct EntryRow: View {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(self.entry.date, formatter: DateFormatter.shortDate)
-                        .momoText(.appDate)
+                        .msk_applyStyle(.mainDateFont)
                     Text(self.entry.emotion)
-                        .momoText(.appMain)
+                        .msk_applyStyle(.mainMessageFont)
                 }
                 Spacer()
                 BlobView(
@@ -71,8 +70,11 @@ struct EntryRow: View {
             }
         }
         .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+
+
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
+
         .background(
             VisualEffectBlur(blurStyle: .dark)
         )

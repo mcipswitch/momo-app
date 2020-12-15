@@ -23,10 +23,6 @@ struct BlobView: View {
     @State var isStatic = true
     @State var isAnimating = false
     @State var scale: CGFloat = 1
-
-    // AnimatableGradient
-    @State private var fromGradient: [UIColor] = UIColor.gradientPurple
-    @State private var toGradient: [UIColor] = UIColor.gradientOrange
     
     let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
 
@@ -66,7 +62,7 @@ struct BlobView: View {
                 Rectangle()
                     // TODO: - need to rotate this so the MOMO starts at the top middle
                     .modifier(AnimatableColor(
-                                colors: UIColor.mArray,
+                                colors: UIColor.blobColorArray,
                                 pct: self.blobValue))
                     // Top left
                     .softInnerShadow(Rectangle(),
@@ -92,25 +88,6 @@ struct BlobView: View {
         .frame(width: scaledFrame, height: scaledFrame * (pathBounds.width / pathBounds.height))
         .onAppear {
             isAnimating = isStatic ? false : true
-        }
-
-        .onChange(of: self.blobValue) { blobValue in
-            switch self.blobValue {
-            case 0..<0.33:
-                self.fromGradient = UIColor.gradientMomo
-                self.toGradient = UIColor.gradientPurple
-                print("1/3")
-            case 0.33..<0.66:
-                self.fromGradient = UIColor.gradientMomo
-                self.toGradient = UIColor.gradientPurple
-                print("2/3")
-            case 0.66...1:
-                self.fromGradient = UIColor.gradientMomo
-                self.toGradient = UIColor.gradientPurple
-                print("3/3")
-            default:
-                break
-            }
         }
     }
 }

@@ -11,24 +11,11 @@ import SwiftUI
 
 struct MomoText: ViewModifier {
     var textStyle: MomoTextStyle
-    var font: Font {
-        switch textStyle {
-        case .appMain: return .appMain
-        case .appDate: return .appDate
-        case .appLink: return .appLink
-        case .appButtonText: return .appButtonText
-        case .appToolbarButton: return .appToolbarButton
-        case .appToolbarTitle: return .appToolbarTitle
-        case .appGraphWeekday: return .appGraphWeekday
-        case .appGraphDay: return .appGraphDay
-        }
-    }
+
     func body(content: Content) -> some View {
         content
-            .font(self.font)
-            .foregroundColor(self.textStyle.color
-                                .opacity(self.textStyle.opacity)
-            )
+            .font(textStyle.font)
+            .foregroundColor(textStyle.color.opacity(textStyle.opacity))
             .multilineTextAlignment(.center)
             .lineSpacing(4)
     }
@@ -37,76 +24,105 @@ struct MomoText: ViewModifier {
 // MARK: - View+Extensions
 
 extension View {
-    func momoText(_ textStyle: MomoTextStyle) -> some View {
+    func msk_applyStyle(_ textStyle: MomoTextStyle) -> some View {
         return self.modifier(MomoText(textStyle: textStyle))
     }
 }
 
 // MARK: - Font+Extensions
 
-enum AppFontWeight {
-    case medium, bold
-}
-
 extension Font {
-    static func appFont(size: CGFloat, weight: AppFontWeight) -> Font {
-        switch weight {
-        case .medium:
-            return Font.custom("DMSans-Medium", size: size)
-        case .bold:
-            return Font.custom("DMSans-Bold", size: size)
-        }
+    static func mediumFont(size: CGFloat) -> Font {
+        return Font.custom("DMSans-Medium", size: size)
     }
 
-    static let appMain = appFont(size: 22, weight: .bold)
-    static let appDate = appFont(size: 16, weight: .medium)
-    static let appLink = appFont(size: 16, weight: .bold)
-    static let appButtonText = appFont(size: 14, weight: .bold)
+    static func boldFont(size: CGFloat) -> Font {
+        return Font.custom("DMSans-Bold", size: size)
+    }
 
-    static let appToolbarButton = appFont(size: 22, weight: .medium)
-    static let appToolbarTitle = appFont(size: 16, weight: .bold)
-
-    static let appGraphWeekday = appFont(size: 12, weight: .bold)
-    static let appGraphDay = appFont(size: 14, weight: .bold)
+    static let mainMessageFont = boldFont(size: 22)
+    static let mainDateFont = mediumFont(size: 16)
+    static let standardLinkFont = boldFont(size: 16)
+    static let standardButtonFont = boldFont(size: 14)
+    static let toolbarIconButtonFont = mediumFont(size: 22)
+    static let toolbarTitleFont = boldFont(size: 16)
+    static let graphWeekdayDetailFont = boldFont(size: 12)
+    static let graphDayDetailFont = boldFont(size: 14)
 }
 
 // MARK: - Helpers
 
 enum MomoTextStyle {
-    case appMain, appDate, appLink, appButtonText,appToolbarButton,appToolbarTitle, appGraphWeekday, appGraphDay
+    case mainMessageFont
+    case mainDateFont
+    case standardLinkFont
+    case standardButtonFont
+    case toolbarIconButtonFont
+    case toolbarTitleFont
+    case graphWeekdayDetailFont
+    case graphDayDetailFont
+
+    var font: Font {
+        switch self {
+        case .mainMessageFont:
+            return .mainMessageFont
+        case .mainDateFont:
+            return .mainDateFont
+        case .standardLinkFont:
+            return .standardLinkFont
+        case .standardButtonFont:
+            return .standardButtonFont
+        case .toolbarIconButtonFont:
+            return .toolbarIconButtonFont
+        case .toolbarTitleFont:
+            return .toolbarTitleFont
+        case .graphWeekdayDetailFont:
+            return .graphWeekdayDetailFont
+        case .graphDayDetailFont:
+            return .graphDayDetailFont
+        }
+    }
 
     var opacity: Double {
         switch self {
-        case .appDate: return 0.6
-        case .appGraphWeekday: return 0.4
-        default: return 1
+        case .mainDateFont:
+            return 0.6
+        case .graphWeekdayDetailFont:
+            return 0.4
+        default:
+            return 1.0
         }
     }
+
     var color: Color {
         switch self {
-        case .appButtonText: return .black
-        default: return .white
+        case .standardButtonFont:
+            return .black
+        default:
+            return .white
         }
     }
 }
 
-// MARK: - Animations
 
-//struct AnimateHomeState: ViewModifier {
-//    @Binding var observedValueForSlideIn: Bool
-//    @Binding var observedValueForSlideOut: Bool
-//
-//    func body(content: Content) -> some View {
-//        content
-//            .offset(y: self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 0 : 0) : -5)
-//            .opacity(self.observedValueForSlideIn ? (!self.observedValueForSlideOut ? 1 : 1) : 0)
-//            .animation(
-//                Animation
-//                    .ease
-//                    .delay(if: self.observedValueForSlideIn, (!self.observedValueForSlideOut ? 0.5 : 0))
-//            )
-//    }
-//}
+
+enum MomoLabelStyle {
+    case active
+    case inactive
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// MARK: - Animations
 
 struct AnimateTextFieldBorder: ViewModifier {
     @Binding var value: Bool
@@ -150,11 +166,27 @@ struct Slide: ViewModifier {
     }
 }
 
-// MARK: - Shadows
 
-struct Shadow: ViewModifier {
+
+
+
+
+
+struct MomoBackground: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .shadow(color: Color.black.opacity(0.6), radius: 20, x: 4, y: 4)
+            .background(
+                RadialGradient(gradient: Gradient.momoBackgroundGradient,
+                               center: .center,
+                               startRadius: 10,
+                               endRadius: 500)
+                    .edgesIgnoringSafeArea(.all)
+            )
+    }
+}
+
+extension View {
+    func msk_applyMomoBackground() -> some View {
+        return self.modifier(MomoBackground())
     }
 }

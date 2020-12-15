@@ -10,20 +10,20 @@ import SwiftUI
 // MARK: - BlurredColorWheel
 
 struct BlurredColorWheel: View {
-    @Binding var section: Momo.ColorWheelSection
+    @Binding var section: MSK.ColorWheelSection
     
     var body: some View {
-        let gradient = Gradient(colors: [Color.momo, Color.momoPurple, Color.momoOrange, Color.momo])
-        let ring = AngularGradient(gradient: gradient,
-                                    center: .center,
-                                    angle: .degrees(-90))
+        let gradient = AngularGradient(gradient: .momoTriColorGradient,
+                                       center: .center,
+                                       angle: .degrees(-90))
+
         Circle()
-            .strokeBorder(ring, lineWidth: 50)
+            .strokeBorder(gradient, lineWidth: 50)
             .animation(.easeInOut(duration: 1.5))
             .mask(
                 Circle()
                     .trim(from: 0.0, to: 1/3)
-                    .stroke(ring, lineWidth: 80)
+                    .stroke(gradient, lineWidth: 80)
                     .rotationEffect(Angle(degrees: 210))
                     .rotationEffect(Angle(degrees: self.section.degrees))
             )

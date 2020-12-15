@@ -77,62 +77,62 @@ extension Array where Element == [UIColor] {
     }
 }
 
-// MARK: - Previews
-
-struct Test_Previews: PreviewProvider {
-    static var previews: some View {
-        HStack(spacing: 0) {
-            VStack(alignment: .center, spacing: 2) {
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.0, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.025, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.05, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.075, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.1, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.125, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.15, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.175, startRadius: 0, endRadius: 250))
-            }
-            VStack(alignment: .center, spacing: 2) {
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.2, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.225, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.25, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.275, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.3, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.325, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.35, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.375, startRadius: 0, endRadius: 250))
-            }
-            VStack(alignment: .center, spacing: 2) {
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.4, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.425, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.45, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.475, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.5, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.525, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.55, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.575, startRadius: 0, endRadius: 250))
-            }
-            VStack(alignment: .center, spacing: 2) {
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.6, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.625, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.65, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.675, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.7, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.725, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.75, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.775, startRadius: 0, endRadius: 250))
-            }
-            VStack(alignment: .center, spacing: 2) {
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.8, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.825, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.85, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.875, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.9, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.925, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.95, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.927, startRadius: 0, endRadius: 250))
-                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 1.0, startRadius: 0, endRadius: 250))
-            }
-        }
-    }
-}
+//// MARK: - Previews
+//
+//struct Test_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HStack(spacing: 0) {
+//            VStack(alignment: .center, spacing: 2) {
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.0, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.025, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.05, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.075, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.1, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.125, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.15, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.175, startRadius: 0, endRadius: 250))
+//            }
+//            VStack(alignment: .center, spacing: 2) {
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.2, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.225, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.25, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.275, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.3, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.325, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.35, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.375, startRadius: 0, endRadius: 250))
+//            }
+//            VStack(alignment: .center, spacing: 2) {
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.4, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.425, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.45, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.475, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.5, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.525, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.55, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.575, startRadius: 0, endRadius: 250))
+//            }
+//            VStack(alignment: .center, spacing: 2) {
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.6, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.625, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.65, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.675, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.7, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.725, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.75, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.775, startRadius: 0, endRadius: 250))
+//            }
+//            VStack(alignment: .center, spacing: 2) {
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.8, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.825, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.85, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.875, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.9, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.925, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.95, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 0.927, startRadius: 0, endRadius: 250))
+//                Rectangle().modifier(AnimatableGradientTest(c1: UIColor.gradientMomo, c2: UIColor.gradientPurple, c3: UIColor.gradientOrange, pct: 1.0, startRadius: 0, endRadius: 250))
+//            }
+//        }
+//    }
+//}

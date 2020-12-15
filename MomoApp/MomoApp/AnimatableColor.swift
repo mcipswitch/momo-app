@@ -69,28 +69,28 @@ struct TestFile_Previews: PreviewProvider {
     static var previews: some View {
         HStack(spacing: 0) {
             VStack(alignment: .center, spacing: 2) {
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.0))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.1))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.15))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.2))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.25))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.3))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.35))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.4))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.45))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.5))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.0))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.1))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.15))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.2))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.25))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.3))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.35))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.4))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.45))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.5))
             }
             VStack(alignment: .center, spacing: 2) {
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.55))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.6))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.65))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.7))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.75))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.8))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.85))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.9))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 0.95))
-                Rectangle().modifier(AnimatableColor(colors: UIColor.mArray, pct: 1.0))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.55))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.6))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.65))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.7))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.75))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.8))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.85))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.9))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 0.95))
+                Rectangle().modifier(AnimatableColor(colors: UIColor.blobColorArray, pct: 1.0))
             }
         }
     }

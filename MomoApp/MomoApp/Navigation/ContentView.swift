@@ -44,8 +44,13 @@ struct ContentView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .environmentObject(ViewRouter())
+        Group {
+            ContentView()
+                .environmentObject(ViewRouter())
+            ContentView()
+                .previewDevice("iPhone 11 Pro")
+                .environmentObject(ViewRouter())
+        }
     }
 }
 #endif

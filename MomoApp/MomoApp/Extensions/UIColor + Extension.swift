@@ -21,10 +21,12 @@ extension UIColor {
         return UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
     }
 
+    public static let blobColorArray: [UIColor] = [#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1), #colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1), #colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1), #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)]
+
+    // Deprecated
     public static let gradientMomo: [UIColor] = [#colorLiteral(red: 0.568627451, green: 0.9882352941, blue: 0.9960784314, alpha: 1), #colorLiteral(red: 0.4156862745, green: 0.8666666667, blue: 0.8039215686, alpha: 1), #colorLiteral(red: 0.3568627451, green: 0.6823529412, blue: 0.9490196078, alpha: 1)]
     public static let gradientPurple: [UIColor] = [#colorLiteral(red: 0.8588235294, green: 0.2745098039, blue: 0.7568627451, alpha: 1), #colorLiteral(red: 0.7882352941, green: 0.2823529412, blue: 0.8274509804, alpha: 1), #colorLiteral(red: 0.7137254902, green: 0.2941176471, blue: 0.8980392157, alpha: 1)]
     public static let gradientOrange: [UIColor] = [#colorLiteral(red: 0.968627451, green: 0.8549019608, blue: 0.5921568627, alpha: 1), #colorLiteral(red: 0.8196078431, green: 0.8588235294, blue: 0.4705882353, alpha: 1), #colorLiteral(red: 0.6941176471, green: 0.8392156863, blue: 0.4431372549, alpha: 1)]
-    public static let mArray: [UIColor] = [#colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1), #colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1), #colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1), #colorLiteral(red: 0.1215686275, green: 1, blue: 0.7333333333, alpha: 1)]
 }
 
 extension Color {
@@ -32,41 +34,29 @@ extension Color {
     public static let momoPurple = Color(#colorLiteral(red: 0.7333333333, green: 0.1215686275, blue: 1, alpha: 1))
     public static let momoOrange = Color(#colorLiteral(red: 1, green: 0.7333333333, blue: 0.1215686275, alpha: 1))
     public static let momoShadow = Color(#colorLiteral(red: 0.03921568627, green: 0.03921568627, blue: 0.1294117647, alpha: 1))
+    public static let momoBackgroundLight = Color(#colorLiteral(red: 0.2588235294, green: 0.2039215686, blue: 0.5019607843, alpha: 1))
+    public static let momoBackgroundDark = Color(#colorLiteral(red: 0.1098039216, green: 0.09411764706, blue: 0.2509803922, alpha: 1))
 }
 
 extension Gradient {
-    static let momoBackgroundGradient = Gradient(colors: [Color(#colorLiteral(red: 0.2588235294, green: 0.2039215686, blue: 0.5019607843, alpha: 1)), Color(#colorLiteral(red: 0.1098039216, green: 0.09411764706, blue: 0.2509803922, alpha: 1))])
-    static let doneBackgroundGradient = Gradient(colors: [Color(#colorLiteral(red: 0.4509803922, green: 0.3607843137, blue: 0.8666666667, alpha: 1)), Color(#colorLiteral(red: 0.1921568627, green: 0.1529411765, blue: 0.3882352941, alpha: 1)), Color(#colorLiteral(red: 0.03921568627, green: 0.03921568627, blue: 0.1294117647, alpha: 1))])
+    static let momoTriColorGradient = Gradient(colors: [Color.momo,
+                                                      Color.momoPurple,
+                                                      Color.momoOrange,
+                                                      Color.momo
+    ])
 
-    static let colorRingGradient = Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))])
+    static let colorRingGradient = Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),
+                                                     Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)),
+                                                     Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))
+    ])
+
     static let momoRingGradient = Gradient(colors: [.momo])
 
-    static let lineGraphGradient = Gradient(colors: [.momo, .momoOrange, .momoPurple, .momo])
-    static let graphLineGradient = Gradient(colors: [Color.gray.opacity(0.4), Color.gray.opacity(0)])
-}
+    static let graphLineGradient = Gradient(colors: [Color.gray.opacity(0.4),
+                                                     Color.gray.opacity(0)
+    ])
 
-extension RadialGradient {
-    public static let momo = RadialGradient(gradient: Gradient.momoBackgroundGradient,
-                                            center: .center,
-                                            startRadius: 10,
-                                            endRadius: 500)
-    public static let done = RadialGradient(gradient: Gradient.doneBackgroundGradient,
-                                            center: .center,
-                                            startRadius: 10,
-                                            endRadius: 750)
-}
-
-extension LinearGradient {
-    static let graphLine = LinearGradient(gradient: .graphLineGradient,
-                                          startPoint: .bottom,
-                                          endPoint: .top)
-    static let colorRing = LinearGradient(gradient: .colorRingGradient,
-                                          startPoint: .topLeading,
-                                          endPoint: .bottomTrailing)
-    static let momoRing = LinearGradient(gradient: .momoRingGradient,
-                                         startPoint: .topLeading,
-                                         endPoint: .bottomTrailing)
-    static let lineGraph = LinearGradient(gradient: .lineGraphGradient,
-                                          startPoint: .top,
-                                          endPoint: .bottom)
+    static let momoBackgroundGradient = Gradient(colors: [.momoBackgroundLight,
+                                                          .momoBackgroundDark
+    ])
 }

@@ -21,6 +21,7 @@
 		9327E7FA25855EE40027C638 /* AddMoodViewLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */; };
 		9327E812258585C90027C638 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9327E814258585C90027C638 /* Localizable.strings */; };
 		932B3C8E257C425B00C6C67B /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = 932B3C8D257C425B00C6C67B /* Neumorphic */; };
+		932E6F6825886812001DBC90 /* DropShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932E6F6725886812001DBC90 /* DropShadow.swift */; };
 		9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9331230724F94C17008B6DD2 /* Animation + Extension.swift */; };
 		93388BE0250FAAA700766633 /* ForceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93388BDF250FAAA700766633 /* ForceButton.swift */; };
 		93519F5024E8CF630095DA38 /* MomoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F4F24E8CF630095DA38 /* MomoApp.swift */; };
@@ -50,8 +51,7 @@
 		9389A35825603E3E008AC500 /* SelectionLineModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9389A35725603E3E008AC500 /* SelectionLineModifier.swift */; };
 		938A0915256C235200D53D9A /* MomoTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938A0914256C235200D53D9A /* MomoTextField.swift */; };
 		938A0923256C307100D53D9A /* MomoTextLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938A0922256C307100D53D9A /* MomoTextLink.swift */; };
-		938B350D2585C31C00225DBE /* Momo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B350C2585C31C00225DBE /* Momo.swift */; };
-		938BBD0E2527B59000759092 /* MomoTextFieldBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938BBD0D2527B59000759092 /* MomoTextFieldBorder.swift */; };
+		938B350D2585C31C00225DBE /* MSK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B350C2585C31C00225DBE /* MSK.swift */; };
 		938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */; };
 		938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938E537024E983F3002653F0 /* UIColor + Extension.swift */; };
 		9390FB032563821200E2E53A /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390FB022563821200E2E53A /* HomeScreen.swift */; };
@@ -86,6 +86,7 @@
 		9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoodViewLogic.swift; sourceTree = "<group>"; };
 		9327E813258585C90027C638 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9327E816258585CB0027C638 /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		932E6F6725886812001DBC90 /* DropShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropShadow.swift; sourceTree = "<group>"; };
 		9331230724F94C17008B6DD2 /* Animation + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation + Extension.swift"; sourceTree = "<group>"; };
 		93388BDF250FAAA700766633 /* ForceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceButton.swift; sourceTree = "<group>"; };
 		93519F4C24E8CF630095DA38 /* MomoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,8 +118,7 @@
 		9389A35725603E3E008AC500 /* SelectionLineModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionLineModifier.swift; sourceTree = "<group>"; };
 		938A0914256C235200D53D9A /* MomoTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoTextField.swift; sourceTree = "<group>"; };
 		938A0922256C307100D53D9A /* MomoTextLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoTextLink.swift; sourceTree = "<group>"; };
-		938B350C2585C31C00225DBE /* Momo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Momo.swift; sourceTree = "<group>"; };
-		938BBD0D2527B59000759092 /* MomoTextFieldBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoTextFieldBorder.swift; sourceTree = "<group>"; };
+		938B350C2585C31C00225DBE /* MSK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSK.swift; sourceTree = "<group>"; };
 		938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath + Extension.swift"; sourceTree = "<group>"; };
 		938E537024E983F3002653F0 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		9390FB022563821200E2E53A /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
@@ -177,7 +177,6 @@
 				9318888125582B870004CD4F /* EntriesViewModel.swift */,
 				930925042558335C00AA3934 /* DataManager.swift */,
 				9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */,
-				938B350C2585C31C00225DBE /* Momo.swift */,
 				9309250A255834BC00AA3934 /* Mock */,
 			);
 			path = ViewModel;
@@ -327,14 +326,15 @@
 		93EF7982254A14700062571F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				938B350C2585C31C00225DBE /* MSK.swift */,
 				938A0914256C235200D53D9A /* MomoTextField.swift */,
-				938BBD0D2527B59000759092 /* MomoTextFieldBorder.swift */,
 				93EF797F254A146A0062571F /* MomoToolbarButton.swift */,
 				93EF7984254A14BE0062571F /* MomoButton.swift */,
 				938A0922256C307100D53D9A /* MomoTextLink.swift */,
 				9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */,
 				93E9A337251D29900095D48C /* ColorRing.swift */,
 				936315392513A6B6005E20EA /* BlurredColorWheel.swift */,
+				932E6F6725886812001DBC90 /* DropShadow.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -435,7 +435,6 @@
 				930105922514E0B9007F0E7A /* Modifiers.swift in Sources */,
 				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
 				9390FB032563821200E2E53A /* HomeScreen.swift in Sources */,
-				938BBD0E2527B59000759092 /* MomoTextFieldBorder.swift in Sources */,
 				9327E7FA25855EE40027C638 /* AddMoodViewLogic.swift in Sources */,
 				93FAEB9B2514FCDC00C057AC /* MomoAddMoodView.swift in Sources */,
 				93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */,
@@ -443,7 +442,7 @@
 				936E0696257F2276002B068E /* AnimatableColor.swift in Sources */,
 				9382CFE32576090600ED46D8 /* MomoLoadingIndicator.swift in Sources */,
 				93EB5C612527891900087D0B /* UIApplication + Extension.swift in Sources */,
-				938B350D2585C31C00225DBE /* Momo.swift in Sources */,
+				938B350D2585C31C00225DBE /* MSK.swift in Sources */,
 				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,
 				930807792564681100A13156 /* SimpleDrag.swift in Sources */,
 				93AE1884256DCE500024E6A9 /* LineGraphView.swift in Sources */,
@@ -453,6 +452,7 @@
 				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,
 				937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */,
 				93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */,
+				932E6F6825886812001DBC90 /* DropShadow.swift in Sources */,
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,
 				93092508255834B900AA3934 /* MockDataManager.swift in Sources */,
 				93EF7985254A14BE0062571F /* MomoButton.swift in Sources */,
