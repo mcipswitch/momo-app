@@ -16,25 +16,26 @@ import SwiftUI
 
 struct LineGraphView: View {
     @EnvironmentObject var viewRouter: ViewRouter
-    @State var on = false
+    @State var lineOn = false
     let dataPoints: [CGFloat]
 
     var body: some View {
         lineGraphBackgroundGradient
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
-                    .trim(to: self.on ? 1 : 0)
-                    .stroke(style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                    .trim(to: self.lineOn ? 1 : 0)
+                    .stroke(style: .lineGraphStrokeStyle)
             )
-            .onReceive(self.viewRouter.objectWillChange, perform: {
+            .onAppear(perform: animateLine)
 
+//            .onReceive(self.viewRouter.objectWillChange, perform: {
                 // Animate line if in JournalView, otherwise no animation
-                withAnimation(self.viewRouter.isHome
-                                ? Animation.linear.delay(0.2)
-                                : Animation.easeInOut(duration: 1.5).delay(0.6)) {
-                    self.on.toggle()
-                }
-            })
+//                withAnimation(self.viewRouter.isHome
+//                                ? Animation.linear.delay(0.2)
+//                                : Animation.easeInOut(duration: 1.5).delay(0.6)) {
+//                    self.lineOn.toggle()
+//                }
+//            })
             .msk_applyDropShadow()
     }
 
@@ -42,6 +43,14 @@ struct LineGraphView: View {
         LinearGradient(gradient: .momoTriColorGradient,
                        startPoint: .bottom,
                        endPoint: .top)
+    }
+
+    // MARK: - Internal Methods
+
+    private func animateLine() {
+        withAnimation(.easeInOut(duration: 1.5)) {
+            self.lineOn.toggle()
+        }
     }
 }
 
@@ -99,11 +108,17 @@ struct LineGraph: Shape {
     }
 }
 
+// MARK: - StrokeStyle+Extension
+
+extension StrokeStyle {
+    static let lineGraphStrokeStyle = StrokeStyle(lineWidth: 6, lineCap: .round)
+}
+
 // MARK: - Previews
 
 struct Wave_Previews: PreviewProvider {
     static var previews: some View {
-        LineGraphView(on: true, dataPoints: [0.3, 0.4, 0.5, 0.3, 0.2, 0.3, 0.9])
+        LineGraphView(lineOn: true, dataPoints: [0.3, 0.4, 0.5, 0.3, 0.2, 0.3, 0.9])
             .environmentObject(ViewRouter())
     }
 }

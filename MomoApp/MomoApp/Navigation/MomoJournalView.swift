@@ -19,6 +19,8 @@ struct MomoJournalView: View {
     @State var animateList = false
     @State var animateGraph = false
 
+    //let onSeePastEntriesPressed: () -> Void
+
     /// The journal button on the toolbar.
     var journal: MSK.ToolbarButton {
         self.isGraph ? .list : .graph
@@ -30,9 +32,9 @@ struct MomoJournalView: View {
 
             ZStack {
                 JournalGraphView()
-                    .slide(if: $animateGraph)
+                    .msk_applyJournalViewAnimation(value: $animateGraph)
                 JournalListView()
-                    .slide(if: $animateList)
+                    .msk_applyJournalViewAnimation(value: $animateList)
             }
             .onReceive(self.viewRouter.journalWillChange) {
                 withAnimation(Animation.ease.delay(if: !animateGraph, 0.5)) {
@@ -54,7 +56,9 @@ struct MomoJournalView: View {
         .msk_applyMomoBackground()
 
         .onAppear {
-            self.animateGraph = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                self.animateGraph.toggle()
+            }
         }
     }
 
@@ -74,6 +78,8 @@ struct MomoJournalView: View {
 
     private func backButtonPressed() {
         self.viewRouter.change(to: .home)
+
+        //self.onSeePastEntriesPressed()
     }
     
     private func journalTypeButtonPressed() {
@@ -82,13 +88,13 @@ struct MomoJournalView: View {
     }
 }
 
-// MARK: - Previews
-
-#if DEBUG
-struct MomoJournalView_Previews: PreviewProvider {
-    static var previews: some View {
-        MomoJournalView()
-            .environmentObject(ViewRouter())
-    }
-}
-#endif
+//// MARK: - Previews
+//
+//#if DEBUG
+//struct MomoJournalView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MomoJournalView()
+//            .environmentObject(ViewRouter())
+//    }
+//}
+//#endif

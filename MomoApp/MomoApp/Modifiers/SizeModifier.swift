@@ -30,6 +30,14 @@ struct SizeModifier: ViewModifier {
     }
 }
 
+// MARK: - View+Extension
+
+extension View {
+    func attachSizeModifier() -> some View {
+        return self.modifier(SizeModifier())
+    }
+}
+
 // MARK: - TextField
 
 struct TextFieldSizePreferenceKey: PreferenceKey {

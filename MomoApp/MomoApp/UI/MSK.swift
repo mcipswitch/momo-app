@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MSK {
 
+    struct Animation {}
     struct Button {}
     struct DropShadow {}
     struct Journal {}
@@ -40,8 +41,10 @@ struct MSK {
 
         var imageName: String {
             switch self {
-            case .done: return "arrow.right"
-            default: return ""
+            case .done:
+                return "arrow.right"
+            default:
+                return ""
             }
         }
     }

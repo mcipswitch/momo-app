@@ -19,7 +19,7 @@ extension Animation {
     func delay(if expression: Bool, _ delay: Double) -> Animation {
         return self.delay(expression ? delay : 0)
     }
-    
+
     // MARK: - Custom
 
     /// Creates a resisting band animation effect.

@@ -13,12 +13,15 @@ import SwiftUI
 // MARK: - JournalListView
 
 struct JournalListView: View {
+    typealias Journal = MSK.Journal
+    private var listLayout: [GridItem] { Journal.listLayout }
+
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
 
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: MSK.Journal.listLayout) {
+            LazyVGrid(columns: listLayout) {
                 EntriesList(
                     entries: self.viewModel.entries.reversed()
                 )

@@ -26,8 +26,7 @@ struct MiniGraphView: View {
     @State private var idxShift: Int = 0
     @State private var newIdx: Int = 6
 
-    @State private var opacity = false
-
+    @State private var selectionLineOpacity = false
     @State private var lineGraphBottomPadding: CGFloat = 0
     
     // MARK: - Body
@@ -79,7 +78,7 @@ struct MiniGraphView: View {
                                 preferences: preferences,
                                 width: Graph.selectionLineWidth
                             )
-                            .opacity(self.opacity ? 1 : 0)
+                            .opacity(self.selectionLineOpacity ? 1 : 0)
                             .modifier(
                                 SelectionLineModifier(items: entries.count,
                                                       itemWidth: itemWidth,
@@ -94,13 +93,14 @@ struct MiniGraphView: View {
                             withAnimation(self.viewRouter.isHome
                                             ? Animation.linear.delay(0.2)
                                             : Animation.easeInOut(duration: 0.8).delay(1.8)) {
-                                self.opacity.toggle()
+                                self.selectionLineOpacity.toggle()
                             }
+
                         })
                     }
                 }
                 VStack {
-                    Text("IDX Selection: \(self.selectedIdx)")
+                    Text("IDX: \(self.selectedIdx)")
                 }
             }
         }
@@ -153,7 +153,7 @@ struct GraphLine: View {
                  Track the height of the date label and calculate the correct
                  bottom padding needed for the graph line to stay within bounds.
                  */
-                .modifier(SizeModifier())
+                .attachSizeModifier()
                 .onPreferenceChange(SizePreferenceKey.self) {
                     self.onDateLabelHeightChange($0.height + spacing)
                 }

@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// MARK: - JournalGraphView
-
 struct JournalGraphView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())

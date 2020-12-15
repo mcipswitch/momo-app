@@ -10,14 +10,14 @@ import SwiftUI
 // MARK: - ViewModifier
 
 struct DropShadow: ViewModifier {
-    typealias shadow = MSK.DropShadow
+    typealias Shadow = MSK.DropShadow
 
     func body(content: Content) -> some View {
         content
-            .shadow(color: shadow.color.opacity(shadow.opacity),
-                    radius: shadow.radius,
-                    x: shadow.offset.x,
-                    y: shadow.offset.y)
+            .shadow(color: Shadow.color.opacity(Shadow.opacity),
+                    radius: Shadow.radius,
+                    x: Shadow.offset.x,
+                    y: Shadow.offset.y)
 
             // Deprecated
             //.shadow(color: Color.black.opacity(0.6), radius: 20, x: 4, y: 4)

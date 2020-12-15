@@ -9,7 +9,9 @@ import SwiftUI
 
 struct MomoAddMoodView: View {
     @EnvironmentObject var viewRouter: ViewRouter
-    private var viewLogic = AddMoodViewLogic()
+    var viewLogic = AddMoodViewLogic()
+
+    //let onSeePastEntriesPressed: () -> Void
 
     @State private var homeViewActive = true
     @State private var addViewActive = false
@@ -111,7 +113,7 @@ struct MomoAddMoodView: View {
                                 textField
                                     .slideOutAnimation(value: self.$homeViewActive)
                                 textFieldBorder
-                                    .animateTextFieldBorder(value: self.$homeViewActive)
+                                    .msk_applyTextFieldBorderAnimation(value: self.$homeViewActive)
                             }
                             //.frame(width: geo.size.width / 2)
                             .frame(width: geo.size.width / 2, height: 80)
@@ -214,14 +216,9 @@ struct MomoAddMoodView: View {
             switch state {
             case .home:
                 self.homeViewActive = true
-                //self.addViewActive = false
-                //self.doneViewActive = false
             case .add:
                 self.homeViewActive = false
-                //self.addViewActive = true
-                //self.doneViewActive = false
             case .done:
-                //self.doneViewActive = true
                 break
             }
         }
@@ -281,6 +278,8 @@ extension MomoAddMoodView {
 
     private func seePastEntriesButtonPressed() {
         self.viewRouter.change(to: .journal)
+
+        //self.onSeePastEntriesPressed()
     }
 
     private func backButtonPressed() {
