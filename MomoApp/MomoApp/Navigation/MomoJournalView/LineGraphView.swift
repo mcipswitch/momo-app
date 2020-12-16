@@ -15,6 +15,8 @@ import SwiftUI
 // MARK: - LineGraphView
 
 struct LineGraphView: View {
+    typealias Graph = MSK.Journal.Graph
+
     @EnvironmentObject var viewRouter: ViewRouter
     @State var lineOn = false
     let dataPoints: [CGFloat]
@@ -48,7 +50,8 @@ struct LineGraphView: View {
     // MARK: - Internal Methods
 
     private func animateLine() {
-        withAnimation(.easeInOut(duration: 1.5)) {
+        var duration: Double { Graph.lineAnimationDuration }
+        withAnimation(.easeInOut(duration: duration)) {
             self.lineOn.toggle()
         }
     }

@@ -12,9 +12,6 @@ import SwiftUI
 struct MomoJournalView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
-
-    // Animation States
-    // TODO: - remove, redundant
     @State var isGraph = true
     @State var animateList = false
     @State var animateGraph = false
@@ -29,22 +26,23 @@ struct MomoJournalView: View {
     var body: some View {
         VStack {
             navigationToolbar
-
             ZStack {
                 JournalGraphView()
                     .msk_applyJournalViewAnimation(value: $animateGraph)
                 JournalListView()
                     .msk_applyJournalViewAnimation(value: $animateList)
             }
-            .onReceive(self.viewRouter.journalWillChange) {
-                withAnimation(Animation.ease.delay(if: !animateGraph, 0.5)) {
-                    self.animateGraph.toggle()
-                }
-                withAnimation(Animation.ease.delay(if: !animateList, 0.5)) {
-                    self.animateList.toggle()
-                }
+        }
+        .onReceive(self.viewRouter.journalWillChange) {
+            withAnimation(Animation.ease.delay(if: !animateGraph, 0.5)) {
+                self.animateGraph.toggle()
+            }
+            withAnimation(Animation.ease.delay(if: !animateList, 0.5)) {
+                self.animateList.toggle()
             }
         }
+
+
         /*
          Animation must be added BEFORE the background.
          The main content for `MomoJournalView` transitions on with a delay.
@@ -56,9 +54,7 @@ struct MomoJournalView: View {
         .msk_applyMomoBackground()
 
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-                self.animateGraph.toggle()
-            }
+            self.animateGraph.toggle()
         }
     }
 
@@ -88,13 +84,13 @@ struct MomoJournalView: View {
     }
 }
 
-//// MARK: - Previews
-//
-//#if DEBUG
-//struct MomoJournalView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MomoJournalView()
-//            .environmentObject(ViewRouter())
-//    }
-//}
-//#endif
+// MARK: - Previews
+
+#if DEBUG
+struct MomoJournalView_Previews: PreviewProvider {
+    static var previews: some View {
+        MomoJournalView()
+            .environmentObject(ViewRouter())
+    }
+}
+#endif

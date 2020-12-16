@@ -9,6 +9,16 @@
 
 import SwiftUI
 
+// MARK: - JournalGraphViewLogic
+
+struct GraphViewLogic {
+    var columnLayout: (CGFloat, Int) -> [GridItem] = { (spacing, count) -> [GridItem] in
+        Array(
+            repeating: .init(.flexible(), spacing: spacing),
+            count: count)
+    }
+}
+
 // MARK: - MiniGraphView
 
 struct MiniGraphView: View {
@@ -28,6 +38,8 @@ struct MiniGraphView: View {
 
     @State private var selectionLineOpacity = false
     @State private var lineGraphBottomPadding: CGFloat = 0
+
+    @State private var offset: CGFloat = UIScreen.screenWidth
     
     // MARK: - Body
 
@@ -50,9 +62,9 @@ struct MiniGraphView: View {
                 let itemFrameSpacing: CGFloat = (geo.size.width - totalItemWidth) / numOfSpaces
                 let itemSpacing: CGFloat = itemWidth + itemFrameSpacing
 
-//                let columnLayout: [GridItem] = Array(
-//                    repeating: .init(.flexible(), spacing: itemFrameSpacing),
-//                    count: self.entries.count)
+                //                let columnLayout: [GridItem] = Array(
+                //                    repeating: .init(.flexible(), spacing: itemFrameSpacing),
+                //                    count: self.entries.count)
 
                 let columnLayout = viewLogic.columnLayout(itemFrameSpacing, entries.count)
 
@@ -71,7 +83,6 @@ struct MiniGraphView: View {
                             self.newIdx = idx
                             self.changeSelectedIdx(to: self.newIdx)
                         }
-                        // Needed to make whole stack tappable
                         .contentShape(Rectangle())
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(
@@ -97,6 +108,15 @@ struct MiniGraphView: View {
                             }
 
                         })
+                    }
+                }
+                // IMPORTANT:
+                // This is a temporary fix for the LazyVGrid
+                // not transitioning on with a slide animation.
+                .offset(x: offset)
+                .onAppear {
+                    withAnimation(.spring()) {
+                        offset = 0
                     }
                 }
                 VStack {
@@ -158,7 +178,7 @@ struct GraphLine: View {
                     self.onDateLabelHeightChange($0.height + spacing)
                 }
         }
-        // Needed to make whole stack tappable
+        // Make whole stack tappable
         .contentShape(Rectangle())
     }
 

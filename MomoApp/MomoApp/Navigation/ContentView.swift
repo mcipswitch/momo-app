@@ -17,12 +17,12 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            MomoAddMoodView()
 
+            // `MomoJournalView` must be underneath to avoid zIndex crash
             if journalOn {
                 MomoJournalView()
                     .transition(.move(edge: .trailing))
-                    .zIndex(2)
+                    .zIndex(1)
 
 
 //                    .offset(x: self.on ? 0 : self.offset)
@@ -33,12 +33,14 @@ struct ContentView: View {
 //                    )
             }
 
-            //Text(journalOn ? "On" : "Off")
 
+            MomoAddMoodView()
         }
+
+
         .onReceive(self.viewRouter.objectWillChange) { _ in
             withAnimation(.spring()) {
-                self.journalOn.toggle()
+                journalOn = viewRouter.isJournal
             }
 
             /*
@@ -54,10 +56,6 @@ struct ContentView: View {
 //            }
         }
     }
-
-//    private func toggle() {
-//        self.on.toggle()
-//    }
 }
 
 // MARK: - Previews
