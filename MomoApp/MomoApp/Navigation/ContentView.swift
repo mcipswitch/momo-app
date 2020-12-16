@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// https://swiftui-lab.com/advanced-transitions/
-
 struct ContentView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @State private var offset: CGFloat = UIScreen.screenWidth
