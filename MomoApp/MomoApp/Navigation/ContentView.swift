@@ -26,10 +26,10 @@ struct ContentView: View {
             MomoAddMoodView()
                 .msk_applyBackgroundBlurStyle(.systemMaterialDark, value: blurOn)
         }
-        .onReceive(viewRouter.objectWillChange, perform: transitionInJournalView)
+        .onReceive(viewRouter.objectWillChange, perform: showJournalView)
     }
 
-    private func transitionInJournalView() {
+    private func showJournalView() {
         withAnimation(.spring()) {
             blurOn = viewRouter.isJournal
             journalOn = viewRouter.isJournal

@@ -36,7 +36,7 @@ struct MiniGraphView: View {
     @State private var idxShift: Int = 0
     @State private var newIdx: Int = 6
 
-    @State private var selectionLineOpacity = false
+    @State private var selectionLineOn = false
     @State private var lineGraphBottomPadding: CGFloat = 0
 
     @State private var offset: CGFloat = UIScreen.screenWidth
@@ -89,7 +89,7 @@ struct MiniGraphView: View {
                                 preferences: preferences,
                                 width: Graph.selectionLineWidth
                             )
-                            .opacity(self.selectionLineOpacity ? 1 : 0)
+                            .opacity(selectionLineOn ? 1 : 0)
                             .modifier(
                                 SelectionLineModifier(items: entries.count,
                                                       itemWidth: itemWidth,
@@ -98,16 +98,7 @@ struct MiniGraphView: View {
                                                       onDragEnded: changeSelectedIdx(to:))
                             )
                         })
-                        .onReceive(self.viewRouter.objectWillChange, perform: {
-
-                            // Animate SelectionLine after line graph animates in
-                            withAnimation(self.viewRouter.isHome
-                                            ? Animation.linear.delay(0.2)
-                                            : Animation.easeInOut(duration: 0.8).delay(1.8)) {
-                                self.selectionLineOpacity.toggle()
-                            }
-
-                        })
+                        .onAppear(perform: showSelectionLine)
                     }
                 }
                 // IMPORTANT:
@@ -128,6 +119,15 @@ struct MiniGraphView: View {
     }
 
     // MARK: - Internal Methods
+
+    private func showSelectionLine() {
+        if viewRouter.isJournal {
+            // TODO: - make extension for this
+            withAnimation(Animation.easeInOut(duration: 0.8).delay(1.8)) {
+                selectionLineOn = viewRouter.isJournal
+            }
+        }
+    }
 
     private func updateLineGraphBottomPadding(_ padding: CGFloat) {
         self.lineGraphBottomPadding = padding
