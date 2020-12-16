@@ -18,42 +18,23 @@ struct ContentView: View {
     var body: some View {
         ZStack {
 
+            // IMPORTANT:
             // `MomoJournalView` must be underneath to avoid zIndex crash
             if journalOn {
                 MomoJournalView()
                     .transition(.move(edge: .trailing))
-                    .zIndex(1)
-
-
-//                    .offset(x: self.on ? 0 : self.offset)
-//                    .background(
-//                        VisualEffectBlur(blurStyle: .dark)
-//                            .edgesIgnoringSafeArea(.all)
-//                            .opacity(self.blurOn ? 1 : 0)
-//                    )
+                    .zIndex(2)
             }
-
-
             MomoAddMoodView()
+                .msk_applyBackgroundBlurStyle(.systemMaterialDark, value: blurOn)
         }
+        .onReceive(viewRouter.objectWillChange, perform: transitionInJournalView)
+    }
 
-
-        .onReceive(self.viewRouter.objectWillChange) { _ in
-            withAnimation(.spring()) {
-                journalOn = viewRouter.isJournal
-            }
-
-            /*
-             The background for `MomoJournalView` transitions on with a delay.
-             Remove the delay when it transitions on.
-             */
-//            withAnimation(Animation.spring().delay(self.viewRouter.isHome ? 0.1 : 0)) {
-//                self.on.toggle()
-//            }
-
-//            withAnimation {
-//                self.blurOn.toggle()
-//            }
+    private func transitionInJournalView() {
+        withAnimation(.spring()) {
+            blurOn = viewRouter.isJournal
+            journalOn = viewRouter.isJournal
         }
     }
 }

@@ -20,6 +20,7 @@
 		930ABB6F254A32E00050C1C4 /* MiniGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */; };
 		930AE6B725633B520091EDA7 /* DragState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930AE6B625633B520091EDA7 /* DragState.swift */; };
 		9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9318888125582B870004CD4F /* EntriesViewModel.swift */; };
+		9327DD242589E31E00BBDA53 /* MomoBackgroundBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */; };
 		9327E7FA25855EE40027C638 /* AddMoodViewLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */; };
 		9327E812258585C90027C638 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9327E814258585C90027C638 /* Localizable.strings */; };
 		932B3C8E257C425B00C6C67B /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = 932B3C8D257C425B00C6C67B /* Neumorphic */; };
@@ -87,6 +88,7 @@
 		930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGraphView.swift; sourceTree = "<group>"; };
 		930AE6B625633B520091EDA7 /* DragState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragState.swift; sourceTree = "<group>"; };
 		9318888125582B870004CD4F /* EntriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesViewModel.swift; sourceTree = "<group>"; };
+		9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoBackgroundBlur.swift; sourceTree = "<group>"; };
 		9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoodViewLogic.swift; sourceTree = "<group>"; };
 		9327E813258585C90027C638 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9327E816258585CB0027C638 /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -332,6 +334,7 @@
 			children = (
 				938B350C2585C31C00225DBE /* MSK.swift */,
 				930076A425887F62007B152D /* MomoBackground.swift */,
+				9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */,
 				938A0914256C235200D53D9A /* MomoTextField.swift */,
 				93EF797F254A146A0062571F /* MomoToolbarButton.swift */,
 				93EF7984254A14BE0062571F /* MomoButton.swift */,
@@ -435,6 +438,7 @@
 				930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */,
 				93EF7980254A146A0062571F /* MomoToolbarButton.swift in Sources */,
 				93519F5F24E8D0090095DA38 /* BlobShape.swift in Sources */,
+				9327DD242589E31E00BBDA53 /* MomoBackgroundBlur.swift in Sources */,
 				938693922559073E00C7F79D /* VisualEffectBlur.swift in Sources */,
 				9389A35825603E3E008AC500 /* SelectionLineModifier.swift in Sources */,
 				93E9A338251D29900095D48C /* ColorRing.swift in Sources */,
