@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// MARK: - JournalMiniBlobView
-
 struct MiniBlobView: View {
     @Binding var blobValue: CGFloat
     let entry: Entry

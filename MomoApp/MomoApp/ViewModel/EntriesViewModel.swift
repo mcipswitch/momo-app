@@ -11,9 +11,15 @@ import Foundation
 import SwiftUI
 
 final class EntriesViewModel: ObservableObject {
-    @Published private(set) var state = State()
-    @Published var entries = [Entry]()
-    @Published var selectedEntry = Entry(emotion: "Random", date: Date(), value: 1.0)
+    @Published var entries: [Entry] = [] {
+        didSet {
+            /// Set default selection to current day / latest entry
+            guard let latestEntry = entries.last else { return }
+            self.selectedEntry = latestEntry
+        }
+    }
+
+    @Published var selectedEntry: Entry = Entry(emotion: "Random", date: Date(), value: 1.0)
 
     /// Set the default number of entries to show in `JournalGraphView`
     private var numOfEntries: Int = 7
@@ -21,12 +27,6 @@ final class EntriesViewModel: ObservableObject {
     /// Latest entries shown in `JournalGraphView`
     var latestEntries: [Entry] {
         self.entries.suffix(self.numOfEntries)
-    }
-
-    var selectedIdx: Int = 0 {
-        didSet {
-            fetchSelectedEntry()
-        }
     }
 
     /// Data points for `MiniGraphView`
@@ -38,13 +38,6 @@ final class EntriesViewModel: ObservableObject {
         self.dataManager = dataManager
         self.fetchEntries()
         self.fetchDataPoints()
-        self.fetchSelectedEntry()
-    }
-
-    struct State {
-        var page: Int = 1
-        var canLoadNextPage = true
-        var isLoading = false
     }
 }
 
@@ -52,12 +45,8 @@ final class EntriesViewModel: ObservableObject {
 
 extension EntriesViewModel: EntriesViewModelProtocol {
 
-    func fetchSelectedEntry() {
-        self.selectedEntry = self.latestEntries[self.selectedIdx]
-    }
-
-    func changeSelectedIdx(to idx: Int) {
-        self.selectedIdx = idx
+    func fetchSelectedEntry(idx: Int) {
+        self.selectedEntry = self.latestEntries[idx]
     }
 
     func fetchEntries() {
@@ -75,8 +64,7 @@ protocol EntriesViewModelProtocol {
     var entries: [Entry] { get }
     func fetchEntries()
     func fetchDataPoints()
-    func changeSelectedIdx(to idx: Int)
-    func fetchSelectedEntry()
+    func fetchSelectedEntry(idx: Int)
 }
 
 // MARK: - Model
@@ -87,3 +75,21 @@ struct Entry: Identifiable, Hashable {
     var date: Date
     var value: CGFloat
 }
+
+
+
+
+
+
+
+
+
+
+
+//@Published private(set) var state = State()
+
+//    struct State {
+//        var page: Int = 1
+//        var canLoadNextPage = true
+//        var isLoading = false
+//    }

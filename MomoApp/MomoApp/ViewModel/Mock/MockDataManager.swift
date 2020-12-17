@@ -14,7 +14,7 @@ class MockDataManager {
     
     init() {
         entries = [
-            Entry(id: UUID(), emotion: "Random", date: date.createDate(year: 2020, month: 06, day: 01), value: 0.12),
+            Entry(id: UUID(), emotion: "First", date: date.createDate(year: 2020, month: 06, day: 01), value: 0.12),
             Entry(id: UUID(), emotion: "Tree", date: date.createDate(year: 2020, month: 06, day: 02), value: 0.73),
             Entry(id: UUID(), emotion: "Nostalgic", date: date.createDate(year: 2020, month: 06, day: 03), value: 0.58),
             Entry(id: UUID(), emotion: "Blue", date: date.createDate(year: 2020, month: 06, day: 04), value: 0.52),

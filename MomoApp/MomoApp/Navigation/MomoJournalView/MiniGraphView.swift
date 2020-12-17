@@ -115,9 +115,9 @@ struct MiniGraphView: View {
             }
         }
         .onAppear {
-            /// Default selection is current day
+            /// Always reset default selection to current day
             let idx = entries.count - 1
-            changeSelectedIdx(to: idx)
+            self.changeSelectedIdx(to: idx)
         }
         .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8))
     }
