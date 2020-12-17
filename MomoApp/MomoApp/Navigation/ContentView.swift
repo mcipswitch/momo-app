@@ -16,8 +16,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
 
-            // IMPORTANT:
-            // `MomoJournalView` must be underneath to avoid zIndex crash
+            // IMPORTANT: - `MomoJournalView` must be underneath to avoid zIndex crash
             if journalOn {
                 MomoJournalView()
                     .transition(.move(edge: .trailing))

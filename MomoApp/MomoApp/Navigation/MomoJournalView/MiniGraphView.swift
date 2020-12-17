@@ -31,10 +31,9 @@ struct MiniGraphView: View {
     let dataPoints: [CGFloat]
     let onEntrySelected: (Int) -> Void
 
-    /// Default selection is current day
-    @State private var selectedIdx: Int = 6
-    @State private var idxShift: Int = 0
-    @State private var newIdx: Int = 6
+    @State private var selectedIdx = Int()
+    @State private var idxShift = Int()
+    @State private var newIdx = Int()
 
     @State private var selectionLineOn = false
     @State private var lineGraphBottomPadding: CGFloat = 0
@@ -114,6 +113,11 @@ struct MiniGraphView: View {
                     Text("IDX: \(self.selectedIdx)")
                 }
             }
+        }
+        .onAppear {
+            /// Default selection is current day
+            let idx = entries.count - 1
+            changeSelectedIdx(to: idx)
         }
         .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8))
     }

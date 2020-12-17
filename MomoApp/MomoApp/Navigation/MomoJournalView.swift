@@ -16,8 +16,6 @@ struct MomoJournalView: View {
     @State var animateList = false
     @State var animateGraph = false
 
-    //let onSeePastEntriesPressed: () -> Void
-
     /// The journal button on the toolbar.
     var journal: MSK.ToolbarButton {
         self.isGraph ? .list : .graph
@@ -58,6 +56,7 @@ struct MomoJournalView: View {
         }
     }
 
+    // TODO: - clicking on the journal button resets the blobvalue to the current date... it needs to remember the last selected idx  instead
     var navigationToolbar: some View {
         ZStack {
             MomoToolbarTitle(view: self.viewRouter.currentJournal)
@@ -74,8 +73,6 @@ struct MomoJournalView: View {
 
     private func backButtonPressed() {
         self.viewRouter.change(to: .home)
-
-        //self.onSeePastEntriesPressed()
     }
     
     private func journalTypeButtonPressed() {
