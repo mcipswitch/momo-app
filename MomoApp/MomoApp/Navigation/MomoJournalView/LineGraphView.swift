@@ -99,20 +99,19 @@ struct LineGraph: Shape {
             let curveXOffset = origin.curveXOffset(to: next, lineRadius: self.lineRadius)
 
             p.addCurve(to: next,
-                       control1: CGPoint(x: origin.x + curveXOffset, y: origin.y),
-                       control2: CGPoint(x: next.x - curveXOffset, y: next.y))
+                       previous: origin,
+                       curveXOffset: curveXOffset)
 
             /// Previous point used to calculate position of curve points.
             var previous = CGPoint(x: 0, y: (1 - start) * rect.height)
 
             for idx in latestDataPoints.indices {
-
                 let next = point(at: idx)
                 let curveXOffset = previous.curveXOffset(to: next, lineRadius: self.lineRadius)
 
                 p.addCurve(to: next,
-                           control1: CGPoint(x: previous.x + curveXOffset, y: previous.y), // offset to right
-                           control2: CGPoint(x: next.x - curveXOffset, y: next.y))                   // offset to left
+                           previous: previous,
+                           curveXOffset: curveXOffset)
 
                 previous = point(at: idx)
             }
