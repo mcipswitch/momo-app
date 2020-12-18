@@ -8,6 +8,9 @@
 import SwiftUI
 
 extension CGPoint {
+    /// Calculate the distance to another point.
+    /// - Parameter point: A `CGPoint`.
+    /// - Returns: The distance in CGFloat.
     func distance(to point: CGPoint) -> CGFloat {
         return sqrt(pow((point.x - x), 2) + pow((point.y - y), 2))
     }
@@ -25,5 +28,17 @@ extension CGPoint {
             bearingDegrees += 360
         }
         return bearingDegrees
+    }
+
+    /// Calculates how curved the bezier line should be.
+    /// - Parameters:
+    ///   - point: A `CGPoint`.
+    ///   - lineRadius: Value within 0...1 range used to determine how curved the bezier line should be.
+    /// - Returns: The curve offset for x axis.
+    func curveXOffset(to point: CGPoint, lineRadius: CGFloat) -> CGFloat {
+        /// Calculate delta between current and previous point.
+        let deltaX = point.x - self.x
+        let curveXOffset = deltaX * lineRadius
+        return curveXOffset
     }
 }

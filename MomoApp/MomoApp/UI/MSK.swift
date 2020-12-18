@@ -123,7 +123,7 @@ extension MSK.Journal {
     struct Graph {
         static let selectionLineWidth: CGFloat = 4
         static let spacing: CGFloat = 8
-        static let lineAnimationDuration: Double = 1.5
+        static let lineAnimationDuration: Double = 3.0
     }
 
     enum View {

@@ -54,7 +54,11 @@ extension EntriesViewModel: EntriesViewModelProtocol {
     }
 
     func fetchDataPoints() {
-        self.latestEntries.forEach{ self.dataPoints.append($0.value) }
+        let lastEightEntries = self.entries.suffix(self.numOfEntries + 1)
+
+        lastEightEntries.forEach {
+            self.dataPoints.append($0.value)
+        }
     }
 }
 
