@@ -30,21 +30,8 @@ struct MomoButton: View {
 
 struct MomoButtonStyle: ButtonStyle {
     @Environment(\.buttonStyleKit) var buttonStyle
-
     let button: MSK.ButtonType
     var isActive: Bool = true
-
-    private var w: CGFloat {
-        button.size.w
-    }
-
-    private var h: CGFloat {
-        button.size.h
-    }
-
-    private var cornerRadius: CGFloat {
-        h / 2
-    }
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -53,9 +40,9 @@ struct MomoButtonStyle: ButtonStyle {
             .foregroundColor(.momo)
             .multilineTextAlignment(.center)
             .lineLimit(1)
-            .frame(width: w, height: h)
+            .frame(width: buttonStyle.w, height: buttonStyle.h)
             .background(Color.momo)
-            .cornerRadius(cornerRadius)
+            .cornerRadius(buttonStyle.cornerRadius)
             .opacity(isActive ? buttonStyle.activeOpacity : buttonStyle.inactiveOpacity)
 
             // TODO: - add this later

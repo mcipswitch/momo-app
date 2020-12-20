@@ -10,7 +10,6 @@ import SwiftUI
 struct MSK {
 
     struct Animation {}
-    struct DropShadow {}
     struct Journal {}
 
     // MARK: - Button
