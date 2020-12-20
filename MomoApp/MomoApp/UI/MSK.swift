@@ -120,12 +120,6 @@ struct MSK {
 extension MSK.Journal {
     static var listLayout: [GridItem] { [GridItem(.flexible())] }
 
-    struct Graph {
-        static let selectionLineWidth: CGFloat = 4
-        static let spacing: CGFloat = 8
-        static let lineAnimationDuration: Double = 3.0
-    }
-
     enum View {
         case list
         case graph

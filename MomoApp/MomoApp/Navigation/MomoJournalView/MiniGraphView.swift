@@ -22,7 +22,7 @@ struct GraphViewLogic {
 // MARK: - MiniGraphView
 
 struct MiniGraphView: View {
-    typealias Graph = MSK.Journal.Graph
+    @Environment(\.lineChartStyle) var lineChartStyle
 
     @EnvironmentObject var viewRouter: ViewRouter
     var viewLogic = GraphViewLogic()
@@ -50,6 +50,7 @@ struct MiniGraphView: View {
                                     bottom: self.lineGraphBottomPadding,
                                     trailing: 12))
                 .allowsHitTesting(false)
+                .msk_applyLineChartStyle(LineChartStyle())
 
             GeometryReader { geo in
 
@@ -70,7 +71,7 @@ struct MiniGraphView: View {
                 LazyVGrid(columns: columnLayout, alignment: .center) {
                     ForEach(0 ..< self.entries.count) { idx in
                         GraphLine(
-                            spacing: Graph.spacing,
+                            spacing: lineChartStyle.labelPadding,
                             selectedIdx: self.selectedIdx,
                             newIdx: self.newIdx,
                             idx: idx,
@@ -86,7 +87,7 @@ struct MiniGraphView: View {
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(
                                 preferences: preferences,
-                                width: Graph.selectionLineWidth
+                                width: lineChartStyle.selectionLineWidth
                             )
                             .opacity(selectionLineOn ? 1 : 0)
                             .modifier(

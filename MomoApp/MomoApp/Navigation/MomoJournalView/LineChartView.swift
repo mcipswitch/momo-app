@@ -8,17 +8,15 @@
  Resources:
  https://www.objc.io/blog/2020/03/16/swiftui-line-graph-animation/
  https://crustlab.com/blog/ios-development-swiftui-experiment-building-custom-chart/
-
- For styling, please see:
- https://swiftwithmajid.com/2020/12/09/styling-custom-swiftui-views-using-environment/
  */
 
 import SwiftUI
 
 // MARK: - LineGraphView
 
-struct LineChartView: View {
-    typealias Graph = MSK.Journal.Graph
+struct LineGraphView: View {
+    // TODO: - Remove the environment here
+    @Environment(\.lineChartStyle) var lineChartStyle
 
     @EnvironmentObject var viewRouter: ViewRouter
     @State var lineOn = false
@@ -45,7 +43,7 @@ struct LineChartView: View {
     // MARK: - Internal Methods
 
     private func animateLine() {
-        var duration: Double { Graph.lineAnimationDuration }
+        var duration: Double { lineChartStyle.lineAnimationDuration }
         withAnimation(.easeInOut(duration: duration)) {
             self.lineOn.toggle()
         }
@@ -128,7 +126,7 @@ extension StrokeStyle {
 
 struct Wave_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartView(lineOn: true, dataPoints: [0.3, 0.4, 0.5, 0.3, 0.2, 0.3, 0.9])
+        LineGraphView(lineOn: true, dataPoints: [0.3, 0.4, 0.5, 0.3, 0.2, 0.3, 0.9])
             .environmentObject(ViewRouter())
     }
 }
