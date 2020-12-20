@@ -1,5 +1,5 @@
 //
-//  ToolbarButton.swift
+//  MomoToolbarTitle.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-10-28.
@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - MomoToolbarTitle
 
 struct MomoToolbarTitle: View {
-    let view: MSK.Journal.View
+    let view: JournalType
     
     var body: some View {
         Text(view.title)
@@ -21,7 +21,7 @@ struct MomoToolbarTitle: View {
 // MARK: - MomoToolbarButton
 
 struct MomoToolbarButton: View {
-    let button: MSK.ToolbarButton
+    let button: ToolbarButton
     let action: () -> Void
 
     var body: some View {

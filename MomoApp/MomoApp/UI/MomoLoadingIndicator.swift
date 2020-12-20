@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// MARK: - MomoLoadingIndicator
-
 struct MomoLoadingIndicator: View {
     var body: some View {
         ProgressView()

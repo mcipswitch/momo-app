@@ -18,7 +18,7 @@ struct MiniBlobView: View {
                 .padding(.bottom, 12)
             Text(self.entry.emotion)
                 .msk_applyTextStyle(.mainMessageFont)
-            BlobView(blobValue: $blobValue, isStatic: false)
+            BlobView(blobValue: $blobValue)
                 .scaleEffect(0.60)
             Spacer()
         }

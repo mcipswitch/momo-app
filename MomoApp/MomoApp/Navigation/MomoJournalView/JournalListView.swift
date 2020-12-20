@@ -13,15 +13,13 @@ import SwiftUI
 // MARK: - JournalListView
 
 struct JournalListView: View {
-    typealias Journal = MSK.Journal
-    private var listLayout: [GridItem] { Journal.listLayout }
-
+    @Environment(\.journalStyle) var journalStyle
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
 
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: listLayout) {
+            LazyVGrid(columns: journalStyle.listLayout) {
                 EntriesList(
                     entries: self.viewModel.entries.reversed()
                 )
@@ -65,10 +63,11 @@ struct EntryRow: View {
                 }
                 Spacer()
                 BlobView(
-                    blobValue: self.$blobValue,
-                    isStatic: true,
-                    scale: 0.2
+                    blobValue: self.$blobValue
                 )
+                .msk_applyBlobStyle(BlobStyle(scale: 0.2,
+                                              isStatic: true))
+
                 .padding(.trailing, 16)
             }
         }

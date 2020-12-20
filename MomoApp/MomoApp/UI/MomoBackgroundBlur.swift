@@ -1,5 +1,5 @@
 //
-//  Blur.swift
+//  MomoBackgroundBlur.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-12-16.

@@ -1,5 +1,5 @@
 //
-//  MomoTextLink.swift
+//  MomoLinkButton.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-11-23.
@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - MomoTextLinkButton
 
 struct MomoLinkButton: View {
-    var link: MSK.Link
+    var link: Link
     var action: () -> Void
 
     var body: some View {

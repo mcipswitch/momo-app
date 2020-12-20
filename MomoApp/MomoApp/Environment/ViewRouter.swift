@@ -9,7 +9,9 @@ import SwiftUI
 import Combine
 
 class ViewRouter: ObservableObject {
-    typealias Journal = MSK.Journal.View
+    @Environment(\.journalStyle) var journalStyle
+
+    //typealias Journal = MSK.Journal.View
 
     let objectWillChange = PassthroughSubject<(), Never>()
     let journalWillChange = PassthroughSubject<(), Never>()
@@ -17,7 +19,7 @@ class ViewRouter: ObservableObject {
     let textFieldWillChange = PassthroughSubject<String, Never>()
 
     @Published var currentPage: Page = .home
-    @Published var currentJournal: Journal = .graph
+    @Published var currentJournal: JournalType = .graph
     @Published var currentHomeState: HomeState = .home
 
     func change(to page: Page) {
@@ -61,5 +63,19 @@ class ViewRouter: ObservableObject {
 
     enum HomeState {
         case home, add, done
+    }
+}
+
+enum JournalType {
+    case list
+    case graph
+
+    var title: String {
+        switch self {
+        case .list:
+            return NSLocalizedString("All entries", comment: "")
+        case .graph:
+            return NSLocalizedString("Last 7 days", comment: "")
+        }
     }
 }

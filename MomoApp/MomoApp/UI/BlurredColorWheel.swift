@@ -7,10 +7,8 @@
 
 import SwiftUI
 
-// MARK: - BlurredColorWheel
-
 struct BlurredColorWheel: View {
-    @Binding var section: MSK.ColorWheelSection
+    @Binding var section: ColorWheelSection
     
     var body: some View {
         let gradient = AngularGradient(gradient: .momoTriColorGradient,

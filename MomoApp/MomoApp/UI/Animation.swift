@@ -52,14 +52,6 @@ struct JournalViewAnimation: ViewModifier {
     }
 }
 
-// MARK: - Animation
-
-enum MomoAnimationStyle {
-    case journalView
-    case textFieldBorder
-}
-
-
 // MARK: - View+Extension
 
 extension View {

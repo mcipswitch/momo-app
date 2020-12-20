@@ -13,7 +13,7 @@ struct MomoBackground: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(
-                RadialGradient(gradient: Gradient.momoBackgroundGradient,
+                RadialGradient(gradient: .momoBackgroundGradient,
                                center: .center,
                                startRadius: 10,
                                endRadius: 500)

@@ -17,7 +17,7 @@ struct MomoJournalView: View {
     @State var animateGraph = false
 
     /// The journal button on the toolbar.
-    var journal: MSK.ToolbarButton {
+    var journal: ToolbarButton {
         self.isGraph ? .list : .graph
     }
 

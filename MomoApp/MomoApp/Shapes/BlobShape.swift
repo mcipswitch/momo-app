@@ -18,75 +18,62 @@ import SwiftUI
 import Neumorphic
 
 struct BlobView: View {
+    @Environment(\.blobStyle) var blobStyle
 
     @Binding var blobValue: CGFloat
-    @State var isStatic = true
-    @State var isAnimating = false
-    @State var scale: CGFloat = 1
-    
-    let pathBounds = UIBezierPath.calculateBounds(paths: [.blob3])
+    @State private var isAnimating = false
 
     var animatingBlob: some View {
-        BlobShape(bezier: .blob3, pathBounds: pathBounds)
-            .modifier(BlobEffect(
-                skewValue: isAnimating ? 2 : 0
-            ))
-            .modifier(BlobAnimationModifier(
-                        skew: true,
-                        breathe: true,
-                        rotate: true,
-                        isAnimating: $isAnimating)
-            )
+        BlobShape(bezier: blobStyle.bezier, pathBounds: blobStyle.pathBounds)
+            .msk_applyBlobAnimation(skew: true,
+                                    breathe: true,
+                                    rotate: true,
+                                    isAnimating: $isAnimating)
+    }
+
+    private var blobShadow: some View {
+        BlobShape(bezier: blobStyle.bezier, pathBounds: blobStyle.pathBounds)
+            .fill(Color.clear)
+            .shadow(color: blobStyle.shadowColor,
+                    radius: blobStyle.shadowRadius,
+                    x: blobStyle.shadowOffset.x,
+                    y: blobStyle.shadowOffset.y)
+            .msk_applyBlobAnimation(skew: true,
+                                    breathe: true,
+                                    rotate: false,
+                                    isAnimating: $isAnimating)
     }
     
     var body: some View {
-        let frameSize: CGFloat = 250
-        let scaledFrame = frameSize * scale
-        
         ZStack {
-            // Blob: Shadow Layer
-            BlobShape(bezier: .blob3, pathBounds: pathBounds)
-                .fill(Color.clear)
-                .shadow(color: Color.black.opacity(0.6), radius: 50, x: 10, y: 10)
-                .modifier(BlobEffect(
-                    skewValue: isAnimating ? 2 : 0
-                ))
-                .modifier(BlobAnimationModifier(
-                            skew: true,
-                            breathe: true,
-                            rotate: false,
-                            isAnimating: $isAnimating)
-                )
+            blobShadow
+
             // Blob: Gradient Layer
             ZStack {
                 Rectangle()
                     .modifier(AnimatableColor(
                                 colors: UIColor.blobColorArray,
                                 pct: self.blobValue))
-                    // Top left
                     .softInnerShadow(Rectangle(),
-                                     //darkShadow: Color.white.opacity(0.8),
-                                     lightShadow: .clear,
-                                     spread: 1.0,
-                                     radius: 30)
+                                     darkShadow: blobStyle.innerTopLeftShadowDarkShadow,
+                                     lightShadow: blobStyle.innerTopLeftShadowLightShadow,
+                                     spread: blobStyle.innerTopLeftShadowSpread,
+                                     radius: blobStyle.innerTopLeftShadowRadius)
                     .blendMode(.overlay)
-
-                    // Bottom right
                     .softInnerShadow(Rectangle(),
-                                     darkShadow: .clear,
-                                     lightShadow: Color.momoShadow.opacity(0.6),
-                                     //lightShadow: Color.momoShadow.opacity(0.8),
-                                     spread: 0.8,
-                                     radius: 30)
+                                     darkShadow: blobStyle.innerBottomRightShadowDarkShadow,
+                                     lightShadow: blobStyle.innerBottomRightShadowLightShadow,
+                                     spread: blobStyle.innerBottomRightShadowSpread,
+                                     radius: blobStyle.innerBottomRightShadowRadius)
                     .blendMode(.multiply)
             }
             .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
             .mask(self.animatingBlob)
-
         }
-        .frame(width: scaledFrame, height: scaledFrame * (pathBounds.width / pathBounds.height))
+        .frame(width: blobStyle.scaledFrame,
+               height: blobStyle.scaledFrame * (blobStyle.pathBounds.width / blobStyle.pathBounds.height))
         .onAppear {
-            isAnimating = isStatic ? false : true
+            isAnimating = blobStyle.isStatic ? false : true
         }
     }
 }
@@ -95,7 +82,6 @@ struct BlobView: View {
 
 struct BlobAnimationModifier: ViewModifier {
     @Binding var isAnimating: Bool
-
     let skew: Bool
     let breathe: Bool
     let rotate: Bool
@@ -104,35 +90,33 @@ struct BlobAnimationModifier: ViewModifier {
         self.skew = skew
         self.breathe = breathe
         self.rotate = rotate
-
         self._isAnimating = isAnimating
+    }
+
+    private var skewEffect: Animation {
+        Animation.easeInOut(duration: 1.0).repeat(while: isAnimating)
+    }
+
+    private var breatheEffect: Animation {
+        Animation.breathe.repeat(while: isAnimating)
+    }
+
+    private var rotateEffect: Animation {
+        Animation.linear(duration: 50).repeatForever(autoreverses: false)
     }
 
     func body(content: Content) -> some View {
         content
-            // Skew Effect
-            .animation(self.skew ?
-                Animation
-                    .easeInOut(duration: 1.0)
-                    .repeat(while: isAnimating)
-                : nil
-            )
-            // Breathe Effect
+            .modifier(BlobEffect(
+                skewValue: self.isAnimating ? 2 : 0
+            ))
+            .animation(self.skew ? skewEffect : nil)
+
             .scaleEffect(isAnimating ? 1.05 : 1)
-            .animation(self.breathe ?
-                Animation
-                    .breathe
-                    .repeat(while: isAnimating)
-                : nil
-            )
-            // Rotate Effect
+            .animation(self.breathe ? breatheEffect : nil)
+
             .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-            .animation(self.rotate ?
-                Animation
-                    .linear(duration: 50)
-                    .repeatForever(autoreverses: false)
-                : nil
-            )
+            .animation(self.rotate ? rotateEffect : nil)
     }
 }
 
@@ -191,10 +175,10 @@ struct BlobShape: Shape {
     }
 }
 
-// MARK: - Previews
+// MARK: - View+Extensions
 
-struct BlobShape_Previews: PreviewProvider {
-    static var previews: some View {
-        BlobView(blobValue: .constant(0.33), isStatic: false, isAnimating: false, scale: 1.0)
+extension View {
+    func msk_applyBlobAnimation(skew: Bool, breathe: Bool, rotate: Bool, isAnimating: Binding<Bool>) -> some View {
+        return self.modifier(BlobAnimationModifier(skew: skew, breathe: breathe, rotate: rotate, isAnimating: isAnimating))
     }
 }

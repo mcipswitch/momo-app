@@ -24,8 +24,10 @@ struct MomoTextField: View {
             TextField("", text: $text, onEditingChanged: { editingChanged in
                 self.textFieldIsFocused = editingChanged ? true : false
             }, onCommit: {
-                // TODO
+
+                // TODO: Emotion Added view
                 print(text)
+
             })
             .msk_applyMomoTextFieldStyle()
             .onReceive(text.publisher.collect()) { char in
@@ -56,8 +58,6 @@ struct PlaceholderText: View {
     var body: some View {
         Text(text)
             .msk_applyTextStyle(.mainMessageFont)
-            .multilineTextAlignment(.center)
-            .lineLimit(1)
     }
 }
 
@@ -66,7 +66,6 @@ struct PlaceholderText: View {
 struct MomoTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .msk_applyTextFieldStyle(TextFieldStyleKit())
             .msk_applyTextStyle(.mainMessageFont)
             .multilineTextAlignment(.center)
             .lineLimit(1)

@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - ButtonStyleKit
 
 public struct ButtonStyleKit {
-    let button: MSK.ButtonType
+    let button: ButtonType
     let isActive: Bool
 
     let activeOpacity: Double
@@ -22,7 +22,7 @@ public struct ButtonStyleKit {
     var cornerRadius: CGFloat { return button.size.h / 2 }
 
     init(
-        button: MSK.ButtonType = .standard,
+        button: ButtonType = .standard,
         isActive: Bool = true,
 
         activeOpacity: Double = 1.0,

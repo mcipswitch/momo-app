@@ -19,7 +19,7 @@ struct MomoAddMoodView: View {
     
     @State private var blobValue: CGFloat = 0
     @State private var degrees: CGFloat = 0
-    @State private var colorWheelSection: MSK.ColorWheelSection = .momo
+    @State private var colorWheelSection: ColorWheelSection = .momo
     
     @State private var isDragging = false
     @State private var isAnimating = false
@@ -36,7 +36,7 @@ struct MomoAddMoodView: View {
     @State private var dragStart = CGPoint.zero
     @State private var buttonLocation: CGPoint? = nil
 
-    @State private var state: MSK.EntryState = .add
+    @State private var state: EntryState = .add
 
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
@@ -94,7 +94,7 @@ struct MomoAddMoodView: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                let centerPoint = CGPoint(x: geo.size.width / 2, y: MSK.ButtonType.joystick.size.w / 2)
+                let centerPoint = CGPoint(x: geo.size.width / 2, y: ButtonType.joystick.size.w / 2)
 
                 // Main View
                 VStack(spacing: 48) {
@@ -125,9 +125,7 @@ struct MomoAddMoodView: View {
 
                     // Blob
                     ZStack {
-                        BlobView(blobValue: $blobValue,
-                                 isStatic: false,
-                                 scale: 1)
+                        BlobView(blobValue: $blobValue)
                         #if DEBUG
                         VStack {
                             Text(self.homeViewActive ? "Home Active" : "Home Inactive")
@@ -302,7 +300,7 @@ extension MomoAddMoodView {
 // MARK: - Views
 
 struct AddEmotionButton: View {
-    @Binding var entryState: MSK.EntryState
+    @Binding var entryState: EntryState
     @Binding var homeViewActive: Bool
     @Binding var isAnimating: Bool
     @Binding var isDragging: Bool
@@ -317,7 +315,8 @@ struct AddEmotionButton: View {
                                 ? .none
                                 : Animation.ease.delay(0.5)
                     )
-            }.msk_applyMomoButtonStyle(button: self.homeViewActive ? .standard : .joystick)
+            }
+            .msk_applyMomoButtonStyle(button: homeViewActive ? .standard : .joystick)
 
             ColorRing(
                 isAnimating: self.$isAnimating,

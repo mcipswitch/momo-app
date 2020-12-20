@@ -48,8 +48,7 @@ extension EnvironmentValues {
 
 extension View {
     /// An extension on View protocol that allows us to insert chart styles into a view hierarchy environment.
-    func msk_applyButtonStyle(_ style: DropShadowStyle) -> some View {
+    func msk_applyDropShadowStyle(_ style: DropShadowStyle) -> some View {
         environment(\.dropShadowStyle, style)
     }
 }
-
