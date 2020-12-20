@@ -14,7 +14,7 @@ struct MomoToolbarTitle: View {
     
     var body: some View {
         Text(view.title)
-            .msk_applyStyle(.toolbarTitleFont)
+            .msk_applyTextStyle(.toolbarTitleFont)
     }
 }
 
@@ -28,6 +28,6 @@ struct MomoToolbarButton: View {
         Button(action: action) {
             Image(systemName: button.imageName)
         }
-        .msk_applyStyle(.toolbarIconButtonFont)
+        .msk_applyTextStyle(.toolbarIconButtonFont)
     }
 }

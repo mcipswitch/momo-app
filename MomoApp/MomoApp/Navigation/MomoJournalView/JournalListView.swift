@@ -59,9 +59,9 @@ struct EntryRow: View {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(self.entry.date, formatter: DateFormatter.shortDate)
-                        .msk_applyStyle(.mainDateFont)
+                        .msk_applyTextStyle(.mainDateFont)
                     Text(self.entry.emotion)
-                        .msk_applyStyle(.mainMessageFont)
+                        .msk_applyTextStyle(.mainMessageFont)
                 }
                 Spacer()
                 BlobView(

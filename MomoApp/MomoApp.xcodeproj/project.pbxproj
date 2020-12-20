@@ -13,6 +13,7 @@
 		930105922514E0B9007F0E7A /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930105912514E0B9007F0E7A /* Modifiers.swift */; };
 		9302A8B5258D11AD00FF2ECB /* Path+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8B4258D11AD00FF2ECB /* Path+Extensions.swift */; };
 		9302A8B9258FA20C00FF2ECB /* LineChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8B8258FA20C00FF2ECB /* LineChartStyle.swift */; };
+		9302A8C0258FA99200FF2ECB /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8BF258FA99200FF2ECB /* TextFieldStyle.swift */; };
 		9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */; };
 		9308077425645EF000A13156 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9308077325645EF000A13156 /* View+Extension.swift */; };
 		930807792564681100A13156 /* SimpleDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930807782564681100A13156 /* SimpleDrag.swift */; };
@@ -83,6 +84,7 @@
 		930105912514E0B9007F0E7A /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		9302A8B4258D11AD00FF2ECB /* Path+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Path+Extensions.swift"; sourceTree = "<group>"; };
 		9302A8B8258FA20C00FF2ECB /* LineChartStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartStyle.swift; sourceTree = "<group>"; };
+		9302A8BF258FA99200FF2ECB /* TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
 		9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCompletionObserverModifier.swift; sourceTree = "<group>"; };
 		9308077325645EF000A13156 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		930807782564681100A13156 /* SimpleDrag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrag.swift; sourceTree = "<group>"; };
@@ -171,6 +173,15 @@
 				930AE6B625633B520091EDA7 /* DragState.swift */,
 			);
 			path = Modifiers;
+			sourceTree = "<group>";
+		};
+		9302A8BD258FA97E00FF2ECB /* Environment Styles */ = {
+			isa = PBXGroup;
+			children = (
+				9302A8B8258FA20C00FF2ECB /* LineChartStyle.swift */,
+				9302A8BF258FA99200FF2ECB /* TextFieldStyle.swift */,
+			);
+			path = "Environment Styles";
 			sourceTree = "<group>";
 		};
 		9309250A255834BC00AA3934 /* Mock */ = {
@@ -337,8 +348,8 @@
 		93EF7982254A14700062571F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				9302A8BD258FA97E00FF2ECB /* Environment Styles */,
 				938B350C2585C31C00225DBE /* MSK.swift */,
-				9302A8B8258FA20C00FF2ECB /* LineChartStyle.swift */,
 				930076A425887F62007B152D /* MomoBackground.swift */,
 				9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */,
 				938A0914256C235200D53D9A /* MomoTextField.swift */,
@@ -492,6 +503,7 @@
 				930076A525887F62007B152D /* MomoBackground.swift in Sources */,
 				936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */,
 				93EF797D254A07F20062571F /* MomoJournalView.swift in Sources */,
+				9302A8C0258FA99200FF2ECB /* TextFieldStyle.swift in Sources */,
 				93388BE0250FAAA700766633 /* ForceButton.swift in Sources */,
 				930ABB6F254A32E00050C1C4 /* MiniGraphView.swift in Sources */,
 			);

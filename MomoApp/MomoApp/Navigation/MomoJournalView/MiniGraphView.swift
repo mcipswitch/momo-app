@@ -202,9 +202,9 @@ struct GraphLine: View {
     private var dateLabel: some View {
         VStack(spacing: spacing) {
             Text("\(self.entries[idx].date.weekday)")
-                .msk_applyStyle(.graphWeekdayDetailFont)
+                .msk_applyTextStyle(.graphWeekdayDetailFont)
             Text("\(self.entries[idx].date.day)")
-                .msk_applyStyle(.graphDayDetailFont)
+                .msk_applyTextStyle(.graphDayDetailFont)
         }
     }
 }

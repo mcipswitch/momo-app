@@ -46,7 +46,7 @@ struct MomoButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .msk_applyStyle(.standardButtonFont)
+            .msk_applyTextStyle(.standardButtonFont)
             .foregroundColor(.momo)
             .multilineTextAlignment(.center)
             .lineLimit(1)

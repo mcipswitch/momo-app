@@ -241,12 +241,12 @@ struct MomoAddMoodView: View {
 
     var helloMessage: some View {
         Text(NSLocalizedString("Hi, how are you feeling today?", comment: ""))
-            .msk_applyStyle(.mainMessageFont)
+            .msk_applyTextStyle(.mainMessageFont)
     }
 
     var currentDate: some View {
         Text(Date(), formatter: DateFormatter.shortDate)
-            .msk_applyStyle(.mainDateFont)
+            .msk_applyTextStyle(.mainDateFont)
     }
 
     var textField: some View {

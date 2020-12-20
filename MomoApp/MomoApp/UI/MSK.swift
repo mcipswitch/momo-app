@@ -14,7 +14,6 @@ struct MSK {
     struct DropShadow {}
     struct Journal {}
     struct Joystick {}
-    struct TextField {}
 
     // MARK: - Button
 
@@ -134,7 +133,6 @@ extension MSK.Journal {
         }
     }
 }
-
 
 
 

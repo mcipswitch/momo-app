@@ -30,7 +30,7 @@ struct MomoLinkStyle: ButtonStyle {
             .foregroundColor(Color.momo.opacity(
                 configuration.isPressed ? pressed : 1
             ))
-            .msk_applyStyle(.standardLinkFont)
+            .msk_applyTextStyle(.standardLinkFont)
     }
 }
 
