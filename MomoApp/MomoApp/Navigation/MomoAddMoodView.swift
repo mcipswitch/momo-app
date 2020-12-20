@@ -94,7 +94,7 @@ struct MomoAddMoodView: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                let centerPoint = CGPoint(x: geo.size.width / 2, y: MSK.Joystick.defaultSize / 2)
+                let centerPoint = CGPoint(x: geo.size.width / 2, y: MSK.ButtonType.joystick.size.w / 2)
 
                 // Main View
                 VStack(spacing: 48) {

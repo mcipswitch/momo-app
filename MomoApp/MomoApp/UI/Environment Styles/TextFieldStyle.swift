@@ -5,8 +5,6 @@
 //  Created by Priscilla Ip on 2020-12-20.
 //
 
-import Foundation
-
 import SwiftUI
 
 // MARK: - MomoTextFieldStyleKit

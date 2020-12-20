@@ -25,10 +25,12 @@ struct MomoLinkButton: View {
 // MARK: - MomoTextLinkStyle
 
 struct MomoLinkStyle: ButtonStyle {
+    @Environment(\.buttonStyleKit) var buttonStyle
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(Color.momo.opacity(
-                configuration.isPressed ? pressed : 1
+                configuration.isPressed ? buttonStyle.pressedOpacity : 1
             ))
             .msk_applyTextStyle(.standardLinkFont)
     }

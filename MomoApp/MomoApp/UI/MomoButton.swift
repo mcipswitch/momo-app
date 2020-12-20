@@ -29,6 +29,8 @@ struct MomoButton: View {
 // MARK: - MomoButtonStyle
 
 struct MomoButtonStyle: ButtonStyle {
+    @Environment(\.buttonStyleKit) var buttonStyle
+
     let button: MSK.ButtonType
     var isActive: Bool = true
 
@@ -46,6 +48,7 @@ struct MomoButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .msk_applyButtonStyle(ButtonStyleKit())
             .msk_applyTextStyle(.standardButtonFont)
             .foregroundColor(.momo)
             .multilineTextAlignment(.center)
@@ -53,7 +56,7 @@ struct MomoButtonStyle: ButtonStyle {
             .frame(width: w, height: h)
             .background(Color.momo)
             .cornerRadius(cornerRadius)
-            .opacity(isActive ? active : inactive)
+            .opacity(isActive ? buttonStyle.activeOpacity : buttonStyle.inactiveOpacity)
 
             // TODO: - add this later
             //.opacity(configuration.isPressed ? pressedOpacity : 1)

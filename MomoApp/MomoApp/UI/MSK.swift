@@ -10,10 +10,8 @@ import SwiftUI
 struct MSK {
 
     struct Animation {}
-    struct Button {}
     struct DropShadow {}
     struct Journal {}
-    struct Joystick {}
 
     // MARK: - Button
 
@@ -132,13 +130,4 @@ extension MSK.Journal {
             }
         }
     }
-}
-
-
-
-
-extension ButtonStyle {
-    public var pressed: Double { 0.5 }
-    public var active: Double { 1.0 }
-    public var inactive: Double { 0.2 }
 }

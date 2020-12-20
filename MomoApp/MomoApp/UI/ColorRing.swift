@@ -10,8 +10,7 @@
 import SwiftUI
 
 struct ColorRing: View {
-    typealias Ring = MSK.Joystick.Ring
-
+    @Environment(\.joystickStyle) var joystickStyle
     @Binding var isAnimating: Bool
     @Binding var isDragging: Bool
     @State var on: Bool = false
@@ -26,32 +25,19 @@ struct ColorRing: View {
 
         ZStack {
             Circle()
-                .stroke(isDragging ? momoGradient : colorGradient, lineWidth: Ring.lineWidth)
-                .frame(width: Ring.size, height: Ring.size)
+                .stroke(isDragging ? momoGradient : colorGradient, lineWidth: joystickStyle.ringLineWidth)
+                .frame(width: joystickStyle.ringRadius, height: joystickStyle.ringRadius)
                 .hueRotation(.degrees(on ? 360 : 0))
                 .animation(.shiftColors(while: on))
         }
         .onAppear {
             on = true
         }
-        .blur(radius: isAnimating ? 0 : Ring.blurRadius)
+        .blur(radius: isAnimating ? 0 : joystickStyle.ringBlurRadius)
         .opacity(isAnimating ? 1 : 0)
-        .scaleEffect(isAnimating ? 1 : Ring.scaleEffect)
+        .scaleEffect(isAnimating ? 1 : joystickStyle.ringScaleEffect)
         .onChange(of: isDragging) { isDragging in
             on = isDragging ? false : true
         }
-    }
-}
-
-// MARK: - Joystick
-
-extension MSK.Joystick {
-    static let defaultSize: CGFloat = 80
-
-    struct Ring {
-        static let blurRadius: CGFloat = 2
-        static let lineWidth: CGFloat = 6
-        static let scaleEffect: CGFloat = 1.1
-        static let size: CGFloat = MSK.Joystick.defaultSize + 16
     }
 }
