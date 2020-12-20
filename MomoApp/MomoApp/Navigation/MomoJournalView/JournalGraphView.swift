@@ -16,7 +16,8 @@ struct JournalGraphView: View {
             MiniGraphView(
                 entries: self.viewModel.latestEntries,
                 dataPoints: self.viewModel.dataPoints,
-                onEntrySelected: self.viewModel.fetchSelectedEntry(idx:))
+                onEntrySelected: self.viewModel.fetchSelectedEntry(idx:)
+            )
             MiniBlobView(
                 blobValue: self.$viewModel.selectedEntry.value,
                 entry: self.viewModel.selectedEntry)

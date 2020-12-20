@@ -9,24 +9,11 @@
 
 import SwiftUI
 
-// MARK: - JournalGraphViewLogic
-
-struct GraphViewLogic {
-    var columnLayout: (CGFloat, Int) -> [GridItem] = { (spacing, count) -> [GridItem] in
-        Array(
-            repeating: .init(.flexible(), spacing: spacing),
-            count: count)
-    }
-}
-
 // MARK: - MiniGraphView
 
 struct MiniGraphView: View {
     @Environment(\.lineChartStyle) var lineChartStyle
-
     @EnvironmentObject var viewRouter: ViewRouter
-    var viewLogic = GraphViewLogic()
-
     let entries: [Entry]
     let dataPoints: [CGFloat]
     let onEntrySelected: (Int) -> Void
@@ -39,8 +26,6 @@ struct MiniGraphView: View {
     @State private var lineGraphBottomPadding: CGFloat = 0
 
     @State private var offset: CGFloat = UIScreen.screenWidth
-    
-    // MARK: - Body
 
     var body: some View {
         ZStack {
@@ -50,23 +35,18 @@ struct MiniGraphView: View {
                                     bottom: self.lineGraphBottomPadding,
                                     trailing: 12))
                 .allowsHitTesting(false)
-                .msk_applyLineChartStyle(LineChartStyle())
 
             GeometryReader { geo in
 
+                // TODO: - simplify all this code
                 // Calculate the spacing between graph lines
                 let numOfItems: CGFloat = self.entries.count.floatValue
-                let numOfSpaces: CGFloat = numOfItems - 1
                 let itemWidth: CGFloat = 25
                 let totalItemWidth: CGFloat = itemWidth * numOfItems
-                let itemFrameSpacing: CGFloat = (geo.size.width - totalItemWidth) / numOfSpaces
+                let itemFrameSpacing: CGFloat = (geo.size.width - totalItemWidth) / (numOfItems - 1)
                 let itemSpacing: CGFloat = itemWidth + itemFrameSpacing
 
-                //                let columnLayout: [GridItem] = Array(
-                //                    repeating: .init(.flexible(), spacing: itemFrameSpacing),
-                //                    count: self.entries.count)
-
-                let columnLayout = viewLogic.columnLayout(itemFrameSpacing, entries.count)
+                let columnLayout = lineChartStyle.columnLayout(itemFrameSpacing, entries.count)
 
                 LazyVGrid(columns: columnLayout, alignment: .center) {
                     ForEach(0 ..< self.entries.count) { idx in
@@ -95,6 +75,7 @@ struct MiniGraphView: View {
                                                       itemWidth: itemWidth,
                                                       itemSpacing: itemSpacing,
                                                       selectedIdx: selectedIdx,
+                                                      onDragChanged: changeNewIdx(to:),
                                                       onDragEnded: changeSelectedIdx(to:))
                             )
                         })
@@ -110,8 +91,12 @@ struct MiniGraphView: View {
                         offset = 0
                     }
                 }
+                // TODO
+
+
                 VStack {
                     Text("IDX: \(self.selectedIdx)")
+                    Text("NEW: \(self.newIdx)")
                 }
             }
         }
@@ -138,6 +123,10 @@ struct MiniGraphView: View {
         self.lineGraphBottomPadding = padding
     }
 
+    private func changeNewIdx(to idx: Int) {
+        self.newIdx = idx
+    }
+
     private func changeSelectedIdx(to idx: Int) {
         self.selectedIdx = idx
         self.onEntrySelected(idx)
@@ -156,6 +145,10 @@ struct GraphLine: View {
 
     @State private var on = false
 
+    private var selectionSnappedToIdx: Bool {
+        return newIdx == idx
+    }
+
     var body: some View {
         VStack(spacing: spacing) {
             line
@@ -169,8 +162,8 @@ struct GraphLine: View {
                  There is a bug that shows the selection line behind the graph line.
                  This is a temporary fix that hides the line if it is selected.
                  */
-                .opacity(on ? (newIdx == idx ? 0 : 1) : 1)
-                .onChange(of: newIdx) { idx in
+                .opacity(on ? (selectionSnappedToIdx ? 0 : 1) : 1)
+                .onChange(of: newIdx) { _ in
                     self.on = true
                 }
             dateLabel

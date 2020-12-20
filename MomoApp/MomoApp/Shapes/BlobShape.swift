@@ -28,7 +28,7 @@ struct BlobView: View {
             blobGradient
         }
         .frame(width: blobStyle.scaledFrame,
-               height: blobStyle.scaledFrame * (blobStyle.pathBounds.width / blobStyle.pathBounds.height))
+               height: blobStyle.scaledFrame * blobStyle.pathBoundsRadio)
         .onAppear {
             isAnimating = blobStyle.isStatic ? false : true
         }
@@ -114,10 +114,8 @@ struct BlobAnimationModifier: ViewModifier {
                 skewValue: self.isAnimating ? 2 : 0
             ))
             .animation(self.skew ? skewEffect : nil)
-
             .scaleEffect(isAnimating ? 1.05 : 1)
             .animation(self.breathe ? breatheEffect : nil)
-
             .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
             .animation(self.rotate ? rotateEffect : nil)
     }
@@ -143,7 +141,7 @@ struct BlobEffect: GeometryEffect {
         // transform3d = CATransform3DRotate(transform3d, a, 0, 0, 1)
         // Transform: Scale
         // transform3d = CATransform3DScale(transform3d, scaleFactor, 1, 0)
-        // Transform: Shifts anchor point of rotation (from top leading corner to centrer)
+        // Transform: Shifts anchor point of rotation (from top leading corner to centre)
         transform3d = CATransform3DTranslate(transform3d, -size.width/2.0, -size.height/2.0, 0)
         // Transform: Skew
         let skewTransform = ProjectionTransform(CGAffineTransform(a: 1, b: 0, c: skew, d: 1, tx: 0, ty: 0))

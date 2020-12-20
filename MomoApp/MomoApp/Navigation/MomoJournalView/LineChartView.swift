@@ -17,7 +17,6 @@ import SwiftUI
 struct LineGraphView: View {
     // TODO: - Remove the environment here
     @Environment(\.lineChartStyle) var lineChartStyle
-
     @EnvironmentObject var viewRouter: ViewRouter
     @State var lineOn = false
     let dataPoints: [CGFloat]

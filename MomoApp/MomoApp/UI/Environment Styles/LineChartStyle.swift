@@ -18,14 +18,30 @@ public struct LineChartStyle {
     let lineAnimationDuration: Double
     let labelPadding: CGFloat
 
+    let numOfItems: CGFloat
+    let itemWidth: CGFloat
+
+    var totalItemWidth: CGFloat { itemWidth * numOfItems }
+    var columnLayout: (CGFloat, Int) -> [GridItem] = { (spacing, count) -> [GridItem] in
+        Array(
+            repeating: .init(.flexible(), spacing: spacing),
+            count: count)
+    }
+
     public init(
         selectionLineWidth: CGFloat = 4.0,
         lineAnimationDuration: Double = 3.0,
-        labelPadding: CGFloat = 8.0
+        labelPadding: CGFloat = 8.0,
+
+        numOfItems: CGFloat = 7,
+        itemWidth: CGFloat = 25
     ) {
         self.selectionLineWidth = selectionLineWidth
         self.lineAnimationDuration = lineAnimationDuration
         self.labelPadding = labelPadding
+
+        self.numOfItems = numOfItems
+        self.itemWidth = itemWidth
     }
 }
 

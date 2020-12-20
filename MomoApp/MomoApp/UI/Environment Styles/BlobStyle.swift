@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - ButtonStyleKit
+// MARK: - BlobStyle
 
 public struct BlobStyle {
     let frameSize: CGFloat
@@ -20,7 +20,6 @@ public struct BlobStyle {
 
     // Shadow
     let shadowColor: Color
-    let shadowOpacity: Double
     let shadowRadius: CGFloat
     let shadowOffset: CGPoint
 
@@ -36,9 +35,8 @@ public struct BlobStyle {
     let innerBottomRightShadowSpread: CGFloat
     let innerBottomRightShadowRadius: CGFloat
 
-    var scaledFrame: CGFloat {
-        frameSize * scale
-    }
+    var scaledFrame: CGFloat { frameSize * scale }
+    var pathBoundsRadio: CGFloat { pathBounds.width / pathBounds.height }
 
     init(
         frameSize: CGFloat = 250,
@@ -48,8 +46,7 @@ public struct BlobStyle {
         bezier: UIBezierPath = .blob3,
         pathBounds: CGRect = UIBezierPath.calculateBounds(paths: [.blob3]),
 
-        shadowColor: Color = .black,
-        shadowOpacity: Double = 0.6,
+        shadowColor: Color = Color.black.opacity(0.6),
         shadowRadius: CGFloat = 50,
         shadowOffset: CGPoint = CGPoint(x: 10, y: 10),
 
@@ -71,7 +68,6 @@ public struct BlobStyle {
         self.pathBounds = pathBounds
 
         self.shadowColor = shadowColor
-        self.shadowOpacity = shadowOpacity
         self.shadowRadius = shadowRadius
         self.shadowOffset = shadowOffset
 
@@ -87,7 +83,7 @@ public struct BlobStyle {
     }
 }
 
-// MARK: - ButtonStyleKitEnvironmentKey
+// MARK: - BlobStyleKitEnvironmentKey
 
 struct BlobStyleEnvironmentKey: EnvironmentKey {
     static var defaultValue: BlobStyle = .init()

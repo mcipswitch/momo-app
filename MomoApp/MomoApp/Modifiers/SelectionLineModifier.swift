@@ -15,13 +15,15 @@ struct SelectionLineModifier: ViewModifier {
     let itemWidth: CGFloat
     let itemSpacing: CGFloat
     let selectedIdx: Int
+    let onDragChanged: (Int) -> Void
     let onDragEnded: (Int) -> Void
 
-    init(items: Int, itemWidth: CGFloat, itemSpacing: CGFloat, selectedIdx: Int, onDragEnded: @escaping (Int) -> Void) {
+    init(items: Int, itemWidth: CGFloat, itemSpacing: CGFloat, selectedIdx: Int, onDragChanged: @escaping (Int) -> Void, onDragEnded: @escaping (Int) -> Void) {
         self.items = items
         self.itemWidth = itemWidth
         self.itemSpacing = itemSpacing
         self.selectedIdx = selectedIdx
+        self.onDragChanged = onDragChanged
         self.onDragEnded = onDragEnded
 
         self._dragOffset = State(initialValue: 0)
@@ -51,6 +53,7 @@ struct SelectionLineModifier: ViewModifier {
         self.newIdx = self.selectedIdx + indexShift
 
         self.protectFromScrollingOutOfBounds()
+        self.onDragChanged(self.newIdx)
     }
 
     private func protectFromScrollingOutOfBounds() {
