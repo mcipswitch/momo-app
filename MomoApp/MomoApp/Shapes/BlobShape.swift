@@ -19,11 +19,24 @@ import Neumorphic
 
 struct BlobView: View {
     @Environment(\.blobStyle) var blobStyle
-
     @Binding var blobValue: CGFloat
     @State private var isAnimating = false
+    
+    var body: some View {
+        ZStack {
+            blobShadow
+            blobGradient
+        }
+        .frame(width: blobStyle.scaledFrame,
+               height: blobStyle.scaledFrame * (blobStyle.pathBounds.width / blobStyle.pathBounds.height))
+        .onAppear {
+            isAnimating = blobStyle.isStatic ? false : true
+        }
+    }
 
-    var animatingBlob: some View {
+    // MARK: - Internal Views
+
+    var animatingBlobMask: some View {
         BlobShape(bezier: blobStyle.bezier, pathBounds: blobStyle.pathBounds)
             .msk_applyBlobAnimation(skew: true,
                                     breathe: true,
@@ -43,38 +56,28 @@ struct BlobView: View {
                                     rotate: false,
                                     isAnimating: $isAnimating)
     }
-    
-    var body: some View {
-        ZStack {
-            blobShadow
 
-            // Blob: Gradient Layer
-            ZStack {
-                Rectangle()
-                    .modifier(AnimatableColor(
-                                colors: UIColor.blobColorArray,
-                                pct: self.blobValue))
-                    .softInnerShadow(Rectangle(),
-                                     darkShadow: blobStyle.innerTopLeftShadowDarkShadow,
-                                     lightShadow: blobStyle.innerTopLeftShadowLightShadow,
-                                     spread: blobStyle.innerTopLeftShadowSpread,
-                                     radius: blobStyle.innerTopLeftShadowRadius)
-                    .blendMode(.overlay)
-                    .softInnerShadow(Rectangle(),
-                                     darkShadow: blobStyle.innerBottomRightShadowDarkShadow,
-                                     lightShadow: blobStyle.innerBottomRightShadowLightShadow,
-                                     spread: blobStyle.innerBottomRightShadowSpread,
-                                     radius: blobStyle.innerBottomRightShadowRadius)
-                    .blendMode(.multiply)
-            }
-            .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
-            .mask(self.animatingBlob)
+    private var blobGradient: some View {
+        ZStack {
+            Rectangle()
+                .modifier(AnimatableColor(
+                            colors: UIColor.blobColorArray,
+                            pct: self.blobValue))
+                .softInnerShadow(Rectangle(),
+                                 darkShadow: blobStyle.innerTopLeftShadowDarkShadow,
+                                 lightShadow: blobStyle.innerTopLeftShadowLightShadow,
+                                 spread: blobStyle.innerTopLeftShadowSpread,
+                                 radius: blobStyle.innerTopLeftShadowRadius)
+                .blendMode(.overlay)
+                .softInnerShadow(Rectangle(),
+                                 darkShadow: blobStyle.innerBottomRightShadowDarkShadow,
+                                 lightShadow: blobStyle.innerBottomRightShadowLightShadow,
+                                 spread: blobStyle.innerBottomRightShadowSpread,
+                                 radius: blobStyle.innerBottomRightShadowRadius)
+                .blendMode(.multiply)
         }
-        .frame(width: blobStyle.scaledFrame,
-               height: blobStyle.scaledFrame * (blobStyle.pathBounds.width / blobStyle.pathBounds.height))
-        .onAppear {
-            isAnimating = blobStyle.isStatic ? false : true
-        }
+        .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
+        .mask(self.animatingBlobMask)
     }
 }
 
