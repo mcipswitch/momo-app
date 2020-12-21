@@ -19,6 +19,7 @@
 		9302A8CA258FECCB00FF2ECB /* DropShadowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8C9258FECCB00FF2ECB /* DropShadowStyle.swift */; };
 		9302A8CD258FEDCC00FF2ECB /* JournalStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8CC258FEDCC00FF2ECB /* JournalStyle.swift */; };
 		9302A8D5258FF59C00FF2ECB /* BlobStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8D4258FF59C00FF2ECB /* BlobStyle.swift */; };
+		9302A8D8259052B300FF2ECB /* JoystickModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8D7259052B300FF2ECB /* JoystickModifier.swift */; };
 		9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */; };
 		9308077425645EF000A13156 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9308077325645EF000A13156 /* View+Extension.swift */; };
 		930807792564681100A13156 /* SimpleDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930807782564681100A13156 /* SimpleDrag.swift */; };
@@ -95,6 +96,7 @@
 		9302A8C9258FECCB00FF2ECB /* DropShadowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropShadowStyle.swift; sourceTree = "<group>"; };
 		9302A8CC258FEDCC00FF2ECB /* JournalStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalStyle.swift; sourceTree = "<group>"; };
 		9302A8D4258FF59C00FF2ECB /* BlobStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobStyle.swift; sourceTree = "<group>"; };
+		9302A8D7259052B300FF2ECB /* JoystickModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoystickModifier.swift; sourceTree = "<group>"; };
 		9308077025645EAA00A13156 /* AnimationCompletionObserverModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCompletionObserverModifier.swift; sourceTree = "<group>"; };
 		9308077325645EF000A13156 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		930807782564681100A13156 /* SimpleDrag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrag.swift; sourceTree = "<group>"; };
@@ -279,6 +281,8 @@
 		936C6CD425112E1B00650D4A /* Old */ = {
 			isa = PBXGroup;
 			children = (
+				93F075FF24F1D9BC000B6449 /* TextLimiter.swift */,
+				9302A8D7259052B300FF2ECB /* JoystickModifier.swift */,
 				93E0650A258340CD009E7D06 /* Test.swift */,
 				93976DE624EB6ABF0018C667 /* HomeView.swift */,
 				930807782564681100A13156 /* SimpleDrag.swift */,
@@ -346,7 +350,6 @@
 		93CC40C82564305D008B765D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				93F075FF24F1D9BC000B6449 /* TextLimiter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,
 				930807792564681100A13156 /* SimpleDrag.swift in Sources */,
 				93AE1884256DCE500024E6A9 /* LineChartView.swift in Sources */,
+				9302A8D8259052B300FF2ECB /* JoystickModifier.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
 				93D90F88257C5A8000A7A69F /* SizeModifier.swift in Sources */,
 				937615882512527100AEF59C /* UIScreen+Extension.swift in Sources */,

@@ -39,7 +39,6 @@ struct MiniGraphView: View {
             GeometryReader { geo in
 
                 // TODO: - simplify all this code
-                // Calculate the spacing between graph lines
                 let numOfItems: CGFloat = self.entries.count.floatValue
                 let itemWidth: CGFloat = 25
                 let totalItemWidth: CGFloat = itemWidth * numOfItems

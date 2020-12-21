@@ -12,8 +12,6 @@ struct MomoAddMoodView: View {
     var viewLogic = AddMoodViewLogic()
 
     @State private var homeViewActive = true
-    @State private var addViewActive = false
-    @State private var doneViewActive = false
     
     @State private var blobValue: CGFloat = 0
     @State private var degrees: CGFloat = 0
@@ -35,6 +33,8 @@ struct MomoAddMoodView: View {
     @State private var buttonLocation: CGPoint? = nil
 
     @State private var state: EntryState = .add
+
+    @State private var navigationButtonPressed = false
 
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
@@ -85,8 +85,6 @@ struct MomoAddMoodView: View {
             }
     }
 
-    @State private var textFieldBorderWidth: CGFloat = 180
-    
     // MARK: - Body
 
     var body: some View {
@@ -169,6 +167,7 @@ struct MomoAddMoodView: View {
                             .position(self.buttonLocation ?? centerPoint)
                             .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
 
+                            #if DEBUG
                             if let dragState = dragState {
                                 Circle()
                                     .stroke(Color.red, lineWidth: 2)
@@ -176,6 +175,7 @@ struct MomoAddMoodView: View {
                                     .position(dragState.location)
                                     .opacity(dragState.isActive ? 1 : 0)
                             }
+                            #endif
                         }
                         .onAppear {
                             self.dragStart = centerPoint
@@ -188,9 +188,11 @@ struct MomoAddMoodView: View {
 
                 }
                 // END: - Main View
+
                 topNavigation
                     .slideOutAnimation(value: self.$homeViewActive)
                     .padding(EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16))
+                    #warning("fix the delay on the navigation pressed")
             }
         }
         .padding(.vertical)
@@ -224,7 +226,7 @@ struct MomoAddMoodView: View {
         HStack {
             MomoToolbarButton(button: .back,
                               action: self.backButtonPressed)
-            #warning("fix the delay on the buttonPressed")
+            #warning("fix the delay on the navigation pressed")
             Spacer()
             MomoButton(button: .done,
                        action: self.doneButtonPressed,
@@ -233,32 +235,27 @@ struct MomoAddMoodView: View {
         }
     }
 
-    var helloMessage: some View {
+    private var helloMessage: some View {
         Text(NSLocalizedString("Hi, how are you feeling today?", comment: ""))
             .msk_applyTextStyle(.mainMessageFont)
     }
 
-    var currentDate: some View {
+    private var currentDate: some View {
         Text(Date(), formatter: DateFormatter.shortDate)
             .msk_applyTextStyle(.mainDateFont)
     }
 
-    var textField: some View {
+    private var textField: some View {
         MomoTextField(text: $text,
-                      textFieldIsFocused: $textFieldIsFocused,
-                      onTextFieldChange: self.onTextFieldChange
+                      textFieldIsFocused: $textFieldIsFocused
         )
         .onChange(of: self.text) { text in
             self.textFieldNotEmpty = !text.isEmpty
         }
     }
 
-    var textFieldBorder: some View {
+    private var textFieldBorder: some View {
         MomoTextFieldBorder(isFocused: self.$textFieldIsFocused)
-    }
-
-    private func onTextFieldChange(_ width: CGFloat) {
-        self.textFieldBorderWidth = width
     }
 }
 
@@ -272,28 +269,24 @@ extension MomoAddMoodView {
 
     private func seePastEntriesButtonPressed() {
         self.viewRouter.change(to: .journal)
-
-        //self.onSeePastEntriesPressed()
     }
 
     private func backButtonPressed() {
-        //self.homeViewActive = true
+        self.navigationButtonPressed.toggle()
+
         self.viewRouter.changeHomeState(.home)
     }
 
     private func doneButtonPressed() {
+        self.navigationButtonPressed.toggle()
+
         self.viewRouter.changeHomeState(.done)
 
         print("Emotion: \(self.text), Value: \(self.blobValue)")
-
-        // Reset to home page after a delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            self.viewRouter.changeHomeState(.home)
-        }
     }
 }
 
-// MARK: - Views
+// MARK: - Internal Views
 
 struct AddEmotionButton: View {
     @Binding var entryState: EntryState
@@ -314,37 +307,12 @@ struct AddEmotionButton: View {
             }
             .msk_applyMomoButtonStyle(button: homeViewActive ? .standard : .joystick)
 
+            // Add delay so this appears after button morph
             ColorRing(
                 isAnimating: self.$isAnimating,
                 isDragging: self.$isDragging
             )
-            // Add delay so it appears after button morph.
-            // Remove delay if the button is resetting position.
             .animation(Animation.bounce.delay(if: !homeViewActive, 0.6), value: self.homeViewActive)
         }
     }
 }
-
-
-
-
-
-
-
-
-// MARK: - Old Animations (keep for now)
-
-// joystick
-
-//.animation(self.dragState.isActive ? .resist() : Animation
-//            .bounce()
-//            .delay(if: self.homeViewActive, (self.isResetting ? 0 : 0.2))
-//)
-
-// colorRing
-
-//.animation(dragState.isActive ? .resist() :
-//            self.homeViewActive ? .resist() : Animation
-//            .bounce()
-//            .delay(if: !self.homeViewActive, (isResetting ? 0 : 0.6))
-//)

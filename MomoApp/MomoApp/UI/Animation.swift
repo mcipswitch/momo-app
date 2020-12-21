@@ -38,7 +38,9 @@ struct AnimateSlideOut: ViewModifier {
         content
             .offset(y: value ? -5 : 0)
             .opacity(value ? 0 : 1)
-            .animation(Animation.ease.delay(if: !value, 0.5))
+            .animation(Animation
+                        .ease
+                        .delay(if: !value, 0.5), value: value)
     }
 }
 

@@ -13,7 +13,6 @@ struct MomoTextField: View {
     @Environment(\.textFieldStyle) var textFieldStyle
     @Binding var text: String
     @Binding var textFieldIsFocused: Bool
-    let onTextFieldChange: (CGFloat) -> Void
 
     var body: some View {
         ZStack(alignment: .center) {
