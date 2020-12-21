@@ -112,8 +112,7 @@ struct MiniGraphView: View {
 
     private func showSelectionLine() {
         if viewRouter.isJournal {
-            // TODO: - make extension for this
-            withAnimation(Animation.easeInOut(duration: 0.8).delay(1.8)) {
+            withAnimation(lineChartStyle.selectionLineAnimation) {
                 selectionLineOn = viewRouter.isJournal
             }
         }

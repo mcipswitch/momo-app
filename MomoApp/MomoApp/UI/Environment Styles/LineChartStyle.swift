@@ -15,13 +15,19 @@ import SwiftUI
 
 public struct LineChartStyle {
     let selectionLineWidth: CGFloat
-    let lineAnimationDuration: Double
     let labelPadding: CGFloat
 
-    let numOfItems: CGFloat
-    let itemWidth: CGFloat
+    let duration: Double = 2.0
+    let delay: Double = 0.4
 
-    var totalItemWidth: CGFloat { itemWidth * numOfItems }
+    var lineGraphAnimation: Animation {
+        Animation.easeInOut(duration: duration).delay(delay)
+    }
+
+    var selectionLineAnimation: Animation {
+        Animation.easeInOut(duration: 1.0).delay(duration + delay)
+    }
+
     var columnLayout: (CGFloat, Int) -> [GridItem] = { (spacing, count) -> [GridItem] in
         Array(
             repeating: .init(.flexible(), spacing: spacing),
@@ -30,18 +36,10 @@ public struct LineChartStyle {
 
     public init(
         selectionLineWidth: CGFloat = 4.0,
-        lineAnimationDuration: Double = 3.0,
-        labelPadding: CGFloat = 8.0,
-
-        numOfItems: CGFloat = 7,
-        itemWidth: CGFloat = 25
+        labelPadding: CGFloat = 8.0
     ) {
         self.selectionLineWidth = selectionLineWidth
-        self.lineAnimationDuration = lineAnimationDuration
         self.labelPadding = labelPadding
-
-        self.numOfItems = numOfItems
-        self.itemWidth = itemWidth
     }
 }
 

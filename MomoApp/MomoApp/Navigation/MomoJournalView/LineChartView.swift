@@ -22,28 +22,33 @@ struct LineGraphView: View {
     let dataPoints: [CGFloat]
 
     var body: some View {
-        lineGraphBackgroundGradient
+        lineGradient
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
                     .trim(to: self.lineOn ? 1 : 0)
                     .stroke(style: .lineGraphStrokeStyle)
             )
             .onAppear(perform: animateLine)
+            .onReceive(viewRouter.objectWillChange, perform: animateOut)
             .msk_applyDropShadow()
     }
 
-    private var lineGraphBackgroundGradient: some View {
+    private var lineGradient: some View {
         LinearGradient(gradient: .momoTriColorGradient,
                        startPoint: .bottom,
                        endPoint: .top)
     }
 
-
     // MARK: - Internal Methods
 
     private func animateLine() {
-        var duration: Double { lineChartStyle.lineAnimationDuration }
-        withAnimation(.easeInOut(duration: duration)) {
+        withAnimation(lineChartStyle.lineGraphAnimation) {
+            self.lineOn.toggle()
+        }
+    }
+
+    private func animateOut() {
+        withAnimation(.easeInOut(duration: 0.001)) {
             self.lineOn.toggle()
         }
     }
