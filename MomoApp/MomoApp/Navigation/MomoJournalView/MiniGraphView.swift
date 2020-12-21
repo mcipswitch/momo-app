@@ -96,7 +96,6 @@ struct MiniGraphView: View {
 
                 VStack {
                     Text("IDX: \(self.selectedIdx)")
-                    Text("NEW: \(self.newIdx)")
                 }
             }
         }
@@ -105,6 +104,14 @@ struct MiniGraphView: View {
             let idx = entries.count - 1
             self.changeSelectedIdx(to: idx)
         }
+        .onDisappear {
+            /// Always reset default selection to current day
+            let idx = entries.count - 1
+            self.changeSelectedIdx(to: idx)
+        }
+
+
+
         .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8))
     }
 

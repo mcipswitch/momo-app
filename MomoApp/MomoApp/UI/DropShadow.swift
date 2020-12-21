@@ -9,8 +9,6 @@ import SwiftUI
 
 // MARK: - ViewModifier
 
-// TODO: - make this more reusable
-
 struct DropShadow: ViewModifier {
     @Environment(\.dropShadowStyle) var dropShadowStyle
 

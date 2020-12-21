@@ -11,14 +11,7 @@ import Foundation
 import SwiftUI
 
 final class EntriesViewModel: ObservableObject {
-    @Published var entries: [Entry] = [] {
-        didSet {
-            /// Set default selection to current day / latest entry
-            guard let latestEntry = entries.last else { return }
-            self.selectedEntry = latestEntry
-        }
-    }
-
+    @Published var entries: [Entry] = []
     @Published var selectedEntry: Entry = Entry(emotion: "Random", date: Date(), value: 1.0)
 
     /// Set the default number of entries to show in `JournalGraphView`
@@ -79,6 +72,9 @@ struct Entry: Identifiable, Hashable {
     var date: Date
     var value: CGFloat
 }
+
+
+
 
 
 

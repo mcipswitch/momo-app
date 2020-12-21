@@ -9,7 +9,7 @@ import SwiftUI
 
 struct JournalGraphView: View {
     @EnvironmentObject var viewRouter: ViewRouter
-    @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
+    @EnvironmentObject var viewModel: EntriesViewModel
     
     var body: some View {
         VStack(spacing: 48) {

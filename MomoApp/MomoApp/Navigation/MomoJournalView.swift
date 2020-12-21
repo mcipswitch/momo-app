@@ -11,7 +11,6 @@ import SwiftUI
 
 struct MomoJournalView: View {
     @EnvironmentObject var viewRouter: ViewRouter
-    @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     @State var isGraph = true
     @State var animateList = false
     @State var animateGraph = false
@@ -56,7 +55,7 @@ struct MomoJournalView: View {
         }
     }
 
-    // TODO: - clicking on the journal button resets the blobvalue to the current date... it needs to remember the last selected idx  instead
+    // TODO: - clicking back resets the blobvalue to TODAY... it needs to remember the last selected idx instead and reset AFTEr
     var navigationToolbar: some View {
         ZStack {
             MomoToolbarTitle(view: self.viewRouter.currentJournal)

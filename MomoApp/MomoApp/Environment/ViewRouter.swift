@@ -11,8 +11,6 @@ import Combine
 class ViewRouter: ObservableObject {
     @Environment(\.journalStyle) var journalStyle
 
-    //typealias Journal = MSK.Journal.View
-
     let objectWillChange = PassthroughSubject<(), Never>()
     let journalWillChange = PassthroughSubject<(), Never>()
     let homeWillChange = PassthroughSubject<(HomeState), Never>()

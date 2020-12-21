@@ -15,7 +15,7 @@ import SwiftUI
 struct JournalListView: View {
     @Environment(\.journalStyle) var journalStyle
     @EnvironmentObject var viewRouter: ViewRouter
-    @ObservedObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
+    @EnvironmentObject var viewModel: EntriesViewModel
 
     var body: some View {
         ScrollView {
@@ -86,16 +86,3 @@ struct EntryRow: View {
     }
 }
 
-// MARK: - Previews
-
-struct JournalListView_Previews: PreviewProvider {
-    static var previews: some View {
-        var view = JournalListView()
-        view.viewModel = EntriesViewModel(dataManager: MockDataManager())
-        return view
-            .background(
-                Image("background")
-                    .edgesIgnoringSafeArea(.all)
-            )
-    }
-}
