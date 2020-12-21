@@ -69,7 +69,7 @@
 		9390FB032563821200E2E53A /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390FB022563821200E2E53A /* HomeScreen.swift */; };
 		93976DE724EB6ABF0018C667 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93976DE624EB6ABF0018C667 /* HomeView.swift */; };
 		93A65BFE250FE0EE00BF756A /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFD250FE0EE00BF756A /* CGFloat+Extension.swift */; };
-		93AE1884256DCE500024E6A9 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE1883256DCE500024E6A9 /* LineChartView.swift */; };
+		93AE1884256DCE500024E6A9 /* LineGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE1883256DCE500024E6A9 /* LineGraphView.swift */; };
 		93D90F88257C5A8000A7A69F /* SizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D90F87257C5A8000A7A69F /* SizeModifier.swift */; };
 		93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DB0F5B253656180074EBB6 /* Binding + Extension.swift */; };
 		93E0650B258340CD009E7D06 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E0650A258340CD009E7D06 /* Test.swift */; };
@@ -148,7 +148,7 @@
 		9390FB022563821200E2E53A /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		93976DE624EB6ABF0018C667 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		93A65BFD250FE0EE00BF756A /* CGFloat+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extension.swift"; sourceTree = "<group>"; };
-		93AE1883256DCE500024E6A9 /* LineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
+		93AE1883256DCE500024E6A9 /* LineGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphView.swift; sourceTree = "<group>"; };
 		93D90F87257C5A8000A7A69F /* SizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeModifier.swift; sourceTree = "<group>"; };
 		93DB0F5B253656180074EBB6 /* Binding + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding + Extension.swift"; sourceTree = "<group>"; };
 		93E0650A258340CD009E7D06 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
@@ -258,7 +258,6 @@
 				936E0695257F2276002B068E /* AnimatableColor.swift */,
 				93EF7982254A14700062571F /* UI */,
 				933B150324F1B30C004E9F1C /* Navigation */,
-				93CC40C82564305D008B765D /* Models */,
 				93722F3724F7E43B00274E9F /* Shapes */,
 				930105932514E0BF007F0E7A /* Modifiers */,
 				938E537324E983F8002653F0 /* Extensions */,
@@ -342,21 +341,15 @@
 				930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */,
 				9382CFE525760A8400ED46D8 /* MiniBlobView.swift */,
 				930924FE25582D0800AA3934 /* JournalListView.swift */,
-				93AE1883256DCE500024E6A9 /* LineChartView.swift */,
+				93AE1883256DCE500024E6A9 /* LineGraphView.swift */,
 			);
 			path = MomoJournalView;
-			sourceTree = "<group>";
-		};
-		93CC40C82564305D008B765D /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		93E06EA3256C909800E7264D /* Environment */ = {
 			isa = PBXGroup;
 			children = (
+				9302A8BD258FA97E00FF2ECB /* Environment Styles */,
 				93E06EA0256C909500E7264D /* ViewRouter.swift */,
 				9327E814258585C90027C638 /* Localizable.strings */,
 			);
@@ -366,10 +359,8 @@
 		93EF7982254A14700062571F /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				9302A8BD258FA97E00FF2ECB /* Environment Styles */,
 				938B350C2585C31C00225DBE /* Enums.swift */,
 				930076A425887F62007B152D /* MomoBackground.swift */,
-				9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */,
 				938A0914256C235200D53D9A /* MomoTextField.swift */,
 				93EF797F254A146A0062571F /* MomoToolbar.swift */,
 				93EF7984254A14BE0062571F /* MomoButton.swift */,
@@ -377,6 +368,7 @@
 				9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */,
 				93E9A337251D29900095D48C /* ColorRing.swift */,
 				936315392513A6B6005E20EA /* BlurredColorWheel.swift */,
+				9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */,
 				932E6F6725886812001DBC90 /* DropShadow.swift */,
 				930076A825887FBF007B152D /* Animation.swift */,
 			);
@@ -493,7 +485,7 @@
 				938B350D2585C31C00225DBE /* Enums.swift in Sources */,
 				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,
 				930807792564681100A13156 /* SimpleDrag.swift in Sources */,
-				93AE1884256DCE500024E6A9 /* LineChartView.swift in Sources */,
+				93AE1884256DCE500024E6A9 /* LineGraphView.swift in Sources */,
 				9302A8D8259052B300FF2ECB /* JoystickModifier.swift in Sources */,
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
 				93D90F88257C5A8000A7A69F /* SizeModifier.swift in Sources */,

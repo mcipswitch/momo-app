@@ -7,6 +7,24 @@
 
 import SwiftUI
 
+// MARK: - JournalType
+
+enum JournalType {
+    case list
+    case graph
+
+    var title: String {
+        switch self {
+        case .list:
+            return NSLocalizedString("All entries", comment: "")
+        case .graph:
+            return NSLocalizedString("Last 7 days", comment: "")
+        }
+    }
+}
+
+// MARK: - ButtonType
+
 enum ButtonType {
     typealias SizeTuple = (w: CGFloat, h: CGFloat)
 

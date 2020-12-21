@@ -18,7 +18,13 @@ struct SelectionLineModifier: ViewModifier {
     let onDragChanged: (Int) -> Void
     let onDragEnded: (Int) -> Void
 
-    init(items: Int, itemWidth: CGFloat, itemSpacing: CGFloat, selectedIdx: Int, onDragChanged: @escaping (Int) -> Void, onDragEnded: @escaping (Int) -> Void) {
+    init(items: Int,
+         itemWidth: CGFloat,
+         itemSpacing: CGFloat,
+         selectedIdx: Int,
+         onDragChanged: @escaping (Int) -> Void,
+         onDragEnded: @escaping (Int) -> Void
+    ) {
         self.items = items
         self.itemWidth = itemWidth
         self.itemSpacing = itemSpacing

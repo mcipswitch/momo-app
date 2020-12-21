@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - ButtonStyleKit
+// MARK: - DropShadowStyle
 
 public struct DropShadowStyle {
     let color: Color
@@ -28,7 +28,7 @@ public struct DropShadowStyle {
     }
 }
 
-// MARK: - ButtonStyleKitEnvironmentKey
+// MARK: - DropShadowStyleEnvironmentKey
 
 struct DropShadowStyleEnvironmentKey: EnvironmentKey {
     static var defaultValue: DropShadowStyle = .init()

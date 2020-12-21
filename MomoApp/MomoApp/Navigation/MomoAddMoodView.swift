@@ -1,5 +1,5 @@
 //
-//  AddMoodProfile.swift
+//  MomoAddMoodView.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-08-17.
@@ -87,18 +87,19 @@ struct MomoAddMoodView: View {
 
     // MARK: - Body
 
+    // TODO: - Adjust blob so it is 20% of the screen height
+
     var body: some View {
         ZStack {
             GeometryReader { geo in
                 let centerPoint = CGPoint(x: geo.size.width / 2, y: ButtonType.joystick.size.w / 2)
 
                 // Main View
-                VStack(spacing: 48) {
+                VStack {
                     // Date + TextField
                     VStack(spacing: 36) {
                         currentDate
                             .slideInAnimation(value: self.$homeViewActive)
-                            //.padding(.top, 16)
 
                         ZStack {
                             helloMessage
@@ -114,12 +115,15 @@ struct MomoAddMoodView: View {
                             //.frame(width: geo.size.width / 2)
                             .frame(width: geo.size.width / 2, height: 80)
                         }
-                        //.frame(width: 180, height: 80)
                     }
+
+                    Spacer()
 
                     // Blob
                     ZStack {
                         BlobView(blobValue: $blobValue)
+                            .msk_applyBlobStyle(BlobStyle(frameSize: geo.size.height, scale: 0.35))
+
                         #if DEBUG
                         VStack {
                             Text(self.homeViewActive ? "Home Active" : "Home Inactive")
@@ -133,6 +137,7 @@ struct MomoAddMoodView: View {
                         .font(.system(size: 12.0))
                         #endif
                     }
+                    .padding(.bottom, 36)
 
                     Spacer()
 
@@ -143,57 +148,58 @@ struct MomoAddMoodView: View {
                             .opacity(self.colorWheelIsActive ? 1 : 0)
                             .animation(.activateColorWheel, value: self.colorWheelIsActive)
 
-                        GeometryReader { geometry in
-                            ZStack(alignment: .center) {
-                                AddEmotionButton(
-                                    entryState: self.$state,
-                                    homeViewActive: self.$homeViewActive,
-                                    isAnimating: self.$isAnimating,
-                                    isDragging: self.$isDragging,
-                                    action: self.addEmotionButtonPressed
-                                )
-                                // Add delay so the 'Color Ring' disappears first.
-                                .animation(.resist, value: self.dragState.isActive)
-                                .animation(Animation.bounce.delay(if: self.homeViewActive, 0.2), value: self.homeViewActive)
+                        // Joystick + Past Entries
+                        ZStack(alignment: .center) {
+                            AddEmotionButton(
+                                entryState: self.$state,
+                                homeViewActive: self.$homeViewActive,
+                                isAnimating: self.$isAnimating,
+                                isDragging: self.$isDragging,
+                                action: self.addEmotionButtonPressed
+                            )
+                            // Add delay so the 'Color Ring' disappears first.
+                            .animation(.resist, value: self.dragState.isActive)
+                            .animation(Animation.bounce.delay(if: self.homeViewActive, 0.2), value: self.homeViewActive)
 
-                                MomoLinkButton(
-                                    link: .pastEntries,
-                                    action: self.seePastEntriesButtonPressed
-                                )
-                                .offset(y: 60)
-                                .slideInAnimation(value: self.$homeViewActive)
-                            }
-                            .offset(x: self.dragValue.width * 0.8, y: self.dragValue.height * 0.8)
-                            .position(self.buttonLocation ?? centerPoint)
-                            .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
+                            MomoLinkButton(
+                                link: .pastEntries,
+                                action: self.seePastEntriesButtonPressed
+                            )
+                            .offset(y: 60)
+                            .slideInAnimation(value: self.$homeViewActive)
+                        }
+                        .offset(x: self.dragValue.width * 0.8, y: self.dragValue.height * 0.8)
+                        .position(self.buttonLocation ?? centerPoint)
+                        .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
 
-                            #if DEBUG
-                            if let dragState = dragState {
-                                Circle()
-                                    .stroke(Color.red, lineWidth: 2)
-                                    .frame(width: 20, height: 20)
-                                    .position(dragState.location)
-                                    .opacity(dragState.isActive ? 1 : 0)
-                            }
-                            #endif
+                        #if DEBUG
+                        if let dragState = dragState {
+                            Circle()
+                                .stroke(Color.red, lineWidth: 2)
+                                .frame(width: 20, height: 20)
+                                .position(dragState.location)
+                                .opacity(dragState.isActive ? 1 : 0)
                         }
-                        .onAppear {
-                            self.dragStart = centerPoint
-                            self.buttonLocation = self.dragStart
-                        }
+                        #endif
                     }
-                    //.padding(.top, 64)
-
-                    Spacer()
-
+                    .frame(height: 160)
+                    .onAppear {
+                        self.dragStart = centerPoint
+                        self.buttonLocation = self.dragStart
+                    }
                 }
                 // END: - Main View
+
+
+
+
 
                 topNavigation
                     .slideOutAnimation(value: self.$homeViewActive)
                     .padding(EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16))
-                    #warning("fix the delay on the navigation pressed")
             }
+
+
         }
         .padding(.vertical)
 
@@ -208,15 +214,7 @@ struct MomoAddMoodView: View {
             self.blobValue = self.viewLogic.calculateBlobValue(degrees: degrees)
         }
         .onReceive(self.viewRouter.homeWillChange) { state in
-            // TODO: - need to fix this up
-            switch state {
-            case .home:
-                self.homeViewActive = true
-            case .add:
-                self.homeViewActive = false
-            case .done:
-                break
-            }
+            self.homeViewActive = (state == .home)
         }
     }
 
@@ -226,7 +224,6 @@ struct MomoAddMoodView: View {
         HStack {
             MomoToolbarButton(button: .back,
                               action: self.backButtonPressed)
-            #warning("fix the delay on the navigation pressed")
             Spacer()
             MomoButton(button: .done,
                        action: self.doneButtonPressed,

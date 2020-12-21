@@ -63,17 +63,3 @@ class ViewRouter: ObservableObject {
         case home, add, done
     }
 }
-
-enum JournalType {
-    case list
-    case graph
-
-    var title: String {
-        switch self {
-        case .list:
-            return NSLocalizedString("All entries", comment: "")
-        case .graph:
-            return NSLocalizedString("Last 7 days", comment: "")
-        }
-    }
-}

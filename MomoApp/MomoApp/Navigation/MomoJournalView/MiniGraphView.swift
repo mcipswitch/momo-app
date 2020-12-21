@@ -98,23 +98,16 @@ struct MiniGraphView: View {
                 }
             }
         }
-        .onAppear {
-            /// Always reset default selection to current day
-            let idx = entries.count - 1
-            self.changeSelectedIdx(to: idx)
-        }
-        .onDisappear {
-            /// Always reset default selection to current day
-            let idx = entries.count - 1
-            self.changeSelectedIdx(to: idx)
-        }
-
-
-
+        .onAppear(perform: resetToDefaultSelection)
         .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8))
     }
 
     // MARK: - Internal Methods
+
+    private func resetToDefaultSelection() {
+        let idx = entries.count - 1
+        self.changeSelectedIdx(to: idx)
+    }
 
     private func showSelectionLine() {
         if viewRouter.isJournal {

@@ -8,47 +8,50 @@
  Resources:
  https://www.objc.io/blog/2020/03/16/swiftui-line-graph-animation/
  https://crustlab.com/blog/ios-development-swiftui-experiment-building-custom-chart/
-
- For styling, please see:
- https://swiftwithmajid.com/2020/12/09/styling-custom-swiftui-views-using-environment/
  */
 
 import SwiftUI
 
 // MARK: - LineGraphView
 
-struct LineChartView: View {
-    typealias Graph = MSK.Journal.Graph
+struct LineGraphView: View {
+    // TODO: - Remove the environment here
+    @Environment(\.lineChartStyle) var lineChartStyle
 
     @EnvironmentObject var viewRouter: ViewRouter
     @State var lineOn = false
+    @State var opacity = true
     let dataPoints: [CGFloat]
 
     var body: some View {
-        lineGraphBackgroundGradient
+        lineGradient
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
                     .trim(to: self.lineOn ? 1 : 0)
                     .stroke(style: .lineGraphStrokeStyle)
             )
-            .onAppear(perform: animateLine)
+            .opacity(opacity ? 1 : 0)
+            .onAppear(perform: animateIn)
+            .onReceive(viewRouter.objectWillChange, perform: animateOut)
             .msk_applyDropShadow()
     }
 
-    private var lineGraphBackgroundGradient: some View {
+    private var lineGradient: some View {
         LinearGradient(gradient: .momoTriColorGradient,
                        startPoint: .bottom,
                        endPoint: .top)
     }
 
-
     // MARK: - Internal Methods
 
-    private func animateLine() {
-        var duration: Double { Graph.lineAnimationDuration }
-        withAnimation(.easeInOut(duration: duration)) {
+    private func animateIn() {
+        withAnimation(lineChartStyle.lineGraphAnimation) {
             self.lineOn.toggle()
         }
+    }
+
+    private func animateOut() {
+        withAnimation { self.opacity.toggle() }
     }
 }
 
@@ -60,6 +63,9 @@ struct LineGraph: Shape {
     /// Index [0] is the origin point, followed by the last 7 entries.
     var dataPoints: [CGFloat]
 
+    /// Value within 0...1 range used to determine how curved the chart should be.
+    var lineRadius: CGFloat = 0.5
+
     private var originPoint: CGFloat {
         guard let origin = dataPoints.first else { return 0 }
         return origin
@@ -68,9 +74,6 @@ struct LineGraph: Shape {
     private var latestDataPoints: [CGFloat] {
         return dataPoints.suffix(7)
     }
-
-    /// Value within 0...1 range used to determine how curved the chart should be.
-    var lineRadius: CGFloat = 0.5
 
     func path(in rect: CGRect) -> Path {
         /// Computes a CGPoint for a given data point.
@@ -122,13 +125,4 @@ struct LineGraph: Shape {
 
 extension StrokeStyle {
     static let lineGraphStrokeStyle = StrokeStyle(lineWidth: 6, lineCap: .round)
-}
-
-// MARK: - Previews
-
-struct Wave_Previews: PreviewProvider {
-    static var previews: some View {
-        LineChartView(lineOn: true, dataPoints: [0.3, 0.4, 0.5, 0.3, 0.2, 0.3, 0.9])
-            .environmentObject(ViewRouter())
-    }
 }

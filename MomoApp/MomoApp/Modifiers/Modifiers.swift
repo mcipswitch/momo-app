@@ -1,5 +1,5 @@
 //
-//  Modifiers.swift
+//  MomoText.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-09-18.
@@ -32,12 +32,15 @@ extension View {
 // MARK: - Font+Extensions
 
 extension Font {
+    
+    // Ignores Dynamic Type
     static func mediumFont(size: CGFloat) -> Font {
-        return Font.custom("DMSans-Medium", size: size)
+        return Font.custom("DMSans-Medium", fixedSize: size)
     }
 
+    // Ignores Dynamic Type
     static func boldFont(size: CGFloat) -> Font {
-        return Font.custom("DMSans-Bold", size: size)
+        return Font.custom("DMSans-Bold", fixedSize: size)
     }
 
     static let mainMessageFont = boldFont(size: 22)

@@ -16,7 +16,9 @@ struct TextFieldBorderAnimation: ViewModifier {
         content
             .opacity(value ? 0 : 1)
             .frame(maxWidth: value ? 0 : .infinity)
-            .animation(Animation.bounce.delay(if: !value, 0.6))
+            .animation(Animation
+                        .bounce
+                        .delay(if: !value, 0.6), value: value)
     }
 }
 
@@ -27,7 +29,9 @@ struct AnimateSlideIn: ViewModifier {
         content
             .offset(y: value ? 0 : 5)
             .opacity(value ? 1 : 0)
-            .animation(Animation.ease.delay(if: value, 0.5))
+            .animation(Animation
+                        .ease
+                        .delay(if: value, 0.5), value: value)
     }
 }
 

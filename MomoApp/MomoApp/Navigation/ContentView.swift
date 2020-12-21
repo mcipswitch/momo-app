@@ -43,6 +43,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ContentView()
+                .previewDevice("iPhone 8")
                 .environmentObject(ViewRouter())
             ContentView()
                 .previewDevice("iPhone 11 Pro")

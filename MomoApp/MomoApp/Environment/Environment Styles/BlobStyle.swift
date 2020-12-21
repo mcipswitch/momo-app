@@ -83,7 +83,7 @@ public struct BlobStyle {
     }
 }
 
-// MARK: - BlobStyleKitEnvironmentKey
+// MARK: - BlobStyleEnvironmentKey
 
 struct BlobStyleEnvironmentKey: EnvironmentKey {
     static var defaultValue: BlobStyle = .init()

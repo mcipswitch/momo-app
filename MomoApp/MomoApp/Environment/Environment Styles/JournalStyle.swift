@@ -17,7 +17,7 @@ public struct JournalStyle {
     }
 }
 
-// MARK: - LineChartStyleEnvironmentKey
+// MARK: - JournalStyleEnvironmentKey
 
 struct JournalStyleEnvironmentKey: EnvironmentKey {
     static var defaultValue: JournalStyle = .init()

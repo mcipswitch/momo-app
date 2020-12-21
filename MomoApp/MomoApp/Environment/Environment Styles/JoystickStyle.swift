@@ -32,7 +32,7 @@ public struct JoystickStyle {
     }
 }
 
-// MARK: - ButtonStyleKitEnvironmentKey
+// MARK: - JoystickStyleKitEnvironmentKey
 
 struct JoystickStyleEnvironmentKey: EnvironmentKey {
     static var defaultValue: JoystickStyle = .init()
