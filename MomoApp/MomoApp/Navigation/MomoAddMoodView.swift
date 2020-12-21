@@ -11,8 +11,6 @@ struct MomoAddMoodView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     var viewLogic = AddMoodViewLogic()
 
-    //let onSeePastEntriesPressed: () -> Void
-
     @State private var homeViewActive = true
     @State private var addViewActive = false
     @State private var doneViewActive = false
@@ -121,8 +119,6 @@ struct MomoAddMoodView: View {
                         //.frame(width: 180, height: 80)
                     }
 
-
-
                     // Blob
                     ZStack {
                         BlobView(blobValue: $blobValue)
@@ -222,9 +218,9 @@ struct MomoAddMoodView: View {
         }
     }
 
-    // MARK: - Views
+    // MARK: - Internal Views
 
-    var topNavigation: some View {
+    private var topNavigation: some View {
         HStack {
             MomoToolbarButton(button: .back,
                               action: self.backButtonPressed)

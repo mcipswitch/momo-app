@@ -25,7 +25,7 @@ struct MomoTextField: View {
                 self.textFieldIsFocused = editingChanged ? true : false
             }, onCommit: {
 
-                // TODO: Emotion Added view
+                // TODO: THANK YOU SCREEN
                 print(text)
 
             })

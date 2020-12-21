@@ -55,8 +55,7 @@ struct MomoJournalView: View {
         }
     }
 
-    // TODO: - clicking back resets the blobvalue to TODAY... it needs to remember the last selected idx instead and reset AFTEr
-    var navigationToolbar: some View {
+    private var navigationToolbar: some View {
         ZStack {
             MomoToolbarTitle(view: self.viewRouter.currentJournal)
             HStack(alignment: .top) {

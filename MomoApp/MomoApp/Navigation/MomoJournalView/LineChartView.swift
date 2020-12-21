@@ -19,6 +19,7 @@ struct LineGraphView: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
     @State var lineOn = false
+    @State var opacity = true
     let dataPoints: [CGFloat]
 
     var body: some View {
@@ -28,7 +29,8 @@ struct LineGraphView: View {
                     .trim(to: self.lineOn ? 1 : 0)
                     .stroke(style: .lineGraphStrokeStyle)
             )
-            .onAppear(perform: animateLine)
+            .opacity(opacity ? 1 : 0)
+            .onAppear(perform: animateIn)
             .onReceive(viewRouter.objectWillChange, perform: animateOut)
             .msk_applyDropShadow()
     }
@@ -41,16 +43,14 @@ struct LineGraphView: View {
 
     // MARK: - Internal Methods
 
-    private func animateLine() {
+    private func animateIn() {
         withAnimation(lineChartStyle.lineGraphAnimation) {
             self.lineOn.toggle()
         }
     }
 
     private func animateOut() {
-        withAnimation(.easeInOut(duration: 0.001)) {
-            self.lineOn.toggle()
-        }
+        withAnimation { self.opacity.toggle() }
     }
 }
 
