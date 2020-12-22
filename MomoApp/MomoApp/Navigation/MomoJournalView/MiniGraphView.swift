@@ -157,6 +157,7 @@ struct GraphLine: View {
                         self.selectedIdx == idx ? anchor : nil
                     })
                 /*
+                 TODO:
                  There is a bug that shows the selection line behind the graph line.
                  This is a temporary fix that hides the line if it is selected.
                  */
@@ -165,13 +166,12 @@ struct GraphLine: View {
                     self.on = true
                 }
             dateLabel
-                /*
-                 Track the height of the date label and calculate the correct
-                 bottom padding needed for the graph line to stay within bounds.
-                 */
-                .attachSizeModifier()
-                .onPreferenceChange(SizePreferenceKey.self) {
-                    self.onDateLabelHeightChange($0.height + spacing)
+                // Track the height of the date label and calculate the correct
+                // bottom padding needed for the graph line to stay within bounds.
+                // TODO: - This is happening 7 times, once for each date
+                .saveSizes(viewID: 1)
+                .retrieveSizes(viewID: 1) { bounds in
+                    self.onDateLabelHeightChange(bounds.height + spacing)
                 }
         }
         // Make whole stack tappable
@@ -201,6 +201,8 @@ struct GraphLine: View {
 }
 
 // MARK: - SelectionLine
+
+// TODO: - refactor pref key
 
 struct SelectionLine: View {
     let preferences: Anchor<CGRect>?
