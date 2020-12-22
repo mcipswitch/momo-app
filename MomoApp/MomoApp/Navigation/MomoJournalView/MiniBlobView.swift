@@ -23,14 +23,10 @@ struct MiniBlobView: View {
             Spacer()
 
             GeometryReader { geo in
-                // TODO: - HStack is to center BlobView, but can be removed later
-                HStack {
-                    Spacer()
-                    BlobView(blobValue: $blobValue)
-                        .msk_applyBlobStyle(BlobStyle(frameSize: geo.size.width,
-                                                      scale: 0.40))
-                    Spacer()
-                }
+                BlobView(blobValue: $blobValue)
+                    .position(x: geo.size.width / 2, y: geo.size.height / 2)
+                    .msk_applyBlobStyle(BlobStyle(frameSize: geo.size.width,
+                                                  scale: 0.40))
             }
 
             Spacer()
