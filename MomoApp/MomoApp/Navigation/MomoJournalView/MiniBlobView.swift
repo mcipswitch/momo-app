@@ -22,10 +22,16 @@ struct MiniBlobView: View {
 
             Spacer()
 
-            // TODO: - Fix the frameSize to be dynamic
-            BlobView(blobValue: $blobValue)
-                .msk_applyBlobStyle(BlobStyle(frameSize: 250,
-                                              scale: 0.60))
+            GeometryReader { geo in
+                // TODO: - HStack is to center BlobView, but can be removed later
+                HStack {
+                    Spacer()
+                    BlobView(blobValue: $blobValue)
+                        .msk_applyBlobStyle(BlobStyle(frameSize: geo.size.width,
+                                                      scale: 0.40))
+                    Spacer()
+                }
+            }
 
             Spacer()
         }
