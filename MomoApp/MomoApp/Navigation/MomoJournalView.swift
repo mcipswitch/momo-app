@@ -54,7 +54,24 @@ struct MomoJournalView: View {
             self.animateGraph.toggle()
         }
     }
+}
 
+// MARK: - Internal Methods
+
+extension MomoJournalView {
+    private func backButtonPressed() {
+        self.viewRouter.change(to: .home)
+    }
+
+    private func journalTypeButtonPressed() {
+        self.isGraph.toggle()
+        self.viewRouter.toggleJournal()
+    }
+}
+
+// MARK: - Internal Views
+
+extension MomoJournalView {
     private var navigationToolbar: some View {
         ZStack {
             MomoToolbarTitle(view: self.viewRouter.currentJournal)
@@ -65,17 +82,6 @@ struct MomoJournalView: View {
             }
         }
         .padding()
-    }
-    
-    // MARK: - Internal Methods
-
-    private func backButtonPressed() {
-        self.viewRouter.change(to: .home)
-    }
-    
-    private func journalTypeButtonPressed() {
-        self.isGraph.toggle()
-        self.viewRouter.toggleJournal()
     }
 }
 

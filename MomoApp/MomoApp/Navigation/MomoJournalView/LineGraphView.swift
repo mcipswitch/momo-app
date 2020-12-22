@@ -17,7 +17,6 @@ import SwiftUI
 struct LineGraphView: View {
     // TODO: - Remove the environment here
     @Environment(\.lineChartStyle) var lineChartStyle
-
     @EnvironmentObject var viewRouter: ViewRouter
     @State var lineOn = false
     @State var opacity = true
@@ -41,9 +40,11 @@ struct LineGraphView: View {
                        startPoint: .bottom,
                        endPoint: .top)
     }
+}
 
-    // MARK: - Internal Methods
+// MARK: - Internal Methods
 
+extension LineGraphView {
     private func animateIn() {
         withAnimation(lineChartStyle.lineGraphAnimation) {
             self.lineOn.toggle()

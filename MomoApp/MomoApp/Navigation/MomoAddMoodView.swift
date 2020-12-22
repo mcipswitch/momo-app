@@ -148,13 +148,10 @@ struct MomoAddMoodView: View {
 
                         // Joystick + Past Entries
                         ZStack(alignment: .center) {
-
                             addEmotionButton
-
-                            // Add delay so the 'Color Ring' disappears first.
-                            .animation(.resist, value: self.dragState.isActive)
-                            .animation(Animation.bounce.delay(if: self.homeViewActive, 0.2), value: self.homeViewActive)
-
+                                // Add delay so the 'Color Ring' disappears first.
+                                .animation(.resist, value: self.dragState.isActive)
+                                .animation(Animation.bounce.delay(if: self.homeViewActive, 0.2), value: self.homeViewActive)
                             MomoLinkButton(.pastEntries, action: self.seePastEntriesButtonPressed)
                                 .offset(y: 60)
                                 .slideInAnimation(value: self.$homeViewActive)
@@ -208,8 +205,58 @@ struct MomoAddMoodView: View {
             self.homeViewActive = (state == .home)
         }
     }
+}
 
-    // MARK: - Internal Views
+// MARK: - Internal Methods
+
+extension MomoAddMoodView {
+
+    private func addEmotionButtonPressed() {
+        self.viewRouter.changeHomeState(.add)
+    }
+
+    private func seePastEntriesButtonPressed() {
+        self.viewRouter.change(to: .journal)
+    }
+
+    private func backButtonPressed() {
+        self.navigationButtonPressed.toggle()
+
+        self.viewRouter.changeHomeState(.home)
+    }
+
+    private func doneButtonPressed() {
+        self.navigationButtonPressed.toggle()
+
+        self.viewRouter.changeHomeState(.done)
+
+        print("Emotion: \(self.text), Value: \(self.blobValue)")
+    }
+}
+
+// MARK: - Internal Views
+
+extension MomoAddMoodView {
+    private var addEmotionButton: some View {
+        ZStack {
+            Button(action: self.addEmotionButtonPressed) {
+                Text(self.state.text)
+                    .opacity(self.isAnimating ? 0 : 1)
+                    .animation(self.isAnimating
+                                ? .none
+                                : Animation.ease.delay(0.5)
+                    )
+            }
+            .msk_applyMomoButtonStyle(button: homeViewActive ? .standard : .joystick)
+
+            // Add delay so this appears after button morph
+            ColorRing(
+                isAnimating: self.$isAnimating,
+                isDragging: self.$isDragging
+            )
+            .animation(Animation.bounce.delay(if: !homeViewActive, 0.6), value: self.homeViewActive)
+        }
+    }
 
     private var topNavigation: some View {
         HStack {
@@ -246,57 +293,6 @@ struct MomoAddMoodView: View {
     }
 }
 
-// MARK: - Internal Methods
-
-extension MomoAddMoodView {
-
-    private func addEmotionButtonPressed() {
-        self.viewRouter.changeHomeState(.add)
-    }
-
-    private func seePastEntriesButtonPressed() {
-        self.viewRouter.change(to: .journal)
-    }
-
-    private func backButtonPressed() {
-        self.navigationButtonPressed.toggle()
-
-        self.viewRouter.changeHomeState(.home)
-    }
-
-    private func doneButtonPressed() {
-        self.navigationButtonPressed.toggle()
-
-        self.viewRouter.changeHomeState(.done)
-
-        print("Emotion: \(self.text), Value: \(self.blobValue)")
-    }
-}
-
-// MARK: - Internal Views
-
-extension MomoAddMoodView {
-    var addEmotionButton: some View {
-        ZStack {
-            Button(action: self.addEmotionButtonPressed) {
-                Text(self.state.text)
-                    .opacity(self.isAnimating ? 0 : 1)
-                    .animation(self.isAnimating
-                                ? .none
-                                : Animation.ease.delay(0.5)
-                    )
-            }
-            .msk_applyMomoButtonStyle(button: homeViewActive ? .standard : .joystick)
-
-            // Add delay so this appears after button morph
-            ColorRing(
-                isAnimating: self.$isAnimating,
-                isDragging: self.$isDragging
-            )
-            .animation(Animation.bounce.delay(if: !homeViewActive, 0.6), value: self.homeViewActive)
-        }
-    }
-}
 
 
 
