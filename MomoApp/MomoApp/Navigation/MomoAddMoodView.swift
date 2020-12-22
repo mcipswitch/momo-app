@@ -224,8 +224,7 @@ struct MomoAddMoodView: View {
 
     private var topNavigation: some View {
         HStack {
-            MomoToolbarButton(button: .back,
-                              action: self.backButtonPressed)
+            MomoToolbarButton(.back, action: self.backButtonPressed)
             Spacer()
             MomoButton(button: .done,
                        action: self.doneButtonPressed,

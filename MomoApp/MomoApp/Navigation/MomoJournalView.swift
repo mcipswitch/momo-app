@@ -59,9 +59,9 @@ struct MomoJournalView: View {
         ZStack {
             MomoToolbarTitle(view: self.viewRouter.currentJournal)
             HStack(alignment: .top) {
-                MomoToolbarButton(button: .back, action: self.backButtonPressed)
+                MomoToolbarButton(.back, action: self.backButtonPressed)
                 Spacer()
-                MomoToolbarButton(button: self.journal, action: self.journalTypeButtonPressed)
+                MomoToolbarButton(self.journal, action: self.journalTypeButtonPressed)
             }
         }
         .padding()
