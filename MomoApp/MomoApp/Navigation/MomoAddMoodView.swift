@@ -163,9 +163,7 @@ struct MomoAddMoodView: View {
                             .animation(.resist, value: self.dragState.isActive)
                             .animation(Animation.bounce.delay(if: self.homeViewActive, 0.2), value: self.homeViewActive)
 
-                            MomoLinkButton(
-                                link: .pastEntries,
-                                action: self.seePastEntriesButtonPressed
+                            MomoLinkButton(.pastEntries, action: self.seePastEntriesButtonPressed
                             )
                             .offset(y: 60)
                             .slideInAnimation(value: self.$homeViewActive)

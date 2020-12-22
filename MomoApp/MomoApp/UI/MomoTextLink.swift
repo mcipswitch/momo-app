@@ -13,12 +13,14 @@ struct MomoLinkButton: View {
     var link: Link
     var action: () -> Void
 
+    init(_ link: Link, action: @escaping () -> Void) {
+        self.link = link
+        self.action = action
+    }
+
     var body: some View {
-        Button(action: action) {
-            Text(link.text)
-                .underline()
-        }
-        .msk_applyMomoLinkStyle()
+        Button(link: link, action: action)
+            .msk_applyMomoLinkStyle()
     }
 }
 
@@ -41,5 +43,15 @@ struct MomoLinkStyle: ButtonStyle {
 extension View {
     func msk_applyMomoLinkStyle() -> some View {
         return self.buttonStyle(MomoLinkStyle())
+    }
+}
+
+// MARK: - Button+Extension
+
+extension Button where Label == Text {
+    init(link: Link, action: @escaping () -> Void) {
+        self.init(action: action, label: {
+            Text(link.text).underline()
+        })
     }
 }
