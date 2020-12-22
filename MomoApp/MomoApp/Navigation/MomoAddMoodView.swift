@@ -16,7 +16,7 @@ struct MomoAddMoodView: View {
     @State private var blobValue: CGFloat = 0
     @State private var degrees: CGFloat = 0
     @State private var colorWheelSection: ColorWheelSection = .momo
-    
+
     @State private var isDragging = false
     @State private var isAnimating = false
 
@@ -40,8 +40,9 @@ struct MomoAddMoodView: View {
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
 
     var resistanceDrag: some Gesture {
-        // Set minimum distance to avoid joystick tapping
-        DragGesture(minimumDistance: 0.1)
+
+        // TODO: - avoid joystick tapping
+        DragGesture(minimumDistance: 0)
             .onChanged(onDragChanged(drag:))
             .updating($dragState) { value, state, _ in
                 state = .active(location: value.location, translation: value.translation)
@@ -91,6 +92,7 @@ struct MomoAddMoodView: View {
     // TODO: - Adjust blob so it is 20% of the screen height
 
     var body: some View {
+
         ZStack {
             GeometryReader { geo in
                 let centerPoint = CGPoint(x: geo.size.width / 2, y: ButtonType.joystick.size.w / 2)
@@ -131,7 +133,6 @@ struct MomoAddMoodView: View {
                             Text("Degrees: \(Int(degrees))")
                             Text("Blob: \(blobValue)")
                             Text("Original Pos: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
-                            Text("Button Pos: x:\(Int(buttonLocation?.x ?? 0)), y:\(Int(buttonLocation?.y ?? 0))")
                             Text(dragState.isActive ? "dragging..." : "")
                             Text(isAnimating ? "animating..." : "")
                         }
@@ -171,7 +172,7 @@ struct MomoAddMoodView: View {
                         }
                         .offset(x: self.dragValue.width * 0.8, y: self.dragValue.height * 0.8)
                         .position(self.buttonLocation ?? centerPoint)
-                        .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
+                        .highPriorityGesture(self.homeViewActive ? nil : resistanceDrag)
 
                         #if DEBUG
                         if let dragState = dragState {

@@ -46,4 +46,37 @@ extension View {
           .luminanceToAlpha()
         )
       }
+
+    // MARK: - Conditional Modifiers
+
+    /// Apply a conditional modifier.
+    /// - Parameters:
+    ///   - condition: Apply a modifier only if condition is met.
+    ///   - modifier: The modifier to be applied.
+    /// - Returns: A modified `View` instance
+    /// Please see: https://swiftui-lab.com/view-extensions-for-better-code-readability/
+    public func conditionalModifier<T>(_ condition: Bool, _ modifier: T) -> some View where T: ViewModifier {
+        Group {
+            if condition {
+                self.modifier(modifier)
+            } else { self }
+        }
+    }
+
+    /// Apply trueModifier if condition is met, or falseModifier if not.
+    /// - Parameters:
+    ///   - condition: Condition to be met.
+    ///   - trueModifier: The modifier to be applied if condition is met.
+    ///   - falseModifier: The modifier to be applied if condition is not met.
+    /// - Returns: A modified `View` instance
+    /// Please see: https://swiftui-lab.com/view-extensions-for-better-code-readability/
+    public func conditionalModifier<M1, M2>(_ condition: Bool, _ trueModifier: M1, _ falseModifier: M2) -> some View where M1: ViewModifier, M2: ViewModifier {
+        Group {
+            if condition {
+                self.modifier(trueModifier)
+            } else {
+                self.modifier(falseModifier)
+            }
+        }
+    }
 }

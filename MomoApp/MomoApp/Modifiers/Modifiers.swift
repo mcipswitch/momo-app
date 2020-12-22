@@ -12,6 +12,10 @@ import SwiftUI
 struct MomoText: ViewModifier {
     var textStyle: MomoTextStyle
 
+    init(_ textStyle: MomoTextStyle) {
+        self.textStyle = textStyle
+    }
+
     func body(content: Content) -> some View {
         content
             .font(textStyle.font)
@@ -25,7 +29,7 @@ struct MomoText: ViewModifier {
 
 extension View {
     func msk_applyTextStyle(_ textStyle: MomoTextStyle) -> some View {
-        return self.modifier(MomoText(textStyle: textStyle))
+        return self.modifier(MomoText(textStyle))
     }
 }
 

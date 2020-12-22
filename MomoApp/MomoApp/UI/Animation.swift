@@ -1,5 +1,5 @@
 //
-//  Animation.swift
+//  Animations.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-12-15.
@@ -61,6 +61,9 @@ struct JournalViewAnimation: ViewModifier {
 // MARK: - View+Extension
 
 extension View {
+    
 //    func msk_applyAnimationStyle(_ animationStyle: MomoAnimationStyle) -> some View {
+//
 //    }
+
 }

@@ -121,11 +121,11 @@ struct BlobAnimationModifier: ViewModifier {
             .modifier(BlobEffect(
                 skewValue: self.isAnimating ? 2 : 0
             ))
-            .animation(self.skew ? skewEffect : nil, value: skew)
+            .animation(self.skew ? skewEffect : nil, value: isAnimating)
             .scaleEffect(isAnimating ? 1.05 : 1)
-            .animation(self.breathe ? breatheEffect : nil, value: breathe)
+            .animation(self.breathe ? breatheEffect : nil, value: isAnimating)
             .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-            .animation(self.rotate ? rotateEffect : nil, value: rotate)
+            .animation(self.rotate ? rotateEffect : nil, value: isAnimating)
     }
 }
 
