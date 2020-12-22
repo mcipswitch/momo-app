@@ -87,10 +87,6 @@ struct MomoAddMoodView: View {
             }
     }
 
-    // MARK: - Body
-
-    // TODO: - Adjust blob so it is 20% of the screen height
-
     var body: some View {
 
         ZStack {
@@ -152,21 +148,16 @@ struct MomoAddMoodView: View {
 
                         // Joystick + Past Entries
                         ZStack(alignment: .center) {
-                            AddEmotionButton(
-                                entryState: self.$state,
-                                homeViewActive: self.$homeViewActive,
-                                isAnimating: self.$isAnimating,
-                                isDragging: self.$isDragging,
-                                action: self.addEmotionButtonPressed
-                            )
+
+                            addEmotionButton
+
                             // Add delay so the 'Color Ring' disappears first.
                             .animation(.resist, value: self.dragState.isActive)
                             .animation(Animation.bounce.delay(if: self.homeViewActive, 0.2), value: self.homeViewActive)
 
-                            MomoLinkButton(.pastEntries, action: self.seePastEntriesButtonPressed
-                            )
-                            .offset(y: 60)
-                            .slideInAnimation(value: self.$homeViewActive)
+                            MomoLinkButton(.pastEntries, action: self.seePastEntriesButtonPressed)
+                                .offset(y: 60)
+                                .slideInAnimation(value: self.$homeViewActive)
                         }
                         .offset(x: self.dragValue.width * 0.8, y: self.dragValue.height * 0.8)
                         .position(self.buttonLocation ?? centerPoint)
@@ -284,17 +275,11 @@ extension MomoAddMoodView {
 
 // MARK: - Internal Views
 
-struct AddEmotionButton: View {
-    @Binding var entryState: EntryState
-    @Binding var homeViewActive: Bool
-    @Binding var isAnimating: Bool
-    @Binding var isDragging: Bool
-    let action: () -> Void
-
-    var body: some View {
+extension MomoAddMoodView {
+    var addEmotionButton: some View {
         ZStack {
-            Button(action: self.action) {
-                Text(self.entryState.text)
+            Button(action: self.addEmotionButtonPressed) {
+                Text(self.state.text)
                     .opacity(self.isAnimating ? 0 : 1)
                     .animation(self.isAnimating
                                 ? .none
@@ -312,3 +297,50 @@ struct AddEmotionButton: View {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+//struct AddEmotionButton: View {
+//    @Binding var entryState: EntryState
+//    @Binding var homeViewActive: Bool
+//    @Binding var isAnimating: Bool
+//    @Binding var isDragging: Bool
+//    let action: () -> Void
+//
+//    var body: some View {
+//        ZStack {
+//            Button(action: self.action) {
+//                Text(self.entryState.text)
+//                    .opacity(self.isAnimating ? 0 : 1)
+//                    .animation(self.isAnimating
+//                                ? .none
+//                                : Animation.ease.delay(0.5)
+//                    )
+//            }
+//            .msk_applyMomoButtonStyle(button: homeViewActive ? .standard : .joystick)
+//
+//            // Add delay so this appears after button morph
+//            ColorRing(
+//                isAnimating: self.$isAnimating,
+//                isDragging: self.$isDragging
+//            )
+//            .animation(Animation.bounce.delay(if: !homeViewActive, 0.6), value: self.homeViewActive)
+//        }
+//    }
+//}
+
+//                            AddEmotionButton(
+//                                entryState: self.$state,
+//                                homeViewActive: self.$homeViewActive,
+//                                isAnimating: self.$isAnimating,
+//                                isDragging: self.$isDragging,
+//                                action: self.addEmotionButtonPressed
+//                            )

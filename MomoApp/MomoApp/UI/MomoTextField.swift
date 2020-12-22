@@ -16,7 +16,7 @@ struct MomoTextField: View {
 
     var body: some View {
         ZStack(alignment: .center) {
-            PlaceholderText(text: NSLocalizedString("My day in a word", comment: ""))
+            PlaceholderText(NSLocalizedString("My day in a word", comment: ""))
                 .opacity(text.isEmpty ? textFieldStyle.placeholderOpacity : 0)
                 .animation(nil, value: text)
 
@@ -58,6 +58,11 @@ struct MomoTextFieldBorder: View {
 
 struct PlaceholderText: View {
     let text: String
+
+    init(_ text: String) {
+        self.text = text
+    }
+
     var body: some View {
         Text(text)
             .msk_applyTextStyle(.mainMessageFont)

@@ -110,10 +110,3 @@ enum MomoTextStyle {
         }
     }
 }
-
-
-
-enum MomoLabelStyle {
-    case active
-    case inactive
-}

@@ -119,9 +119,3 @@ enum EntryState {
         }
     }
 }
-
-// MARK: - AnimationStyle
-
-enum MomoAnimationStyle {
-    case textField
-}
