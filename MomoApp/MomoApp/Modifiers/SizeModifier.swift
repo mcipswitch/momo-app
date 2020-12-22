@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - Save + Retrieve Bounds
+// MARK: - SizePrefKey
 
 struct SizePrefData: Equatable {
     let viewID: Int
@@ -45,7 +45,7 @@ extension View {
     }
 }
 
-// MARK: - Save + Retrieve Bounds
+// MARK: - SaveBoundsPrefKey
 
 // Please see: https://swiftui-lab.com/view-extensions-for-better-code-readability/
 

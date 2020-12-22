@@ -169,9 +169,10 @@ struct GraphLine: View {
                 // Track the height of the date label and calculate the correct
                 // bottom padding needed for the graph line to stay within bounds.
                 // TODO: - This is happening 7 times, once for each date
-                .saveSizes(viewID: 1)
-                .retrieveSizes(viewID: 1) { bounds in
-                    self.onDateLabelHeightChange(bounds.height + spacing)
+                .coordinateSpace(name: "dateLabel")
+                .saveSizes(viewID: 1, coordinateSpace: .named("dateLabel"))
+                .retrieveSizes(viewID: 1) {
+                    self.onDateLabelHeightChange($0.height + spacing)
                 }
         }
         // Make whole stack tappable
@@ -222,14 +223,5 @@ struct SelectionLine: View {
                     .msk_applyDropShadow()
             }
         }
-    }
-}
-
-// MARK: - Preference Keys
-
-struct SelectionPreferenceKey: PreferenceKey {
-    static var defaultValue: Value = nil
-    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
-        value = nextValue()
     }
 }

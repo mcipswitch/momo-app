@@ -6,7 +6,7 @@
 //
 
 // Blur Effect Materials: https://pspdfkit.com/blog/2020/blur-effect-materials-on-ios/
-// https://www.vadimbulavin.com/infinite-list-scroll-swiftui-combine/
+// Infinite Scroll: https://www.vadimbulavin.com/infinite-list-scroll-swiftui-combine/
 
 import SwiftUI
 

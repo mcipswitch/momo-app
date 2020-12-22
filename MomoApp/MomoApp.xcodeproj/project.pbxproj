@@ -29,6 +29,8 @@
 		930ABB6F254A32E00050C1C4 /* MiniGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */; };
 		930AE6B725633B520091EDA7 /* DragState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930AE6B625633B520091EDA7 /* DragState.swift */; };
 		9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9318888125582B870004CD4F /* EntriesViewModel.swift */; };
+		931D6D9725926AF00077635D /* MiniGraphView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D6D9625926AF00077635D /* MiniGraphView+Extension.swift */; };
+		931D6D9C259278AE0077635D /* RandomAccessCollection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D6D9B259278AE0077635D /* RandomAccessCollection+Extension.swift */; };
 		9327DD242589E31E00BBDA53 /* MomoBackgroundBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */; };
 		9327E7FA25855EE40027C638 /* AddMoodViewLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */; };
 		9327E812258585C90027C638 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9327E814258585C90027C638 /* Localizable.strings */; };
@@ -106,6 +108,8 @@
 		930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGraphView.swift; sourceTree = "<group>"; };
 		930AE6B625633B520091EDA7 /* DragState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragState.swift; sourceTree = "<group>"; };
 		9318888125582B870004CD4F /* EntriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesViewModel.swift; sourceTree = "<group>"; };
+		931D6D9625926AF00077635D /* MiniGraphView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MiniGraphView+Extension.swift"; sourceTree = "<group>"; };
+		931D6D9B259278AE0077635D /* RandomAccessCollection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RandomAccessCollection+Extension.swift"; sourceTree = "<group>"; };
 		9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoBackgroundBlur.swift; sourceTree = "<group>"; };
 		9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoodViewLogic.swift; sourceTree = "<group>"; };
 		9327E813258585C90027C638 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -330,6 +334,7 @@
 				9301058F2513F8A1007F0E7A /* Date + Extensions.swift */,
 				93EB5C602527891900087D0B /* UIApplication+Extension.swift */,
 				937615872512527100AEF59C /* UIScreen+Extension.swift */,
+				931D6D9B259278AE0077635D /* RandomAccessCollection+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -339,6 +344,7 @@
 			children = (
 				9382CFEA25760CD000ED46D8 /* JournalGraphView.swift */,
 				930ABB6E254A32E00050C1C4 /* MiniGraphView.swift */,
+				931D6D9625926AF00077635D /* MiniGraphView+Extension.swift */,
 				9382CFE525760A8400ED46D8 /* MiniBlobView.swift */,
 				930924FE25582D0800AA3934 /* JournalListView.swift */,
 				93AE1883256DCE500024E6A9 /* LineGraphView.swift */,
@@ -490,6 +496,7 @@
 				935FD32F24EA2E23008568FA /* ArcShape.swift in Sources */,
 				93D90F88257C5A8000A7A69F /* SizeModifier.swift in Sources */,
 				937615882512527100AEF59C /* UIScreen+Extension.swift in Sources */,
+				931D6D9C259278AE0077635D /* RandomAccessCollection+Extension.swift in Sources */,
 				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,
 				937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */,
 				93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */,
@@ -517,6 +524,7 @@
 				9302A8CD258FEDCC00FF2ECB /* JournalStyle.swift in Sources */,
 				937688E124F98E9500CC0B10 /* CustomView.swift in Sources */,
 				930076A525887F62007B152D /* MomoBackground.swift in Sources */,
+				931D6D9725926AF00077635D /* MiniGraphView+Extension.swift in Sources */,
 				936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */,
 				93EF797D254A07F20062571F /* MomoJournalView.swift in Sources */,
 				9302A8C0258FA99200FF2ECB /* TextFieldStyle.swift in Sources */,
