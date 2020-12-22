@@ -99,15 +99,21 @@ struct BlobAnimationModifier: ViewModifier {
     }
 
     private var skewEffect: Animation {
-        Animation.easeInOut(duration: 1.0).repeat(while: isAnimating)
+        Animation
+            .easeInOut(duration: 1.0)
+            .repeat(while: isAnimating)
     }
 
     private var breatheEffect: Animation {
-        Animation.breathe.repeat(while: isAnimating)
+        Animation
+            .breathe
+            .repeat(while: isAnimating)
     }
 
     private var rotateEffect: Animation {
-        Animation.linear(duration: 50).repeatForever(autoreverses: false)
+        Animation
+            .linear(duration: 50)
+            .repeatForever(autoreverses: false)
     }
 
     func body(content: Content) -> some View {
@@ -115,11 +121,11 @@ struct BlobAnimationModifier: ViewModifier {
             .modifier(BlobEffect(
                 skewValue: self.isAnimating ? 2 : 0
             ))
-            .animation(self.skew ? skewEffect : nil)
+            .animation(self.skew ? skewEffect : nil, value: skew)
             .scaleEffect(isAnimating ? 1.05 : 1)
-            .animation(self.breathe ? breatheEffect : nil)
+            .animation(self.breathe ? breatheEffect : nil, value: breathe)
             .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
-            .animation(self.rotate ? rotateEffect : nil)
+            .animation(self.rotate ? rotateEffect : nil, value: rotate)
     }
 }
 

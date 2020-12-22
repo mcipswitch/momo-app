@@ -12,12 +12,15 @@ struct JournalGraphView: View {
     @EnvironmentObject var viewModel: EntriesViewModel
     
     var body: some View {
-        VStack(spacing: 48) {
+        VStack(spacing: 8) {
             MiniGraphView(
                 entries: self.viewModel.latestEntries,
                 dataPoints: self.viewModel.dataPoints,
                 onEntrySelected: self.viewModel.fetchSelectedEntry(idx:)
             )
+
+            Spacer()
+
             MiniBlobView(
                 blobValue: self.$viewModel.selectedEntry.value,
                 entry: self.viewModel.selectedEntry)

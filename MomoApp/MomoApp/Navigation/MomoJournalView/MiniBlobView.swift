@@ -12,14 +12,21 @@ struct MiniBlobView: View {
     let entry: Entry
 
     var body: some View {
-        VStack(spacing: 0) {
-            Text(self.entry.date, formatter: DateFormatter.shortDate)
-                .msk_applyTextStyle(.mainDateFont)
-                .padding(.bottom, 12)
-            Text(self.entry.emotion)
-                .msk_applyTextStyle(.mainMessageFont)
+        VStack(spacing: 16) {
+            VStack(spacing: 12) {
+                Text(self.entry.date, formatter: DateFormatter.shortDate)
+                    .msk_applyTextStyle(.mainDateFont)
+                Text(self.entry.emotion)
+                    .msk_applyTextStyle(.mainMessageFont)
+            }
+
+            Spacer()
+
+            // TODO: - Fix the frameSize to be dynamic
             BlobView(blobValue: $blobValue)
-                .scaleEffect(0.60)
+                .msk_applyBlobStyle(BlobStyle(frameSize: 250,
+                                              scale: 0.60))
+
             Spacer()
         }
     }
