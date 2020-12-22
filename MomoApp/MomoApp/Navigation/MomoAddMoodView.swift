@@ -40,7 +40,8 @@ struct MomoAddMoodView: View {
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
 
     var resistanceDrag: some Gesture {
-        DragGesture(minimumDistance: 0)
+        // Set minimum distance to avoid joystick tapping
+        DragGesture(minimumDistance: 0.1)
             .onChanged(onDragChanged(drag:))
             .updating($dragState) { value, state, _ in
                 state = .active(location: value.location, translation: value.translation)

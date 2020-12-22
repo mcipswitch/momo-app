@@ -20,6 +20,10 @@ struct MomoTextField: View {
                 .opacity(text.isEmpty ? textFieldStyle.placeholderOpacity : 0)
                 .animation(nil, value: text)
 
+                // Dim text when text field is focused
+                .opacity(textFieldIsFocused ? 0.1 : textFieldStyle.placeholderOpacity)
+                .animation(.easeIn(duration: 0.2), value: textFieldIsFocused)
+
             TextField("", text: $text, onEditingChanged: { editingChanged in
                 self.textFieldIsFocused = editingChanged ? true : false
             }, onCommit: {
@@ -29,7 +33,7 @@ struct MomoTextField: View {
 
             })
             .msk_applyMomoTextFieldStyle()
-            .onReceive(text.publisher.collect()) { char in
+            .onReceive(text.publisher.collect()) { _ in
                 text = String(text.prefix(textFieldStyle.charLimit))
             }
         }
