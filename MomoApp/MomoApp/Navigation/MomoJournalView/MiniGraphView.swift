@@ -50,7 +50,7 @@ struct MiniGraphView: View {
                 LazyVGrid(columns: columnLayout, alignment: .center) {
                     ForEach(0 ..< self.entries.count) { idx in
                         GraphLine(
-                            spacing: lineChartStyle.labelPadding,
+                            spacing: self.lineChartStyle.labelPadding,
                             selectedIdx: self.selectedIdx,
                             newIdx: self.newIdx,
                             idx: idx,
@@ -59,26 +59,24 @@ struct MiniGraphView: View {
                         )
                         .frame(minWidth: itemWidth, idealHeight: geo.size.height, maxHeight: geo.size.height)
                         .onTapGesture {
-                            self.newIdx = idx
-                            self.changeSelectedIdx(to: self.newIdx)
+                            self.changeSelection(idx)
                         }
-                        .contentShape(Rectangle())
+                        .tappable()
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(
                                 preferences: preferences,
-                                width: lineChartStyle.selectionLineWidth
+                                width: self.lineChartStyle.selectionLineWidth
                             )
-                            .opacity(selectionLineOn ? 1 : 0)
-                            .modifier(
-                                SelectionLineModifier(items: entries.count,
-                                                      itemWidth: itemWidth,
-                                                      itemSpacing: itemSpacing,
-                                                      selectedIdx: selectedIdx,
-                                                      onDragChanged: changeNewIdx(to:),
-                                                      onDragEnded: changeSelectedIdx(to:))
+                            .opacity(self.selectionLineOn ? 1 : 0)
+                            .draggableSelection(items: self.entries.count,
+                                                itemWidth: itemWidth,
+                                                itemSpacing: itemSpacing,
+                                                selectedIdx: self.selectedIdx,
+                                                onDragChanged: self.changeNewIdx(to:),
+                                                onDragEnded: self.changeSelectedIdx(to:)
                             )
                         })
-                        .onAppear(perform: showSelectionLine)
+                        .onAppear(perform: self.showSelectionLine)
                     }
                 }
                 // This is a temp fix for the LazyVGrid
@@ -104,20 +102,25 @@ struct MiniGraphView: View {
 
 extension MiniGraphView {
     private func resetToDefaultSelection() {
-        let idx = entries.count - 1
+        let idx = self.entries.count - 1
         self.changeSelectedIdx(to: idx)
     }
 
     private func showSelectionLine() {
-        if viewRouter.isJournal {
+        if self.viewRouter.isJournal {
             withAnimation(lineChartStyle.selectionLineAnimation) {
-                selectionLineOn = viewRouter.isJournal
+                self.selectionLineOn = self.viewRouter.isJournal
             }
         }
     }
 
     private func updateLineGraphBottomPadding(_ padding: CGFloat) {
         self.lineGraphBottomPadding = padding
+    }
+
+    private func changeSelection(_ idx: Int) {
+        self.changeNewIdx(to: idx)
+        self.changeSelectedIdx(to: idx)
     }
 
     private func changeNewIdx(to idx: Int) {

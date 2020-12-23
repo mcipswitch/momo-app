@@ -72,3 +72,16 @@ struct SelectionLineModifier: ViewModifier {
         self.onDragEnded(self.newIdx)
     }
 }
+
+// MARK: - View+Extension
+
+extension View {
+    func draggableSelection(items: Int, itemWidth: CGFloat, itemSpacing: CGFloat, selectedIdx: Int, onDragChanged: @escaping (Int) -> Void, onDragEnded: @escaping (Int) -> Void) -> some View {
+        return self.modifier(SelectionLineModifier(items: items,
+                                                   itemWidth: itemWidth,
+                                                   itemSpacing: itemSpacing,
+                                                   selectedIdx: selectedIdx,
+                                                   onDragChanged: onDragChanged,
+                                                   onDragEnded: onDragEnded))
+    }
+}

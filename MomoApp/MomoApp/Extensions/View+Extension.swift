@@ -87,4 +87,9 @@ extension View {
     func withSpringAnimation(completion: () -> Void) {
         return withAnimation(.spring(), completion)
     }
+
+    /// Make the whole stack tappable.
+    func tappable() -> some View {
+        return contentShape(Rectangle())
+    }
 }
