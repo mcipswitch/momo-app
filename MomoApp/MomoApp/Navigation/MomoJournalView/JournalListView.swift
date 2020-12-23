@@ -56,22 +56,16 @@ struct EntryRow: View {
     var body: some View {
         ZStack {
             HStack {
-                entryLabel
+                entryDateAndEmotion
                 Spacer()
                 blobView
             }
         }
         .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
         .padding(entryRowStyle.padding)
-
-
         .background(
             VisualEffectBlur(blurStyle: .dark)
         )
-
-
-
-
         .roundedRect(entryRowStyle.cornerRadius)
     }
 }
@@ -79,7 +73,7 @@ struct EntryRow: View {
 // MARK: - Internal Views
 
 extension EntryRow {
-    private var entryLabel: some View {
+    private var entryDateAndEmotion: some View {
         VStack(alignment: .leading, spacing: entryRowStyle.entryLabelSpacing) {
             Text(self.entry.date, formatter: DateFormatter.shortDate)
                 .msk_applyTextStyle(.mainDateFont)

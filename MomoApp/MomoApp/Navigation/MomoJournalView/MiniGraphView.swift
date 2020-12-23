@@ -1,5 +1,5 @@
 //
-//  JournalGraphView.swift
+//  MiniGraphView.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-10-28.

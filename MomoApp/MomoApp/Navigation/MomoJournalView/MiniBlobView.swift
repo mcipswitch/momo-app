@@ -1,5 +1,5 @@
 //
-//  JournalMiniBlobView.swift
+//  MiniBlobView.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-12-01.
@@ -13,23 +13,32 @@ struct MiniBlobView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            VStack(spacing: 12) {
-                Text(self.entry.date, formatter: DateFormatter.shortDate)
-                    .msk_applyTextStyle(.mainDateFont)
-                Text(self.entry.emotion)
-                    .msk_applyTextStyle(.mainMessageFont)
-            }
-
+            entryDateAndEmotion
             Spacer()
-
             GeometryReader { geo in
-                BlobView(blobValue: $blobValue)
-                    .position(x: geo.size.width / 2, y: geo.size.height / 2)
+                blobView
+                    .position(x: geo.w / 2, y: geo.h / 2)
                     .msk_applyBlobStyle(BlobStyle(frameSize: geo.size.width,
                                                   scale: 0.40))
             }
-
             Spacer()
         }
+    }
+}
+
+// MARK: - Internal Views
+
+extension MiniBlobView {
+    private var entryDateAndEmotion: some View {
+        VStack(spacing: 12) {
+            Text(self.entry.date, formatter: DateFormatter.shortDate)
+                .msk_applyTextStyle(.mainDateFont)
+            Text(self.entry.emotion)
+                .msk_applyTextStyle(.mainMessageFont)
+        }
+    }
+
+    private var blobView: some View {
+        BlobView(blobValue: $blobValue)
     }
 }
