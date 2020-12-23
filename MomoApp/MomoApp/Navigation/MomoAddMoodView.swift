@@ -115,7 +115,7 @@ struct MomoAddMoodView: View {
                                 textField
                                     .slideOutAnimation(value: self.$homeViewActive)
                                 textFieldBorder
-                                    .msk_applyTextFieldBorderAnimation(value: self.$homeViewActive)
+                                    .addTextFieldBorderAnimation(value: self.$homeViewActive)
                             }
                             //.frame(width: geo.size.width / 2)
                             .frame(width: geo.size.width / 2, height: 80)
@@ -131,12 +131,12 @@ struct MomoAddMoodView: View {
 
                         #if DEBUG
                         VStack {
-                            Text("Home Active: \(String(describing: homeViewActive))")
+                            Text("Home: \(String(describing: homeViewActive))")
                             Text("Degrees: \(Int(degrees))")
                             Text("Blob: \(blobValue)")
                             Text("Drag Start: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
                             Text("Dragging: \(String(describing: dragState.isActive))")
-                            Text("Animaton: \(String(describing: animationOn))")
+                            Text("Animation: \(String(describing: animationOn))")
                         }
                         .font(.system(size: 12.0))
                         #endif
@@ -191,6 +191,10 @@ struct MomoAddMoodView: View {
         }
         .padding(.vertical)
         .addMomoBackground()
+        .onChange(of: self.degrees) { degrees in
+            self.colorWheelSection = self.viewLogic.colorWheelSection(degrees)
+            self.blobValue = self.viewLogic.blobValue(degrees)
+        }
 
         // TODO: - fix this
         .onChange(of: self.homeViewActive) { _ in
@@ -200,10 +204,7 @@ struct MomoAddMoodView: View {
         .onReceive(self.viewRouter.homeWillChange) { state in
             self.homeViewActive = (state == .home)
         }
-        .onChange(of: self.degrees) { degrees in
-            self.colorWheelSection = self.viewLogic.colorWheelSection(degrees)
-            self.blobValue = self.viewLogic.blobValue(degrees)
-        }
+
     }
 }
 
@@ -275,12 +276,10 @@ extension MomoAddMoodView {
     }
 
     private var textField: some View {
-        MomoTextField(text: $text,
-                      textFieldIsFocused: $textFieldIsFocused
-        )
-        .onChange(of: self.text) { text in
-            self.textFieldNotEmpty = !text.isEmpty
-        }
+        MomoTextField($text, isFocused: $textFieldIsFocused)
+            .onChange(of: self.text) { text in
+                self.textFieldNotEmpty = !text.isEmpty
+            }
     }
 
     private var textFieldBorder: some View {

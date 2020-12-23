@@ -25,9 +25,9 @@ struct MomoJournalView: View {
             navigationToolbar
             ZStack {
                 JournalGraphView()
-                    .msk_applyJournalViewAnimation(value: $animateGraph)
+                    .addApplyJournalViewAnimation(value: $animateGraph)
                 JournalListView()
-                    .msk_applyJournalViewAnimation(value: $animateList)
+                    .addApplyJournalViewAnimation(value: $animateList)
             }
         }
         .onReceive(self.viewRouter.journalWillChange) {

@@ -12,20 +12,25 @@ import SwiftUI
 struct MomoTextField: View {
     @Environment(\.textFieldStyle) var textFieldStyle
     @Binding var text: String
-    @Binding var textFieldIsFocused: Bool
+    @Binding var isFocused: Bool
+
+    init(_ text: Binding<String>, isFocused: Binding<Bool>) {
+        self._text = text
+        self._isFocused = isFocused
+    }
 
     var body: some View {
         ZStack(alignment: .center) {
             PlaceholderText(NSLocalizedString("My day in a word", comment: ""))
-                .opacity(text.isEmpty ? textFieldStyle.placeholderOpacity : 0)
+                .opacity(self.text.isEmpty ? textFieldStyle.placeholderOpacity : 0)
                 .animation(nil, value: text)
 
                 // Dim text when text field is focused
-                .opacity(textFieldIsFocused ? 0.1 : textFieldStyle.placeholderOpacity)
-                .animation(.easeIn(duration: 0.2), value: textFieldIsFocused)
+                .opacity(self.isFocused ? 0.1 : textFieldStyle.placeholderOpacity)
+                .animation(.easeOut(duration: 0.2), value: self.isFocused)
 
             TextField("", text: $text, onEditingChanged: { editingChanged in
-                self.textFieldIsFocused = editingChanged ? true : false
+                self.isFocused = editingChanged ? true : false
             }, onCommit: {
 
                 // TODO: THANK YOU SCREEN
@@ -33,8 +38,10 @@ struct MomoTextField: View {
 
             })
             .msk_applyMomoTextFieldStyle()
-            .onReceive(text.publisher.collect()) { _ in
-                text = String(text.prefix(textFieldStyle.charLimit))
+
+            // TODO: - refactor this
+            .onReceive(self.text.publisher.collect()) { _ in
+                self.text = String(self.text.prefix(textFieldStyle.charLimit))
             }
         }
     }

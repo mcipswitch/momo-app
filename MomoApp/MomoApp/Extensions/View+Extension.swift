@@ -18,11 +18,11 @@ extension View {
         return modifier(AnimationCompletionObserverModifier(observedValue: value, completion: completion))
     }
 
-    func msk_applyTextFieldBorderAnimation(value: Binding<Bool>) -> some View {
+    func addTextFieldBorderAnimation(value: Binding<Bool>) -> some View {
         return modifier(TextFieldBorderAnimation(value: value))
     }
 
-    func msk_applyJournalViewAnimation(value: Binding<Bool>) -> some View {
+    func addApplyJournalViewAnimation(value: Binding<Bool>) -> some View {
         return modifier(JournalViewAnimation(value: value))
     }
 
