@@ -13,6 +13,6 @@ extension GeometryProxy {
     }
 
     var h: CGFloat {
-        return self.size.width
+        return self.size.height
     }
 }

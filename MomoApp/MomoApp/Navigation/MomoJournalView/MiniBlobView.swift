@@ -14,13 +14,16 @@ struct MiniBlobView: View {
     var body: some View {
         VStack(spacing: 16) {
             entryDateAndEmotion
+
             Spacer()
+
             GeometryReader { geo in
                 blobView
                     .position(x: geo.w / 2, y: geo.h / 2)
                     .msk_applyBlobStyle(BlobStyle(frameSize: geo.size.width,
                                                   scale: 0.40))
             }
+
             Spacer()
         }
     }

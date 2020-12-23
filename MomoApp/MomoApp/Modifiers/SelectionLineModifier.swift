@@ -76,10 +76,10 @@ struct SelectionLineModifier: ViewModifier {
 // MARK: - View+Extension
 
 extension View {
-    func draggableSelection(items: Int, itemWidth: CGFloat, itemSpacing: CGFloat, selectedIdx: Int, onDragChanged: @escaping (Int) -> Void, onDragEnded: @escaping (Int) -> Void) -> some View {
-        return self.modifier(SelectionLineModifier(items: items,
-                                                   itemWidth: itemWidth,
-                                                   itemSpacing: itemSpacing,
+    func draggableSelection(lines: Int, lineFrameWidth: CGFloat, lineFrameSpacing: CGFloat, selectedIdx: Int, onDragChanged: @escaping (Int) -> Void, onDragEnded: @escaping (Int) -> Void) -> some View {
+        return self.modifier(SelectionLineModifier(items: lines,
+                                                   itemWidth: lineFrameWidth,
+                                                   itemSpacing: lineFrameSpacing,
                                                    selectedIdx: selectedIdx,
                                                    onDragChanged: onDragChanged,
                                                    onDragEnded: onDragEnded))

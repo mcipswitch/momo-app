@@ -14,6 +14,10 @@ import SwiftUI
 struct MiniGraphView: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
+
+    var viewLogic = MiniGraphViewLogic()
+    
+
     let entries: [Entry]
     let dataPoints: [CGFloat]
     let onEntrySelected: (Int) -> Void
@@ -26,28 +30,16 @@ struct MiniGraphView: View {
     @State private var lineGraphBottomPadding: CGFloat = 0
 
     @State private var offset: CGFloat = UIScreen.screenWidth
+    @State private var layout = [GridItem]()
+    @State private var lineFrameSpacing: CGFloat = .zero
 
     var body: some View {
         ZStack {
-            LineGraphView(dataPoints: self.dataPoints)
-                .padding(EdgeInsets(top: 0,
-                                    leading: 12,
-                                    bottom: self.lineGraphBottomPadding,
-                                    trailing: 12))
-                .allowsHitTesting(false)
+            lineGraphView
 
             GeometryReader { geo in
 
-                // TODO: - simplify all this code
-                let numOfItems: CGFloat = self.entries.count.floatValue
-                let itemWidth: CGFloat = 25
-                let totalItemWidth: CGFloat = itemWidth * numOfItems
-                let itemFrameSpacing: CGFloat = (geo.size.width - totalItemWidth) / (numOfItems - 1)
-                let itemSpacing: CGFloat = itemWidth + itemFrameSpacing
-
-                let columnLayout = lineChartStyle.columnLayout(itemFrameSpacing, entries.count)
-
-                LazyVGrid(columns: columnLayout, alignment: .center) {
+                LazyVGrid(columns: layout, alignment: .center) {
                     ForEach(0 ..< self.entries.count) { idx in
                         GraphLine(
                             spacing: self.lineChartStyle.labelPadding,
@@ -57,7 +49,7 @@ struct MiniGraphView: View {
                             entries: self.entries,
                             onDateLabelHeightChange: self.updateLineGraphBottomPadding
                         )
-                        .frame(minWidth: itemWidth, idealHeight: geo.size.height, maxHeight: geo.size.height)
+                        .frame(minWidth: lineChartStyle.lineFrameWidth, idealHeight: geo.h, maxHeight: geo.h)
                         .onTapGesture {
                             self.changeSelection(idx)
                         }
@@ -68,9 +60,9 @@ struct MiniGraphView: View {
                                 width: self.lineChartStyle.selectionLineWidth
                             )
                             .opacity(self.selectionLineOn ? 1 : 0)
-                            .draggableSelection(items: self.entries.count,
-                                                itemWidth: itemWidth,
-                                                itemSpacing: itemSpacing,
+                            .draggableSelection(lines: self.entries.count,
+                                                lineFrameWidth: lineChartStyle.lineFrameWidth,
+                                                lineFrameSpacing: self.lineFrameSpacing,
                                                 selectedIdx: self.selectedIdx,
                                                 onDragChanged: self.changeNewIdx(to:),
                                                 onDragEnded: self.changeSelectedIdx(to:)
@@ -83,6 +75,9 @@ struct MiniGraphView: View {
                 // to transition on with the view transition.
                 .offset(x: self.offset)
                 .onAppear {
+                    // IMPORTANT:
+                    // This calculation needs to happen before the animation.
+                    self.calculateLineGraphSpacing(for: geo)
                     withSpringAnimation { self.offset = 0 }
                 }
 
@@ -101,6 +96,18 @@ struct MiniGraphView: View {
 // MARK: - Internal Methods
 
 extension MiniGraphView {
+
+    private func updateLayout(_ layout: [GridItem]) {
+        self.layout = layout
+    }
+
+    private func calculateLineGraphSpacing(for geo: GeometryProxy) {
+        self.lineFrameSpacing = self.viewLogic.lineFrameSpacing(geo: geo,
+                                                           numOfLines: self.entries.count,
+                                                           lineWidth: lineChartStyle.lineFrameWidth,
+                                                           completion: self.updateLayout(_:))
+    }
+
     private func resetToDefaultSelection() {
         let idx = self.entries.count - 1
         self.changeSelectedIdx(to: idx)
@@ -130,6 +137,19 @@ extension MiniGraphView {
     private func changeSelectedIdx(to idx: Int) {
         self.selectedIdx = idx
         self.onEntrySelected(idx)
+    }
+}
+
+// MARK: - Internal Views
+
+extension MiniGraphView {
+    private var lineGraphView: some View {
+        LineGraphView(dataPoints: self.dataPoints)
+            .padding(EdgeInsets(top: 0,
+                                leading: 12,
+                                bottom: self.lineGraphBottomPadding,
+                                trailing: 12))
+            .allowsHitTesting(false)
     }
 }
 
@@ -209,7 +229,7 @@ struct SelectionLine: View {
                 RoundedRectangle(cornerRadius: width / 2)
                     .fill(Color.momo)
                     .frame(width: width, height: geo[$0].height)
-                    .frame(width: geo.size.width,
+                    .frame(width: geo.w,
                            height: geo[$0].height,
                            alignment: .center
                     )

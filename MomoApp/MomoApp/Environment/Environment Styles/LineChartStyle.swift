@@ -13,7 +13,9 @@ import SwiftUI
 
 // MARK: - LineChartStyle
 
+// TODO: - clean all this up
 public struct LineChartStyle {
+    let lineFrameWidth: CGFloat
     let selectionLineWidth: CGFloat
     let labelPadding: CGFloat
 
@@ -35,9 +37,11 @@ public struct LineChartStyle {
     }
 
     public init(
+        lineFrameWidth: CGFloat = 25.0,
         selectionLineWidth: CGFloat = 4.0,
         labelPadding: CGFloat = 8.0
     ) {
+        self.lineFrameWidth = lineFrameWidth
         self.selectionLineWidth = selectionLineWidth
         self.labelPadding = labelPadding
     }
