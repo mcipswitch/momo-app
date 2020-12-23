@@ -38,6 +38,7 @@
 		932E6F6825886812001DBC90 /* DropShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932E6F6725886812001DBC90 /* DropShadow.swift */; };
 		9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9331230724F94C17008B6DD2 /* Animation + Extension.swift */; };
 		93388BE0250FAAA700766633 /* ForceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93388BDF250FAAA700766633 /* ForceButton.swift */; };
+		93504C9425938B8900890420 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93504C9325938B8900890420 /* String+Extension.swift */; };
 		93519F5024E8CF630095DA38 /* MomoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F4F24E8CF630095DA38 /* MomoApp.swift */; };
 		93519F5224E8CF630095DA38 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93519F5124E8CF630095DA38 /* ContentView.swift */; };
 		93519F5424E8CF640095DA38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93519F5324E8CF640095DA38 /* Assets.xcassets */; };
@@ -117,6 +118,7 @@
 		932E6F6725886812001DBC90 /* DropShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropShadow.swift; sourceTree = "<group>"; };
 		9331230724F94C17008B6DD2 /* Animation + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation + Extension.swift"; sourceTree = "<group>"; };
 		93388BDF250FAAA700766633 /* ForceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceButton.swift; sourceTree = "<group>"; };
+		93504C9325938B8900890420 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		93519F4C24E8CF630095DA38 /* MomoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93519F4F24E8CF630095DA38 /* MomoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoApp.swift; sourceTree = "<group>"; };
 		93519F5124E8CF630095DA38 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				9308077325645EF000A13156 /* View+Extension.swift */,
+				93504C9325938B8900890420 /* String+Extension.swift */,
 				938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */,
 				9331230724F94C17008B6DD2 /* Animation + Extension.swift */,
 				93DB0F5B253656180074EBB6 /* Binding + Extension.swift */,
@@ -499,6 +502,7 @@
 				931D6D9C259278AE0077635D /* RandomAccessCollection+Extension.swift in Sources */,
 				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,
 				937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */,
+				93504C9425938B8900890420 /* String+Extension.swift in Sources */,
 				93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */,
 				932E6F6825886812001DBC90 /* DropShadow.swift in Sources */,
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,

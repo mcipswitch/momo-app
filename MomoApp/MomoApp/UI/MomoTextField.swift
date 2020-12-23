@@ -21,29 +21,38 @@ struct MomoTextField: View {
 
     var body: some View {
         ZStack(alignment: .center) {
-            PlaceholderText(NSLocalizedString("My day in a word", comment: ""))
+            placeholder
                 .opacity(self.text.isEmpty ? textFieldStyle.placeholderOpacity : 0)
-                .animation(nil, value: text)
-
+                .animation(nil, value: self.text)
                 // Dim text when text field is focused
                 .opacity(self.isFocused ? 0.1 : textFieldStyle.placeholderOpacity)
                 .animation(.easeOut(duration: 0.2), value: self.isFocused)
-
-            TextField("", text: $text, onEditingChanged: { editingChanged in
-                self.isFocused = editingChanged ? true : false
-            }, onCommit: {
-
-                // TODO: THANK YOU SCREEN
-                print(text)
-
-            })
-            .msk_applyMomoTextFieldStyle()
-
-            // TODO: - refactor this
-            .onReceive(self.text.publisher.collect()) { _ in
-                self.text = String(self.text.prefix(textFieldStyle.charLimit))
-            }
+            textField
+                .onReceive(self.text.publisher.collect()) { _ in
+                    self.text = self.text.applyCharLimit(textFieldStyle.charLimit)
+                }
         }
+    }
+}
+
+// MARK: - Internal Views
+
+extension MomoTextField {
+    private var placeholder: some View {
+        Text(NSLocalizedString("My day in a word", comment: ""))
+            .msk_applyTextStyle(.mainMessageFont)
+    }
+
+    private var textField: some View {
+        TextField("", text: $text, onEditingChanged: { editingChanged in
+            self.isFocused = editingChanged ? true : false
+        }, onCommit: {
+
+            // TODO: THANK YOU SCREEN
+            print(text)
+
+        })
+        .msk_applyMomoTextFieldStyle()
     }
 }
 
@@ -58,21 +67,6 @@ struct MomoTextFieldBorder: View {
             .fill(isFocused ? Color.momo : .white)
             .animation(.ease, value: isFocused)
             .frame(height: textFieldStyle.borderHeight)
-    }
-}
-
-// MARK: - MomoTextFieldPlaceholder
-
-struct PlaceholderText: View {
-    let text: String
-
-    init(_ text: String) {
-        self.text = text
-    }
-
-    var body: some View {
-        Text(text)
-            .msk_applyTextStyle(.mainMessageFont)
     }
 }
 
