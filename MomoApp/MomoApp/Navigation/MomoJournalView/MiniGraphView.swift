@@ -14,9 +14,7 @@ import SwiftUI
 struct MiniGraphView: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
-
     var viewLogic = MiniGraphViewLogic()
-    
 
     let entries: [Entry]
     let dataPoints: [CGFloat]
@@ -35,18 +33,18 @@ struct MiniGraphView: View {
 
     var body: some View {
         ZStack {
-            lineGraphView
+            lineGraphData
 
             GeometryReader { geo in
 
                 LazyVGrid(columns: layout, alignment: .center) {
-                    ForEach(0 ..< self.entries.count) { idx in
+                    ForEach(self.entries.indexed(), id: \.1.self) { idx, entry in
                         GraphLine(
-                            spacing: self.lineChartStyle.labelPadding,
-                            selectedIdx: self.selectedIdx,
-                            newIdx: self.newIdx,
                             idx: idx,
-                            entries: self.entries,
+                            newIdx: self.newIdx,
+                            selectedIdx: self.selectedIdx,
+                            entry: entry,
+                            dateLabelPadding: self.lineChartStyle.dateLabelPadding,
                             onDateLabelHeightChange: self.updateLineGraphBottomPadding
                         )
                         .frame(minWidth: lineChartStyle.lineFrameWidth, idealHeight: geo.h, maxHeight: geo.h)
@@ -77,7 +75,7 @@ struct MiniGraphView: View {
                 .onAppear {
                     // IMPORTANT:
                     // This calculation needs to happen before the animation.
-                    self.calculateLineGraphSpacing(for: geo)
+                    self.updateLineFrameSpacing(for: geo)
                     withSpringAnimation { self.offset = 0 }
                 }
 
@@ -101,9 +99,9 @@ extension MiniGraphView {
         self.layout = layout
     }
 
-    private func calculateLineGraphSpacing(for geo: GeometryProxy) {
+    private func updateLineFrameSpacing(for geo: GeometryProxy) {
         self.lineFrameSpacing = self.viewLogic.lineFrameSpacing(geo: geo,
-                                                           numOfLines: self.entries.count,
+                                                                numOfLines: self.entries.count,
                                                            lineWidth: lineChartStyle.lineFrameWidth,
                                                            completion: self.updateLayout(_:))
     }
@@ -143,8 +141,8 @@ extension MiniGraphView {
 // MARK: - Internal Views
 
 extension MiniGraphView {
-    private var lineGraphView: some View {
-        LineGraphView(dataPoints: self.dataPoints)
+    private var lineGraphData: some View {
+        LineGraphData(dataPoints: self.dataPoints)
             .padding(EdgeInsets(top: 0,
                                 leading: 12,
                                 bottom: self.lineGraphBottomPadding,
@@ -156,11 +154,11 @@ extension MiniGraphView {
 // MARK: - Views
 
 struct GraphLine: View {
-    let spacing: CGFloat
-    let selectedIdx: Int
-    let newIdx: Int
     let idx: Int
-    let entries: [Entry]
+    let newIdx: Int
+    let selectedIdx: Int
+    let entry: Entry
+    let dateLabelPadding: CGFloat
     let onDateLabelHeightChange: (CGFloat) -> Void
 
     @State private var on = false
@@ -170,7 +168,7 @@ struct GraphLine: View {
     }
 
     var body: some View {
-        VStack(spacing: spacing) {
+        VStack(spacing: dateLabelPadding) {
             line
                 .anchorPreference(
                     key: SelectionPreferenceKey.self,
@@ -193,7 +191,7 @@ struct GraphLine: View {
                 .coordinateSpace(name: "dateLabel")
                 .saveSizes(viewID: 1, coordinateSpace: .named("dateLabel"))
                 .retrieveSizes(viewID: 1) {
-                    self.onDateLabelHeightChange($0.height + spacing)
+                    self.onDateLabelHeightChange($0.height + dateLabelPadding)
                 }
         }
         .tappable()
@@ -208,10 +206,10 @@ struct GraphLine: View {
     }
 
     private var dateLabel: some View {
-        VStack(spacing: spacing) {
-            Text("\(self.entries[idx].date.weekday)")
+        VStack(spacing: dateLabelPadding) {
+            Text("\(self.entry.date.weekday)")
                 .msk_applyTextStyle(.graphWeekdayDetailFont)
-            Text("\(self.entries[idx].date.day)")
+            Text("\(self.entry.date.day)")
                 .msk_applyTextStyle(.graphDayDetailFont)
         }
     }

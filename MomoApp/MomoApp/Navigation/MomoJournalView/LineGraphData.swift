@@ -14,7 +14,7 @@ import SwiftUI
 
 // MARK: - LineGraphView
 
-struct LineGraphView: View {
+struct LineGraphData: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
     @State var animateOn = false
@@ -40,7 +40,7 @@ struct LineGraphView: View {
 
 // MARK: - Internal Methods
 
-extension LineGraphView {
+extension LineGraphData {
     private func lineAnimationIn() {
         withAnimation(lineChartStyle.lineGraphAnimation) {
             self.animateOn.toggle()
@@ -56,7 +56,7 @@ extension LineGraphView {
 
 // MARK: - Internal Views
 
-extension LineGraphView {
+extension LineGraphData {
 }
 
 // MARK: - LineGraph

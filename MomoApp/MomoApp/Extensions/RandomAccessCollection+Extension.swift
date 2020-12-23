@@ -8,6 +8,9 @@
 import SwiftUI
 
 extension RandomAccessCollection {
+    /// A wrapper that provides both index and element via subscript.
+    /// - Returns: Index and element of the collection.
+    /// Please see: https://swiftwithmajid.com/2019/12/04/must-have-swiftui-extensions/
     func indexed() -> Array<(offset: Int, element: Element)> {
         Array(enumerated())
     }
