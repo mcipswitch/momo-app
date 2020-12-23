@@ -225,3 +225,12 @@ struct SelectionLine: View {
         }
     }
 }
+
+// MARK: - Preference Keys
+
+struct SelectionPreferenceKey: PreferenceKey {
+    static var defaultValue: Value = nil
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+        value = nextValue()
+    }
+}
