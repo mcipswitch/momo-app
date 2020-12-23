@@ -36,6 +36,12 @@ struct MomoAddMoodView: View {
 
     @State private var navigationButtonPressed = false
 
+    // MARK: - Helper vars
+
+    private var joystickTapped: Bool {
+        self.dragValue == .zero
+    }
+
     // MARK: - Drag Gestures
     // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
 
@@ -49,6 +55,10 @@ struct MomoAddMoodView: View {
     }
 
     private func onDragChanged(drag: DragGesture.Value) {
+
+        // Do nothing if joystick is just tapped
+        if self.joystickTapped { return }
+
         self.isDragging = true
 
         /// The lower the limit, the tigher the resistance
@@ -60,20 +70,15 @@ struct MomoAddMoodView: View {
         self.dragValue = CGSize(width: xOff * factor,
                                 height: yOff * factor)
 
-        // Do nothing if joysick is just tapped
-        if self.dragValue == .zero {
-            return
-        }
-
         // Calculate distance to activate 'BlurredColorWheel'
         let maxDistance: CGFloat = 50
         var newLocation = self.dragStart
-        newLocation.x += xOff
-        newLocation.y += yOff
+        newLocation.x += drag.translation.width
+        newLocation.y += drag.translation.height
         let distance = self.dragStart.distance(to: newLocation)
         self.colorWheelIsActive = distance > maxDistance ? true : false
 
-        // Calculate the degrees to activate correct part of 'BlurredColorWheel'
+        // Calculate the degrees to activate 'BlurredColorWheel' section
         self.degrees = newLocation.angle(to: self.dragStart)
     }
 

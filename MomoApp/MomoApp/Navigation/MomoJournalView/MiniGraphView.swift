@@ -156,19 +156,16 @@ struct GraphLine: View {
                     transform: { anchor in
                         self.selectedIdx == idx ? anchor : nil
                     })
-                /*
-                 TODO:
-                 There is a bug that shows the selection line behind the graph line.
-                 This is a temporary fix that hides the line if it is selected.
-                 */
+                // There is a bug that shows the selection line behind the graph line.
+                // This is a temp fix that hides the line if it is selected.
                 .opacity(on ? (selectionSnappedToIdx ? 0 : 1) : 1)
                 .onChange(of: newIdx) { _ in
                     self.on = true
                 }
             dateLabel
+                // TODO: - This is happening 7 times, once for each date
                 // Track the height of the date label and calculate the correct
                 // bottom padding needed for the graph line to stay within bounds.
-                // TODO: - This is happening 7 times, once for each date
                 .coordinateSpace(name: "dateLabel")
                 .saveSizes(viewID: 1, coordinateSpace: .named("dateLabel"))
                 .retrieveSizes(viewID: 1) {
@@ -182,13 +179,7 @@ struct GraphLine: View {
     private var line: some View {
         Rectangle()
             .foregroundColor(.clear).frame(width: 1)
-            .background(graphLineGradient)
-    }
-
-    private var graphLineGradient: some View {
-        LinearGradient(gradient: .graphLineGradient,
-                       startPoint: .bottom,
-                       endPoint: .top)
+            .background(LinearGradient(.graphLineGradient))
     }
 
     private var dateLabel: some View {

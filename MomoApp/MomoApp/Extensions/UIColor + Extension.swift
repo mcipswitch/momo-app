@@ -60,3 +60,15 @@ extension Gradient {
                                                           .momoBackgroundDark
     ])
 }
+
+// MARK: - LinearGradient+Extension
+
+extension LinearGradient {
+    /// Create a LinearGradient from bottom to top.
+    /// - Parameter gradient: A `gradient` instance.
+    init(_ gradient: Gradient) {
+        self.init(gradient: gradient,
+                  startPoint: .bottom,
+                  endPoint: .top)
+    }
+}

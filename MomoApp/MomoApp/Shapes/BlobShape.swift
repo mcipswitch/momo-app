@@ -17,7 +17,7 @@
 import SwiftUI
 import Neumorphic
 
-// TODO: - Should make the shadows more dynamic
+// TODO: - Should make the shadows more dynamic/scaled
 
 struct BlobView: View {
     @Environment(\.blobStyle) var blobStyle
