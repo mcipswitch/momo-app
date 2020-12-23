@@ -165,17 +165,18 @@ struct GraphLine: View {
                     self.on = true
                 }
             dateLabel
-                // TODO: - This is happening 7 times, once for each date
-                // Track the height of the date label and calculate the correct
-                // bottom padding needed for the graph line to stay within bounds.
+                /*  Track the  height of the date label and calculate the correct bottom padding
+                    needed for the line graph to stay within bounds.
+                    This happens once for every date (7), but this behaviour is expected
+                    as the sizes are saved into an array.
+                 */
                 .coordinateSpace(name: "dateLabel")
                 .saveSizes(viewID: 1, coordinateSpace: .named("dateLabel"))
                 .retrieveSizes(viewID: 1) {
                     self.onDateLabelHeightChange($0.height + spacing)
                 }
         }
-        // Make whole stack tappable
-        .contentShape(Rectangle())
+        .tappable()
     }
 
     private var line: some View {

@@ -29,9 +29,9 @@ struct LineGraphView: View {
                     .trim(to: self.lineOn ? 1 : 0)
                     .stroke(style: .lineGraphStrokeStyle)
             )
-            .opacity(opacity ? 1 : 0)
-            .onAppear(perform: animateIn)
-            .onReceive(viewRouter.objectWillChange, perform: animateOut)
+            .opacity(self.opacity ? 1 : 0)
+            .onAppear(perform: self.lineAnimationIn)
+            .onReceive(self.viewRouter.objectWillChange, perform: self.lineAnimationOut)
             .msk_applyDropShadow()
     }
 }
@@ -39,14 +39,16 @@ struct LineGraphView: View {
 // MARK: - Internal Methods
 
 extension LineGraphView {
-    private func animateIn() {
+    private func lineAnimationIn() {
         withAnimation(lineChartStyle.lineGraphAnimation) {
             self.lineOn.toggle()
         }
     }
 
-    private func animateOut() {
-        withAnimation { self.opacity.toggle() }
+    private func lineAnimationOut() {
+        withAnimation {
+            self.opacity.toggle()
+        }
     }
 }
 
