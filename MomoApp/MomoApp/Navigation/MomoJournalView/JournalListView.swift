@@ -72,10 +72,7 @@ struct EntryRow: View {
 
 
 
-        .clipShape(
-            RoundedRectangle(cornerRadius: entryRowStyle.cornerRadius,
-                             style: .continuous)
-        )
+        .roundedRect(entryRowStyle.cornerRadius)
     }
 }
 

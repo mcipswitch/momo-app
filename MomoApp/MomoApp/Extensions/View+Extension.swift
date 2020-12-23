@@ -92,4 +92,10 @@ extension View {
     func tappable() -> some View {
         return contentShape(Rectangle())
     }
+
+    /// Round rect corners.
+    func roundedRect(_ cornerRadius: CGFloat) -> some View {
+        return clipShape(RoundedRectangle(cornerRadius: cornerRadius,
+                                          style: .continuous))
+    }
 }
