@@ -16,9 +16,9 @@ enum JournalType {
     var title: String {
         switch self {
         case .list:
-            return NSLocalizedString("All entries", comment: "")
+            return "All entries".localized
         case .graph:
-            return NSLocalizedString("Last 7 days", comment: "")
+            return "Last 7 days".localized
         }
     }
 }
@@ -33,7 +33,7 @@ enum ButtonType {
 
     var text: String {
         switch self {
-        case .done: return NSLocalizedString("Done", comment: "")
+        case .done: return "Done".localized
         default: return ""
         }
     }
@@ -83,7 +83,7 @@ enum Link {
     var text: String {
         switch self {
         case .pastEntries:
-            return NSLocalizedString("See your past entries", comment: "")
+            return "See your past entries".localized
         }
     }
 }
@@ -114,8 +114,8 @@ enum EntryState {
 
     var text: String {
         switch self {
-        case .add: return NSLocalizedString("Add today's emotion", comment: "")
-        case .edit: return NSLocalizedString("Edit today's emotion", comment: "")
+        case .add: return "Add today's emotion".localized
+        case .edit: return "Edit today's emotion".localized
         }
     }
 }

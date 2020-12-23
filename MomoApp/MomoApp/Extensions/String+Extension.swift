@@ -8,6 +8,10 @@
 import Foundation
 
 extension String {
+    var localized: String {
+        NSLocalizedString(self, comment: "")
+    }
+
     func applyCharLimit(_ limit: Int) -> String {
         return String(self.prefix(limit))
     }

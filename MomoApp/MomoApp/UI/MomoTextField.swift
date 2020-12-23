@@ -39,7 +39,7 @@ struct MomoTextField: View {
 
 extension MomoTextField {
     private var placeholder: some View {
-        Text(NSLocalizedString("My day in a word", comment: ""))
+        Text("My day in a word".localized)
             .msk_applyTextStyle(.mainMessageFont)
     }
 

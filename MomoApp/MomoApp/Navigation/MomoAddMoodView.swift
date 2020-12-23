@@ -266,7 +266,7 @@ extension MomoAddMoodView {
     }
 
     private var helloMessage: some View {
-        Text(NSLocalizedString("Hi, how are you feeling today?", comment: ""))
+        Text("Hi, how are you feeling today?".localized)
             .msk_applyTextStyle(.mainMessageFont)
     }
 
