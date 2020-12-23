@@ -92,6 +92,7 @@ struct MomoJournalView_Previews: PreviewProvider {
     static var previews: some View {
         MomoJournalView()
             .environmentObject(ViewRouter())
+            .environmentObject(EntriesViewModel(dataManager: MockDataManager()))
     }
 }
 #endif

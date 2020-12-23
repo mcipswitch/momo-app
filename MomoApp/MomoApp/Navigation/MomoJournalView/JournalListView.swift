@@ -44,6 +44,7 @@ struct EntriesList: View {
 // MARK: - EntryRow
 
 struct EntryRow: View {
+    @Environment(\.entryRowStyle) var entryRowStyle
     private let entry: Entry
     @State var blobValue: CGFloat
 
@@ -55,34 +56,44 @@ struct EntryRow: View {
     var body: some View {
         ZStack {
             HStack {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(self.entry.date, formatter: DateFormatter.shortDate)
-                        .msk_applyTextStyle(.mainDateFont)
-                    Text(self.entry.emotion)
-                        .msk_applyTextStyle(.mainMessageFont)
-                }
+                entryLabel
                 Spacer()
-                BlobView(
-                    blobValue: self.$blobValue
-                )
-                .msk_applyBlobStyle(BlobStyle(scale: 0.2,
-                                              isStatic: true))
-
-                .padding(.trailing, 16)
+                blobView
             }
         }
         .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+        .padding(entryRowStyle.padding)
 
-
-        .padding(.horizontal, 24)
-        .padding(.vertical, 16)
 
         .background(
             VisualEffectBlur(blurStyle: .dark)
         )
+
+
+
+
         .clipShape(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
+            RoundedRectangle(cornerRadius: entryRowStyle.cornerRadius,
+                             style: .continuous)
         )
     }
 }
 
+// MARK: - Internal Views
+
+extension EntryRow {
+    private var entryLabel: some View {
+        VStack(alignment: .leading, spacing: entryRowStyle.entryLabelSpacing) {
+            Text(self.entry.date, formatter: DateFormatter.shortDate)
+                .msk_applyTextStyle(.mainDateFont)
+            Text(self.entry.emotion)
+                .msk_applyTextStyle(.mainMessageFont)
+        }
+    }
+
+    private var blobView: some View {
+        BlobView(blobValue: self.$blobValue)
+            .msk_applyBlobStyle(BlobStyle(scale: entryRowStyle.blobScale,
+                                          isStatic: true))
+    }
+}

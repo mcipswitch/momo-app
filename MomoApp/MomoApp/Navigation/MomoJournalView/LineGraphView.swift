@@ -17,7 +17,7 @@ import SwiftUI
 struct LineGraphView: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
-    @State var lineOn = false
+    @State var animateOn = false
     @State var opacity = true
     let dataPoints: [CGFloat]
 
@@ -25,15 +25,16 @@ struct LineGraphView: View {
         LinearGradient(.momoTriColorGradient, direction: .vertical)
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
-                    .trim(to: self.lineOn ? 1 : 0)
+                    .trim(to: self.animateOn ? 1 : 0)
                     .stroke(style: .lineGraphStrokeStyle)
             )
+            .msk_applyDropShadow()
+
             .opacity(self.opacity ? 1 : 0)
             .onAppear(perform: self.lineAnimationIn)
             .onReceive(self.viewRouter.objectWillChange, perform: { _ in
                 self.lineAnimationOut()
             })
-            .msk_applyDropShadow()
     }
 }
 
@@ -42,7 +43,7 @@ struct LineGraphView: View {
 extension LineGraphView {
     private func lineAnimationIn() {
         withAnimation(lineChartStyle.lineGraphAnimation) {
-            self.lineOn.toggle()
+            self.animateOn.toggle()
         }
     }
 
@@ -51,6 +52,11 @@ extension LineGraphView {
             self.opacity.toggle()
         }
     }
+}
+
+// MARK: - Internal Views
+
+extension LineGraphView {
 }
 
 // MARK: - LineGraph
