@@ -23,7 +23,7 @@ struct LineGraphView: View {
     let dataPoints: [CGFloat]
 
     var body: some View {
-        LinearGradient(.momoTriColorGradient)
+        LinearGradient(.momoTriColorGradient, direction: .vertical)
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
                     .trim(to: self.lineOn ? 1 : 0)

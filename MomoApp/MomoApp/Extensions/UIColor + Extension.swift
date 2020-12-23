@@ -64,11 +64,23 @@ extension Gradient {
 // MARK: - LinearGradient+Extension
 
 extension LinearGradient {
-    /// Create a LinearGradient from bottom to top.
-    /// - Parameter gradient: A `gradient` instance.
-    init(_ gradient: Gradient) {
+
+    enum GradientDirection {
+        typealias DirectionTuple = (startPoint: UnitPoint, endPoint: UnitPoint)
+
+        case vertical, diagonal
+
+        var point: DirectionTuple {
+            switch self {
+            case .vertical: return DirectionTuple(.bottom, .top)
+            case .diagonal: return DirectionTuple(.topLeading, .bottomTrailing)
+            }
+        }
+    }
+
+    init(_ gradient: Gradient, direction: GradientDirection) {
         self.init(gradient: gradient,
-                  startPoint: .bottom,
-                  endPoint: .top)
+                  startPoint: direction.point.startPoint,
+                  endPoint: direction.point.endPoint)
     }
 }

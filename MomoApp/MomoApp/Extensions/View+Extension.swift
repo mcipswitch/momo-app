@@ -80,3 +80,11 @@ extension View {
         }
     }
 }
+
+// MARK: - Momo-Specific
+
+extension View {
+    func withSpringAnimation(completion: () -> Void) {
+        return withAnimation(.spring(), completion)
+    }
+}

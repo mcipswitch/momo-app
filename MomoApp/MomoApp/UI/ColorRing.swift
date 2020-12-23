@@ -16,12 +16,8 @@ struct ColorRing: View {
     @State var on: Bool = false
 
     var body: some View {
-        let colorGradient = LinearGradient(gradient: .colorRingGradient,
-                                       startPoint: .topLeading,
-                                       endPoint: .bottomTrailing)
-        let momoGradient = LinearGradient(gradient: .momoRingGradient,
-                                      startPoint: .topLeading,
-                                      endPoint: .bottomTrailing)
+        let colorGradient = LinearGradient(.colorRingGradient, direction: .diagonal)
+        let momoGradient = LinearGradient(.momoRingGradient, direction: .diagonal)
 
         ZStack {
             Circle()

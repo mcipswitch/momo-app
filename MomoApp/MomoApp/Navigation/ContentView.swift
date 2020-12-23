@@ -29,7 +29,7 @@ struct ContentView: View {
     }
 
     private func showJournalView() {
-        withAnimation(.spring()) {
+        withSpringAnimation {
             blurOn = viewRouter.isJournal
             journalOn = viewRouter.isJournal
         }

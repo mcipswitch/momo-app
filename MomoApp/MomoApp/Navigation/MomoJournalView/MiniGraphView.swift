@@ -81,29 +81,28 @@ struct MiniGraphView: View {
                         .onAppear(perform: showSelectionLine)
                     }
                 }
-                // IMPORTANT:
-                // This is a temporary fix for the LazyVGrid
-                // not transitioning on with a slide animation.
-                .offset(x: offset)
+                // This is a temp fix for the LazyVGrid
+                // to transition on with the view transition.
+                .offset(x: self.offset)
                 .onAppear {
-                    withAnimation(.spring()) {
-                        offset = 0
-                    }
+                    withSpringAnimation { self.offset = 0 }
                 }
-                // TODO
 
-
+                #if DEBUG
                 VStack {
                     Text("IDX: \(self.selectedIdx)")
                 }
+                #endif
             }
         }
         .onAppear(perform: resetToDefaultSelection)
         .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8))
     }
+}
 
-    // MARK: - Internal Methods
+// MARK: - Internal Methods
 
+extension MiniGraphView {
     private func resetToDefaultSelection() {
         let idx = entries.count - 1
         self.changeSelectedIdx(to: idx)
@@ -179,7 +178,9 @@ struct GraphLine: View {
     private var line: some View {
         Rectangle()
             .foregroundColor(.clear).frame(width: 1)
-            .background(LinearGradient(.graphLineGradient))
+            .background(
+                LinearGradient(.graphLineGradient, direction: .vertical)
+            )
     }
 
     private var dateLabel: some View {
