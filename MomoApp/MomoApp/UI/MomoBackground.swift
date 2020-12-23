@@ -25,7 +25,7 @@ struct MomoBackground: ViewModifier {
 // MARK: - View+Extension
 
 extension View {
-    func msk_applyMomoBackground() -> some View {
+    func addMomoBackground() -> some View {
         return self.modifier(MomoBackground())
     }
 }

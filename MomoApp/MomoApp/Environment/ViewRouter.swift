@@ -11,7 +11,7 @@ import Combine
 class ViewRouter: ObservableObject {
     @Environment(\.journalStyle) var journalStyle
 
-    let objectWillChange = PassthroughSubject<(), Never>()
+    let objectWillChange = PassthroughSubject<(Page), Never>()
     let journalWillChange = PassthroughSubject<(), Never>()
     let homeWillChange = PassthroughSubject<(HomeState), Never>()
     let textFieldWillChange = PassthroughSubject<String, Never>()
@@ -21,7 +21,7 @@ class ViewRouter: ObservableObject {
     @Published var currentHomeState: HomeState = .home
 
     func change(to page: Page) {
-        self.objectWillChange.send()
+        self.objectWillChange.send(page)
         self.currentPage = page
     }
 

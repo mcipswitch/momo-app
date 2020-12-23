@@ -12,3 +12,16 @@ extension RandomAccessCollection {
         Array(enumerated())
     }
 }
+
+// MARK: - Optional+Extension
+
+extension Optional {
+    var orNilText: String {
+        switch self {
+        case .some(let value):
+            return String(describing: value)
+        case _:
+            return "(nil)"
+        }
+    }
+}

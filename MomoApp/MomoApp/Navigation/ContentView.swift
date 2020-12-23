@@ -25,7 +25,9 @@ struct ContentView: View {
             MomoAddMoodView()
                 .msk_applyBackgroundBlurStyle(.systemMaterialDark, value: blurOn)
         }
-        .onReceive(viewRouter.objectWillChange, perform: showJournalView)
+        .onReceive(self.viewRouter.objectWillChange) { _ in
+            self.showJournalView()
+        }
     }
 
     private func showJournalView() {

@@ -199,8 +199,6 @@ struct GraphLine: View {
 
 // MARK: - SelectionLine
 
-// TODO: - refactor pref key
-
 struct SelectionLine: View {
     let preferences: Anchor<CGRect>?
     let width: CGFloat
@@ -211,10 +209,9 @@ struct SelectionLine: View {
                 RoundedRectangle(cornerRadius: width / 2)
                     .fill(Color.momo)
                     .frame(width: width, height: geo[$0].height)
-                    .frame(
-                        width: geo.size.width,
-                        height: geo[$0].height,
-                        alignment: .center
+                    .frame(width: geo.size.width,
+                           height: geo[$0].height,
+                           alignment: .center
                     )
                     .msk_applyDropShadow()
             }

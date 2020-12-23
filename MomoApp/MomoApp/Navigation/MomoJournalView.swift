@@ -48,7 +48,7 @@ struct MomoJournalView: View {
         //.animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
 
 
-        .msk_applyMomoBackground()
+        .addMomoBackground()
 
         .onAppear {
             self.animateGraph.toggle()

@@ -18,7 +18,7 @@ struct MomoAddMoodView: View {
     @State private var colorWheelSection: ColorWheelSection = .momo
 
     @State private var isDragging = false
-    @State private var isAnimating = false
+    @State private var animationOn = false
 
     // UI Elements
     @State private var text = ""
@@ -33,8 +33,6 @@ struct MomoAddMoodView: View {
     @State private var buttonLocation: CGPoint? = nil
 
     @State private var state: EntryState = .add
-
-    @State private var navigationButtonPressed = false
 
     // MARK: - Helper vars
 
@@ -56,9 +54,6 @@ struct MomoAddMoodView: View {
 
     private func onDragChanged(drag: DragGesture.Value) {
 
-        // Do nothing if joystick is just tapped
-        if self.joystickTapped { return }
-
         self.isDragging = true
 
         /// The lower the limit, the tigher the resistance
@@ -70,11 +65,14 @@ struct MomoAddMoodView: View {
         self.dragValue = CGSize(width: xOff * factor,
                                 height: yOff * factor)
 
+        // Do nothing if joystick is just tapped
+        if self.joystickTapped { return }
+
         // Calculate distance to activate 'BlurredColorWheel'
         let maxDistance: CGFloat = 50
         var newLocation = self.dragStart
-        newLocation.x += drag.translation.width
-        newLocation.y += drag.translation.height
+        newLocation.x += xOff
+        newLocation.y += yOff
         let distance = self.dragStart.distance(to: newLocation)
         self.colorWheelIsActive = distance > maxDistance ? true : false
 
@@ -133,12 +131,12 @@ struct MomoAddMoodView: View {
 
                         #if DEBUG
                         VStack {
-                            Text(self.homeViewActive ? "Home Active" : "Home Inactive")
+                            Text("Home Active: \(String(describing: homeViewActive))")
                             Text("Degrees: \(Int(degrees))")
                             Text("Blob: \(blobValue)")
-                            Text("Original Pos: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
-                            Text(dragState.isActive ? "dragging..." : "")
-                            Text(isAnimating ? "animating..." : "")
+                            Text("Drag Start: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
+                            Text("Dragging: \(String(describing: dragState.isActive))")
+                            Text("Animaton: \(String(describing: animationOn))")
                         }
                         .font(.system(size: 12.0))
                         #endif
@@ -166,7 +164,7 @@ struct MomoAddMoodView: View {
                         }
                         .offset(x: self.dragValue.width * 0.8, y: self.dragValue.height * 0.8)
                         .position(self.buttonLocation ?? centerPoint)
-                        .highPriorityGesture(self.homeViewActive ? nil : resistanceDrag)
+                        .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
 
                         #if DEBUG
                         if let dragState = dragState {
@@ -186,31 +184,25 @@ struct MomoAddMoodView: View {
                 }
                 // END: - Main View
 
-
-
-
-
                 topNavigation
                     .slideOutAnimation(value: self.$homeViewActive)
                     .padding(EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16))
             }
-
-
         }
         .padding(.vertical)
+        .addMomoBackground()
 
-        .msk_applyMomoBackground()
-
+        // TODO: - fix this
         .onChange(of: self.homeViewActive) { _ in
-            self.isAnimating.toggle()
+            self.animationOn.toggle()
             UIApplication.shared.endEditing()
-        }
-        .onChange(of: self.degrees) { degrees in
-            self.colorWheelSection = self.viewLogic.activateColorWheelSection(degrees: degrees)
-            self.blobValue = self.viewLogic.calculateBlobValue(degrees: degrees)
         }
         .onReceive(self.viewRouter.homeWillChange) { state in
             self.homeViewActive = (state == .home)
+        }
+        .onChange(of: self.degrees) { degrees in
+            self.colorWheelSection = self.viewLogic.colorWheelSection(degrees)
+            self.blobValue = self.viewLogic.blobValue(degrees)
         }
     }
 }
@@ -218,7 +210,6 @@ struct MomoAddMoodView: View {
 // MARK: - Internal Methods
 
 extension MomoAddMoodView {
-
     private func addEmotionButtonPressed() {
         self.viewRouter.changeHomeState(.add)
     }
@@ -228,14 +219,10 @@ extension MomoAddMoodView {
     }
 
     private func backButtonPressed() {
-        self.navigationButtonPressed.toggle()
-
         self.viewRouter.changeHomeState(.home)
     }
 
     private func doneButtonPressed() {
-        self.navigationButtonPressed.toggle()
-
         self.viewRouter.changeHomeState(.done)
 
         print("Emotion: \(self.text), Value: \(self.blobValue)")
@@ -249,8 +236,8 @@ extension MomoAddMoodView {
         ZStack {
             Button(action: self.addEmotionButtonPressed) {
                 Text(self.state.text)
-                    .opacity(self.isAnimating ? 0 : 1)
-                    .animation(self.isAnimating
+                    .opacity(self.animationOn ? 0 : 1)
+                    .animation(self.animationOn
                                 ? .none
                                 : Animation.ease.delay(0.5)
                     )
@@ -259,7 +246,7 @@ extension MomoAddMoodView {
 
             // Add delay so this appears after button morph
             ColorRing(
-                isAnimating: self.$isAnimating,
+                isAnimating: self.$animationOn,
                 isDragging: self.$isDragging
             )
             .animation(Animation.bounce.delay(if: !homeViewActive, 0.6), value: self.homeViewActive)
@@ -300,51 +287,3 @@ extension MomoAddMoodView {
         MomoTextFieldBorder(isFocused: self.$textFieldIsFocused)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-//struct AddEmotionButton: View {
-//    @Binding var entryState: EntryState
-//    @Binding var homeViewActive: Bool
-//    @Binding var isAnimating: Bool
-//    @Binding var isDragging: Bool
-//    let action: () -> Void
-//
-//    var body: some View {
-//        ZStack {
-//            Button(action: self.action) {
-//                Text(self.entryState.text)
-//                    .opacity(self.isAnimating ? 0 : 1)
-//                    .animation(self.isAnimating
-//                                ? .none
-//                                : Animation.ease.delay(0.5)
-//                    )
-//            }
-//            .msk_applyMomoButtonStyle(button: homeViewActive ? .standard : .joystick)
-//
-//            // Add delay so this appears after button morph
-//            ColorRing(
-//                isAnimating: self.$isAnimating,
-//                isDragging: self.$isDragging
-//            )
-//            .animation(Animation.bounce.delay(if: !homeViewActive, 0.6), value: self.homeViewActive)
-//        }
-//    }
-//}
-
-//                            AddEmotionButton(
-//                                entryState: self.$state,
-//                                homeViewActive: self.$homeViewActive,
-//                                isAnimating: self.$isAnimating,
-//                                isDragging: self.$isDragging,
-//                                action: self.addEmotionButtonPressed
-//                            )

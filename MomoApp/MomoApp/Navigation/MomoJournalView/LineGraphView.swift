@@ -15,7 +15,6 @@ import SwiftUI
 // MARK: - LineGraphView
 
 struct LineGraphView: View {
-    // TODO: - Remove the environment here
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
     @State var lineOn = false
@@ -31,7 +30,9 @@ struct LineGraphView: View {
             )
             .opacity(self.opacity ? 1 : 0)
             .onAppear(perform: self.lineAnimationIn)
-            .onReceive(self.viewRouter.objectWillChange, perform: self.lineAnimationOut)
+            .onReceive(self.viewRouter.objectWillChange, perform: { _ in
+                self.lineAnimationOut()
+            })
             .msk_applyDropShadow()
     }
 }
@@ -46,7 +47,7 @@ extension LineGraphView {
     }
 
     private func lineAnimationOut() {
-        withAnimation {
+        withAnimation(.ease) {
             self.opacity.toggle()
         }
     }
