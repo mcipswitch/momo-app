@@ -15,21 +15,18 @@ struct MomoJournalView: View {
     @State var animateList = false
     @State var animateGraph = false
 
-    /// The journal button on the toolbar.
-    var journal: ToolbarButton {
-        self.isGraph ? .list : .graph
-    }
-
+    // TODO: - Will have to change later if want to keep user's choice
     var body: some View {
         VStack {
             navigationToolbar
             ZStack {
                 JournalGraphView()
-                    .addApplyJournalViewAnimation(value: $animateGraph)
+                    .journalViewAnimation(value: $animateGraph)
                 JournalListView()
-                    .addApplyJournalViewAnimation(value: $animateList)
+                    .journalViewAnimation(value: $animateList)
             }
         }
+        .addMomoBackground()
         .onReceive(self.viewRouter.journalWillChange) {
             withAnimation(Animation.ease.delay(if: !animateGraph, 0.5)) {
                 self.animateGraph.toggle()
@@ -38,21 +35,15 @@ struct MomoJournalView: View {
                 self.animateList.toggle()
             }
         }
-
-
-        /*
-         Animation must be added BEFORE the background.
-         The main content for `MomoJournalView` transitions on with a delay.
-         Remove the delay when it transitions off.
-         */
-        //.animation(Animation.spring().delay(self.viewRouter.isHome ? 0 : 0.1))
-
-
-        .addMomoBackground()
-
         .onAppear {
             self.animateGraph.toggle()
         }
+    }
+
+    // MARK: - Helper vars
+
+    private var currentJournal: ToolbarButton {
+        self.isGraph ? .list : .graph
     }
 }
 
@@ -78,10 +69,30 @@ extension MomoJournalView {
             HStack(alignment: .top) {
                 MomoToolbarButton(.back, action: self.backButtonPressed)
                 Spacer()
-                MomoToolbarButton(self.journal, action: self.journalTypeButtonPressed)
+                MomoToolbarButton(self.currentJournal, action: self.journalTypeButtonPressed)
             }
         }
         .padding()
+    }
+}
+
+// MARK: - Animations
+
+struct JournalViewAnimation: ViewModifier {
+    @Binding var value: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .offset(y: value ? 0 : 5)
+            .opacity(value ? 1 : 0)
+    }
+}
+
+// MARK: - View+Extension
+
+extension View {
+    func journalViewAnimation(value: Binding<Bool>) -> some View {
+        return modifier(JournalViewAnimation(value: value))
     }
 }
 

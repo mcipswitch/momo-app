@@ -18,10 +18,6 @@ extension View {
         return modifier(AnimationCompletionObserverModifier(observedValue: value, completion: completion))
     }
 
-    func addApplyJournalViewAnimation(value: Binding<Bool>) -> some View {
-        return modifier(JournalViewAnimation(value: value))
-    }
-
     /// Mimics `mask`
     /// - Parameter mask: The input mask.
     /// - Returns: A modified `View` instance masked with the input mask.

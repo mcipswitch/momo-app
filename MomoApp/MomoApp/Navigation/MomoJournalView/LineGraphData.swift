@@ -17,24 +17,25 @@ import SwiftUI
 struct LineGraphData: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
-    @State var animateOn = false
-    @State var opacity = true
+    @State var lineIn = false
+    @State var lineOut = true
     let dataPoints: [CGFloat]
 
     var body: some View {
         LinearGradient(.momoTriColorGradient, direction: .vertical)
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
-                    .trim(to: self.animateOn ? 1 : 0)
+                    .trim(to: self.lineIn ? 1 : 0)
                     .stroke(style: .lineGraphStrokeStyle)
             )
             .msk_applyDropShadow()
-
-            .opacity(self.opacity ? 1 : 0)
+            .opacity(self.lineOut ? 1 : 0)
             .onAppear(perform: self.lineAnimationIn)
-            .onReceive(self.viewRouter.objectWillChange, perform: { _ in
+            .onReceive(self.viewRouter.objectWillChange) { _ in
+                // Calling animation in .onReceive
+                // because this needs to happen before .onDisappear
                 self.lineAnimationOut()
-            })
+            }
     }
 }
 
@@ -42,21 +43,16 @@ struct LineGraphData: View {
 
 extension LineGraphData {
     private func lineAnimationIn() {
-        withAnimation(lineChartStyle.lineGraphAnimation) {
-            self.animateOn.toggle()
+        withAnimation(self.lineChartStyle.lineGraphAnimation) {
+            self.lineIn.toggle()
         }
     }
 
     private func lineAnimationOut() {
         withAnimation(.ease) {
-            self.opacity.toggle()
+            self.lineOut.toggle()
         }
     }
-}
-
-// MARK: - Internal Views
-
-extension LineGraphData {
 }
 
 // MARK: - LineGraph
@@ -71,12 +67,12 @@ struct LineGraph: Shape {
     var lineRadius: CGFloat = 0.5
 
     private var originPoint: CGFloat {
-        guard let origin = dataPoints.first else { return 0 }
+        guard let origin = self.dataPoints.first else { return 0 }
         return origin
     }
 
     private var latestDataPoints: [CGFloat] {
-        return dataPoints.suffix(7)
+        return self.dataPoints.suffix(7)
     }
 
     func path(in rect: CGRect) -> Path {
@@ -84,21 +80,20 @@ struct LineGraph: Shape {
         /// - Parameter ix: Index of current data point.
         /// - Returns: A `CGPoint`.
         func point(at ix: Int) -> CGPoint {
-            let point = latestDataPoints[ix]
-            let x = rect.width * CGFloat(ix) / CGFloat(latestDataPoints.count - 1)
+            let point = self.latestDataPoints[ix]
+            let x = rect.width * CGFloat(ix) / CGFloat(self.latestDataPoints.count - 1)
             let y = (1-point) * rect.height
             return CGPoint(x: x, y: y)
         }
 
         return Path { p in
-            guard latestDataPoints.count > 1 else { return }
-            let start = latestDataPoints[0]
-            /**
-             Set origin point so that the line will start from the edge of the screen.
-             This gives the illusion of continuous data. This data point is from the entry 8 days ago.
-             */
-            let x: CGFloat = (rect.width / CGFloat(latestDataPoints.count - 1)) * -1
-            let origin = CGPoint(x: x, y: (1 - originPoint) * rect.height)
+            guard self.latestDataPoints.count > 1 else { return }
+            let start = self.latestDataPoints[0]
+
+            // Set origin so line will start from the edge of the screen.
+            // This gives the illusion of continuous data. This data point is from the entry 8 days ago.
+            let x: CGFloat = (rect.width / CGFloat(self.latestDataPoints.count - 1)) * -1
+            let origin = CGPoint(x: x, y: (1 - self.originPoint) * rect.height)
             p.move(to: origin)
 
             let next = point(at: 0)
@@ -111,7 +106,7 @@ struct LineGraph: Shape {
             /// Previous point used to calculate position of curve points.
             var previous = CGPoint(x: 0, y: (1 - start) * rect.height)
 
-            for idx in latestDataPoints.indices {
+            for idx in self.latestDataPoints.indices {
                 let next = point(at: idx)
                 let curveXOffset = previous.curveXOffset(to: next, lineRadius: self.lineRadius)
 

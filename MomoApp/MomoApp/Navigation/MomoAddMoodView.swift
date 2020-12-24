@@ -54,7 +54,7 @@ struct MomoAddMoodView: View {
                                 textField
                                     .slideOutAnimation(value: self.$homeViewActive)
                                 textFieldBorder
-                                    .addTextFieldBorderAnimation(value: self.$homeViewActive)
+                                    .textFieldBorderAnimation(value: self.$homeViewActive)
                             }
                             .frame(width: geo.w / 2, height: 80)
                         }
@@ -205,12 +205,12 @@ extension MomoAddMoodView {
     }
 
     private var currentDate: some View {
-        Text(Date(), formatter: DateFormatter.shortDate)
+        Text(Date(), formatter: .shortDate)
             .msk_applyTextStyle(.mainDateFont)
     }
 
     private var textField: some View {
-        MomoTextField($text, isFocused: $textFieldIsFocused)
+        MomoTextField(self.$text, isFocused: self.$textFieldIsFocused)
             .onChange(of: self.text) { text in
                 self.textFieldNotEmpty = !text.isEmpty
             }
@@ -223,6 +223,7 @@ extension MomoAddMoodView {
 
 // MARK: - Drag Gestures
 
+// TODO: - refactor this drag gesture into view modifier?
 extension MomoAddMoodView {
 
     /// Please see: https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
@@ -236,7 +237,6 @@ extension MomoAddMoodView {
     }
 
     private func onDragChanged(drag: DragGesture.Value) {
-
         self.isDragging = true
 
         /// The lower the limit, the tigher the resistance
@@ -269,12 +269,14 @@ extension MomoAddMoodView {
         self.colorWheelOn = false
     }
 
+    #if DEBUG
     var fingerDrag: some Gesture {
         DragGesture(minimumDistance: 0)
             .updating($dragState) { value, fingerLocation, _ in
                 fingerLocation = .active(location: value.location, translation: value.translation)
             }
     }
+    #endif
 
     // MARK: - Helper vars
 

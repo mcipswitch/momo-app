@@ -78,7 +78,7 @@ extension View {
         return modifier(AddEmotionButtonAnimation(value: value))
     }
 
-    func addTextFieldBorderAnimation(value: Binding<Bool>) -> some View {
+    func textFieldBorderAnimation(value: Binding<Bool>) -> some View {
         return modifier(TextFieldBorderAnimation(value: value))
     }
 
