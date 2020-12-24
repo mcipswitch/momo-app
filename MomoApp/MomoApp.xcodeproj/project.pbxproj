@@ -31,6 +31,7 @@
 		9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9318888125582B870004CD4F /* EntriesViewModel.swift */; };
 		931D6D9725926AF00077635D /* MiniGraphView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D6D9625926AF00077635D /* MiniGraphView+Extension.swift */; };
 		931D6D9C259278AE0077635D /* RandomAccessCollection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D6D9B259278AE0077635D /* RandomAccessCollection+Extension.swift */; };
+		9322077C2594F0ED00E4990F /* Comparable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9322077B2594F0ED00E4990F /* Comparable+Extension.swift */; };
 		9327DD242589E31E00BBDA53 /* MomoBackgroundBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */; };
 		9327E7FA25855EE40027C638 /* AddMoodViewLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */; };
 		9327E812258585C90027C638 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9327E814258585C90027C638 /* Localizable.strings */; };
@@ -113,6 +114,7 @@
 		9318888125582B870004CD4F /* EntriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesViewModel.swift; sourceTree = "<group>"; };
 		931D6D9625926AF00077635D /* MiniGraphView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MiniGraphView+Extension.swift"; sourceTree = "<group>"; };
 		931D6D9B259278AE0077635D /* RandomAccessCollection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RandomAccessCollection+Extension.swift"; sourceTree = "<group>"; };
+		9322077B2594F0ED00E4990F /* Comparable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Extension.swift"; sourceTree = "<group>"; };
 		9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoBackgroundBlur.swift; sourceTree = "<group>"; };
 		9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoodViewLogic.swift; sourceTree = "<group>"; };
 		9327E813258585C90027C638 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 			isa = PBXGroup;
 			children = (
 				9308077325645EF000A13156 /* View+Extension.swift */,
+				9322077B2594F0ED00E4990F /* Comparable+Extension.swift */,
 				93504C9325938B8900890420 /* String+Extension.swift */,
 				93504C992593C4F500890420 /* GeometryProxy+Extension.swift */,
 				938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */,
@@ -536,6 +539,7 @@
 				937688E124F98E9500CC0B10 /* CustomView.swift in Sources */,
 				930076A525887F62007B152D /* MomoBackground.swift in Sources */,
 				931D6D9725926AF00077635D /* MiniGraphView+Extension.swift in Sources */,
+				9322077C2594F0ED00E4990F /* Comparable+Extension.swift in Sources */,
 				93504C9A2593C4F500890420 /* GeometryProxy+Extension.swift in Sources */,
 				936C6CD625112E6A00650D4A /* AnimatableGradient.swift in Sources */,
 				93EF797D254A07F20062571F /* MomoJournalView.swift in Sources */,
