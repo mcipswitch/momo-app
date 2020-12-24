@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Please see: https://levelup.gitconnected.com/snap-to-item-scrolling-debccdcbb22f
 struct SelectionLineModifier: ViewModifier {
     @State private var dragOffset: CGFloat
     @State private var newIdx: Int
@@ -63,6 +64,8 @@ struct SelectionLineModifier: ViewModifier {
     }
 
     private func protectFromScrollingOutOfBounds() {
+
+        // TODO: - The selection line still flashes if dragged out of bounds.
         self.newIdx = self.newIdx.clamp(low: 0, high: self.items - 1)
 
         //Deprecated

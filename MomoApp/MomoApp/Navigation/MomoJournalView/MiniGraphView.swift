@@ -5,8 +5,6 @@
 //  Created by Priscilla Ip on 2020-10-28.
 //
 
-// https://levelup.gitconnected.com/snap-to-item-scrolling-debccdcbb22f
-
 import SwiftUI
 
 // MARK: - MiniGraphView
@@ -47,11 +45,11 @@ struct MiniGraphView: View {
                             dateLabelPadding: self.lineChartStyle.dateLabelPadding,
                             onDateLabelHeightChange: self.updateLineGraphBottomPadding
                         )
-                        .frame(minWidth: lineChartStyle.lineFrameWidth, idealHeight: geo.h, maxHeight: geo.h)
+                        .frame(width: lineChartStyle.lineFrameWidth, height: geo.h)
+                        .tappable()
                         .onTapGesture {
                             self.changeSelection(idx)
                         }
-                        .tappable()
                         .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
                             SelectionLine(
                                 preferences: preferences,
@@ -76,17 +74,12 @@ struct MiniGraphView: View {
                     // IMPORTANT:
                     // This calculation needs to happen before the animation.
                     self.updateLineFrameSpacing(for: geo)
+
                     withSpringAnimation { self.offset = 0 }
                 }
-
-                #if DEBUG
-                VStack {
-                    Text("IDX: \(self.selectedIdx)")
-                }
-                #endif
             }
         }
-        .onAppear(perform: resetToDefaultSelection)
+        .onAppear(perform: self.resetToDefaultSelection)
         .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8))
     }
 }
@@ -106,16 +99,15 @@ extension MiniGraphView {
                                                            completion: self.updateLayout(_:))
     }
 
+    /// Always reset selection to current day
     private func resetToDefaultSelection() {
         let idx = self.entries.count - 1
         self.changeSelectedIdx(to: idx)
     }
 
     private func showSelectionLine() {
-        if self.viewRouter.isJournal {
-            withAnimation(lineChartStyle.selectionLineAnimation) {
-                self.selectionLineOn = self.viewRouter.isJournal
-            }
+        withAnimation(lineChartStyle.selectionLineAnimation) {
+            self.selectionLineOn = self.viewRouter.isJournal
         }
     }
 
@@ -183,11 +175,10 @@ struct GraphLine: View {
                     self.on = true
                 }
             dateLabel
-                /*  Track the  height of the date label and calculate the correct bottom padding
-                    needed for the line graph to stay within bounds.
-                    This happens once for every date (7), but this behaviour is expected
-                    as the sizes are saved into an array.
-                 */
+                // Track the  height of the date label and calculate the correct bottom padding
+                // needed for the line graph to stay within bounds.
+                // This happens once for every date (7), but this behaviour is expected
+                // as the sizes are saved into an array.
                 .coordinateSpace(name: "dateLabel")
                 .saveSizes(viewID: 1, coordinateSpace: .named("dateLabel"))
                 .retrieveSizes(viewID: 1) {

@@ -30,12 +30,6 @@ public struct LineChartStyle {
         Animation.easeInOut(duration: 1.0).delay(duration + delay)
     }
 
-    var columnLayout: (CGFloat, Int) -> [GridItem] = { (spacing, count) -> [GridItem] in
-        Array(
-            repeating: .init(.flexible(), spacing: spacing),
-            count: count)
-    }
-
     public init(
         lineFrameWidth: CGFloat = 25.0,
         selectionLineWidth: CGFloat = 4.0,

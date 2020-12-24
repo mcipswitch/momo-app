@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// MARK: - AddMoodViewLogic
-
 struct AddMoodViewLogic {
 
     /// Activate the corresponding color wheel section.

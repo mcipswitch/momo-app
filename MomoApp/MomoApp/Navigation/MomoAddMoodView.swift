@@ -34,70 +34,11 @@ struct MomoAddMoodView: View {
 
     @State private var state: EntryState = .add
 
-    // MARK: - Helper vars
-
-    private var joystickTapped: Bool {
-        self.dragValue == .zero
-    }
-
-    // MARK: - Drag Gestures
-    // https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
-
-    var resistanceDrag: some Gesture {
-        DragGesture(minimumDistance: 0)
-            .onChanged(onDragChanged(drag:))
-            .updating($dragState) { value, state, _ in
-                state = .active(location: value.location, translation: value.translation)
-            }
-            .onEnded(onDragEnded(drag:))
-    }
-
-    private func onDragChanged(drag: DragGesture.Value) {
-
-        self.isDragging = true
-
-        /// The lower the limit, the tigher the resistance
-        let limit: CGFloat = 200
-        let xOff = drag.translation.width
-        let yOff = drag.translation.height
-        let dist = sqrt(xOff*xOff + yOff*yOff);
-        let factor = 1 / (dist / limit + 1)
-        self.dragValue = CGSize(width: xOff * factor,
-                                height: yOff * factor)
-
-        // Do nothing if joystick is just tapped
-        if self.joystickTapped { return }
-
-        // Calculate distance to activate 'BlurredColorWheel'
-        let maxDistance: CGFloat = 50
-        var newLocation = self.dragStart
-        newLocation.x += xOff
-        newLocation.y += yOff
-        let distance = self.dragStart.distance(to: newLocation)
-        self.colorWheelIsActive = distance > maxDistance ? true : false
-
-        // Calculate the degrees to activate 'BlurredColorWheel' section
-        self.degrees = newLocation.angle(to: self.dragStart)
-    }
-
-    private func onDragEnded(drag: DragGesture.Value) {
-        self.isDragging = false
-        self.dragValue = .zero
-        self.colorWheelIsActive = false
-    }
-    
-    var fingerDrag: some Gesture {
-        DragGesture(minimumDistance: 0)
-            .updating($dragState) { value, fingerLocation, _ in
-                fingerLocation = .active(location: value.location, translation: value.translation)
-            }
-    }
-
     var body: some View {
-
         ZStack {
             GeometryReader { geo in
-                let centerPoint = CGPoint(x: geo.size.width / 2, y: ButtonType.joystick.size.w / 2)
+                let joystickRadius = ButtonType.joystick.size.w
+                let centerPoint = CGPoint(x: geo.w / 2, y: joystickRadius / 2)
 
                 // Main View
                 VStack {
@@ -105,20 +46,17 @@ struct MomoAddMoodView: View {
                     VStack(spacing: 36) {
                         currentDate
                             .slideInAnimation(value: self.$homeViewActive)
-
                         ZStack {
                             helloMessage
                                 .slideInAnimation(value: self.$homeViewActive)
-                                //.frame(width: 180)
-                                .frame(width: 180, height: 80)
+                                .frame(width: 180)
                             VStack(spacing: 6) {
                                 textField
                                     .slideOutAnimation(value: self.$homeViewActive)
                                 textFieldBorder
                                     .addTextFieldBorderAnimation(value: self.$homeViewActive)
                             }
-                            //.frame(width: geo.size.width / 2)
-                            .frame(width: geo.size.width / 2, height: 80)
+                            .frame(width: geo.w / 2, height: 80)
                         }
                     }
 
@@ -284,5 +222,67 @@ extension MomoAddMoodView {
 
     private var textFieldBorder: some View {
         MomoTextFieldBorder(isFocused: self.$textFieldIsFocused)
+    }
+}
+
+// MARK: - Drag Gestures
+
+extension MomoAddMoodView {
+
+    /// Please see: https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
+    var resistanceDrag: some Gesture {
+        DragGesture(minimumDistance: 0)
+            .onChanged(self.onDragChanged(drag:))
+            .updating($dragState) { value, state, _ in
+                state = .active(location: value.location, translation: value.translation)
+            }
+            .onEnded(self.onDragEnded(drag:))
+    }
+
+    private func onDragChanged(drag: DragGesture.Value) {
+
+        self.isDragging = true
+
+        /// The lower the limit, the tigher the resistance
+        let limit: CGFloat = 200
+        let xOff = drag.translation.width
+        let yOff = drag.translation.height
+        let dist = sqrt(xOff*xOff + yOff*yOff);
+        let factor = 1 / (dist / limit + 1)
+        self.dragValue = CGSize(width: xOff * factor,
+                                height: yOff * factor)
+
+        // Do nothing if joystick is just tapped
+        if self.joystickTapped { return }
+
+        // Calculate distance to activate 'BlurredColorWheel'
+        let maxDistance: CGFloat = 50
+        var newLocation = self.dragStart
+        newLocation.x += xOff
+        newLocation.y += yOff
+        let distance = self.dragStart.distance(to: newLocation)
+        self.colorWheelIsActive = distance > maxDistance ? true : false
+
+        // Calculate the degrees to activate 'BlurredColorWheel' section
+        self.degrees = newLocation.angle(to: self.dragStart)
+    }
+
+    private func onDragEnded(drag: DragGesture.Value) {
+        self.isDragging = false
+        self.dragValue = .zero
+        self.colorWheelIsActive = false
+    }
+
+    var fingerDrag: some Gesture {
+        DragGesture(minimumDistance: 0)
+            .updating($dragState) { value, fingerLocation, _ in
+                fingerLocation = .active(location: value.location, translation: value.translation)
+            }
+    }
+
+    // MARK: - Helper vars
+
+    private var joystickTapped: Bool {
+        self.dragValue == .zero
     }
 }
