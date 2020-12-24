@@ -32,6 +32,7 @@
 		931D6D9725926AF00077635D /* MiniGraphView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D6D9625926AF00077635D /* MiniGraphView+Extension.swift */; };
 		931D6D9C259278AE0077635D /* RandomAccessCollection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D6D9B259278AE0077635D /* RandomAccessCollection+Extension.swift */; };
 		9322077C2594F0ED00E4990F /* Comparable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9322077B2594F0ED00E4990F /* Comparable+Extension.swift */; };
+		9322077F2594FF6600E4990F /* MomoAddMoodView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9322077E2594FF6600E4990F /* MomoAddMoodView+Extension.swift */; };
 		9327DD242589E31E00BBDA53 /* MomoBackgroundBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */; };
 		9327E7FA25855EE40027C638 /* AddMoodViewLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */; };
 		9327E812258585C90027C638 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9327E814258585C90027C638 /* Localizable.strings */; };
@@ -115,6 +116,7 @@
 		931D6D9625926AF00077635D /* MiniGraphView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MiniGraphView+Extension.swift"; sourceTree = "<group>"; };
 		931D6D9B259278AE0077635D /* RandomAccessCollection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RandomAccessCollection+Extension.swift"; sourceTree = "<group>"; };
 		9322077B2594F0ED00E4990F /* Comparable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Extension.swift"; sourceTree = "<group>"; };
+		9322077E2594FF6600E4990F /* MomoAddMoodView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomoAddMoodView+Extension.swift"; sourceTree = "<group>"; };
 		9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoBackgroundBlur.swift; sourceTree = "<group>"; };
 		9327E7F925855EE40027C638 /* AddMoodViewLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoodViewLogic.swift; sourceTree = "<group>"; };
 		9327E813258585C90027C638 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				93FAEB9A2514FCDB00C057AC /* MomoAddMoodView.swift */,
+				9322077E2594FF6600E4990F /* MomoAddMoodView+Extension.swift */,
 				93EF797C254A07F20062571F /* MomoJournalView.swift */,
 				9390FB0A2563889200E2E53A /* MomoJournalView */,
 				93519F5124E8CF630095DA38 /* ContentView.swift */,
@@ -512,6 +515,7 @@
 				931D6D9C259278AE0077635D /* RandomAccessCollection+Extension.swift in Sources */,
 				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,
 				937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */,
+				9322077F2594FF6600E4990F /* MomoAddMoodView+Extension.swift in Sources */,
 				93504C9425938B8900890420 /* String+Extension.swift in Sources */,
 				93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */,
 				932E6F6825886812001DBC90 /* DropShadow.swift in Sources */,

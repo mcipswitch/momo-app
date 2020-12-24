@@ -9,31 +9,64 @@
 
 import SwiftUI
 
+// MARK: - ColorRing
+
 struct ColorRing: View {
     @Environment(\.joystickStyle) var joystickStyle
-    @Binding var isAnimating: Bool
+    @Binding var homeViewActive: Bool
     @Binding var isDragging: Bool
-    @State var on: Bool = false
+    @State var hueOn: Bool = false
 
     var body: some View {
-        let colorGradient = LinearGradient(.colorRingGradient, direction: .diagonal)
-        let momoGradient = LinearGradient(.momoRingGradient, direction: .diagonal)
-
         ZStack {
             Circle()
-                .stroke(isDragging ? momoGradient : colorGradient, lineWidth: joystickStyle.ringLineWidth)
-                .frame(width: joystickStyle.ringRadius, height: joystickStyle.ringRadius)
-                .hueRotation(.degrees(on ? 360 : 0))
-                .animation(.shiftColors(while: on))
+                .stroke(self.gradient, lineWidth: self.joystickStyle.ringLineWidth)
+                .frame(width: self.joystickStyle.ringRadius,
+                       height: self.joystickStyle.ringRadius)
+                .hueRotation(.degrees(self.hueOn ? 360 : 0))
+                .animation(.shiftColors(while: self.hueOn))
         }
-        .onAppear {
-            on = true
+        .onAppear { self.hueOn = true }
+        .blur(radius: self.blurRadius)
+        .opacity(self.homeViewActive ? 0 : 1)
+        .scaleEffect(self.scaleEffect)
+        .onChange(of: self.isDragging) { isDragging in
+            self.hueOn = !isDragging
         }
-        .blur(radius: isAnimating ? 0 : joystickStyle.ringBlurRadius)
-        .opacity(isAnimating ? 1 : 0)
-        .scaleEffect(isAnimating ? 1 : joystickStyle.ringScaleEffect)
-        .onChange(of: isDragging) { isDragging in
-            on = isDragging ? false : true
-        }
+    }
+
+    // MARK: - Helper vars
+
+    private var colorGradient: LinearGradient {
+        LinearGradient(.colorRingGradient, direction: .diagonal)
+    }
+
+    private var momoGradient: LinearGradient {
+        LinearGradient(.momoRingGradient, direction: .diagonal)
+    }
+
+    private var gradient: LinearGradient {
+        self.isDragging ? self.momoGradient : self.colorGradient
+    }
+
+    private var blurRadius: CGFloat {
+        self.homeViewActive ? self.joystickStyle.ringBlurRadius : 0
+    }
+
+    private var scaleEffect: CGFloat {
+        self.homeViewActive ? self.joystickStyle.ringScaleEffect : 1
+    }
+}
+
+// MARK: - Animation+Extension
+
+extension Animation {
+    /// Creates a shifting color animation effect.
+    /// - Parameter expression: Animate while this expression is `true`.
+    /// - Returns: An `Animation` instance.
+    public static func shiftColors(while expression: Bool) -> Animation {
+        return Animation
+            .easeInOut(duration: expression ? 4 : 0)
+            .repeat(while: expression, autoreverses: false)
     }
 }

@@ -18,13 +18,13 @@ struct MomoAddMoodView: View {
     @State private var colorWheelSection: ColorWheelSection = .momo
 
     @State private var isDragging = false
-    @State private var animationOn = false
+    @State private var buttonTextOn = true
 
     // UI Elements
     @State private var text = ""
     @State private var textFieldIsFocused = false
     @State private var textFieldNotEmpty = false
-    @State private var colorWheelIsActive = false
+    @State private var colorWheelOn = false
 
     // Add Emotion Button
     @GestureState private var dragState: DragState = .inactive
@@ -40,7 +40,7 @@ struct MomoAddMoodView: View {
                 let joystickRadius = ButtonType.joystick.size.w
                 let centerPoint = CGPoint(x: geo.w / 2, y: joystickRadius / 2)
 
-                // Main View
+                // START: - Main View
                 VStack {
                     // Date + TextField
                     VStack(spacing: 36) {
@@ -65,7 +65,7 @@ struct MomoAddMoodView: View {
                     // Blob
                     ZStack {
                         BlobView(blobValue: $blobValue)
-                            .msk_applyBlobStyle(BlobStyle(frameSize: geo.size.height, scale: 0.35))
+                            .msk_applyBlobStyle(BlobStyle(frameSize: geo.h, scale: 0.35))
 
                         #if DEBUG
                         VStack {
@@ -74,7 +74,6 @@ struct MomoAddMoodView: View {
                             Text("Blob: \(blobValue)")
                             Text("Drag Start: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
                             Text("Dragging: \(String(describing: dragState.isActive))")
-                            Text("Animation: \(String(describing: animationOn))")
                         }
                         .font(.system(size: 12.0))
                         #endif
@@ -87,16 +86,16 @@ struct MomoAddMoodView: View {
                     ZStack {
                         BlurredColorWheel(section: self.$colorWheelSection)
                             .position(self.dragStart)
-                            .opacity(self.colorWheelIsActive ? 1 : 0)
-                            .animation(.activateColorWheel, value: self.colorWheelIsActive)
+                            .opacity(self.colorWheelOn ? 1 : 0)
+                            .animation(.activateColorWheel, value: self.colorWheelOn)
 
                         // Joystick + Past Entries
                         ZStack(alignment: .center) {
                             addEmotionButton
                                 // Add delay so the 'Color Ring' disappears first.
                                 .animation(.resist, value: self.dragState.isActive)
-                                .animation(Animation.bounce.delay(if: self.homeViewActive, 0.2), value: self.homeViewActive)
-                            MomoLinkButton(.pastEntries, action: self.seePastEntriesButtonPressed)
+                                .addEmotionButtonAnimation(value: self.$homeViewActive)
+                            MomoLinkButton(.pastEntries, action: self.pastEntriesButtonPressed)
                                 .offset(y: 60)
                                 .slideInAnimation(value: self.$homeViewActive)
                         }
@@ -133,16 +132,17 @@ struct MomoAddMoodView: View {
             self.colorWheelSection = self.viewLogic.colorWheelSection(degrees)
             self.blobValue = self.viewLogic.blobValue(degrees)
         }
-
-        // TODO: - fix this
         .onChange(of: self.homeViewActive) { _ in
-            self.animationOn.toggle()
+            // This state is needed to animate button text opacity
+            self.buttonTextOn.toggle()
+
+            // TODO: - WTF is this?
             UIApplication.shared.endEditing()
         }
+        // TODO: - Fix this later
         .onReceive(self.viewRouter.homeWillChange) { state in
             self.homeViewActive = (state == .home)
         }
-
     }
 }
 
@@ -153,7 +153,7 @@ extension MomoAddMoodView {
         self.viewRouter.changeHomeState(.add)
     }
 
-    private func seePastEntriesButtonPressed() {
+    private func pastEntriesButtonPressed() {
         self.viewRouter.change(to: .journal)
     }
 
@@ -164,6 +164,7 @@ extension MomoAddMoodView {
     private func doneButtonPressed() {
         self.viewRouter.changeHomeState(.done)
 
+        // TODO: - Add this page
         print("Emotion: \(self.text), Value: \(self.blobValue)")
     }
 }
@@ -175,20 +176,15 @@ extension MomoAddMoodView {
         ZStack {
             Button(action: self.addEmotionButtonPressed) {
                 Text(self.state.text)
-                    .opacity(self.animationOn ? 0 : 1)
-                    .animation(self.animationOn
-                                ? .none
-                                : Animation.ease.delay(0.5)
-                    )
+                    .opacity(self.buttonTextOn ? 1 : 0)
+                    .animation(self.buttonTextOn ? Animation.ease.delay(0.5) : nil)
             }
-            .msk_applyMomoButtonStyle(button: homeViewActive ? .standard : .joystick)
-
-            // Add delay so this appears after button morph
+            .msk_applyMomoButtonStyle(button: self.homeViewActive ? .standard : .joystick)
             ColorRing(
-                isAnimating: self.$animationOn,
+                homeViewActive: self.$homeViewActive,
                 isDragging: self.$isDragging
             )
-            .animation(Animation.bounce.delay(if: !homeViewActive, 0.6), value: self.homeViewActive)
+            .colorRingAnimation(value: self.$homeViewActive)
         }
     }
 
@@ -261,7 +257,7 @@ extension MomoAddMoodView {
         newLocation.x += xOff
         newLocation.y += yOff
         let distance = self.dragStart.distance(to: newLocation)
-        self.colorWheelIsActive = distance > maxDistance ? true : false
+        self.colorWheelOn = distance > maxDistance ? true : false
 
         // Calculate the degrees to activate 'BlurredColorWheel' section
         self.degrees = newLocation.angle(to: self.dragStart)
@@ -270,7 +266,7 @@ extension MomoAddMoodView {
     private func onDragEnded(drag: DragGesture.Value) {
         self.isDragging = false
         self.dragValue = .zero
-        self.colorWheelIsActive = false
+        self.colorWheelOn = false
     }
 
     var fingerDrag: some Gesture {

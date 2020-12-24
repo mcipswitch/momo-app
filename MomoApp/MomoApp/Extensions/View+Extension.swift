@@ -18,20 +18,8 @@ extension View {
         return modifier(AnimationCompletionObserverModifier(observedValue: value, completion: completion))
     }
 
-    func addTextFieldBorderAnimation(value: Binding<Bool>) -> some View {
-        return modifier(TextFieldBorderAnimation(value: value))
-    }
-
     func addApplyJournalViewAnimation(value: Binding<Bool>) -> some View {
         return modifier(JournalViewAnimation(value: value))
-    }
-
-    func slideInAnimation(value: Binding<Bool>) -> some View {
-        return modifier(AnimateSlideIn(value: value))
-    }
-
-    func slideOutAnimation(value: Binding<Bool>) -> some View {
-        return modifier(AnimateSlideOut(value: value))
     }
 
     /// Mimics `mask`

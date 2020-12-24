@@ -28,3 +28,12 @@ struct BlurredColorWheel: View {
             .blur(radius: 40)
     }
 }
+
+// MARK: - Animation+Extension
+
+extension Animation {
+    /// Animate in `BlurredColorWheel`.
+    static var activateColorWheel: Animation {
+        return self.easeInOut(duration: 1.0)
+    }
+}
