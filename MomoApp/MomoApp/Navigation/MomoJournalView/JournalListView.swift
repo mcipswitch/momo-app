@@ -19,10 +19,8 @@ struct JournalListView: View {
 
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: journalStyle.listLayout) {
-                EntriesList(
-                    entries: self.viewModel.entries.reversed()
-                )
+            LazyVGrid(columns: self.journalStyle.listLayout) {
+                EntriesList(entries: self.viewModel.entries.reversed())
             }
             .padding()
         }
@@ -61,12 +59,10 @@ struct EntryRow: View {
                 blobView
             }
         }
-        .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-        .padding(entryRowStyle.padding)
-        .background(
-            VisualEffectBlur(blurStyle: .dark)
-        )
-        .roundedRect(entryRowStyle.cornerRadius)
+        .frame(minWidth: 0, idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+        .padding(self.entryRowStyle.padding)
+        .background(VisualEffectBlur(blurStyle: .dark))
+        .roundedRect(self.entryRowStyle.cornerRadius)
     }
 }
 
@@ -74,8 +70,8 @@ struct EntryRow: View {
 
 extension EntryRow {
     private var entryDateAndEmotion: some View {
-        VStack(alignment: .leading, spacing: entryRowStyle.entryLabelSpacing) {
-            Text(self.entry.date, formatter: DateFormatter.shortDate)
+        VStack(alignment: .leading, spacing: self.entryRowStyle.entryLabelSpacing) {
+            Text(self.entry.date, formatter: .shortDate)
                 .msk_applyTextStyle(.mainDateFont)
             Text(self.entry.emotion)
                 .msk_applyTextStyle(.mainMessageFont)
@@ -84,7 +80,9 @@ extension EntryRow {
 
     private var blobView: some View {
         BlobView(blobValue: self.$blobValue)
-            .msk_applyBlobStyle(BlobStyle(scale: entryRowStyle.blobScale,
-                                          isStatic: true))
+            .msk_applyBlobStyle(
+                BlobStyle(scale: self.entryRowStyle.blobScale,
+                          isStatic: true)
+            )
     }
 }
