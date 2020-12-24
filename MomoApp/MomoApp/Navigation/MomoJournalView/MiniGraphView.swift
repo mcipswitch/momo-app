@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - MiniGraphView
 
+// TODO: - clean up this view
 struct MiniGraphView: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
@@ -25,6 +26,7 @@ struct MiniGraphView: View {
     @State private var selectionLineOn = false
     @State private var lineGraphBottomPadding: CGFloat = 0
 
+    // LineGraphView
     @State private var offset: CGFloat = UIScreen.screenWidth
     @State private var layout = [GridItem]()
     @State private var lineFrameSpacing: CGFloat = .zero
@@ -139,6 +141,7 @@ extension MiniGraphView {
                                 leading: 12,
                                 bottom: self.lineGraphBottomPadding,
                                 trailing: 12))
+            // Set to false so gestures can work
             .allowsHitTesting(false)
     }
 }
@@ -225,14 +228,5 @@ struct SelectionLine: View {
                     .msk_applyDropShadow()
             }
         }
-    }
-}
-
-// MARK: - Preference Keys
-
-struct SelectionPreferenceKey: PreferenceKey {
-    static var defaultValue: Value = nil
-    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
-        value = nextValue()
     }
 }

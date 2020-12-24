@@ -6,11 +6,9 @@
 //
 
 /*
- Inspired by Code Disciple post...
+ Please see:
  http://www.code-disciple.com/creating-smooth-animation-like-headspace-app/
- and Stewart Lynch YouTube video:
  https://www.youtube.com/watch?v=IUpN7sIwaqc
- and The SwiftUI Lab post:
  https://swiftui-lab.com/swiftui-animations-part1/
  */
 
