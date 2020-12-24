@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - MiniBlobView
+
 struct MiniBlobView: View {
     @Binding var blobValue: CGFloat
     let entry: Entry
@@ -20,8 +22,10 @@ struct MiniBlobView: View {
             GeometryReader { geo in
                 blobView
                     .position(x: geo.w / 2, y: geo.h / 2)
-                    .msk_applyBlobStyle(BlobStyle(frameSize: geo.size.width,
-                                                  scale: 0.40))
+                    .msk_applyBlobStyle(
+                        BlobStyle(frameSize: geo.w,
+                                  scale: 0.40)
+                    )
             }
 
             Spacer()
@@ -34,7 +38,7 @@ struct MiniBlobView: View {
 extension MiniBlobView {
     private var entryDateAndEmotion: some View {
         VStack(spacing: 12) {
-            Text(self.entry.date, formatter: DateFormatter.shortDate)
+            Text(self.entry.date, formatter: .shortDate)
                 .msk_applyTextStyle(.mainDateFont)
             Text(self.entry.emotion)
                 .msk_applyTextStyle(.mainMessageFont)
