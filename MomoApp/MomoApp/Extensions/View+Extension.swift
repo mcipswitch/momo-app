@@ -21,7 +21,7 @@ extension View {
     /// Mimics `mask`
     /// - Parameter mask: The input mask.
     /// - Returns: A modified `View` instance masked with the input mask.
-    /// - Reference: https://www.raywenderlich.com/7589178-how-to-create-a-neumorphic-design-with-swiftui
+    /// - Please see: https://www.raywenderlich.com/7589178-how-to-create-a-neumorphic-design-with-swiftui
     func inverseMask<Mask>(_ mask: Mask) -> some View where Mask: View {
         self.mask(mask
           .foregroundColor(.black)
@@ -38,7 +38,7 @@ extension View {
     ///   - condition: Apply a modifier only if condition is met.
     ///   - modifier: The modifier to be applied.
     /// - Returns: A modified `View` instance
-    /// Please see: https://swiftui-lab.com/view-extensions-for-better-code-readability/
+    /// - Please see: https://swiftui-lab.com/view-extensions-for-better-code-readability/
     public func conditionalModifier<T>(_ condition: Bool, _ modifier: T) -> some View where T: ViewModifier {
         Group {
             if condition {
@@ -53,7 +53,7 @@ extension View {
     ///   - trueModifier: The modifier to be applied if condition is met.
     ///   - falseModifier: The modifier to be applied if condition is not met.
     /// - Returns: A modified `View` instance
-    /// Please see: https://swiftui-lab.com/view-extensions-for-better-code-readability/
+    /// - Please see: https://swiftui-lab.com/view-extensions-for-better-code-readability/
     public func conditionalModifier<M1, M2>(_ condition: Bool, _ trueModifier: M1, _ falseModifier: M2) -> some View where M1: ViewModifier, M2: ViewModifier {
         Group {
             if condition {

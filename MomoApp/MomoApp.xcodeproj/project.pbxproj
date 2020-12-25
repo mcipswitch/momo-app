@@ -10,7 +10,7 @@
 		930076A525887F62007B152D /* MomoBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930076A425887F62007B152D /* MomoBackground.swift */; };
 		930105902513F8A1007F0E7A /* Date + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9301058F2513F8A1007F0E7A /* Date + Extensions.swift */; };
 		930105922514E0B9007F0E7A /* MomoText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930105912514E0B9007F0E7A /* MomoText.swift */; };
-		9302A8B5258D11AD00FF2ECB /* Path+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8B4258D11AD00FF2ECB /* Path+Extensions.swift */; };
+		9302A8B5258D11AD00FF2ECB /* Path+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8B4258D11AD00FF2ECB /* Path+Extension.swift */; };
 		9302A8B9258FA20C00FF2ECB /* LineChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8B8258FA20C00FF2ECB /* LineChartStyle.swift */; };
 		9302A8C0258FA99200FF2ECB /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8BF258FA99200FF2ECB /* TextFieldStyle.swift */; };
 		9302A8C4258FAEDD00FF2ECB /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302A8C3258FAEDD00FF2ECB /* ButtonStyle.swift */; };
@@ -71,7 +71,8 @@
 		93A65BFE250FE0EE00BF756A /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A65BFD250FE0EE00BF756A /* CGFloat+Extension.swift */; };
 		93AE1884256DCE500024E6A9 /* LineGraphData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE1883256DCE500024E6A9 /* LineGraphData.swift */; };
 		93D90F88257C5A8000A7A69F /* SizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D90F87257C5A8000A7A69F /* SizeModifier.swift */; };
-		93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DB0F5B253656180074EBB6 /* Binding + Extension.swift */; };
+		93DB0F5C253656180074EBB6 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DB0F5B253656180074EBB6 /* Binding+Extension.swift */; };
+		93DBAF7D259678DA00862293 /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DBAF7C259678DA00862293 /* Optional+Extension.swift */; };
 		93E06EA1256C909500E7264D /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E06EA0256C909500E7264D /* ViewRouter.swift */; };
 		93E9A338251D29900095D48C /* ColorRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E9A337251D29900095D48C /* ColorRing.swift */; };
 		93EB5C612527891900087D0B /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EB5C602527891900087D0B /* UIApplication+Extension.swift */; };
@@ -85,7 +86,7 @@
 		930076A425887F62007B152D /* MomoBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoBackground.swift; sourceTree = "<group>"; };
 		9301058F2513F8A1007F0E7A /* Date + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extensions.swift"; sourceTree = "<group>"; };
 		930105912514E0B9007F0E7A /* MomoText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoText.swift; sourceTree = "<group>"; };
-		9302A8B4258D11AD00FF2ECB /* Path+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Path+Extensions.swift"; sourceTree = "<group>"; };
+		9302A8B4258D11AD00FF2ECB /* Path+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Path+Extension.swift"; sourceTree = "<group>"; };
 		9302A8B8258FA20C00FF2ECB /* LineChartStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartStyle.swift; sourceTree = "<group>"; };
 		9302A8BF258FA99200FF2ECB /* TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
 		9302A8C3258FAEDD00FF2ECB /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
@@ -148,7 +149,8 @@
 		93A65BFD250FE0EE00BF756A /* CGFloat+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extension.swift"; sourceTree = "<group>"; };
 		93AE1883256DCE500024E6A9 /* LineGraphData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphData.swift; sourceTree = "<group>"; };
 		93D90F87257C5A8000A7A69F /* SizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeModifier.swift; sourceTree = "<group>"; };
-		93DB0F5B253656180074EBB6 /* Binding + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding + Extension.swift"; sourceTree = "<group>"; };
+		93DB0F5B253656180074EBB6 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
+		93DBAF7C259678DA00862293 /* Optional+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
 		93E06EA0256C909500E7264D /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		93E9A337251D29900095D48C /* ColorRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorRing.swift; sourceTree = "<group>"; };
 		93EB5C602527891900087D0B /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
@@ -316,22 +318,23 @@
 		938E537324E983F8002653F0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				9308077325645EF000A13156 /* View+Extension.swift */,
-				9322077B2594F0ED00E4990F /* Comparable+Extension.swift */,
-				93504C9325938B8900890420 /* String+Extension.swift */,
-				93504C992593C4F500890420 /* GeometryProxy+Extension.swift */,
-				938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */,
 				9331230724F94C17008B6DD2 /* Animation + Extension.swift */,
-				93DB0F5B253656180074EBB6 /* Binding + Extension.swift */,
-				938E537024E983F3002653F0 /* UIColor + Extension.swift */,
-				9302A8B4258D11AD00FF2ECB /* Path+Extensions.swift */,
-				937615852511D22300AEF59C /* CGPoint + Extension.swift */,
+				93DB0F5B253656180074EBB6 /* Binding+Extension.swift */,
+				9322077B2594F0ED00E4990F /* Comparable+Extension.swift */,
 				93A65BFD250FE0EE00BF756A /* CGFloat+Extension.swift */,
-				9382CFEF2576DE5100ED46D8 /* Int+Extension.swift */,
+				937615852511D22300AEF59C /* CGPoint + Extension.swift */,
 				9301058F2513F8A1007F0E7A /* Date + Extensions.swift */,
-				93EB5C602527891900087D0B /* UIApplication+Extension.swift */,
-				937615872512527100AEF59C /* UIScreen+Extension.swift */,
+				93504C992593C4F500890420 /* GeometryProxy+Extension.swift */,
+				9382CFEF2576DE5100ED46D8 /* Int+Extension.swift */,
+				93DBAF7C259678DA00862293 /* Optional+Extension.swift */,
+				9302A8B4258D11AD00FF2ECB /* Path+Extension.swift */,
 				931D6D9B259278AE0077635D /* RandomAccessCollection+Extension.swift */,
+				93504C9325938B8900890420 /* String+Extension.swift */,
+				93EB5C602527891900087D0B /* UIApplication+Extension.swift */,
+				938E536F24E983F3002653F0 /* UIBezierPath + Extension.swift */,
+				938E537024E983F3002653F0 /* UIColor + Extension.swift */,
+				937615872512527100AEF59C /* UIScreen+Extension.swift */,
+				9308077325645EF000A13156 /* View+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -481,7 +484,7 @@
 				936E0696257F2276002B068E /* AnimatableColor.swift in Sources */,
 				9382CFE32576090600ED46D8 /* MomoLoadingIndicator.swift in Sources */,
 				93EB5C612527891900087D0B /* UIApplication+Extension.swift in Sources */,
-				9302A8B5258D11AD00FF2ECB /* Path+Extensions.swift in Sources */,
+				9302A8B5258D11AD00FF2ECB /* Path+Extension.swift in Sources */,
 				938B350D2585C31C00225DBE /* Enums.swift in Sources */,
 				9308077125645EAA00A13156 /* AnimationCompletionObserverModifier.swift in Sources */,
 				93AE1884256DCE500024E6A9 /* LineGraphData.swift in Sources */,
@@ -494,7 +497,7 @@
 				937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */,
 				9322077F2594FF6600E4990F /* MomoAddMoodView+Extension.swift in Sources */,
 				93504C9425938B8900890420 /* String+Extension.swift in Sources */,
-				93DB0F5C253656180074EBB6 /* Binding + Extension.swift in Sources */,
+				93DB0F5C253656180074EBB6 /* Binding+Extension.swift in Sources */,
 				932E6F6825886812001DBC90 /* DropShadow.swift in Sources */,
 				93519F5224E8CF630095DA38 /* ContentView.swift in Sources */,
 				93092508255834B900AA3934 /* MockDataManager.swift in Sources */,
@@ -506,6 +509,7 @@
 				930AE6B725633B520091EDA7 /* DragState.swift in Sources */,
 				9308077425645EF000A13156 /* View+Extension.swift in Sources */,
 				938A0915256C235200D53D9A /* MomoTextField.swift in Sources */,
+				93DBAF7D259678DA00862293 /* Optional+Extension.swift in Sources */,
 				9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */,
 				9363153A2513A6B6005E20EA /* BlurredColorWheel.swift in Sources */,
 				93A65BFE250FE0EE00BF756A /* CGFloat+Extension.swift in Sources */,

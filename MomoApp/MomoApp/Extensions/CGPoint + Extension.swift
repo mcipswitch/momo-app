@@ -18,7 +18,7 @@ extension CGPoint {
     /// Calculates the angle from this point to another point.
     /// - Parameter point: A `CGPoint`.
     /// - Returns: The angle in degrees.
-    /// Please see: https://stackoverflow.com/questions/6064630/get-angle-from-2-positions
+    /// - Please see: https://stackoverflow.com/questions/6064630/get-angle-from-2-positions
     func angle(to point: CGPoint) -> CGFloat {
         let originX = point.x - self.x
         let originY = point.y - self.y

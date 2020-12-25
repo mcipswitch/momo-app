@@ -1,5 +1,5 @@
 //
-//  Path+Extensions.swift
+//  Path+Extension.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-12-18.

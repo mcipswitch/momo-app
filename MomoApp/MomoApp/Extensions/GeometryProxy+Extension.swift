@@ -8,11 +8,6 @@
 import SwiftUI
 
 extension GeometryProxy {
-    var w: CGFloat {
-        return self.size.width
-    }
-
-    var h: CGFloat {
-        return self.size.height
-    }
+    var w: CGFloat { return self.size.width }
+    var h: CGFloat { return self.size.height }
 }

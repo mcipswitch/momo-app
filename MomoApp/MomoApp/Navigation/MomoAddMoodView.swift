@@ -210,10 +210,11 @@ extension MomoAddMoodView {
     }
 
     private var textField: some View {
-        MomoTextField(self.$text, isFocused: self.$textFieldIsFocused)
-            .onChange(of: self.text) { text in
-                self.textFieldNotEmpty = !text.isEmpty
-            }
+        MomoTextField(self.$text.onChange(self.textChanged), isFocused: self.$textFieldIsFocused)
+    }
+
+    fileprivate func textChanged(_ text: String) {
+        self.textFieldNotEmpty = !text.isEmpty
     }
 
     private var textFieldBorder: some View {

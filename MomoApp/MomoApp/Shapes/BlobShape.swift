@@ -27,10 +27,10 @@ struct BlobView: View {
             blobShadow
             blobGradient
         }
-        .frame(width: blobStyle.scaledFrame,
-               height: blobStyle.scaledFrame * blobStyle.pathBoundsRadio)
+        .frame(width: self.blobStyle.scaledFrame,
+               height: self.blobStyle.scaledFrame * self.blobStyle.pathBoundsRadio)
         .onAppear {
-            isAnimating = blobStyle.isStatic ? false : true
+            self.isAnimating = !self.blobStyle.isStatic
         }
     }
 
@@ -38,7 +38,7 @@ struct BlobView: View {
 
     var animatingBlobMask: some View {
         BlobShape(bezier: blobStyle.bezier, pathBounds: blobStyle.pathBounds)
-            .msk_applyBlobAnimation(skew: true,
+            .blobAnimation(skew: true,
                                     breathe: true,
                                     rotate: true,
                                     isAnimating: $isAnimating)
@@ -51,7 +51,7 @@ struct BlobView: View {
                     radius: blobStyle.shadowRadius,
                     x: blobStyle.shadowOffset.x,
                     y: blobStyle.shadowOffset.y)
-            .msk_applyBlobAnimation(skew: true,
+            .blobAnimation(skew: true,
                                     breathe: true,
                                     rotate: false,
                                     isAnimating: $isAnimating)
@@ -185,7 +185,7 @@ struct BlobShape: Shape {
 // MARK: - View+Extensions
 
 extension View {
-    func msk_applyBlobAnimation(skew: Bool, breathe: Bool, rotate: Bool, isAnimating: Binding<Bool>) -> some View {
+    func blobAnimation(skew: Bool, breathe: Bool, rotate: Bool, isAnimating: Binding<Bool>) -> some View {
         return self.modifier(BlobAnimationModifier(skew: skew, breathe: breathe, rotate: rotate, isAnimating: isAnimating))
     }
 }

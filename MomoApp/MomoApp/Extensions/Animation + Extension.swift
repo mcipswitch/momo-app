@@ -20,7 +20,7 @@ extension Animation {
         return self.delay(expression ? delay : 0)
     }
 
-    // MARK: - Custom
+    // MARK: - Custom Animation
 
     /// Creates a resisting band animation effect.
     /// - Returns: An `Animation` instance.
