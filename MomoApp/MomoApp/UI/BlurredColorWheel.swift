@@ -7,21 +7,25 @@
 
 import SwiftUI
 
+// MARK: - BlurredColorWheel
+
 struct BlurredColorWheel: View {
     @Binding var section: ColorWheelSection
+
+    private var gradient: AngularGradient {
+        AngularGradient(gradient: .momoTriColorGradient,
+                        center: .center,
+                        angle: .degrees(-90))
+    }
     
     var body: some View {
-        let gradient = AngularGradient(gradient: .momoTriColorGradient,
-                                       center: .center,
-                                       angle: .degrees(-90))
-
         Circle()
-            .strokeBorder(gradient, lineWidth: 50)
+            .strokeBorder(self.gradient, lineWidth: 50)
             .animation(.easeInOut(duration: 1.5))
             .mask(
                 Circle()
                     .trim(from: 0.0, to: 1/3)
-                    .stroke(gradient, lineWidth: 80)
+                    .stroke(self.gradient, lineWidth: 80)
                     .rotationEffect(Angle(degrees: 210))
                     .rotationEffect(Angle(degrees: self.section.degrees))
             )
@@ -32,7 +36,7 @@ struct BlurredColorWheel: View {
 // MARK: - Animation+Extension
 
 extension Animation {
-    /// Animate in `BlurredColorWheel`.
+    /// Activate `BlurredColorWheel`.
     static var activateColorWheel: Animation {
         return self.easeInOut(duration: 1.0)
     }

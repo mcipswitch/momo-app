@@ -9,7 +9,6 @@ import SwiftUI
 
 // MARK: - MomoBackgroundBlur
 
-/// Please see: https://pspdfkit.com/blog/2020/blur-effect-materials-on-ios/
 struct MomoBackgroundBlur: ViewModifier {
     let blurStyle: UIBlurEffect.Style
     let value: Bool
