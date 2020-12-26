@@ -35,12 +35,12 @@ struct BlobView: View {
 
     // MARK: - Internal Views
 
-    var animatingBlobMask: some View {
+    private var animatingBlobMask: some View {
         BlobShape(bezier: blobStyle.bezier, pathBounds: blobStyle.pathBounds)
             .blobAnimation(skew: true,
-                                    breathe: true,
-                                    rotate: true,
-                                    isAnimating: $isAnimating)
+                           breathe: true,
+                           rotate: true,
+                           isAnimating: $isAnimating)
     }
 
     private var blobShadow: some View {
@@ -51,9 +51,9 @@ struct BlobView: View {
                     x: blobStyle.shadowOffset.x,
                     y: blobStyle.shadowOffset.y)
             .blobAnimation(skew: true,
-                                    breathe: true,
-                                    rotate: false,
-                                    isAnimating: $isAnimating)
+                           breathe: true,
+                           rotate: false,
+                           isAnimating: $isAnimating)
     }
 
     private var blobGradient: some View {

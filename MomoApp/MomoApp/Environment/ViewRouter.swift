@@ -9,8 +9,7 @@ import SwiftUI
 import Combine
 
 class ViewRouter: ObservableObject {
-    @Environment(\.journalStyle) var journalStyle
-
+    
     let objectWillChange = PassthroughSubject<(Page), Never>()
     let journalWillChange = PassthroughSubject<(), Never>()
     let homeWillChange = PassthroughSubject<(HomeState), Never>()

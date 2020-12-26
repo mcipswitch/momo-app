@@ -65,7 +65,6 @@ struct MomoAddMoodView: View {
 
                     // Blob
                     ZStack {
-                        // TODO: - Change scale based on the keyboard active
                         BlobView(blobValue: self.$blobValue)
                             .msk_applyBlobStyle(BlobStyle(frameSize: geo.h, scale: 0.35))
 
@@ -106,13 +105,13 @@ struct MomoAddMoodView: View {
                         .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
 
                         #if DEBUG
-                        if let dragState = dragState {
-                            Circle()
-                                .stroke(Color.red, lineWidth: 2)
-                                .frame(width: 20, height: 20)
-                                .position(dragState.location)
-                                .opacity(dragState.isActive ? 1 : 0)
-                        }
+//                        if let dragState = self.dragState {
+//                            Circle()
+//                                .stroke(Color.red, lineWidth: 2)
+//                                .frame(width: 20, height: 20)
+//                                .position(self.dragState.location)
+//                                .opacity(self.dragState.isActive ? 1 : 0)
+//                        }
                         #endif
                     }
                     .frame(height: 160)
@@ -187,11 +186,9 @@ extension MomoAddMoodView {
                     .animation(self.buttonTextOn ? Animation.ease.delay(0.5) : nil)
             }
             .msk_applyMomoButtonStyle(button: self.homeViewActive ? .standard : .joystick)
-            ColorRing(
-                homeViewActive: self.$homeViewActive,
-                isDragging: self.$isDragging
-            )
-            .colorRingAnimation(value: self.$homeViewActive)
+            ColorRing(homeViewActive: self.$homeViewActive,
+                      isDragging: self.$isDragging)
+                .colorRingAnimation(value: self.$homeViewActive)
         }
     }
 
@@ -231,14 +228,13 @@ extension MomoAddMoodView {
 
 // MARK: - Drag Gestures
 
-// TODO: - Refactor this into ViewModifier
 extension MomoAddMoodView {
 
     /// Please see: https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged
     var resistanceDrag: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged(self.onDragChanged(drag:))
-            .updating($dragState) { value, state, _ in
+            .updating(self.$dragState) { value, state, _ in
                 state = .active(location: value.location, translation: value.translation)
             }
             .onEnded(self.onDragEnded(drag:))
@@ -247,12 +243,13 @@ extension MomoAddMoodView {
     private func onDragChanged(drag: DragGesture.Value) {
         self.isDragging = true
 
-        /// The lower the limit, the tigher the resistance
+        /// The lower the limit, the tighter the resistance
         let limit: CGFloat = 200
         let xOff = drag.translation.width
         let yOff = drag.translation.height
         let dist = sqrt(xOff*xOff + yOff*yOff);
         let factor = 1 / (dist / limit + 1)
+
         self.dragValue = CGSize(width: xOff * factor,
                                 height: yOff * factor)
 
@@ -265,9 +262,10 @@ extension MomoAddMoodView {
         newLocation.x += xOff
         newLocation.y += yOff
         let distance = self.dragStart.distance(to: newLocation)
+
         self.colorWheelOn = distance > maxDistance ? true : false
 
-        // Calculate the degrees to activate 'BlurredColorWheel' section
+        // Calculate the degrees to activate corresponding color wheel section
         self.degrees = newLocation.angle(to: self.dragStart)
     }
 
@@ -276,15 +274,6 @@ extension MomoAddMoodView {
         self.dragValue = .zero
         self.colorWheelOn = false
     }
-
-    #if DEBUG
-    var fingerDrag: some Gesture {
-        DragGesture(minimumDistance: 0)
-            .updating($dragState) { value, fingerLocation, _ in
-                fingerLocation = .active(location: value.location, translation: value.translation)
-            }
-    }
-    #endif
 
     // MARK: - Helper vars
 

@@ -191,11 +191,8 @@ struct GraphLine: View {
     }
 
     private var line: some View {
-        Rectangle()
-            .foregroundColor(.clear).frame(width: 1)
-            .background(
-                LinearGradient(.graphLineGradient, direction: .vertical)
-            )
+        LinearGradient(.graphLineGradient, direction: .vertical)
+            .frame(width: 1)
     }
 
     private var dateLabel: some View {

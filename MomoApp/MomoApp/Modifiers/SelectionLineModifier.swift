@@ -68,7 +68,7 @@ struct SelectionLineModifier: ViewModifier {
         // TODO: - The selection line still flashes if dragged out of bounds.
         self.newIdx = self.newIdx.clamp(low: 0, high: self.items - 1)
 
-        //Deprecated
+        // Deprecated:
         //self.newIdx = max(0, self.newIdx)
         //self.newIdx = min(self.items - 1, self.newIdx)
     }
