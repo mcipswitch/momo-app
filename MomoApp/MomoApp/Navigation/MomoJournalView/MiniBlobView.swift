@@ -14,7 +14,7 @@ struct MiniBlobView: View {
     let entry: Entry
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack {
             entryDateAndEmotion
 
             Spacer()
@@ -30,6 +30,7 @@ struct MiniBlobView: View {
 
             Spacer()
         }
+        //.padding(.bottom, 16)
     }
 }
 

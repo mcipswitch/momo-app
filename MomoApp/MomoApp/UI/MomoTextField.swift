@@ -24,9 +24,10 @@ struct MomoTextField: View {
             placeholder
                 .opacity(self.text.isEmpty ? textFieldStyle.placeholderOpacity : 0)
                 .animation(nil, value: self.text)
+
                 // Dim text when text field is focused
                 .opacity(self.isFocused ? 0.1 : textFieldStyle.placeholderOpacity)
-                .animation(.easeOut(duration: 0.2), value: self.isFocused)
+                .animation(.ease, value: self.isFocused)
             textField
                 .onReceive(self.text.publisher.collect()) { _ in
                     self.text = self.text.applyCharLimit(textFieldStyle.charLimit)
