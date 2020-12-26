@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - Date Formatter
+// MARK: - Formatter+Extension
 
 extension Formatter {
     /// Sunday, Nov 8
@@ -17,6 +17,8 @@ extension Formatter {
         return formatter
     }()
 }
+
+// MARK: - Date+Extension
 
 extension Date {
     enum DateFormat: String {
@@ -51,12 +53,6 @@ extension Date {
             arrDates.append(dateString)
         }
         return arrDates
-    }
-    
-    func getDaysInCurrentMonth(date: Date) -> Int {
-        let range = Calendar.current.range(of: .day, in: .month, for: date)!
-        let numOfDays = range.count
-        return numOfDays
     }
     
     func createDate(year: Int, month: Int, day: Int) -> Date {

@@ -48,7 +48,7 @@ extension MomoTextField {
             self.isFocused = editingChanged ? true : false
         }, onCommit: {
 
-            // TODO: THANK YOU SCREEN
+            // TODO: - TBD
             print(text)
 
         })

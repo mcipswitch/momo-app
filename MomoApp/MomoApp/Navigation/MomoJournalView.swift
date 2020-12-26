@@ -15,7 +15,6 @@ struct MomoJournalView: View {
     @State var animateList = false
     @State var animateGraph = false
 
-    // TODO: - Will have to change later if want to keep user's choice
     var body: some View {
         VStack {
             navigationToolbar

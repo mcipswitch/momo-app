@@ -1,5 +1,5 @@
 //
-//  Blob.swift
+//  BlobView.swift
 //  MomoApp
 //
 //  Created by Priscilla Ip on 2020-08-15.
@@ -15,8 +15,7 @@
 import SwiftUI
 import Neumorphic
 
-// TODO: - Should make the shadows more dynamic/scaled
-
+// TODO: - Make shadows more dynamic/scaled
 struct BlobView: View {
     @Environment(\.blobStyle) var blobStyle
     @Binding var blobValue: CGFloat

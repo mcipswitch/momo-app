@@ -82,4 +82,9 @@ extension View {
         return clipShape(RoundedRectangle(cornerRadius: cornerRadius,
                                           style: .continuous))
     }
+
+    /// Disable keyboard avoidance
+    func ignoresKeyboard() -> some View {
+        return ignoresSafeArea(.keyboard)
+    }
 }

@@ -37,6 +37,7 @@ struct MomoAddMoodView: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
+
                 let joystickRadius = ButtonType.joystick.size.w
                 let centerPoint = CGPoint(x: geo.w / 2, y: joystickRadius / 2)
 
@@ -64,7 +65,8 @@ struct MomoAddMoodView: View {
 
                     // Blob
                     ZStack {
-                        BlobView(blobValue: $blobValue)
+                        // TODO: - Change scale based on the keyboard active
+                        BlobView(blobValue: self.$blobValue)
                             .msk_applyBlobStyle(BlobStyle(frameSize: geo.h, scale: 0.35))
 
                         #if DEBUG
@@ -132,23 +134,28 @@ struct MomoAddMoodView: View {
             self.colorWheelSection = self.viewLogic.colorWheelSection(degrees)
             self.blobValue = self.viewLogic.blobValue(degrees)
         }
-        .onChange(of: self.homeViewActive) { _ in
+        .onChange(of: self.homeViewActive) { isHome in
             // This state is needed to animate button text opacity
             self.buttonTextOn.toggle()
 
-            // TODO: - WTF is this?
-            UIApplication.shared.endEditing()
+            if isHome {
+                self.dismissKeyboard()
+            }
         }
-        // TODO: - Fix this later
         .onReceive(self.viewRouter.homeWillChange) { state in
             self.homeViewActive = (state == .home)
         }
+        .ignoresKeyboard()
     }
 }
 
 // MARK: - Internal Methods
 
 extension MomoAddMoodView {
+    private func dismissKeyboard() {
+        UIApplication.shared.endEditing()
+    }
+
     private func addEmotionButtonPressed() {
         self.viewRouter.changeHomeState(.add)
     }
@@ -164,7 +171,7 @@ extension MomoAddMoodView {
     private func doneButtonPressed() {
         self.viewRouter.changeHomeState(.done)
 
-        // TODO: - Add this page
+        // TODO: - TBD
         print("Emotion: \(self.text), Value: \(self.blobValue)")
     }
 }
@@ -224,7 +231,7 @@ extension MomoAddMoodView {
 
 // MARK: - Drag Gestures
 
-// TODO: - refactor this drag gesture into view modifier?
+// TODO: - Refactor this into ViewModifier
 extension MomoAddMoodView {
 
     /// Please see: https://stackoverflow.com/questions/62268937/swiftui-how-to-change-the-speed-of-drag-based-on-distance-already-dragged

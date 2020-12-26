@@ -9,7 +9,6 @@ import SwiftUI
 
 // MARK: - MiniGraphView
 
-// TODO: - clean up this view
 struct MiniGraphView: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
