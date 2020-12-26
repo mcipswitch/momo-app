@@ -15,7 +15,7 @@ extension CGPoint {
         return sqrt(pow((point.x - x), 2) + pow((point.y - y), 2))
     }
 
-    /// Calculates the angle from this point to another point.
+    /// Calculate the angle to another point.
     /// - Parameter point: A `CGPoint`.
     /// - Returns: The angle in degrees.
     /// - Please see: https://stackoverflow.com/questions/6064630/get-angle-from-2-positions
@@ -30,7 +30,7 @@ extension CGPoint {
         return bearingDegrees
     }
 
-    /// Calculates how curved the bezier line should be.
+    /// Calculate how curved the bezier line should be.
     /// - Parameters:
     ///   - point: A `CGPoint`.
     ///   - lineRadius: Value within 0...1 range used to determine how curved the bezier line should be.

@@ -13,7 +13,6 @@ extension Comparable {
     ///   - low: The low end of range.
     ///   - high: The high end of range.
     /// - Returns: Clamped data.
-    /// - Please see: https://www.hackingwithswift.com/articles/141/8-useful-swift-extensions
     func clamp(low: Self, high: Self) -> Self {
         if (self > high) {
             return high

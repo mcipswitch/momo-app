@@ -8,6 +8,7 @@
 import SwiftUI
 
 extension CGFloat {
+    /// Convert radians to degrees.
     var degrees: CGFloat {
         return self * CGFloat(180 / Double.pi)
     }

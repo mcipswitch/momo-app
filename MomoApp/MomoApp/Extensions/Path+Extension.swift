@@ -12,8 +12,10 @@ extension Path {
     /// - Parameters:
     ///   - curveXOffset: The curve offset for x axis to set how curved the bezier curve should be.
     mutating func addCurve(to point: CGPoint, previous: CGPoint, curveXOffset: CGFloat) {
+
         /// Control point with offset to right.
         let control1 = CGPoint(x: previous.x + curveXOffset, y: previous.y)
+
         /// Control point with offset to left.
         let control2 = CGPoint(x: point.x - curveXOffset, y: point.y)
 

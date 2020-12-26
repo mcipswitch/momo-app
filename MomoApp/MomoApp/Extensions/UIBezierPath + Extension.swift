@@ -17,6 +17,8 @@ extension UIBezierPath {
         }
         return (myPaths.bounds)
     }
+
+    // MARK: - Custom Blobs
     
     static var blob1: UIBezierPath {
         let shape = UIBezierPath()

@@ -8,5 +8,6 @@
 import SwiftUI
 
 extension Int {
+    /// Convert to float value.
     public var floatValue: CGFloat { return CGFloat(self) }
 }
