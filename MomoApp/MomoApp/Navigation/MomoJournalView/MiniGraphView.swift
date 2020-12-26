@@ -46,25 +46,22 @@ struct MiniGraphView: View {
                             dateLabelPadding: self.lineChartStyle.dateLabelPadding,
                             onDateLabelHeightChange: self.updateLineGraphBottomPadding
                         )
-                        .frame(width: lineChartStyle.lineFrameWidth, height: geo.h)
-                        .tappable()
+                        .frame(width: self.lineChartStyle.lineFrameWidth, height: geo.h)
+                        .overlayPreferenceValue(SelectionPreferenceKey.self) { preferences in
+                            SelectionLine(preferences: preferences,
+                                          width: self.lineChartStyle.selectionLineWidth)
+                                .opacity(self.selectionLineOn ? 1 : 0)
+                                .draggableSelection(lines: self.entries.count,
+                                                    lineFrameWidth: self.lineChartStyle.lineFrameWidth,
+                                                    lineFrameSpacing: self.lineFrameSpacing,
+                                                    selectedIdx: self.selectedIdx,
+                                                    onDragChanged: self.changeNewIdx(to:),
+                                                    onDragEnded: self.changeSelectedIdx(to:)
+                                )
+                        }
                         .onTapGesture {
                             self.changeSelection(idx)
                         }
-                        .overlayPreferenceValue(SelectionPreferenceKey.self, { preferences in
-                            SelectionLine(
-                                preferences: preferences,
-                                width: self.lineChartStyle.selectionLineWidth
-                            )
-                            .opacity(self.selectionLineOn ? 1 : 0)
-                            .draggableSelection(lines: self.entries.count,
-                                                lineFrameWidth: lineChartStyle.lineFrameWidth,
-                                                lineFrameSpacing: self.lineFrameSpacing,
-                                                selectedIdx: self.selectedIdx,
-                                                onDragChanged: self.changeNewIdx(to:),
-                                                onDragEnded: self.changeSelectedIdx(to:)
-                            )
-                        })
                         .onAppear(perform: self.showSelectionLine)
                     }
                 }
@@ -140,7 +137,6 @@ extension MiniGraphView {
                                 leading: 12,
                                 bottom: self.lineGraphBottomPadding,
                                 trailing: 12))
-            // Set to false so gestures can work
             .allowsHitTesting(false)
     }
 }
@@ -214,9 +210,9 @@ struct SelectionLine: View {
     var body: some View {
         GeometryReader { geo in
             preferences.map {
-                RoundedRectangle(cornerRadius: width / 2)
+                RoundedRectangle(cornerRadius: self.width / 2)
                     .fill(Color.momo)
-                    .frame(width: width, height: geo[$0].height)
+                    .frame(width: self.width, height: geo[$0].height)
                     .frame(width: geo.w,
                            height: geo[$0].height,
                            alignment: .center
