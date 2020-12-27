@@ -20,6 +20,8 @@ struct MomoJournalView: View {
             navigationToolbar
             ZStack {
                 JournalGraphView()
+                    // IMPORTANT:
+                    // Mask entire view so line graph fits within bounds.
                     .maskEntireView()
                     .journalViewAnimation(value: $animateGraph)
                 JournalListView()
