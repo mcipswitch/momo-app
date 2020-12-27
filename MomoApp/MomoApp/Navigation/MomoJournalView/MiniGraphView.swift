@@ -35,7 +35,6 @@ struct MiniGraphView: View {
             lineGraphData
 
             GeometryReader { geo in
-
                 LazyVGrid(columns: layout, alignment: .center) {
                     ForEach(self.entries.indexed(), id: \.1.self) { idx, entry in
                         GraphLine(
@@ -85,7 +84,6 @@ struct MiniGraphView: View {
 // MARK: - Internal Methods
 
 extension MiniGraphView {
-
     private func updateLayout(_ layout: [GridItem]) {
         self.layout = layout
     }
@@ -93,8 +91,8 @@ extension MiniGraphView {
     private func updateLineFrameSpacing(for geo: GeometryProxy) {
         self.lineFrameSpacing = self.viewLogic.lineFrameSpacing(geo: geo,
                                                                 numOfLines: self.entries.count,
-                                                           lineWidth: lineChartStyle.lineFrameWidth,
-                                                           completion: self.updateLayout(_:))
+                                                                lineWidth: lineChartStyle.lineFrameWidth,
+                                                                completion: self.updateLayout(_:))
     }
 
     /// Always reset selection to current day
@@ -158,7 +156,7 @@ struct GraphLine: View {
     }
 
     var body: some View {
-        VStack(spacing: dateLabelPadding) {
+        VStack(spacing: self.dateLabelPadding) {
             line
                 .anchorPreference(
                     key: SelectionPreferenceKey.self,
@@ -217,7 +215,7 @@ struct SelectionLine: View {
                            height: geo[$0].height,
                            alignment: .center
                     )
-                    .msk_applyDropShadow()
+                    .dropShadow()
             }
         }
     }

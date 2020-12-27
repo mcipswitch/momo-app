@@ -20,6 +20,7 @@ struct MomoJournalView: View {
             navigationToolbar
             ZStack {
                 JournalGraphView()
+                    .maskEntireView()
                     .journalViewAnimation(value: $animateGraph)
                 JournalListView()
                     .journalViewAnimation(value: $animateList)
@@ -53,7 +54,7 @@ extension MomoJournalView {
         self.viewRouter.change(to: .home)
     }
 
-    private func journalTypeButtonPressed() {
+    private func journalButtonPressed() {
         self.isGraph.toggle()
         self.viewRouter.toggleJournal()
     }
@@ -68,10 +69,11 @@ extension MomoJournalView {
             HStack(alignment: .top) {
                 MomoToolbarButton(.back, action: self.backButtonPressed)
                 Spacer()
-                MomoToolbarButton(self.currentJournal, action: self.journalTypeButtonPressed)
+                MomoToolbarButton(self.currentJournal, action: self.journalButtonPressed)
             }
         }
         .padding()
+        .disabled(!self.viewRouter.navigationActive)
     }
 }
 

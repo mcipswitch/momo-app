@@ -24,7 +24,7 @@ struct DropShadow: ViewModifier {
 // MARK: - View+Extension
 
 extension View {
-    func msk_applyDropShadow() -> some View {
+    func dropShadow() -> some View {
         return self.modifier(DropShadow())
     }
 }

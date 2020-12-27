@@ -77,6 +77,12 @@ extension View {
         return contentShape(Rectangle())
     }
 
+
+    /// Mask the entire view.
+    func maskEntireView() -> some View {
+        return mask(Rectangle())
+    }
+
     /// Round rect corners.
     func roundedRect(_ cornerRadius: CGFloat) -> some View {
         return clipShape(RoundedRectangle(cornerRadius: cornerRadius,

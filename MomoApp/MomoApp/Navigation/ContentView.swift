@@ -16,14 +16,14 @@ struct ContentView: View {
     var body: some View {
         ZStack {
 
-            // IMPORTANT: - `MomoJournalView` must be underneath to avoid zIndex crash
-            if journalOn {
+            // `MomoJournalView` must be underneath to avoid zIndex crash
+            if self.journalOn {
                 MomoJournalView()
                     .transition(.move(edge: .trailing))
                     .zIndex(2)
             }
             MomoAddMoodView()
-                .msk_applyBackgroundBlurStyle(.systemMaterialDark, value: blurOn)
+                .addBackgroundBlurStyle(.dark, value: self.blurOn)
         }
         .onReceive(self.viewRouter.objectWillChange) { _ in
             self.showJournalView()
@@ -32,8 +32,8 @@ struct ContentView: View {
 
     private func showJournalView() {
         withSpringAnimation {
-            blurOn = viewRouter.isJournal
-            journalOn = viewRouter.isJournal
+            self.blurOn = self.viewRouter.isJournal
+            self.journalOn = self.viewRouter.isJournal
         }
     }
 }

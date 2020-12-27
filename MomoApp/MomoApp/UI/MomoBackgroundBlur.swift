@@ -31,7 +31,7 @@ extension View {
     ///   - blurStyle: Blur styles available for blur effect objects.
     ///   - value: Animates blur if this value is `true`.
     /// - Returns: A modified `View` instance.
-    func msk_applyBackgroundBlurStyle(_ blurStyle: UIBlurEffect.Style, value: Bool = true) -> some View {
+    func addBackgroundBlurStyle(_ blurStyle: UIBlurEffect.Style, value: Bool = true) -> some View {
         return self.modifier(MomoBackgroundBlur(blurStyle: blurStyle, value: value))
     }
 }

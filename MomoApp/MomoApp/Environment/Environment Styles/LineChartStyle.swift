@@ -13,13 +13,11 @@ import SwiftUI
 
 // MARK: - LineChartStyle
 
-// TODO: - clean all this up
 public struct LineChartStyle {
     let lineFrameWidth: CGFloat
     let selectionLineWidth: CGFloat
     let dateLabelPadding: CGFloat
 
-    // lineGraphAnimation
     let duration: Double = 2.0
     let delay: Double = 0.4
 
