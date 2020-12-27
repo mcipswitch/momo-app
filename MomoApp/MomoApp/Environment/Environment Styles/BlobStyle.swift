@@ -46,6 +46,7 @@ public struct BlobStyle {
         bezier: UIBezierPath = .blob3,
         pathBounds: CGRect = UIBezierPath.calculateBounds(paths: [.blob3]),
 
+        //shadowColor: Color = Color.red,
         shadowColor: Color = Color.black.opacity(0.6),
         shadowRadius: CGFloat = 50,
         shadowOffset: CGPoint = CGPoint(x: 10, y: 10),
@@ -56,7 +57,8 @@ public struct BlobStyle {
         innerTopLeftShadowRadius: CGFloat = 30,
 
         innerBottomRightShadowDarkShadow: Color = Color.clear.opacity(1.0),
-        innerBottomRightShadowLightShadow: Color = Color.momoShadow.opacity(0.6),
+        //innerBottomRightShadowLightShadow: Color = Color.momoShadow.opacity(0.6),
+        innerBottomRightShadowLightShadow: Color = Color.red,
         innerBottomRightShadowSpread: CGFloat = 0.8,
         innerBottomRightShadowRadius: CGFloat = 30
     ) {

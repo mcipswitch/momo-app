@@ -36,7 +36,7 @@ struct BlobView: View {
     // MARK: - Internal Views
 
     private var animatingBlobMask: some View {
-        BlobShape(bezier: blobStyle.bezier, pathBounds: blobStyle.pathBounds)
+        BlobShape(bezier: self.blobStyle.bezier, pathBounds: self.blobStyle.pathBounds)
             .blobAnimation(skew: true,
                            breathe: true,
                            rotate: true,
@@ -44,16 +44,16 @@ struct BlobView: View {
     }
 
     private var blobShadow: some View {
-        BlobShape(bezier: blobStyle.bezier, pathBounds: blobStyle.pathBounds)
+        BlobShape(bezier: self.blobStyle.bezier, pathBounds: self.blobStyle.pathBounds)
             .fill(Color.clear)
-            .shadow(color: blobStyle.shadowColor,
-                    radius: blobStyle.shadowRadius,
-                    x: blobStyle.shadowOffset.x,
-                    y: blobStyle.shadowOffset.y)
+            .shadow(color: self.blobStyle.shadowColor,
+                    radius: self.blobStyle.shadowRadius,
+                    x: self.blobStyle.shadowOffset.x,
+                    y: self.blobStyle.shadowOffset.y)
             .blobAnimation(skew: true,
                            breathe: true,
                            rotate: false,
-                           isAnimating: $isAnimating)
+                           isAnimating: self.$isAnimating)
     }
 
     private var blobGradient: some View {
@@ -63,16 +63,16 @@ struct BlobView: View {
                             colors: UIColor.blobColorArray,
                             pct: self.blobValue))
                 .softInnerShadow(Rectangle(),
-                                 darkShadow: blobStyle.innerTopLeftShadowDarkShadow,
-                                 lightShadow: blobStyle.innerTopLeftShadowLightShadow,
-                                 spread: blobStyle.innerTopLeftShadowSpread,
-                                 radius: blobStyle.innerTopLeftShadowRadius)
+                                 darkShadow: self.blobStyle.innerTopLeftShadowDarkShadow,
+                                 lightShadow: self.blobStyle.innerTopLeftShadowLightShadow,
+                                 spread: self.blobStyle.innerTopLeftShadowSpread,
+                                 radius: self.blobStyle.innerTopLeftShadowRadius)
                 .blendMode(.overlay)
                 .softInnerShadow(Rectangle(),
-                                 darkShadow: blobStyle.innerBottomRightShadowDarkShadow,
-                                 lightShadow: blobStyle.innerBottomRightShadowLightShadow,
-                                 spread: blobStyle.innerBottomRightShadowSpread,
-                                 radius: blobStyle.innerBottomRightShadowRadius)
+                                 darkShadow: self.blobStyle.innerBottomRightShadowDarkShadow,
+                                 lightShadow: self.blobStyle.innerBottomRightShadowLightShadow,
+                                 spread: self.blobStyle.innerBottomRightShadowSpread,
+                                 radius: self.blobStyle.innerBottomRightShadowRadius)
                 .blendMode(.multiply)
         }
         .scaleEffect(x: 1.5, y: 1.5, anchor: .center)

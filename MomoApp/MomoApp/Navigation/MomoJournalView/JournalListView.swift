@@ -81,8 +81,12 @@ extension EntryRow {
     private var blobView: some View {
         BlobView(blobValue: self.$blobValue)
             .msk_applyBlobStyle(
-                BlobStyle(scale: self.entryRowStyle.blobScale,
-                          isStatic: true)
+                BlobStyle(scale: 0.2,
+                          isStatic: true,
+                          innerTopLeftShadowSpread: 1.0,
+                          innerTopLeftShadowRadius: 10,
+                          innerBottomRightShadowSpread: 1.0,
+                          innerBottomRightShadowRadius: 10)
             )
     }
 }

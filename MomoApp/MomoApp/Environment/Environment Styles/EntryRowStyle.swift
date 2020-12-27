@@ -10,13 +10,11 @@ import SwiftUI
 // MARK: - EntryRowStyle
 
 public struct EntryRowStyle {
-    let blobScale: CGFloat
     let cornerRadius: CGFloat
     let entryLabelSpacing: CGFloat
     let padding: EdgeInsets
 
     public init(
-        blobScale: CGFloat = 0.2,
         cornerRadius: CGFloat = 8,
         entryLabelSpacing: CGFloat = 8,
         padding: EdgeInsets = EdgeInsets(top: 16,
@@ -24,7 +22,6 @@ public struct EntryRowStyle {
                                          bottom: 16,
                                          trailing: 40)
     ) {
-        self.blobScale = blobScale
         self.cornerRadius = cornerRadius
         self.entryLabelSpacing = entryLabelSpacing
         self.padding = padding

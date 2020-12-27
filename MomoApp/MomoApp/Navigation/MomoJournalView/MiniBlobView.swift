@@ -22,9 +22,8 @@ struct MiniBlobView: View {
             GeometryReader { geo in
                 blobView
                     .position(x: geo.w / 2, y: geo.h / 2)
-                    .msk_applyBlobStyle(
-                        BlobStyle(frameSize: geo.w,
-                                  scale: 0.40)
+                    .msk_applyBlobStyle(BlobStyle(frameSize: geo.w,
+                                                  scale: 0.40)
                     )
             }
 
