@@ -4,6 +4,7 @@
 //
 //  Created by Priscilla Ip on 2020-11-24.
 //
+
 /*
  Resources:
  https://www.objc.io/blog/2020/03/16/swiftui-line-graph-animation/
@@ -12,8 +13,9 @@
 
 import SwiftUI
 
-// MARK: - LineGraphView
+// MARK: - LineGraphData
 
+// TODO: - fix lineOn animation
 struct LineGraphData: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
@@ -29,6 +31,7 @@ struct LineGraphData: View {
             )
             .dropShadow()
             .onAppear(perform: self.lineAnimationIn)
+            .onDisappear(perform: self.resetLineAnimation)
     }
 }
 
@@ -36,9 +39,16 @@ struct LineGraphData: View {
 
 extension LineGraphData {
     private func lineAnimationIn() {
-        withAnimation(self.lineChartStyle.lineGraphAnimation) {
+        withAnimation(self.lineChartStyle.dataAnimation) {
             self.lineOn.toggle()
         }
+    }
+
+    private func resetLineAnimation() {
+        #if DEBUG
+        print("Line graph data disappearing...")
+        #endif
+        self.lineOn = false
     }
 }
 
