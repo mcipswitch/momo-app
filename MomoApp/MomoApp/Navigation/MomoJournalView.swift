@@ -11,7 +11,7 @@ import SwiftUI
 
 struct MomoJournalView: View {
     @EnvironmentObject var viewRouter: ViewRouter
-    @State var isGraph = true
+    @State var currentJournal: ToolbarButton = .list
     @State var animateList = false
     @State var animateGraph = false
 
@@ -29,23 +29,21 @@ struct MomoJournalView: View {
             }
         }
         .addMomoBackground()
-        .onReceive(self.viewRouter.journalWillChange) {
+        .onReceive(self.viewRouter.journalWillChange) { journal in
             withAnimation(Animation.ease.delay(if: !animateGraph, 0.5)) {
                 self.animateGraph.toggle()
             }
             withAnimation(Animation.ease.delay(if: !animateList, 0.5)) {
                 self.animateList.toggle()
             }
+
+            var isGraph: Bool { journal == .graph }
+
+            self.currentJournal = isGraph ? .graph : .list
         }
         .onAppear {
             self.animateGraph.toggle()
         }
-    }
-
-    // MARK: - Helper vars
-
-    private var currentJournal: ToolbarButton {
-        self.isGraph ? .list : .graph
     }
 }
 
@@ -57,7 +55,6 @@ extension MomoJournalView {
     }
 
     private func journalButtonPressed() {
-        self.isGraph.toggle()
         self.viewRouter.toggleJournal()
     }
 }
@@ -75,7 +72,6 @@ extension MomoJournalView {
             }
         }
         .padding()
-        .disabled(!self.viewRouter.navigationActive)
     }
 }
 

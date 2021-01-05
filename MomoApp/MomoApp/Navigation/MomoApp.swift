@@ -18,7 +18,8 @@ struct MomoApp: App {
                 .environmentObject(viewRouter)
                 .environmentObject(viewModel)
 
-                // Dark Keyboard
+                // TODO: - Test this on phone
+                // Dark Mode Keyboard
                 .preferredColorScheme(.dark)
         }
     }

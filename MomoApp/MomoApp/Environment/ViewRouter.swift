@@ -8,21 +8,17 @@
 import SwiftUI
 import Combine
 
+// TODO: - Fix objectwillchange binding
+
 class ViewRouter: ObservableObject {
     
     let objectWillChange = PassthroughSubject<(Page), Never>()
-    let journalWillChange = PassthroughSubject<(), Never>()
+    let journalWillChange = PassthroughSubject<(JournalType), Never>()
     let homeWillChange = PassthroughSubject<(HomeState), Never>()
 
     @Published var currentPage: Page = .home
     @Published var currentJournal: JournalType = .graph
     @Published var currentHomeState: HomeState = .home
-
-    @Published var navigationActive = true
-
-    func navigationActive(_ active: Bool) {
-        self.navigationActive = active
-    }
 
     func change(to page: Page) {
         self.objectWillChange.send(page)
@@ -30,7 +26,7 @@ class ViewRouter: ObservableObject {
     }
 
     func toggleJournal() {
-        self.journalWillChange.send()
+        self.journalWillChange.send(currentJournal)
         self.currentJournal = isGraph ? .list : .graph
     }
 
