@@ -107,15 +107,18 @@ enum ColorWheelSection {
     }
 }
 
-// MARK: - EntryState
+// MARK: - Status
 
-enum EntryState {
-    case add, edit
+enum Status {
+    case add
+    case edit(emotion: String)
+    case done(emotion: String)
 
     var text: String {
         switch self {
         case .add: return "Add today's emotion".localized
         case .edit: return "Edit today's emotion".localized
+        default: return ""
         }
     }
 }

@@ -49,6 +49,7 @@
 		936E0696257F2276002B068E /* AnimatableColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E0695257F2276002B068E /* AnimatableColor.swift */; };
 		937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615852511D22300AEF59C /* CGPoint + Extension.swift */; };
 		937615882512527100AEF59C /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937615872512527100AEF59C /* UIScreen+Extension.swift */; };
+		9378DE7F25A8B6C000ECC86B /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9378DE7E25A8B6C000ECC86B /* AppState.swift */; };
 		9382CFE32576090600ED46D8 /* MomoLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */; };
 		9382CFE625760A8400ED46D8 /* MiniBlobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFE525760A8400ED46D8 /* MiniBlobView.swift */; };
 		9382CFEB25760CD000ED46D8 /* JournalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382CFEA25760CD000ED46D8 /* JournalGraphView.swift */; };
@@ -127,6 +128,7 @@
 		936E0695257F2276002B068E /* AnimatableColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableColor.swift; sourceTree = "<group>"; };
 		937615852511D22300AEF59C /* CGPoint + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint + Extension.swift"; sourceTree = "<group>"; };
 		937615872512527100AEF59C /* UIScreen+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
+		9378DE7E25A8B6C000ECC86B /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		9382CFE22576090600ED46D8 /* MomoLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoLoadingIndicator.swift; sourceTree = "<group>"; };
 		9382CFE525760A8400ED46D8 /* MiniBlobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniBlobView.swift; sourceTree = "<group>"; };
 		9382CFEA25760CD000ED46D8 /* JournalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalGraphView.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 		9318888425582B8C0004CD4F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				9378DE7E25A8B6C000ECC86B /* AppState.swift */,
 				9318888125582B870004CD4F /* EntriesViewModel.swift */,
 				930925042558335C00AA3934 /* DataManager.swift */,
 				9309250A255834BC00AA3934 /* Mock */,
@@ -494,6 +497,7 @@
 				93504C972593B1C900890420 /* EntryRowStyle.swift in Sources */,
 				931D6D9C259278AE0077635D /* RandomAccessCollection+Extension.swift in Sources */,
 				9331230824F94C17008B6DD2 /* Animation + Extension.swift in Sources */,
+				9378DE7F25A8B6C000ECC86B /* AppState.swift in Sources */,
 				937615862511D22300AEF59C /* CGPoint + Extension.swift in Sources */,
 				9322077F2594FF6600E4990F /* MomoAddMoodView+Extension.swift in Sources */,
 				93504C9425938B8900890420 /* String+Extension.swift in Sources */,

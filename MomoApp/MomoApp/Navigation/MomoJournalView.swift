@@ -21,7 +21,7 @@ struct MomoJournalView: View {
             ZStack {
                 JournalGraphView()
                     // IMPORTANT:
-                    // Mask entire view so line graph fits within bounds.
+                    // Masks entire view so line graph fits within bounds.
                     .maskEntireView()
                     .journalViewAnimation(value: $animateGraph)
                 JournalListView()
@@ -51,7 +51,7 @@ struct MomoJournalView: View {
 
 extension MomoJournalView {
     private func backButtonPressed() {
-        self.viewRouter.change(to: .home)
+        self.viewRouter.changePage(to: .home)
     }
 
     private func journalButtonPressed() {

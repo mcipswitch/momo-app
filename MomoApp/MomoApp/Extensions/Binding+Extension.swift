@@ -18,4 +18,12 @@ extension Binding {
             }
         )
     }
+
+    func unwrap<Wrapped>() -> Binding<Wrapped>? where Value == Wrapped? {
+        guard let value = self.wrappedValue else { return nil }
+        return Binding<Wrapped> (
+            get: { value },
+            set: { self.wrappedValue = $0 }
+        )
+    }
 }

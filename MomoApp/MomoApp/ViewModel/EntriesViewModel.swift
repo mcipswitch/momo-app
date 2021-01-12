@@ -72,24 +72,3 @@ struct Entry: Identifiable, Hashable {
     var date: Date
     var value: CGFloat
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//@Published private(set) var state = State()
-
-//    struct State {
-//        var page: Int = 1
-//        var canLoadNextPage = true
-//        var isLoading = false
-//    }

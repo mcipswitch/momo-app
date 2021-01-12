@@ -32,7 +32,7 @@ struct MomoAddMoodView: View {
     @State private var dragStart = CGPoint.zero
     @State private var buttonLocation: CGPoint? = nil
 
-    @State private var state: EntryState = .add
+    @State private var state: Status = .add
 
     var body: some View {
         ZStack {
@@ -160,7 +160,7 @@ extension MomoAddMoodView {
     }
 
     private func pastEntriesButtonPressed() {
-        self.viewRouter.change(to: .journal)
+        self.viewRouter.changePage(to: .journal)
     }
 
     private func backButtonPressed() {

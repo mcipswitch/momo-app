@@ -9,8 +9,10 @@ import SwiftUI
 import Combine
 
 // TODO: - Fix objectwillchange binding
+// TODO: - composable architecture
 
 class ViewRouter: ObservableObject {
+     //let objectWillChange = ObservableObjectPublisher()
     
     let objectWillChange = PassthroughSubject<(Page), Never>()
     let journalWillChange = PassthroughSubject<(JournalType), Never>()
@@ -20,12 +22,12 @@ class ViewRouter: ObservableObject {
     @Published var currentJournal: JournalType = .graph
     @Published var currentHomeState: HomeState = .home
 
-    func change(to page: Page) {
+    func changePage(to page: Page) {
         self.objectWillChange.send(page)
         self.currentPage = page
     }
 
-    func toggleJournal() {
+    func toggleJournal(to journal: JournalType) {
         self.journalWillChange.send(currentJournal)
         self.currentJournal = isGraph ? .list : .graph
     }
@@ -53,13 +55,17 @@ class ViewRouter: ObservableObject {
         self.currentPage == .journal
     }
 
-    // MARK: - Enums
-    
-    enum Page {
-        case home, journal
-    }
+}
 
-    enum HomeState {
-        case home, add, done
-    }
+// MARK: - Enums
+
+enum Page {
+    case home
+    case journal
+}
+
+enum HomeState {
+    case home
+    case add
+    case done
 }
