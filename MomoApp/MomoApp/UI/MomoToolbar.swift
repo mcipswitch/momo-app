@@ -29,6 +29,14 @@ struct MomoToolbarButton: View {
         self.action = action
     }
 
+    init(_ journal: JournalType, action: @escaping () -> Void) {
+        switch journal {
+        case .graph: self.button = .list
+        case .list: self.button = .graph
+        }
+        self.action = action
+    }
+
     var body: some View {
         Button(icon: button, action: action)
             .msk_applyTextStyle(.toolbarIconButtonFont)

@@ -12,12 +12,13 @@
  */
 
 import SwiftUI
+import ComposableArchitecture
 
 // MARK: - LineGraphData
 
 struct LineGraphData: View {
+    @ObservedObject var viewStore: ViewStore<AppState, AppAction>
     @Environment(\.lineChartStyle) var lineChartStyle
-    @EnvironmentObject var viewRouter: ViewRouter
     @State var lineOn = false
     let dataPoints: [CGFloat]
 
@@ -29,22 +30,11 @@ struct LineGraphData: View {
                     .stroke(style: .lineGraphStrokeStyle)
             )
             .dropShadow()
-            .onAppear(perform: self.lineAnimationIn)
-            .onDisappear(perform: self.resetLineAnimation)
-    }
-}
-
-// MARK: - Internal Methods
-
-extension LineGraphData {
-    private func lineAnimationIn() {
-        withAnimation(self.lineChartStyle.dataAnimation) {
-            self.lineOn.toggle()
-        }
-    }
-
-    private func resetLineAnimation() {
-        self.lineOn = false
+            .onChange(of: self.viewStore.lineAnimationOn) { _ in
+                withAnimation(Animation.easeInOut(duration: 2.0)) {
+                    self.lineOn.toggle()
+                }
+            }
     }
 }
 

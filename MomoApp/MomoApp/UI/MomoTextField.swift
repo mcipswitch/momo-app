@@ -14,11 +14,6 @@ struct MomoTextField: View {
     @Binding var text: String
     @Binding var isFocused: Bool
 
-    init(text: Binding<String>, isFocused: Binding<Bool>) {
-        self._text = text
-        self._isFocused = isFocused
-    }
-
     var body: some View {
         ZStack(alignment: .center) {
             placeholder

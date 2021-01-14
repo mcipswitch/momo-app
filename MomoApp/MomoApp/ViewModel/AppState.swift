@@ -14,10 +14,19 @@ struct AppState: Equatable {
     var entries: [Entry]
     var numOfEntries: Int = 7
     var selectedEntry: Entry = .defaultEntry
-    var page: Page?
+    var page: Page = .home
+    var activeJournal: JournalType = .graph
 
+    var blobValue: CGFloat = .zero
     var emotionText: String = ""
-    var emotionTextNotNil: Bool = false
+    var emotionTextFieldFocused = false
+    var colorWheelOn = false
+
+    var lineAnimationOn = false
+
+    var reversedEntries: [Entry] {
+        self.entries.reversed()
+    }
 
     /// Last week (7) of entries
     var journalEntries: [Entry] {
@@ -30,7 +39,7 @@ struct AppState: Equatable {
     }
 }
 
-enum AppAction {
+enum AppAction: Equatable {
     case addEntryPressed
 
     case page(action: PageAction)
@@ -39,17 +48,22 @@ enum AppAction {
     case lineChart(action: LineChartAction)
 
     case home(action: HomeAction)
+    case journal(action: JournalAction)
 }
 
 struct AppEnvironment {
-    //var fetchPage: () -> Effect<Page, Never>
+    var uuid: () -> UUID
 }
 
 // MARK: - HomeReducer
 
-enum HomeAction {
+enum HomeAction: Equatable {
+    case blobValueChanged(CGFloat)
+
     case emotionTextFieldChanged(text: String)
+    case emotionTextFieldFocused(Bool)
     case activateDoneButton
+    case activateColorWheel(Bool)
 }
 
 struct HomeEnvironment {
@@ -57,8 +71,10 @@ struct HomeEnvironment {
 
 // MARK: - LineChartReducer
 
-enum LineChartAction {
+enum LineChartAction: Equatable {
     case selectEntry(Int)
+
+    case startLineAnimation
 }
 
 struct LineChartEnvironment {
@@ -66,59 +82,128 @@ struct LineChartEnvironment {
 
 // MARK: - PageReducer
 
-enum PageAction {
+enum PageAction: Equatable {
     case pageChanged(Page)
 }
 
 // MARK: - EntryReducer
 
-enum EntryAction {
-    case entryEmotionChanged(Double)
-    case entryTextFieldChanged(String)
+enum EntryAction: Equatable {
+    case emotionValueChanged(CGFloat)
+    case emotionTextChanged(String)
 }
 
-struct EntryEnvironment {
-}
+struct EntryEnvironment {}
 
-let entryReducer = Reducer<Entry, EntryAction, EntryEnvironment> { state, action, environment in
+let entryReducer = Reducer<Entry, EntryAction, EntryEnvironment> { state, action, env in
     switch action {
-    case .entryEmotionChanged(let value):
+    case .emotionValueChanged(let value):
+        state.value = value
         return .none
-    case .entryTextFieldChanged(let text):
+    case .emotionTextChanged(let text):
+        state.emotion = text
         return .none
     }
 }
 .debug()
 
+// MARK: - JournalReducer
+
+enum JournalAction: Equatable {
+    case journalTypeChanged(JournalType)
+}
+
 // MARK: - AppReducer
 
 let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
+
     entryReducer.forEach(
         state: \AppState.entries,
         action: /AppAction.entry(index:action:),
         environment: { _ in EntryEnvironment() }
     ),
+
     Reducer { state, action, env in
         switch action {
         case .addEntryPressed:
-            state.entries.insert(Entry(emotion: "Sunflower", date: Date(), value: 0.86), at: 0)
+            state.entries.append(
+                Entry(emotion: state.emotionText,
+                      date: Date(),
+                      value: state.blobValue)
+            )
             return .none
+        case .journal(action: .journalTypeChanged(let journal)):
+            state.activeJournal = journal
+            return .none
+
+
+
+
+
+
         case .entry(index: let index, action: let action):
             return .none
+
+
+
+
+
         case .page(action: .pageChanged(let page)):
             state.page = page
+            struct CancelDelayID: Hashable {}
+            return
+                Effect(value: AppAction.lineChart(action: .startLineAnimation))
+                .delay(for: 0.4, scheduler: DispatchQueue.main)
+                .eraseToEffect()
+                .cancellable(id: CancelDelayID(), cancelInFlight: true)
+
+        case .lineChart(action: .startLineAnimation):
+            state.lineAnimationOn.toggle()
             return .none
+
+
+
+
         case .lineChart(action: .selectEntry(let idx)):
             state.selectedEntry = state.journalEntries[idx]
             return .none
 
 
+
+
+
+
+
+
+
+
+
+
         case .home(action: .emotionTextFieldChanged(text: let text)):
             state.emotionText = text
             return .none
+        case .home(action: .blobValueChanged(let value)):
+            state.blobValue = value
+            return .none
         case .home(action: .activateDoneButton):
+            return .none
+        case .home(action: .emotionTextFieldFocused(let isFocused)):
+            state.emotionTextFieldFocused = isFocused
+            return .none
+
+
+        case .home(action: .activateColorWheel(let on)):
+            state.colorWheelOn = on
             return .none
         }
     }
 )
 .debug()
+
+
+// MARK: - Enums
+
+enum Page {
+    case home
+    case journal
+}

@@ -10,34 +10,29 @@ import ComposableArchitecture
 
 struct ContentView: View {
     let store: Store<AppState, AppAction>
-    @EnvironmentObject var viewRouter: ViewRouter
-    @State private var offset: CGFloat = UIScreen.screenWidth
     @State private var journalOn = false
     @State private var blurOn = false
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
             ZStack {
-
                 // This view must be underneath to avoid zIndex crash
                 if self.journalOn {
-                    MomoJournalView(viewStore: viewStore)
-                        .transition(.move(edge: .trailing))
+                    MomoJournalView(store: self.store,
+                                    viewStore: viewStore)
                         .zIndex(2)
+                        //.transition(.move(edge: .trailing))
+                        .transition(.opacity)
                 }
                 MomoAddMoodView(viewStore: viewStore)
                     .addBackgroundBlurStyle(.dark, value: self.blurOn)
             }
-            .onReceive(self.viewRouter.objectWillChange) { _ in
-                self.showJournalView()
+            .onChange(of: viewStore.page) { _ in
+                withAnimation {
+                    //self.blurOn.toggle()
+                    self.journalOn.toggle()
+                }
             }
-        }
-    }
-
-    private func showJournalView() {
-        withSpringAnimation {
-            self.blurOn = self.viewRouter.isJournal
-            self.journalOn = self.viewRouter.isJournal
         }
     }
 }
@@ -92,11 +87,12 @@ struct ContentView_Previews: PreviewProvider {
                     Entry(id: UUID(), emotion: "Today", date: date, value: 0.0)
                 ]),
                 reducer: appReducer,
-                environment: AppEnvironment()
+                environment: AppEnvironment(
+                    uuid: UUID.init
+                )
                 )
             )
             .previewDevice("iPhone 8")
-            .environmentObject(ViewRouter())
 
 
             //            ContentView(
@@ -113,7 +109,6 @@ struct ContentView_Previews: PreviewProvider {
             //                )
             //            )
             //            .previewDevice("iPhone 11 Pro")
-            //            .environmentObject(ViewRouter())
         }
     }
 }

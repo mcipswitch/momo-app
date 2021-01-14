@@ -10,24 +10,14 @@ import ComposableArchitecture
 
 struct MomoAddMoodView: View {
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
-
-
-    @EnvironmentObject var viewRouter: ViewRouter
     var viewLogic = AddMoodViewLogic()
 
     @State private var homeViewActive = true
-    
-    @State private var blobValue: CGFloat = 0
     @State private var degrees: CGFloat = 0
     @State private var colorWheelSection: ColorWheelSection = .momo
 
     @State private var isDragging = false
     @State private var buttonTextOn = true
-
-    // UI Elements
-    @State private var text = ""
-    @State private var textFieldIsFocused = false
-    @State private var colorWheelOn = false
 
     // Add Emotion Button
     @GestureState private var dragState: DragState = .inactive
@@ -68,14 +58,17 @@ struct MomoAddMoodView: View {
 
                     // Blob
                     ZStack {
-                        BlobView(blobValue: self.$blobValue)
-                            .msk_applyBlobStyle(BlobStyle(frameSize: geo.h, scale: 0.35))
+                        BlobView(blobValue: self.viewStore.binding(
+                                    get: \.blobValue,
+                                    send: { .home(action: .blobValueChanged($0)) })
+                        )
+                        .msk_applyBlobStyle(BlobStyle(frameSize: geo.h, scale: 0.35))
 
                         #if DEBUG
                         VStack {
                             Text("Home: \(String(describing: homeViewActive))")
                             Text("Degrees: \(Int(degrees))")
-                            Text("Blob: \(blobValue)")
+                            Text("Blob: \(self.viewStore.blobValue)")
                             Text("Drag Start: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
                             Text("Dragging: \(String(describing: dragState.isActive))")
                         }
@@ -90,8 +83,8 @@ struct MomoAddMoodView: View {
                     ZStack {
                         BlurredColorWheel(section: self.$colorWheelSection)
                             .position(self.dragStart)
-                            .opacity(self.colorWheelOn ? 1 : 0)
-                            .animation(.activateColorWheel, value: self.colorWheelOn)
+                            .opacity(self.viewStore.colorWheelOn ? 1 : 0)
+                            .animation(.activateColorWheel, value: self.viewStore.colorWheelOn)
 
                         // Joystick + Past Entries
                         ZStack(alignment: .center) {
@@ -103,7 +96,10 @@ struct MomoAddMoodView: View {
                                 .offset(y: 60)
                                 .slideInAnimation(value: self.$homeViewActive)
                         }
-                        .offset(x: self.dragValue.width * 0.8, y: self.dragValue.height * 0.8)
+                        .offset(
+                            x: self.dragValue.width * 0.8,
+                            y: self.dragValue.height * 0.8
+                        )
                         .position(self.buttonLocation ?? centerPoint)
                         .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
 
@@ -134,7 +130,10 @@ struct MomoAddMoodView: View {
         .addMomoBackground()
         .onChange(of: self.degrees) { degrees in
             self.colorWheelSection = self.viewLogic.colorWheelSection(degrees)
-            self.blobValue = self.viewLogic.blobValue(degrees)
+
+            let blobValue = self.viewLogic.blobValue(degrees)
+            self.viewStore.send(.home(action: .blobValueChanged(blobValue)))
+
         }
         .onChange(of: self.homeViewActive) { isHome in
             // This state is needed to animate button text opacity
@@ -143,9 +142,6 @@ struct MomoAddMoodView: View {
             if isHome {
                 self.dismissKeyboard()
             }
-        }
-        .onReceive(self.viewRouter.homeWillChange) { state in
-            self.homeViewActive = (state == .home)
         }
         .ignoresKeyboard()
     }
@@ -159,27 +155,19 @@ extension MomoAddMoodView {
     }
 
     private func addEmotionButtonPressed() {
-        self.viewRouter.changeHomeState(.add)
+        self.homeViewActive.toggle()
     }
 
     private func pastEntriesButtonPressed() {
-        viewStore.send(.page(action: .pageChanged(.journal)))
-
-        self.viewRouter.changePage(to: .journal)
+        self.viewStore.send(.page(action: .pageChanged(.journal)))
     }
 
     private func backButtonPressed() {
-        self.viewRouter.changeHomeState(.home)
+        self.homeViewActive.toggle()
     }
 
     private func doneButtonPressed() {
-        viewStore.send(.addEntryPressed)
-
-
-        self.viewRouter.changeHomeState(.done)
-
-        // TODO: - TBD
-        print("Emotion: \(self.text), Value: \(self.blobValue)")
+        self.viewStore.send(.addEntryPressed)
     }
 }
 
@@ -203,11 +191,13 @@ extension MomoAddMoodView {
     private var topNavigation: some View {
         HStack {
             MomoToolbarButton(.back, action: self.backButtonPressed)
+
             Spacer()
+
             MomoButton(button: .done,
                        action: self.doneButtonPressed,
                        isActive: self.viewStore.binding(
-                        get: { $0.emotionText.isNotEmpty },
+                        get: \.emotionText.isNotEmpty,
                         send: .home(action: .activateDoneButton))
             )
             .animation(.ease, value: self.viewStore.emotionText.isEmpty)
@@ -224,16 +214,23 @@ extension MomoAddMoodView {
             .msk_applyTextStyle(.mainDateFont)
     }
 
+    // TODO: - Fix why `emotionTextFieldChanged` is being called all the time
     private var textField: some View {
         MomoTextField(text: viewStore.binding(
             get: \.emotionText,
             send: { .home(action: .emotionTextFieldChanged(text: $0)) }
         ),
-        isFocused: self.$textFieldIsFocused)
+        isFocused: viewStore.binding(
+            get: \.emotionTextFieldFocused,
+            send: { .home(action: .emotionTextFieldFocused($0)) }
+        ))
     }
 
     private var textFieldBorder: some View {
-        MomoTextFieldBorder(isFocused: self.$textFieldIsFocused)
+        MomoTextFieldBorder(isFocused: self.viewStore.binding(
+            get: \.emotionTextFieldFocused,
+            send: { .home(action: .emotionTextFieldFocused($0)) }
+        ))
     }
 }
 
@@ -274,7 +271,8 @@ extension MomoAddMoodView {
         newLocation.y += yOff
         let distance = self.dragStart.distance(to: newLocation)
 
-        self.colorWheelOn = distance > maxDistance ? true : false
+        self.viewStore.send(.home(action: .activateColorWheel(distance > maxDistance)))
+
 
         // Calculate the degrees to activate corresponding color wheel section
         self.degrees = newLocation.angle(to: self.dragStart)
@@ -283,7 +281,7 @@ extension MomoAddMoodView {
     private func onDragEnded(drag: DragGesture.Value) {
         self.isDragging = false
         self.dragValue = .zero
-        self.colorWheelOn = false
+        self.viewStore.send(.home(action: .activateColorWheel(false)))
     }
 
     // MARK: - Helper vars

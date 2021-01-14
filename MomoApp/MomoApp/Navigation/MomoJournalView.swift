@@ -9,12 +9,8 @@ import SwiftUI
 import ComposableArchitecture
 
 struct MomoJournalView: View {
+    let store: Store<AppState, AppAction>
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
-
-
-
-    @EnvironmentObject var viewRouter: ViewRouter
-    @State var currentJournal: ToolbarButton = .list
     @State var animateList = false
     @State var animateGraph = false
 
@@ -25,22 +21,18 @@ struct MomoJournalView: View {
                 JournalGraphView(viewStore: self.viewStore)
                     .maskEntireView()
                     .journalViewAnimation(value: $animateGraph)
-                JournalListView(viewStore: self.viewStore)
+                JournalListView(store: self.store)
                     .journalViewAnimation(value: $animateList)
             }
         }
         .addMomoBackground()
-        .onReceive(self.viewRouter.journalWillChange) { journal in
+        .onChange(of: self.viewStore.activeJournal) { journal in
             withAnimation(Animation.ease.delay(if: !animateGraph, 0.5)) {
                 self.animateGraph.toggle()
             }
             withAnimation(Animation.ease.delay(if: !animateList, 0.5)) {
                 self.animateList.toggle()
             }
-
-            var isGraph: Bool { journal == .graph }
-
-            self.currentJournal = isGraph ? .graph : .list
         }
         .onAppear {
             self.animateGraph.toggle()
@@ -52,17 +44,16 @@ struct MomoJournalView: View {
 
 extension MomoJournalView {
     private func backButtonPressed() {
-        viewStore.send(.page(action: .pageChanged(.home)))
-
-        self.viewRouter.changePage(to: .home)
+        self.viewStore.send(.page(action: .pageChanged(.home)))
     }
 
     private func journalButtonPressed() {
-        if self.viewRouter.isGraph {
-            self.viewRouter.toggleJournal(to: .list)
+        if self.viewStore.activeJournal == .graph {
+            self.viewStore.send(.journal(action: .journalTypeChanged(.list)))
         } else {
-            self.viewRouter.toggleJournal(to: .graph)
+            self.viewStore.send(.journal(action: .journalTypeChanged(.graph)))
         }
+
     }
 }
 
@@ -71,11 +62,14 @@ extension MomoJournalView {
 extension MomoJournalView {
     private var navigationToolbar: some View {
         ZStack {
-            MomoToolbarTitle(view: self.viewRouter.currentJournal)
+            MomoToolbarTitle(view: self.viewStore.activeJournal)
             HStack(alignment: .top) {
                 MomoToolbarButton(.back, action: self.backButtonPressed)
+
                 Spacer()
-                MomoToolbarButton(self.currentJournal, action: self.journalButtonPressed)
+
+                MomoToolbarButton(self.viewStore.activeJournal,
+                                  action: self.journalButtonPressed)
             }
         }
         .padding()

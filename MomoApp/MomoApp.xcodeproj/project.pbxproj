@@ -293,6 +293,7 @@
 		936C6CD425112E1B00650D4A /* Old */ = {
 			isa = PBXGroup;
 			children = (
+				93E06EA0256C909500E7264D /* ViewRouter.swift */,
 				93976DE624EB6ABF0018C667 /* HomeView.swift */,
 			);
 			path = Old;
@@ -361,7 +362,6 @@
 			isa = PBXGroup;
 			children = (
 				9302A8BD258FA97E00FF2ECB /* Environment Styles */,
-				93E06EA0256C909500E7264D /* ViewRouter.swift */,
 				9327E814258585C90027C638 /* Localizable.strings */,
 			);
 			path = Environment;

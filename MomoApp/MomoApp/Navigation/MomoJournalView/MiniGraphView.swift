@@ -12,7 +12,6 @@ import ComposableArchitecture
 
 struct MiniGraphView: View {
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
-
     @Environment(\.lineChartStyle) var lineChartStyle
     var viewLogic = MiniGraphViewLogic()
 
@@ -133,7 +132,8 @@ extension MiniGraphView {
 
 extension MiniGraphView {
     private var lineGraphData: some View {
-        LineGraphData(dataPoints: self.dataPoints)
+        LineGraphData(viewStore: self.viewStore,
+                      dataPoints: self.dataPoints)
             .padding(EdgeInsets(top: 0,
                                 leading: 12,
                                 bottom: self.lineGraphBottomPadding,

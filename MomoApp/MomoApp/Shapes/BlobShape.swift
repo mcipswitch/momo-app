@@ -15,11 +15,13 @@
 import SwiftUI
 import Neumorphic
 
+// TODO: - fix so it's not binding blob value??
+
 struct BlobView: View {
     @Environment(\.blobStyle) var blobStyle
     @Binding var blobValue: CGFloat
     @State private var isAnimating = false
-    
+
     var body: some View {
         ZStack {
             blobShadow

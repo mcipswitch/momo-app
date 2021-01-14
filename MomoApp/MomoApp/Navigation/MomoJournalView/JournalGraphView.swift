@@ -10,7 +10,6 @@ import ComposableArchitecture
 
 struct JournalGraphView: View {
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
-    @EnvironmentObject var viewModel: EntriesViewModel
     
     var body: some View {
         VStack(spacing: 8) {
@@ -20,8 +19,11 @@ struct JournalGraphView: View {
                 dataPoints: self.viewStore.dataPoints
             )
             MiniBlobView(
-                blobValue: self.$viewModel.selectedEntry.value,
-                entry: self.viewModel.selectedEntry)
+                blobValue: self.viewStore.binding(
+                    get: \.selectedEntry.value,
+                    send: { .home(action: .blobValueChanged($0)) }
+                ),
+                entry: self.viewStore.selectedEntry)
         }
     }
 }

@@ -10,7 +10,6 @@ import ComposableArchitecture
 
 @main
 struct MomoApp: App {
-    @StateObject var viewRouter = ViewRouter()
     @StateObject var viewModel = EntriesViewModel(dataManager: MockDataManager())
     
     var body: some Scene {
@@ -59,10 +58,11 @@ struct MomoApp: App {
                     Entry(id: UUID(), emotion: "Today", date: date, value: 0.0)
                 ]),
                 reducer: appReducer,
-                environment: AppEnvironment()
+                environment: AppEnvironment(
+                    uuid: UUID.init
+                )
                 )
             )
-            .environmentObject(viewRouter)
             .environmentObject(viewModel)
 
             // TODO: - Test this on phone
