@@ -14,7 +14,7 @@ struct MomoTextField: View {
     @Binding var text: String
     @Binding var isFocused: Bool
 
-    init(_ text: Binding<String>, isFocused: Binding<Bool>) {
+    init(text: Binding<String>, isFocused: Binding<Bool>) {
         self._text = text
         self._isFocused = isFocused
     }

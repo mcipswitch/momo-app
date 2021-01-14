@@ -8,6 +8,10 @@
 import Foundation
 
 extension String {
+    public var isNotEmpty: Bool {
+        !self.isEmpty
+    }
+
     var localized: String {
         NSLocalizedString(self, comment: "")
     }

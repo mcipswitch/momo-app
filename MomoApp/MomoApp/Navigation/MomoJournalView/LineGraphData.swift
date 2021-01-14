@@ -15,7 +15,6 @@ import SwiftUI
 
 // MARK: - LineGraphData
 
-// TODO: - fix lineOn animation
 struct LineGraphData: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @EnvironmentObject var viewRouter: ViewRouter
@@ -45,9 +44,6 @@ extension LineGraphData {
     }
 
     private func resetLineAnimation() {
-        #if DEBUG
-        print("Line graph data disappearing...")
-        #endif
         self.lineOn = false
     }
 }

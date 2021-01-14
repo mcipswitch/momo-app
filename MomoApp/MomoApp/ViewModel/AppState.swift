@@ -5,121 +5,120 @@
 //  Created by Priscilla Ip on 2021-01-08.
 //
 
-import Foundation
-import Combine
+import SwiftUI
+import ComposableArchitecture
 
-struct AppState {
+// MARK: - Domain
+
+struct AppState: Equatable {
     var entries: [Entry]
-    var page: Page
+    var numOfEntries: Int = 7
+    var selectedEntry: Entry = .defaultEntry
+    var page: Page?
+
+    var emotionText: String = ""
+    var emotionTextNotNil: Bool = false
+
+    /// Last week (7) of entries
+    var journalEntries: [Entry] {
+        self.entries.suffix(self.numOfEntries)
+    }
+
+    /// Data points for line chart
+    var dataPoints: [CGFloat] {
+        self.entries.suffix(self.numOfEntries + 1).map(\.value)
+    }
 }
 
 enum AppAction {
-    case change(to: Page)
+    case addEntryPressed
 
-    case home(HomeAction)
-    case journal(JournalAction)
+    case page(action: PageAction)
+    case entry(index: Int, action: EntryAction)
+
+    case lineChart(action: LineChartAction)
+
+    case home(action: HomeAction)
 }
 
-// MARK: - Pages
+struct AppEnvironment {
+    //var fetchPage: () -> Effect<Page, Never>
+}
+
+// MARK: - HomeReducer
 
 enum HomeAction {
-    case prepareToAdd
-    case add(entry: Entry)
+    case emotionTextFieldChanged(text: String)
+    case activateDoneButton
 }
 
-enum JournalAction {
-    case toggle(to: JournalType)
+struct HomeEnvironment {
 }
 
+// MARK: - LineChartReducer
 
-
-
-// MARK: - Store
-
-/// Store object that stores app state and provides read-only access to it
-final class Store<State, Action>: ObservableObject {
-    @Published private(set) var state: State
-
-    private let reducer: Reducer<State, Action>
-    private var cancellables: Set<AnyCancellable> = []
-
-    init(initialState: State, reducer: Reducer<State, Action>) {
-        self.state = initialState
-        self.reducer = reducer
-    }
-
-    func send(_ action: Action) {
-        reducer
-            .reduce(state, action)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: perform)
-            .store(in: &cancellables)
-    }
-
-    private func perform(change: Reducer<State, Action>.Change) {
-        change(&state)
-    }
+enum LineChartAction {
+    case selectEntry(Int)
 }
 
-// MARK: - Reducers and Actions
+struct LineChartEnvironment {
+}
 
-//typealias Reducer<State, Action> = (inout State, Action) -> Void
+// MARK: - PageReducer
 
-extension Reducer where State == AppState, Action == AppAction {
-    static func appReducer() -> Reducer {
-        let viewRouter: ViewRouter = .init()
-        let viewModel: EntriesViewModel = .init(dataManager: MockDataManager())
+enum PageAction {
+    case pageChanged(Page)
+}
 
-        return Reducer { state, action in
-            switch action {
-            case .change(let page):
-                viewRouter.changePage(to: page)
-            case .home(let action):
-                handleHomeAction(action, viewModel: viewModel)
-            case .journal(let action):
-                handleJournalAction(action, viewRouter: viewRouter)
-            }
+// MARK: - EntryReducer
 
+enum EntryAction {
+    case entryEmotionChanged(Double)
+    case entryTextFieldChanged(String)
+}
 
-            return Reducer.sync { state in
-                //state.entries =
-            }
-        }
+struct EntryEnvironment {
+}
+
+let entryReducer = Reducer<Entry, EntryAction, EntryEnvironment> { state, action, environment in
+    switch action {
+    case .entryEmotionChanged(let value):
+        return .none
+    case .entryTextFieldChanged(let text):
+        return .none
     }
+}
+.debug()
 
-    private static func handleHomeAction(_ action: HomeAction, viewModel: EntriesViewModel) {
+// MARK: - AppReducer
+
+let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
+    entryReducer.forEach(
+        state: \AppState.entries,
+        action: /AppAction.entry(index:action:),
+        environment: { _ in EntryEnvironment() }
+    ),
+    Reducer { state, action, env in
         switch action {
-        case .prepareToAdd:
-            break
-        case .add(let entry):
-            break
+        case .addEntryPressed:
+            state.entries.insert(Entry(emotion: "Sunflower", date: Date(), value: 0.86), at: 0)
+            return .none
+        case .entry(index: let index, action: let action):
+            return .none
+        case .page(action: .pageChanged(let page)):
+            state.page = page
+            return .none
+        case .lineChart(action: .selectEntry(let idx)):
+            state.selectedEntry = state.journalEntries[idx]
+            return .none
+
+
+        case .home(action: .emotionTextFieldChanged(text: let text)):
+            state.emotionText = text
+            return .none
+        case .home(action: .activateDoneButton):
+            return .none
         }
     }
-
-    private static func handleJournalAction(_ action: JournalAction, viewRouter: ViewRouter) {
-        switch action {
-        case .toggle(let journal):
-            viewRouter.toggleJournal(to: journal)
-        }
-    }
-}
-
-
-
-
-
-
-
-
-// MARK: -
-
-struct Reducer<State, Action> {
-    typealias Change = (inout State) -> Void
-    let reduce: (State, Action) -> AnyPublisher<Change, Never>
-}
-
-extension Reducer {
-    static func sync(_ fun: @escaping (inout State) -> Void) -> AnyPublisher<Change, Never> {
-        Just(fun).eraseToAnyPublisher()
-    }
-}
+)
+.debug()

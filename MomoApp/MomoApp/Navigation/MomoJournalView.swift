@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
-
-// MARK: - MomoJournalView
+import ComposableArchitecture
 
 struct MomoJournalView: View {
+    @ObservedObject var viewStore: ViewStore<AppState, AppAction>
+
+
+
     @EnvironmentObject var viewRouter: ViewRouter
     @State var currentJournal: ToolbarButton = .list
     @State var animateList = false
@@ -19,12 +22,10 @@ struct MomoJournalView: View {
         VStack {
             navigationToolbar
             ZStack {
-                JournalGraphView()
-                    // IMPORTANT:
-                    // Masks entire view so line graph fits within bounds.
+                JournalGraphView(viewStore: self.viewStore)
                     .maskEntireView()
                     .journalViewAnimation(value: $animateGraph)
-                JournalListView()
+                JournalListView(viewStore: self.viewStore)
                     .journalViewAnimation(value: $animateList)
             }
         }
@@ -51,11 +52,17 @@ struct MomoJournalView: View {
 
 extension MomoJournalView {
     private func backButtonPressed() {
+        viewStore.send(.page(action: .pageChanged(.home)))
+
         self.viewRouter.changePage(to: .home)
     }
 
     private func journalButtonPressed() {
-        self.viewRouter.toggleJournal()
+        if self.viewRouter.isGraph {
+            self.viewRouter.toggleJournal(to: .list)
+        } else {
+            self.viewRouter.toggleJournal(to: .graph)
+        }
     }
 }
 
@@ -94,15 +101,3 @@ extension View {
         return modifier(JournalViewAnimation(value: value))
     }
 }
-
-// MARK: - Previews
-
-#if DEBUG
-struct MomoJournalView_Previews: PreviewProvider {
-    static var previews: some View {
-        MomoJournalView()
-            .environmentObject(ViewRouter())
-            .environmentObject(EntriesViewModel(dataManager: MockDataManager()))
-    }
-}
-#endif

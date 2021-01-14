@@ -9,18 +9,16 @@
 // Infinite Scroll: https://www.vadimbulavin.com/infinite-list-scroll-swiftui-combine/
 
 import SwiftUI
-
-// MARK: - JournalListView
+import ComposableArchitecture
 
 struct JournalListView: View {
+    @ObservedObject var viewStore: ViewStore<AppState, AppAction>
     @Environment(\.journalStyle) var journalStyle
-    @EnvironmentObject var viewRouter: ViewRouter
-    @EnvironmentObject var viewModel: EntriesViewModel
 
     var body: some View {
         ScrollView {
             LazyVGrid(columns: self.journalStyle.listLayout) {
-                EntriesList(entries: self.viewModel.entries.reversed())
+                EntriesList(entries: self.viewStore.entries.reversed())
             }
             .padding()
         }
@@ -33,7 +31,7 @@ struct EntriesList: View {
     let entries: [Entry]
 
     var body: some View {
-        ForEach(self.entries, id: \.self) { entry in
+        ForEach(self.entries) { entry in
             EntryRow(entry: entry, blobValue: entry.value)
         }
     }
@@ -42,6 +40,8 @@ struct EntriesList: View {
 // MARK: - EntryRow
 
 struct EntryRow: View {
+    //let store: Store<Entry, EntryAction>
+
     @Environment(\.entryRowStyle) var entryRowStyle
     private let entry: Entry
     @State var blobValue: CGFloat

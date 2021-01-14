@@ -8,12 +8,7 @@
 import SwiftUI
 import Combine
 
-// TODO: - Fix objectwillchange binding
-// TODO: - composable architecture
-
 class ViewRouter: ObservableObject {
-     //let objectWillChange = ObservableObjectPublisher()
-    
     let objectWillChange = PassthroughSubject<(Page), Never>()
     let journalWillChange = PassthroughSubject<(JournalType), Never>()
     let homeWillChange = PassthroughSubject<(HomeState), Never>()

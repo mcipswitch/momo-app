@@ -23,14 +23,15 @@ final class EntriesViewModel: ObservableObject {
     }
 
     /// Data points for `MiniGraphView`
-    var dataPoints = [CGFloat]()
+    var dataPoints: [CGFloat] {
+        self.entries.suffix(8).map(\.value)
+    }
 
     var dataManager: DataManagerProtocol
 
     init(dataManager: DataManagerProtocol = DataManager.shared) {
         self.dataManager = dataManager
         self.fetchEntries()
-        self.fetchDataPoints()
     }
 }
 
@@ -45,30 +46,25 @@ extension EntriesViewModel: EntriesViewModelProtocol {
     func fetchEntries() {
         self.entries = dataManager.fetchEntries()
     }
-
-    func fetchDataPoints() {
-        let lastEightEntries = self.entries.suffix(self.numOfEntries + 1)
-
-        lastEightEntries.forEach {
-            self.dataPoints.append($0.value)
-        }
-    }
 }
 
-// MARK: - Protocol
+// MARK: - EntriesViewModelProtocol
 
 protocol EntriesViewModelProtocol {
     var entries: [Entry] { get }
     func fetchEntries()
-    func fetchDataPoints()
     func fetchSelectedEntry(idx: Int)
 }
 
-// MARK: - Model
+// MARK: - Entry Model
 
-struct Entry: Identifiable, Hashable {
+struct Entry: Identifiable, Hashable, Equatable {
     var id = UUID()
     var emotion: String
     var date: Date
     var value: CGFloat
+}
+
+extension Entry {
+    static let defaultEntry = Entry(emotion: "Default", date: Date(), value: 0.34)
 }

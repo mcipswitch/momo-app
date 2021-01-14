@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 // MARK: - MiniGraphView
 
 struct MiniGraphView: View {
+    @ObservedObject var viewStore: ViewStore<AppState, AppAction>
+
     @Environment(\.lineChartStyle) var lineChartStyle
-    @EnvironmentObject var viewRouter: ViewRouter
     var viewLogic = MiniGraphViewLogic()
 
     let entries: [Entry]
     let dataPoints: [CGFloat]
-    let onEntrySelected: (Int) -> Void
 
     @State private var selectedIdx = Int()
     @State private var idxShift = Int()
@@ -66,13 +67,14 @@ struct MiniGraphView: View {
                 }
                 // This is a temp fix for the LazyVGrid
                 // to transition on with the view transition.
-                .offset(x: self.offset)
+                //.offset(x: self.offset)
                 .onAppear {
-                    // IMPORTANT:
                     // This calculation needs to happen before the animation.
                     self.updateLineFrameSpacing(for: geo)
 
-                    withSpringAnimation { self.offset = 0 }
+//                    withSpringAnimation {
+//                        self.offset = 0
+//                    }
                 }
             }
         }
@@ -92,7 +94,7 @@ extension MiniGraphView {
         self.lineFrameSpacing = self.viewLogic.lineFrameSpacing(geo: geo,
                                                                 numOfLines: self.entries.count,
                                                                 lineWidth: lineChartStyle.lineFrameWidth,
-                                                                completion: self.updateLayout(_:))
+                                                                completion: self.updateLayout)
     }
 
     /// Always reset selection to current day
@@ -103,7 +105,7 @@ extension MiniGraphView {
 
     private func showSelectionLine() {
         withAnimation(lineChartStyle.selectionLineAnimation) {
-            self.selectionLineOn = self.viewRouter.isJournal
+            self.selectionLineOn.toggle()
         }
     }
 
@@ -122,7 +124,8 @@ extension MiniGraphView {
 
     private func changeSelectedIdx(to idx: Int) {
         self.selectedIdx = idx
-        self.onEntrySelected(idx)
+        
+        self.viewStore.send(.lineChart(action: .selectEntry(idx)))
     }
 }
 

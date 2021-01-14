@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct MomoAddMoodView: View {
+    @ObservedObject var viewStore: ViewStore<AppState, AppAction>
+
+
     @EnvironmentObject var viewRouter: ViewRouter
     var viewLogic = AddMoodViewLogic()
 
@@ -23,7 +27,6 @@ struct MomoAddMoodView: View {
     // UI Elements
     @State private var text = ""
     @State private var textFieldIsFocused = false
-    @State private var textFieldNotEmpty = false
     @State private var colorWheelOn = false
 
     // Add Emotion Button
@@ -160,6 +163,8 @@ extension MomoAddMoodView {
     }
 
     private func pastEntriesButtonPressed() {
+        viewStore.send(.page(action: .pageChanged(.journal)))
+
         self.viewRouter.changePage(to: .journal)
     }
 
@@ -168,6 +173,9 @@ extension MomoAddMoodView {
     }
 
     private func doneButtonPressed() {
+        viewStore.send(.addEntryPressed)
+
+
         self.viewRouter.changeHomeState(.done)
 
         // TODO: - TBD
@@ -198,8 +206,11 @@ extension MomoAddMoodView {
             Spacer()
             MomoButton(button: .done,
                        action: self.doneButtonPressed,
-                       isActive: self.$textFieldNotEmpty)
-                .animation(.ease, value: self.textFieldNotEmpty)
+                       isActive: self.viewStore.binding(
+                        get: { $0.emotionText.isNotEmpty },
+                        send: .home(action: .activateDoneButton))
+            )
+            .animation(.ease, value: self.viewStore.emotionText.isEmpty)
         }
     }
 
@@ -214,11 +225,11 @@ extension MomoAddMoodView {
     }
 
     private var textField: some View {
-        MomoTextField(self.$text.onChange(self.textChanged), isFocused: self.$textFieldIsFocused)
-    }
-
-    fileprivate func textChanged(_ text: String) {
-        self.textFieldNotEmpty = !text.isEmpty
+        MomoTextField(text: viewStore.binding(
+            get: \.emotionText,
+            send: { .home(action: .emotionTextFieldChanged(text: $0)) }
+        ),
+        isFocused: self.$textFieldIsFocused)
     }
 
     private var textFieldBorder: some View {

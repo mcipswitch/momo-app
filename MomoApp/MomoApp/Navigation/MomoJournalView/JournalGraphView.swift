@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct JournalGraphView: View {
-    @EnvironmentObject var viewRouter: ViewRouter
+    @ObservedObject var viewStore: ViewStore<AppState, AppAction>
     @EnvironmentObject var viewModel: EntriesViewModel
     
     var body: some View {
         VStack(spacing: 8) {
             MiniGraphView(
-                entries: self.viewModel.latestEntries,
-                dataPoints: self.viewModel.dataPoints,
-                onEntrySelected: self.viewModel.fetchSelectedEntry(idx:)
+                viewStore: self.viewStore,
+                entries: self.viewStore.journalEntries,
+                dataPoints: self.viewStore.dataPoints
             )
             MiniBlobView(
                 blobValue: self.$viewModel.selectedEntry.value,
