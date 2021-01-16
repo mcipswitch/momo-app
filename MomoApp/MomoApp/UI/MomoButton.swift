@@ -41,10 +41,6 @@ struct MomoButtonStyle: ButtonStyle {
         return button == .standard || button == .joystick
     }
 
-    private var isDone: Bool {
-        return button == .done
-    }
-
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .msk_applyButtonStyle(ButtonStyleKit())
@@ -58,14 +54,11 @@ struct MomoButtonStyle: ButtonStyle {
             .opacity(isActive ? buttonStyle.activeOpacity : buttonStyle.inactiveOpacity)
 
             // Activate isPressed opacity if the button is not the joystick
-            .opacity(buttonIsJoystick ? 1 :
-                        configuration.isPressed
-                        ? buttonStyle.pressedOpacity
-                        : 1
-            )
-
-            // TODO: fix Glow
-            // .shadow(color: .momo, radius: 4)
+//            .opacity(buttonIsJoystick ? 1 :
+//                        configuration.isPressed
+//                        ? buttonStyle.pressedOpacity
+//                        : 1
+//            )
     }
 }
 

@@ -11,13 +11,13 @@ import SwiftUI
 
 enum JournalType {
     case list
-    case graph
+    case chart
 
     var title: String {
         switch self {
         case .list:
             return "All entries".localized
-        case .graph:
+        case .chart:
             return "Last 7 days".localized
         }
     }
@@ -28,21 +28,26 @@ enum JournalType {
 enum ButtonType {
     typealias SizeTuple = (w: CGFloat, h: CGFloat)
 
-    case done
+    case done, doneConfirmed
     case standard, joystick
 
     var text: String {
         switch self {
-        case .done: return "Done".localized
-        default: return ""
+        case .done, .doneConfirmed:
+            return "Done".localized
+        default:
+            return ""
         }
     }
 
     var size: SizeTuple {
         switch self {
-        case .done: return SizeTuple(90, 34)
-        case .standard: return SizeTuple(230, 60)
-        case .joystick: return SizeTuple(80, 80)
+        case .done, .doneConfirmed:
+            return SizeTuple(90, 34)
+        case .standard:
+            return SizeTuple(230, 60)
+        case .joystick:
+            return SizeTuple(80, 80)
         }
     }
 
@@ -50,8 +55,9 @@ enum ButtonType {
         switch self {
         case .done:
             return "arrow.right"
-        default:
-            return ""
+        case .doneConfirmed:
+            return "checkmark"
+        default: return ""
         }
     }
 }
@@ -59,13 +65,13 @@ enum ButtonType {
 // MARK: - ToolbarButton
 
 enum ToolbarButton {
-    case back
+    case backButton
     case list
     case graph
 
     var imageName: String {
         switch self {
-        case .back:
+        case .backButton:
             return "chevron.backward"
         case .list:
             return "list.bullet"

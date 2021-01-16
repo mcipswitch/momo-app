@@ -15,16 +15,12 @@ struct JournalChartView: View {
         WithViewStore(self.store) { viewStore in
             VStack(spacing: 8) {
                 MiniChartView(
+                    store: self.store,
                     viewStore: viewStore,
                     entries: viewStore.journalEntries,
                     dataPoints: viewStore.dataPoints
                 )
-                MiniBlobView(
-                    blobValue: viewStore.binding(
-                        get: \.selectedEntry.value,
-                        send: { .home(action: .blobValueChanged($0)) }
-                    ),
-                    entry: viewStore.selectedEntry)
+                MiniBlobView(viewStore: viewStore)
             }
         }
     }

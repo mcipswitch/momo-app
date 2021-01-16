@@ -59,6 +59,7 @@ struct MomoApp: App {
                 ]),
                 reducer: appReducer,
                 environment: AppEnvironment(
+                    mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
                     uuid: UUID.init
                 )
                 )

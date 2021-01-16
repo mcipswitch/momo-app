@@ -27,12 +27,19 @@ struct MomoAddMoodView: View {
 
     @State private var state: Status = .add
 
+    private var isEditMode: Bool {
+        self.viewStore.currentStatus == .edit
+    }
+
     var body: some View {
         ZStack {
             GeometryReader { geo in
 
                 let joystickRadius = ButtonType.joystick.size.w
-                let centerPoint = CGPoint(x: geo.w / 2, y: joystickRadius / 2)
+                let centerPoint = CGPoint(
+                    x: geo.w / 2,
+                    y: joystickRadius / 2
+                )
 
                 // START: - Main View
                 VStack {
@@ -92,9 +99,11 @@ struct MomoAddMoodView: View {
                                 // Add delay so the 'Color Ring' disappears first.
                                 .animation(.resist, value: self.dragState.isActive)
                                 .addEmotionButtonAnimation(value: self.$homeViewActive)
-                            MomoLinkButton(.pastEntries, action: self.pastEntriesButtonPressed)
-                                .offset(y: 60)
-                                .slideInAnimation(value: self.$homeViewActive)
+                            MomoLinkButton(.pastEntries) {
+                                self.viewStore.send(.page(action: .pageChanged(.journal)))
+                            }
+                            .offset(y: 60)
+                            .slideInAnimation(value: self.$homeViewActive)
                         }
                         .offset(
                             x: self.dragValue.width * 0.8,
@@ -155,19 +164,13 @@ extension MomoAddMoodView {
     }
 
     private func addEmotionButtonPressed() {
+        // TODO: - fix this to a state
         self.homeViewActive.toggle()
-    }
-
-    private func pastEntriesButtonPressed() {
-        self.viewStore.send(.page(action: .pageChanged(.journal)))
     }
 
     private func backButtonPressed() {
+        // TODO: - fix this to a state
         self.homeViewActive.toggle()
-    }
-
-    private func doneButtonPressed() {
-        self.viewStore.send(.addEntryPressed)
     }
 }
 
@@ -190,15 +193,18 @@ extension MomoAddMoodView {
 
     private var topNavigation: some View {
         HStack {
-            MomoToolbarButton(.back, action: self.backButtonPressed)
+            MomoToolbarButton(.backButton, action: self.backButtonPressed)
 
             Spacer()
 
-            MomoButton(button: .done,
-                       action: self.doneButtonPressed,
+            MomoButton(button: self.isEditMode ? .doneConfirmed : .done,
+                       action: {
+                        self.viewStore.send(.addEntryPressed)
+                       },
                        isActive: self.viewStore.binding(
                         get: \.emotionText.isNotEmpty,
-                        send: .home(action: .activateDoneButton))
+                        send: .home(action: .activateDoneButton)
+                       )
             )
             .animation(.ease, value: self.viewStore.emotionText.isEmpty)
         }

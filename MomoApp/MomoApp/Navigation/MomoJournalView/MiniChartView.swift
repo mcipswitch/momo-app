@@ -8,9 +8,9 @@
 import SwiftUI
 import ComposableArchitecture
 
-// MARK: - MiniGraphView
-
 struct MiniChartView: View {
+    let store: Store<AppState, AppAction>
+
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
     @Environment(\.lineChartStyle) var lineChartStyle
     var viewLogic = MiniGraphViewLogic()

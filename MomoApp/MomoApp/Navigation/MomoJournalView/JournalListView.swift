@@ -5,8 +5,6 @@
 //  Created by Priscilla Ip on 2020-11-08.
 //
 
-// Blur Effect Materials: https://pspdfkit.com/blog/2020/blur-effect-materials-on-ios/
-
 import SwiftUI
 import ComposableArchitecture
 

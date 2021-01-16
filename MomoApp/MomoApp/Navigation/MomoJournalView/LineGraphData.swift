@@ -30,7 +30,7 @@ struct LineGraphData: View {
                     .stroke(style: .lineGraphStrokeStyle)
             )
             .dropShadow()
-            .onChange(of: self.viewStore.lineAnimationOn) { _ in
+            .onChange(of: self.viewStore.lineChartAnimationOn) { _ in
                 withAnimation(Animation.easeInOut(duration: 2.0)) {
                     self.lineOn.toggle()
                 }

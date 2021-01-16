@@ -11,6 +11,10 @@ import SwiftUI
 
 struct MomoToolbarTitle: View {
     let view: JournalType
+
+    init(_ view: JournalType) {
+        self.view = view
+    }
     
     var body: some View {
         Text(view.title)
@@ -31,7 +35,7 @@ struct MomoToolbarButton: View {
 
     init(_ journal: JournalType, action: @escaping () -> Void) {
         switch journal {
-        case .graph: self.button = .list
+        case .chart: self.button = .list
         case .list: self.button = .graph
         }
         self.action = action

@@ -10,19 +10,39 @@ import ComposableArchitecture
 
 // MARK: - Domain
 
+enum EntryStatus: Equatable {
+    case add
+    case edit
+}
+
 struct AppState: Equatable {
     var entries: [Entry]
+    var currentStatus: EntryStatus = .add
+    var page: Page = .home
+
+    // Journal
+    var activeJournal: JournalType = .chart
+
+    // JournalChartView
     var numOfEntries: Int = 7
     var selectedEntry: Entry = .defaultEntry
-    var page: Page = .home
-    var activeJournal: JournalType = .graph
+    var lineChartAnimationOn = false
+    var selectionLineAnimationOn = false
+
+
+
+
+
+
+
+
 
     var blobValue: CGFloat = .zero
     var emotionText: String = ""
     var emotionTextFieldFocused = false
     var colorWheelOn = false
 
-    var lineAnimationOn = false
+
 
     var reversedEntries: [Entry] {
         self.entries.reversed()
@@ -52,6 +72,7 @@ enum AppAction: Equatable {
 }
 
 struct AppEnvironment {
+    var mainQueue: AnySchedulerOf<DispatchQueue>
     var uuid: () -> UUID
 }
 
@@ -67,17 +88,6 @@ enum HomeAction: Equatable {
 }
 
 struct HomeEnvironment {
-}
-
-// MARK: - LineChartReducer
-
-enum LineChartAction: Equatable {
-    case selectEntry(Int)
-
-    case startLineAnimation
-}
-
-struct LineChartEnvironment {
 }
 
 // MARK: - PageReducer
@@ -107,11 +117,23 @@ let entryReducer = Reducer<Entry, EntryAction, EntryEnvironment> { state, action
 }
 .debug()
 
-// MARK: - JournalReducer
+// MARK: - Journal Actions
 
 enum JournalAction: Equatable {
-    case journalTypeChanged(JournalType)
+    case activeJournalChanged(JournalType)
 }
+
+// MARK: - LineChart Actions
+
+enum LineChartAction: Equatable {
+    case selectEntry(Int)
+    case startLineChartAnimation
+    case startSelectionLineAnimation
+}
+
+
+
+
 
 // MARK: - AppReducer
 
@@ -131,10 +153,25 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
                       date: Date(),
                       value: state.blobValue)
             )
+
+            state.currentStatus = .edit
             return .none
-        case .journal(action: .journalTypeChanged(let journal)):
+        case .journal(action: .activeJournalChanged(let journal)):
             state.activeJournal = journal
             return .none
+
+//            struct CancelDelayID: Hashable {}
+//            return
+//                Effect(value: AppAction.journal(
+//                    action: journal == .graph
+//                        ? .showJournalChart
+//                        : .showJournalList
+//                ))
+//                .debounce(id: CancelDelayID(),
+//                          for: 0.5,
+//                          scheduler: env.mainQueue)
+
+
 
 
 
@@ -150,20 +187,27 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 
         case .page(action: .pageChanged(let page)):
             state.page = page
+
             struct CancelDelayID: Hashable {}
             return
-                Effect(value: AppAction.lineChart(action: .startLineAnimation))
-                .delay(for: 0.4, scheduler: DispatchQueue.main)
-                .eraseToEffect()
-                .cancellable(id: CancelDelayID(), cancelInFlight: true)
+                Effect(value: AppAction.lineChart(action: .startLineChartAnimation))
+                .debounce(id: CancelDelayID(),
+                          for: 0.4,
+                          scheduler: env.mainQueue)
 
-        case .lineChart(action: .startLineAnimation):
-            state.lineAnimationOn.toggle()
+        case .lineChart(action: .startLineChartAnimation):
+            state.lineChartAnimationOn.toggle()
+
+            struct CancelDelayID: Hashable {}
+            return
+                Effect(value: AppAction.lineChart(action: .startSelectionLineAnimation))
+                .debounce(id: CancelDelayID(),
+                          for: 1.8,
+                          scheduler: env.mainQueue)
+
+        case .lineChart(action: .startSelectionLineAnimation):
+            state.selectionLineAnimationOn.toggle()
             return .none
-
-
-
-
         case .lineChart(action: .selectEntry(let idx)):
             state.selectedEntry = state.journalEntries[idx]
             return .none
@@ -182,6 +226,11 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         case .home(action: .emotionTextFieldChanged(text: let text)):
             state.emotionText = text
             return .none
+
+
+
+
+
         case .home(action: .blobValueChanged(let value)):
             state.blobValue = value
             return .none

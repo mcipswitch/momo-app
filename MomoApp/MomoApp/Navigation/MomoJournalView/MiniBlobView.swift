@@ -6,46 +6,34 @@
 //
 
 import SwiftUI
-
-// MARK: - MiniBlobView
+import ComposableArchitecture
 
 struct MiniBlobView: View {
-    @Binding var blobValue: CGFloat
-    let entry: Entry
+    @ObservedObject var viewStore: ViewStore<AppState, AppAction>
 
     var body: some View {
         VStack {
-            entryDateAndEmotion
+            VStack(spacing: 12) {
+                Text(viewStore.selectedEntry.date, formatter: .shortDate)
+                    .msk_applyTextStyle(.mainDateFont)
+                Text(viewStore.selectedEntry.emotion)
+                    .msk_applyTextStyle(.mainMessageFont)
+            }
 
             Spacer()
 
             GeometryReader { geo in
-                blobView
-                    .position(x: geo.w / 2, y: geo.h / 2)
-                    .msk_applyBlobStyle(BlobStyle(frameSize: geo.w,
-                                                  scale: 0.40)
-                    )
+                BlobView(blobValue: viewStore.binding(
+                    get: \.selectedEntry.value,
+                    send: { .home(action: .blobValueChanged($0)) }
+                ))
+                .position(x: geo.w / 2, y: geo.h / 2)
+                .msk_applyBlobStyle(
+                    BlobStyle(frameSize: geo.w, scale: 0.40)
+                )
             }
 
             Spacer()
         }
-        //.padding(.bottom, 16)
-    }
-}
-
-// MARK: - Internal Views
-
-extension MiniBlobView {
-    private var entryDateAndEmotion: some View {
-        VStack(spacing: 12) {
-            Text(self.entry.date, formatter: .shortDate)
-                .msk_applyTextStyle(.mainDateFont)
-            Text(self.entry.emotion)
-                .msk_applyTextStyle(.mainMessageFont)
-        }
-    }
-
-    private var blobView: some View {
-        BlobView(blobValue: $blobValue)
     }
 }

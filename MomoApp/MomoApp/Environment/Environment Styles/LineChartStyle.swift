@@ -21,10 +21,6 @@ public struct LineChartStyle {
     let duration: Double = 2.0
     let delay: Double = 0.4
 
-    var dataAnimation: Animation {
-        Animation.easeInOut(duration: duration).delay(delay)
-    }
-
     var selectionLineAnimation: Animation {
         Animation.easeInOut(duration: 1.0).delay(duration + delay)
     }

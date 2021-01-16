@@ -10,28 +10,20 @@ import ComposableArchitecture
 
 struct ContentView: View {
     let store: Store<AppState, AppAction>
-    @State private var journalOn = false
-    @State private var blurOn = false
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
             ZStack {
-                // This view must be underneath to avoid zIndex crash
-                if self.journalOn {
-                    MomoJournalView(store: self.store,
-                                    viewStore: viewStore)
+                if viewStore.page == .journal {
+                    MomoJournalView(store: self.store)
                         .zIndex(2)
-                        //.transition(.move(edge: .trailing))
-                        .transition(.opacity)
+                        .transition(
+                            AnyTransition.opacity.animation(
+                                .easeInOut
+                            )
+                        )
                 }
                 MomoAddMoodView(viewStore: viewStore)
-                    .addBackgroundBlurStyle(.dark, value: self.blurOn)
-            }
-            .onChange(of: viewStore.page) { _ in
-                withAnimation {
-                    //self.blurOn.toggle()
-                    self.journalOn.toggle()
-                }
             }
         }
     }
@@ -88,6 +80,7 @@ struct ContentView_Previews: PreviewProvider {
                 ]),
                 reducer: appReducer,
                 environment: AppEnvironment(
+                    mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
                     uuid: UUID.init
                 )
                 )
