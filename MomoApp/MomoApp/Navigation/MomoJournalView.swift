@@ -14,22 +14,8 @@ struct MomoJournalView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             VStack {
-                ZStack {
-                    MomoToolbarTitle(viewStore.activeJournal)
-                    HStack(alignment: .top) {
-                        MomoToolbarButton(.backButton) {
-                            viewStore.send(.page(action: .pageChanged(.home)))
-                        }
-
-                        Spacer()
-
-                        MomoToolbarButton(viewStore.activeJournal) {
-                            viewStore.send(.journal(action: .activeJournalChanged(
-                                viewStore.activeJournal == .chart ? .list : .chart)))
-                        }
-                    }
-                }
-                .padding()
+                NavToolbar(store: self.store)
+                    .padding()
 
                 ZStack {
                     JournalChartView(store: self.store)
@@ -40,6 +26,30 @@ struct MomoJournalView: View {
                 
             }
             .addMomoBackground()
+        }
+    }
+}
+
+struct NavToolbar: View {
+    let store: Store<AppState, AppAction>
+
+    var body: some View {
+        WithViewStore(self.store) { viewStore in
+            ZStack {
+                MomoToolbarTitle(viewStore.activeJournal)
+                HStack(alignment: .top) {
+                    MomoToolbarButton(.backButton) {
+                        viewStore.send(.page(action: .pageChanged(.home)))
+                    }
+
+                    Spacer()
+
+                    MomoToolbarButton(viewStore.activeJournal) {
+                        viewStore.send(.journal(action: .activeJournalChanged(
+                                                    viewStore.activeJournal == .chart ? .list : .chart)))
+                    }
+                }
+            }
         }
     }
 }

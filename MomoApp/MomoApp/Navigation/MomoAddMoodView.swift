@@ -142,7 +142,6 @@ struct MomoAddMoodView: View {
 
             let blobValue = self.viewLogic.blobValue(degrees)
             self.viewStore.send(.home(action: .blobValueChanged(blobValue)))
-
         }
         .onChange(of: self.homeViewActive) { isHome in
             // This state is needed to animate button text opacity

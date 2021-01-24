@@ -18,9 +18,7 @@ struct ContentView: View {
                     MomoJournalView(store: self.store)
                         .zIndex(2)
                         .transition(
-                            AnyTransition.opacity.animation(
-                                .easeInOut
-                            )
+                            AnyTransition.opacity.animation(.easeInOut)
                         )
                 }
                 MomoAddMoodView(viewStore: viewStore)
@@ -86,22 +84,6 @@ struct ContentView_Previews: PreviewProvider {
                 )
             )
             .previewDevice("iPhone 8")
-
-
-            //            ContentView(
-            //                store: Store(initialState: AppState(entries: [
-            //                    Entry(emotion: "Fire", date: date.createDate(year: 2020, month: 11, day: 10), value: 0.65),
-            //                    Entry(emotion: "Artsy", date: date.createDate(year: 2020, month: 11, day: 11), value: 0.56),
-            //                    Entry(emotion: "Gloomy", date: date.createDate(year: 2020, month: 11, day: 12), value: 0.43),
-            //                    Entry(emotion: "Candy", date: date.createDate(year: 2020, month: 11, day: 13), value: 0.98),
-            //                    Entry(emotion: "Lights", date: date.createDate(year: 2020, month: 11, day: 14), value: 0.56),
-            //                    Entry(emotion: "Today", date: date, value: 0.0)
-            //                ]),
-            //                reducer: appReducer,
-            //                environment: AppEnvironment()
-            //                )
-            //            )
-            //            .previewDevice("iPhone 11 Pro")
         }
     }
 }
