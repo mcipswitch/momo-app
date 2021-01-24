@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             ZStack {
-                if viewStore.page == .journal {
+                if viewStore.activePage == .journal {
                     MomoJournalView(store: self.store)
                         .zIndex(2)
                         .transition(

@@ -18,9 +18,7 @@ enum EntryStatus: Equatable {
 struct AppState: Equatable {
     var entries: [Entry]
     var currentStatus: EntryStatus = .add
-    var page: Page = .home
-
-    // Journal
+    var activePage: Page = .home
     var activeJournal: JournalType = .chart
 
     // JournalChartView
@@ -98,7 +96,7 @@ struct HomeEnvironment {
 // MARK: - PageReducer
 
 enum PageAction: Equatable {
-    case pageChanged(Page)
+    case activePageChanged(Page)
 }
 
 // MARK: - EntryReducer
@@ -174,8 +172,8 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 
 
         // MARK: - Page Actions
-        case .page(action: .pageChanged(let page)):
-            state.page = page
+        case .page(action: .activePageChanged(let page)):
+            state.activePage = page
 
             struct CancelDelayID: Hashable {}
             return

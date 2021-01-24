@@ -100,7 +100,7 @@ struct MomoAddMoodView: View {
                                 .animation(.resist, value: self.dragState.isActive)
                                 .addEmotionButtonAnimation(value: self.$homeViewActive)
                             MomoLinkButton(.pastEntries) {
-                                self.viewStore.send(.page(action: .pageChanged(.journal)))
+                                self.viewStore.send(.page(action: .activePageChanged(.journal)))
                             }
                             .offset(y: 60)
                             .slideInAnimation(value: self.$homeViewActive)
