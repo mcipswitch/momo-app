@@ -20,7 +20,8 @@ struct JournalListView: View {
                         self.store.scope(
                             state: \.reversedEntries,
                             action: AppAction.entry(index:action:)
-                        ), content: EntryRow.init(store:)
+                        ),
+                        content: EntryRow.init(store:)
                     )
                 }
             }

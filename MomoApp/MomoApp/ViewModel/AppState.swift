@@ -29,6 +29,11 @@ struct AppState: Equatable {
     var lineChartAnimationOn = false
     var selectionLineAnimationOn = false
 
+    var newIdx: Int = 0
+    var selectedIdx: Int = 0
+
+
+
 
 
 
@@ -126,19 +131,14 @@ enum JournalAction: Equatable {
 // MARK: - LineChart Actions
 
 enum LineChartAction: Equatable {
-    case selectEntry(Int)
+    case changeSelectedEntry(Int)
     case startLineChartAnimation
     case startSelectionLineAnimation
 }
 
-
-
-
-
 // MARK: - AppReducer
 
 let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
-
     entryReducer.forEach(
         state: \AppState.entries,
         action: /AppAction.entry(index:action:),
@@ -160,17 +160,6 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             state.activeJournal = journal
             return .none
 
-//            struct CancelDelayID: Hashable {}
-//            return
-//                Effect(value: AppAction.journal(
-//                    action: journal == .graph
-//                        ? .showJournalChart
-//                        : .showJournalList
-//                ))
-//                .debounce(id: CancelDelayID(),
-//                          for: 0.5,
-//                          scheduler: env.mainQueue)
-
 
 
 
@@ -184,7 +173,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 
 
 
-
+        // MARK: - Page Actions
         case .page(action: .pageChanged(let page)):
             state.page = page
 
@@ -195,6 +184,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
                           for: 0.4,
                           scheduler: env.mainQueue)
 
+        // MARK: - Line Chart Actions
         case .lineChart(action: .startLineChartAnimation):
             state.lineChartAnimationOn.toggle()
 
@@ -204,14 +194,12 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
                 .debounce(id: CancelDelayID(),
                           for: 1.8,
                           scheduler: env.mainQueue)
-
         case .lineChart(action: .startSelectionLineAnimation):
             state.selectionLineAnimationOn.toggle()
             return .none
-        case .lineChart(action: .selectEntry(let idx)):
+        case .lineChart(action: .changeSelectedEntry(let idx)):
             state.selectedEntry = state.journalEntries[idx]
             return .none
-
 
 
 

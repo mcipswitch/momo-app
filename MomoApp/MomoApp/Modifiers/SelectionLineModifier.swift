@@ -87,7 +87,3 @@ extension View {
                                                    onDragEnded: onDragEnded))
     }
 }
-
-// Deprecated:
-//self.newIdx = max(0, self.newIdx)
-//self.newIdx = min(self.items - 1, self.newIdx)

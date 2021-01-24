@@ -16,9 +16,7 @@ struct JournalChartView: View {
             VStack(spacing: 8) {
                 MiniChartView(
                     store: self.store,
-                    viewStore: viewStore,
-                    entries: viewStore.journalEntries,
-                    dataPoints: viewStore.dataPoints
+                    viewStore: viewStore
                 )
                 MiniBlobView(viewStore: viewStore)
             }
