@@ -29,6 +29,8 @@
 		9318888225582B870004CD4F /* EntriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9318888125582B870004CD4F /* EntriesViewModel.swift */; };
 		931D6D9725926AF00077635D /* MiniGraphView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D6D9625926AF00077635D /* MiniGraphView+Extension.swift */; };
 		931D6D9C259278AE0077635D /* RandomAccessCollection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D6D9B259278AE0077635D /* RandomAccessCollection+Extension.swift */; };
+		931DA11025D1884400BDB11F /* PersistenceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931DA10F25D1884400BDB11F /* PersistenceProvider.swift */; };
+		931DA11725D18ADB00BDB11F /* MomoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 931DA11525D18ADB00BDB11F /* MomoApp.xcdatamodeld */; };
 		9322077C2594F0ED00E4990F /* Comparable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9322077B2594F0ED00E4990F /* Comparable+Extension.swift */; };
 		9322077F2594FF6600E4990F /* MomoAddMoodView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9322077E2594FF6600E4990F /* MomoAddMoodView+Extension.swift */; };
 		9327DD242589E31E00BBDA53 /* MomoBackgroundBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */; };
@@ -108,6 +110,8 @@
 		9318888125582B870004CD4F /* EntriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesViewModel.swift; sourceTree = "<group>"; };
 		931D6D9625926AF00077635D /* MiniGraphView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MiniGraphView+Extension.swift"; sourceTree = "<group>"; };
 		931D6D9B259278AE0077635D /* RandomAccessCollection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RandomAccessCollection+Extension.swift"; sourceTree = "<group>"; };
+		931DA10F25D1884400BDB11F /* PersistenceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceProvider.swift; sourceTree = "<group>"; };
+		931DA11625D18ADB00BDB11F /* MomoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MomoApp.xcdatamodel; sourceTree = "<group>"; };
 		9322077B2594F0ED00E4990F /* Comparable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Extension.swift"; sourceTree = "<group>"; };
 		9322077E2594FF6600E4990F /* MomoAddMoodView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomoAddMoodView+Extension.swift"; sourceTree = "<group>"; };
 		9327DD232589E31E00BBDA53 /* MomoBackgroundBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomoBackgroundBlur.swift; sourceTree = "<group>"; };
@@ -227,6 +231,15 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		931DA11225D1884800BDB11F /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				931DA10F25D1884400BDB11F /* PersistenceProvider.swift */,
+				931DA11525D18ADB00BDB11F /* MomoApp.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		93220787259536FE00E4990F /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
@@ -269,6 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				936C6CD425112E1B00650D4A /* Old */,
+				931DA11225D1884800BDB11F /* CoreData */,
 				93E06EA3256C909800E7264D /* Environment */,
 				9318888425582B8C0004CD4F /* ViewModel */,
 				93EF7982254A14700062571F /* UI */,
@@ -486,6 +500,7 @@
 				938693922559073E00C7F79D /* VisualEffectBlur.swift in Sources */,
 				9389A35825603E3E008AC500 /* SelectionLineModifier.swift in Sources */,
 				93E9A338251D29900095D48C /* ColorRing.swift in Sources */,
+				931DA11025D1884400BDB11F /* PersistenceProvider.swift in Sources */,
 				930105922514E0B9007F0E7A /* MomoText.swift in Sources */,
 				938E537124E983F3002653F0 /* UIBezierPath + Extension.swift in Sources */,
 				93FAEB9B2514FCDC00C057AC /* MomoAddMoodView.swift in Sources */,
@@ -518,6 +533,7 @@
 				93EF7985254A14BE0062571F /* MomoButton.swift in Sources */,
 				938E537224E983F3002653F0 /* UIColor + Extension.swift in Sources */,
 				930AE6B725633B520091EDA7 /* DragState.swift in Sources */,
+				931DA11725D18ADB00BDB11F /* MomoApp.xcdatamodeld in Sources */,
 				9308077425645EF000A13156 /* View+Extension.swift in Sources */,
 				938A0915256C235200D53D9A /* MomoTextField.swift in Sources */,
 				93DBAF7D259678DA00862293 /* Optional+Extension.swift in Sources */,
@@ -770,6 +786,19 @@
 			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		931DA11525D18ADB00BDB11F /* MomoApp.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				931DA11625D18ADB00BDB11F /* MomoApp.xcdatamodel */,
+			);
+			currentVersion = 931DA11625D18ADB00BDB11F /* MomoApp.xcdatamodel */;
+			path = MomoApp.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 93519F4424E8CF630095DA38 /* Project object */;
 }
