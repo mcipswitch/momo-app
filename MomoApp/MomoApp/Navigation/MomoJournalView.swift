@@ -39,15 +39,18 @@ struct NavToolbar: View {
                 MomoToolbarTitle(viewStore.activeJournal)
                 HStack(alignment: .top) {
                     MomoToolbarButton(.backButton) {
-                        viewStore.send(.page(action: .activePageChanged(.home)))
+                        viewStore.send(.form(.set(\.activePage, .home)))
                     }
 
                     Spacer()
 
                     MomoToolbarButton(viewStore.activeJournal) {
-                        viewStore.send(.journal(action: .activeJournalChanged(
+
+                        var journal: JournalType {
                             viewStore.activeJournal == .chart ? .list : .chart
-                        )))
+                        }
+
+                        viewStore.send(.form(.set(\.activeJournal, journal)))
                     }
                 }
             }

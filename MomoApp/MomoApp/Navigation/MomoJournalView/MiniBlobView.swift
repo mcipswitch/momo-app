@@ -23,10 +23,12 @@ struct MiniBlobView: View {
             Spacer()
 
             GeometryReader { geo in
-                BlobView(blobValue: viewStore.binding(
-                    get: \.selectedEntry.value,
-                    send: { .home(action: .blobValueChanged($0)) }
-                ))
+                BlobView(
+                    blobValue: self.viewStore.binding(
+                        keyPath: \.selectedEntry.value,
+                        send: AppAction.form
+                    )
+                )
                 .position(x: geo.w / 2, y: geo.h / 2)
                 .msk_applyBlobStyle(
                     BlobStyle(frameSize: geo.w, scale: 0.40)

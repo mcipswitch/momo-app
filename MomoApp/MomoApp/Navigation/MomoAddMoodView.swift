@@ -65,9 +65,11 @@ struct MomoAddMoodView: View {
 
                     // Blob
                     ZStack {
-                        BlobView(blobValue: self.viewStore.binding(
-                                    get: \.blobValue,
-                                    send: { .home(action: .blobValueChanged($0)) })
+                        BlobView(
+                            blobValue: self.viewStore.binding(
+                                keyPath: \.blobValue,
+                                send: AppAction.form
+                            )
                         )
                         .msk_applyBlobStyle(BlobStyle(frameSize: geo.h, scale: 0.35))
 
@@ -100,7 +102,9 @@ struct MomoAddMoodView: View {
                                 .animation(.resist, value: self.dragState.isActive)
                                 .addEmotionButtonAnimation(value: self.$homeViewActive)
                             MomoLinkButton(.pastEntries) {
-                                self.viewStore.send(.page(action: .activePageChanged(.journal)))
+                                self.viewStore.send(
+                                    .form(.set(\.activePage, .journal))
+                                )
                             }
                             .offset(y: 60)
                             .slideInAnimation(value: self.$homeViewActive)
@@ -141,7 +145,7 @@ struct MomoAddMoodView: View {
             self.colorWheelSection = self.viewLogic.colorWheelSection(degrees)
 
             let blobValue = self.viewLogic.blobValue(degrees)
-            self.viewStore.send(.home(action: .blobValueChanged(blobValue)))
+            self.viewStore.send(.form(.set(\.blobValue, blobValue)))
         }
         .onChange(of: self.homeViewActive) { isHome in
             // This state is needed to animate button text opacity
@@ -198,7 +202,7 @@ extension MomoAddMoodView {
 
             MomoButton(button: self.isEditMode ? .doneConfirmed : .done,
                        action: {
-                        self.viewStore.send(.addEntryPressed)
+                        self.viewStore.send(.form(.set(\.currentStatus, .edit)))
                        },
                        isActive: self.viewStore.binding(
                         get: \.emotionText.isNotEmpty,
@@ -219,22 +223,21 @@ extension MomoAddMoodView {
             .msk_applyTextStyle(.mainDateFont)
     }
 
-    // TODO: - Fix why `emotionTextFieldChanged` is being called all the time
+    // TODO: - `emotionTextFieldChanged` is being called all the time
     private var textField: some View {
-        MomoTextField(text: viewStore.binding(
-            get: \.emotionText,
-            send: { .home(action: .emotionTextFieldChanged(text: $0)) }
-        ),
-        isFocused: viewStore.binding(
+        MomoTextField(text: self.viewStore.binding(
+            keyPath: \.emotionText,
+            send: AppAction.form
+        ), isFocused: self.viewStore.binding(
             get: \.emotionTextFieldFocused,
-            send: { .home(action: .emotionTextFieldFocused($0)) }
+            send: .form(.set(\.emotionTextFieldFocused, !self.viewStore.emotionTextFieldFocused))
         ))
     }
 
     private var textFieldBorder: some View {
         MomoTextFieldBorder(isFocused: self.viewStore.binding(
             get: \.emotionTextFieldFocused,
-            send: { .home(action: .emotionTextFieldFocused($0)) }
+            send: .form(.set(\.emotionTextFieldFocused, !self.viewStore.emotionTextFieldFocused))
         ))
     }
 }
@@ -270,14 +273,13 @@ extension MomoAddMoodView {
         if self.joystickTapped { return }
 
         // Calculate distance to activate 'BlurredColorWheel'
-        let maxDistance: CGFloat = 50
+        let minDistance: CGFloat = 50
         var newLocation = self.dragStart
         newLocation.x += xOff
         newLocation.y += yOff
         let distance = self.dragStart.distance(to: newLocation)
 
-        self.viewStore.send(.home(action: .activateColorWheel(distance > maxDistance)))
-
+        self.viewStore.send(.form(.set(\.colorWheelOn, distance > minDistance)))
 
         // Calculate the degrees to activate corresponding color wheel section
         self.degrees = newLocation.angle(to: self.dragStart)
@@ -286,7 +288,7 @@ extension MomoAddMoodView {
     private func onDragEnded(drag: DragGesture.Value) {
         self.isDragging = false
         self.dragValue = .zero
-        self.viewStore.send(.home(action: .activateColorWheel(false)))
+        self.viewStore.send(.form(.set(\.colorWheelOn, false)))
     }
 
     // MARK: - Helper vars

@@ -122,8 +122,7 @@ extension MiniChartView {
     private func changeSelectedIdx(to idx: Int) {
         self.newIdx = idx
         self.selectedIdx = idx
-
-        self.viewStore.send(.lineChart(action: .changeSelectedEntry(idx)))
+        self.viewStore.send(.form(.set(\.selectedEntry, self.viewStore.journalEntries[idx])))
     }
 }
 

@@ -53,9 +53,11 @@ struct EntryRow: View {
 
                     Spacer()
 
-                    BlobView(blobValue: viewStore.binding(
-                                get: \.value,
-                                send: EntryAction.emotionValueChanged)
+                    BlobView(
+                        blobValue: viewStore.binding(
+                            get: \.value,
+                            send: EntryAction.emotionValueChanged
+                        )
                     )
                     .msk_applyBlobStyle(
                         BlobStyle(scale: 0.2,
