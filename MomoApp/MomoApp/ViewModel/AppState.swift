@@ -23,22 +23,12 @@ struct AppState: Equatable {
 
     // JournalChartView
     var numOfEntries: Int = 7
-    var selectedEntry: Entry = .defaultEntry
+    var selectedEntry: Entry = .default
     var lineChartAnimationOn = false
     var selectionLineAnimationOn = false
 
     var newIdx: Int = 0
     var selectedIdx: Int = 0
-
-
-
-
-
-
-
-
-
-
 
     var blobValue: CGFloat = .zero
     var emotionText: String = ""
@@ -72,11 +62,41 @@ enum AppAction: Equatable {
 
     case home(action: HomeAction)
     case journal(action: JournalAction)
+
+    case form(FormAction<AppState>)
 }
 
 struct AppEnvironment {
-    var mainQueue: AnySchedulerOf<DispatchQueue>
-    var uuid: () -> UUID
+//    var mainQueue: AnySchedulerOf<DispatchQueue>
+//    var uuid: () -> UUID
+}
+
+// MARK: - FormAction
+
+struct FormAction<Root>: Equatable {
+    let keyPath: PartialKeyPath<Root>
+    let value: AnyHashable
+    let setter: (inout Root) -> Void
+
+    init<Value>(
+        _ keyPath: WritableKeyPath<Root, Value>,
+        _ value: Value
+    ) where Value: Hashable {
+        self.keyPath = keyPath
+        self.value = value
+        self.setter = { $0[keyPath: keyPath] = value }
+    }
+
+    static func set<Value>(
+        _ keyPath: WritableKeyPath<Root, Value>,
+        _ value: Value
+    ) -> Self where Value: Hashable {
+        .init(keyPath, value)
+    }
+
+    static func == (lhs: FormAction<Root>, rhs: FormAction<Root>) -> Bool {
+        lhs.keyPath == rhs.keyPath && lhs.value == rhs.value
+    }
 }
 
 // MARK: - HomeReducer
@@ -90,8 +110,7 @@ enum HomeAction: Equatable {
     case activateColorWheel(Bool)
 }
 
-struct HomeEnvironment {
-}
+struct HomeEnvironment { }
 
 // MARK: - PageReducer
 
@@ -146,29 +165,15 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     Reducer { state, action, env in
         switch action {
         case .addEntryPressed:
-            state.entries.append(
-                Entry(emotion: state.emotionText,
-                      date: Date(),
-                      value: state.blobValue)
-            )
-
+            // do something here
             state.currentStatus = .edit
             return .none
         case .journal(action: .activeJournalChanged(let journal)):
             state.activeJournal = journal
             return .none
 
-
-
-
-
-
-
-
         case .entry(index: let index, action: let action):
             return .none
-
-
 
 
         // MARK: - Page Actions
@@ -180,7 +185,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
                 Effect(value: AppAction.lineChart(action: .startLineChartAnimation))
                 .debounce(id: CancelDelayID(),
                           for: 0.4,
-                          scheduler: env.mainQueue)
+                          scheduler: DispatchQueue.main)
 
         // MARK: - Line Chart Actions
         case .lineChart(action: .startLineChartAnimation):
@@ -191,7 +196,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
                 Effect(value: AppAction.lineChart(action: .startSelectionLineAnimation))
                 .debounce(id: CancelDelayID(),
                           for: 1.8,
-                          scheduler: env.mainQueue)
+                          scheduler: DispatchQueue.main)
         case .lineChart(action: .startSelectionLineAnimation):
             state.selectionLineAnimationOn.toggle()
             return .none
@@ -230,9 +235,13 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         case .home(action: .activateColorWheel(let on)):
             state.colorWheelOn = on
             return .none
+
+        case .form:
+            return .none
         }
     }
 )
+.form(action: /AppAction.form)
 .debug()
 
 
@@ -241,4 +250,28 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 enum Page {
     case home
     case journal
+}
+
+// MARK: - Reducer + Extension
+
+func ~= <Root, Value> (
+    keyPath: WritableKeyPath<Root, Value>,
+    formAction: FormAction<Root>
+) -> Bool {
+    formAction.keyPath == keyPath
+}
+
+extension Reducer {
+    func form(
+        action formAction: CasePath<Action, FormAction<State>>
+    ) -> Self {
+        Self { state, action, environment in
+            guard let formAction = formAction.extract(from: action) else {
+                return self.run(&state, action, environment)
+            }
+
+            formAction.setter(&state)
+            return self.run(&state, action, environment)
+        }
+    }
 }
