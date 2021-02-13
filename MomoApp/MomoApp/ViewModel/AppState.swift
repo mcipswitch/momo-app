@@ -32,6 +32,7 @@ struct AppState: Equatable {
 
     var blobValue: CGFloat = .zero
     var emotionText: String = ""
+    var doneButtonOn: Bool = false
     var emotionTextFieldFocused = false
     var colorWheelOn = false
 
@@ -55,7 +56,6 @@ struct AppState: Equatable {
 enum AppAction: Equatable {
     case entry(index: Int, action: EntryAction)
     case lineChart(action: LineChartAction)
-    case home(action: HomeAction)
     case form(FormAction<AppState>)
 }
 
@@ -63,14 +63,6 @@ struct AppEnvironment {
 //    var mainQueue: AnySchedulerOf<DispatchQueue>
 //    var uuid: () -> UUID
 }
-
-// MARK: - HomeReducer
-
-enum HomeAction: Equatable {
-    case activateDoneButton
-}
-
-struct HomeEnvironment { }
 
 // MARK: - EntryReducer
 
@@ -114,7 +106,6 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         case .entry(index: let index, action: let action):
             return .none
 
-        // MARK: - Line Chart Animation
         case .lineChart(action: .startLineChartAnimation):
             state.lineChartAnimationOn.toggle()
 
@@ -127,18 +118,6 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         case .lineChart(action: .startSelectionLineAnimation):
             state.selectionLineAnimationOn.toggle()
             return .none
-
-
-
-
-        case .home(action: .activateDoneButton):
-            return .none
-
-
-
-
-
-
 
         case .form(\.activePage):
             struct CancelDelayID: Hashable {}

@@ -200,14 +200,17 @@ extension MomoAddMoodView {
 
             Spacer()
 
-            MomoButton(button: self.isEditMode ? .doneConfirmed : .done,
-                       action: {
-                        self.viewStore.send(.form(.set(\.currentStatus, .edit)))
-                       },
-                       isActive: self.viewStore.binding(
-                        get: \.emotionText.isNotEmpty,
-                        send: .home(action: .activateDoneButton)
-                       )
+            MomoButton(
+                button: self.isEditMode ? .doneConfirmed : .done,
+                action: {
+                    self.viewStore.send(.form(.set(\.currentStatus, .edit)))
+                },
+                isActive: self.viewStore.binding(
+                    get: \.doneButtonOn,
+                    send: AppAction.form(
+                        .set(\.doneButtonOn, !self.viewStore.emotionText.isEmpty)
+                    )
+                )
             )
             .animation(.ease, value: self.viewStore.emotionText.isEmpty)
         }
