@@ -11,6 +11,7 @@ import SwiftUI
 
 struct BlurredColorWheel: View {
     @Binding var section: ColorWheelSection
+    @Binding var isActivated: Bool
 
     private var gradient: AngularGradient {
         AngularGradient(gradient: .momoTriColorGradient,
@@ -30,6 +31,9 @@ struct BlurredColorWheel: View {
                     .rotationEffect(Angle(degrees: self.section.degrees))
             )
             .blur(radius: 40)
+
+            .opacity(self.isActivated ? 1 : 0)
+            .animation(.activateColorWheel, value: self.isActivated)
     }
 }
 

@@ -21,6 +21,15 @@ struct AppState: Equatable {
     var activePage: Page = .home
     var activeJournal: JournalType = .chart
 
+    // MomoAddMoodView
+    var homeViewIsActive = true
+
+    var joystickIsDragging = false
+    var dragValue = CGSize.zero
+    var joystickDegrees: CGFloat = 0
+    var colorWheelSection: ColorWheelSection = .momo
+    var colorWheelOn = false
+
     // JournalChartView
     var numOfEntries: Int = 7
     var selectedEntry: Entry = .default
@@ -34,7 +43,7 @@ struct AppState: Equatable {
     var emotionText: String = ""
     var doneButtonOn: Bool = false
     var emotionTextFieldFocused = false
-    var colorWheelOn = false
+
 
 
 
@@ -57,6 +66,11 @@ enum AppAction: Equatable {
     case entry(index: Int, action: EntryAction)
     case lineChart(action: LineChartAction)
     case form(FormAction<AppState>)
+
+    case joystickDegreesChanged(CGFloat)
+    case joystickDragValueChanged(CGSize)
+
+    case dismissKeyboard
 }
 
 struct AppEnvironment {
@@ -119,6 +133,28 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             state.selectionLineAnimationOn.toggle()
             return .none
 
+
+
+        // Joystick
+        case let .joystickDegreesChanged(degrees):
+            state.joystickDegrees = degrees
+
+            // .colorWheelSectionChanged
+            state.colorWheelSection = AddMoodViewLogic.colorWheelSection(degrees)
+
+            // .blobValueChanged
+            state.blobValue = AddMoodViewLogic.blobValue(degrees)
+
+            return .none
+
+
+        case let .joystickDragValueChanged(dragValue):
+            state.dragValue = dragValue
+            return .none
+
+
+
+
         case .form(\.activePage):
             struct CancelDelayID: Hashable {}
             return
@@ -128,6 +164,10 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
                           scheduler: DispatchQueue.main)
 
         case .form:
+            return .none
+
+        case .dismissKeyboard:
+            UIApplication.shared.endEditing()
             return .none
         }
     }

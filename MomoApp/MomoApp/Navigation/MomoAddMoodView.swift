@@ -12,20 +12,11 @@ struct MomoAddMoodView: View {
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
     var viewLogic = AddMoodViewLogic()
 
-    @State private var homeViewActive = true
-    @State private var degrees: CGFloat = 0
-    @State private var colorWheelSection: ColorWheelSection = .momo
-
-    @State private var isDragging = false
     @State private var buttonTextOn = true
-
-    // Add Emotion Button
-    @GestureState private var dragState: DragState = .inactive
-    @State private var dragValue = CGSize.zero
     @State private var dragStart = CGPoint.zero
     @State private var buttonLocation: CGPoint? = nil
 
-    @State private var state: Status = .add
+    @State private var addEditStatus: Status = .add
 
     private var isEditMode: Bool {
         self.viewStore.currentStatus == .edit
@@ -46,16 +37,36 @@ struct MomoAddMoodView: View {
                     // Date + TextField
                     VStack(spacing: 36) {
                         currentDate
-                            .slideInAnimation(value: self.$homeViewActive)
+                            .slideInAnimation(
+                                value: self.viewStore.binding(
+                                    keyPath: \.homeViewIsActive,
+                                    send: AppAction.form
+                                )
+                            )
                         ZStack {
                             helloMessage
-                                .slideInAnimation(value: self.$homeViewActive)
+                                .slideInAnimation(
+                                    value: self.viewStore.binding(
+                                        keyPath: \.homeViewIsActive,
+                                        send: AppAction.form
+                                    )
+                                )
                                 .frame(width: 180)
                             VStack(spacing: 6) {
                                 textField
-                                    .slideOutAnimation(value: self.$homeViewActive)
+                                    .slideOutAnimation(
+                                        value: self.viewStore.binding(
+                                            keyPath: \.homeViewIsActive,
+                                            send: AppAction.form
+                                        )
+                                    )
                                 textFieldBorder
-                                    .textFieldBorderAnimation(value: self.$homeViewActive)
+                                    .textFieldBorderAnimation(
+                                        value: self.viewStore.binding(
+                                            keyPath: \.homeViewIsActive,
+                                            send: AppAction.form
+                                        )
+                                    )
                             }
                             .frame(width: geo.w / 2, height: 80)
                         }
@@ -75,11 +86,11 @@ struct MomoAddMoodView: View {
 
                         #if DEBUG
                         VStack {
-                            Text("Home: \(String(describing: homeViewActive))")
-                            Text("Degrees: \(Int(degrees))")
+                            Text("Home is Active: \(String(describing: self.viewStore.homeViewIsActive))")
+                            Text("Degrees: \(Int(self.viewStore.joystickDegrees))")
                             Text("Blob: \(self.viewStore.blobValue)")
                             Text("Drag Start: x:\(Int(dragStart.x)), y:\(Int(dragStart.y))")
-                            Text("Dragging: \(String(describing: dragState.isActive))")
+                            Text("Dragging: \(String(describing: self.viewStore.joystickIsDragging))")
                         }
                         .font(.system(size: 12.0))
                         #endif
@@ -90,31 +101,45 @@ struct MomoAddMoodView: View {
 
                     // Bottom Navigation
                     ZStack {
-                        BlurredColorWheel(section: self.$colorWheelSection)
-                            .position(self.dragStart)
-                            .opacity(self.viewStore.colorWheelOn ? 1 : 0)
-                            .animation(.activateColorWheel, value: self.viewStore.colorWheelOn)
+                        BlurredColorWheel(
+                            section: self.viewStore.binding(
+                                keyPath: \.colorWheelSection,
+                                send: AppAction.form
+                            ), isActivated: self.viewStore.binding(
+                                keyPath: \.colorWheelOn,
+                                send: AppAction.form
+                            )
+                        )
+                        .position(self.dragStart)
 
                         // Joystick + Past Entries
                         ZStack(alignment: .center) {
                             addEmotionButton
                                 // Add delay so the 'Color Ring' disappears first.
-                                .animation(.resist, value: self.dragState.isActive)
-                                .addEmotionButtonAnimation(value: self.$homeViewActive)
-                            MomoLinkButton(.pastEntries) {
-                                self.viewStore.send(
-                                    .form(.set(\.activePage, .journal))
+                                .animation(.resist, value: self.viewStore.joystickIsDragging)
+                                .addEmotionButtonAnimation(
+                                    value: self.viewStore.binding(
+                                        keyPath: \.homeViewIsActive,
+                                        send: AppAction.form
+                                    )
                                 )
+                            MomoLinkButton(.pastEntries) {
+                                self.viewStore.send(.form(.set(\.activePage, .journal)))
                             }
                             .offset(y: 60)
-                            .slideInAnimation(value: self.$homeViewActive)
+                            .slideInAnimation(
+                                value: self.viewStore.binding(
+                                    keyPath: \.homeViewIsActive,
+                                    send: AppAction.form
+                                )
+                            )
                         }
                         .offset(
-                            x: self.dragValue.width * 0.8,
-                            y: self.dragValue.height * 0.8
+                            x: self.viewStore.dragValue.width * 0.8,
+                            y: self.viewStore.dragValue.height * 0.8
                         )
                         .position(self.buttonLocation ?? centerPoint)
-                        .highPriorityGesture(self.homeViewActive ? nil : self.resistanceDrag)
+                        .highPriorityGesture(self.viewStore.homeViewIsActive ? nil : self.resistanceDrag)
 
                         #if DEBUG
 //                        if let dragState = self.dragState {
@@ -135,24 +160,25 @@ struct MomoAddMoodView: View {
                 // END: - Main View
 
                 topNavigation
-                    .slideOutAnimation(value: self.$homeViewActive)
+                    .slideOutAnimation(
+                        value: self.viewStore.binding(
+                            keyPath: \.homeViewIsActive,
+                            send: AppAction.form
+                        )
+                    )
                     .padding(EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16))
             }
         }
         .padding(.vertical)
         .addMomoBackground()
-        .onChange(of: self.degrees) { degrees in
-            self.colorWheelSection = self.viewLogic.colorWheelSection(degrees)
 
-            let blobValue = self.viewLogic.blobValue(degrees)
-            self.viewStore.send(.form(.set(\.blobValue, blobValue)))
-        }
-        .onChange(of: self.homeViewActive) { isHome in
+        // TODO: - fix this now
+        .onChange(of: self.viewStore.homeViewIsActive) { isHome in
             // This state is needed to animate button text opacity
             self.buttonTextOn.toggle()
 
             if isHome {
-                self.dismissKeyboard()
+                self.viewStore.send(.dismissKeyboard)
             }
         }
         .ignoresKeyboard()
@@ -162,18 +188,14 @@ struct MomoAddMoodView: View {
 // MARK: - Internal Methods
 
 extension MomoAddMoodView {
-    private func dismissKeyboard() {
-        UIApplication.shared.endEditing()
-    }
-
     private func addEmotionButtonPressed() {
         // TODO: - fix this to a state
-        self.homeViewActive.toggle()
+        self.viewStore.send(.form(.set(\.homeViewIsActive, !self.viewStore.homeViewIsActive)))
     }
 
     private func backButtonPressed() {
         // TODO: - fix this to a state
-        self.homeViewActive.toggle()
+        self.viewStore.send(.form(.set(\.homeViewIsActive, !self.viewStore.homeViewIsActive)))
     }
 }
 
@@ -183,14 +205,27 @@ extension MomoAddMoodView {
     private var addEmotionButton: some View {
         ZStack {
             Button(action: self.addEmotionButtonPressed) {
-                Text(self.state.text)
+                Text(self.addEditStatus.text)
                     .opacity(self.buttonTextOn ? 1 : 0)
                     .animation(self.buttonTextOn ? Animation.ease.delay(0.5) : nil)
             }
-            .msk_applyMomoButtonStyle(button: self.homeViewActive ? .standard : .joystick)
-            ColorRing(homeViewActive: self.$homeViewActive,
-                      isDragging: self.$isDragging)
-                .colorRingAnimation(value: self.$homeViewActive)
+            .msk_applyMomoButtonStyle(button: self.viewStore.homeViewIsActive ? .standard : .joystick)
+            ColorRing(
+                homeViewActive: self.viewStore.binding(
+                    keyPath: \.homeViewIsActive,
+                    send: AppAction.form
+                ),
+                isDragging: self.viewStore.binding(
+                    keyPath: \.joystickIsDragging,
+                    send: AppAction.form
+                )
+            )
+            .colorRingAnimation(
+                value: self.viewStore.binding(
+                    keyPath: \.homeViewIsActive,
+                    send: AppAction.form
+                )
+            )
         }
     }
 
@@ -253,14 +288,14 @@ extension MomoAddMoodView {
     var resistanceDrag: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged(self.onDragChanged(drag:))
-            .updating(self.$dragState) { value, state, _ in
-                state = .active(location: value.location, translation: value.translation)
-            }
+//            .updating(self.$dragState) { value, state, _ in
+//                state = .active(location: value.location, translation: value.translation)
+//            }
             .onEnded(self.onDragEnded(drag:))
     }
 
     private func onDragChanged(drag: DragGesture.Value) {
-        self.isDragging = true
+        self.viewStore.send(.form(.set(\.joystickIsDragging, true)))
 
         /// The lower the limit, the tighter the resistance
         let limit: CGFloat = 200
@@ -269,11 +304,17 @@ extension MomoAddMoodView {
         let dist = sqrt(xOff*xOff + yOff*yOff);
         let factor = 1 / (dist / limit + 1)
 
-        self.dragValue = CGSize(width: xOff * factor,
-                                height: yOff * factor)
+
+        self.viewStore.send(
+            .joystickDragValueChanged(CGSize(width: xOff * factor,
+                                             height: yOff * factor)
+            )
+        )
 
         // Do nothing if joystick is just tapped
-        if self.joystickTapped { return }
+        if self.joystickTapped {
+            return
+        }
 
         // Calculate distance to activate 'BlurredColorWheel'
         let minDistance: CGFloat = 50
@@ -285,18 +326,19 @@ extension MomoAddMoodView {
         self.viewStore.send(.form(.set(\.colorWheelOn, distance > minDistance)))
 
         // Calculate the degrees to activate corresponding color wheel section
-        self.degrees = newLocation.angle(to: self.dragStart)
+        let degrees = newLocation.angle(to: self.dragStart)
+        self.viewStore.send(.joystickDegreesChanged(degrees))
     }
 
     private func onDragEnded(drag: DragGesture.Value) {
-        self.isDragging = false
-        self.dragValue = .zero
+        self.viewStore.send(.form(.set(\.joystickIsDragging, false)))
+        self.viewStore.send(.joystickDragValueChanged(.zero))
         self.viewStore.send(.form(.set(\.colorWheelOn, false)))
     }
 
     // MARK: - Helper vars
 
     private var joystickTapped: Bool {
-        self.dragValue == .zero
+        self.viewStore.dragValue == .zero
     }
 }
