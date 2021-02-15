@@ -16,6 +16,7 @@ struct MomoAddMoodView: View {
     @State private var dragStart = CGPoint.zero
     @State private var buttonLocation: CGPoint? = nil
 
+    @GestureState private var dragState = DragState.inactive
     @State private var addEditStatus: Status = .add
 
     private var isEditMode: Bool {
@@ -142,13 +143,11 @@ struct MomoAddMoodView: View {
                         .highPriorityGesture(self.viewStore.homeViewIsActive ? nil : self.resistanceDrag)
 
                         #if DEBUG
-//                        if let dragState = self.dragState {
-//                            Circle()
-//                                .stroke(Color.red, lineWidth: 2)
-//                                .frame(width: 20, height: 20)
-//                                .position(self.dragState.location)
-//                                .opacity(self.dragState.isActive ? 1 : 0)
-//                        }
+                        Circle()
+                            .stroke(Color.red, lineWidth: 2)
+                            .frame(width: 20, height: 20)
+                            .position(self.dragState.location)
+                            .opacity(self.dragState.isActive ? 1 : 0)
                         #endif
                     }
                     .frame(height: 160)
@@ -188,13 +187,9 @@ struct MomoAddMoodView: View {
 // MARK: - Internal Methods
 
 extension MomoAddMoodView {
-    private func addEmotionButtonPressed() {
-        // TODO: - fix this to a state
-        self.viewStore.send(.form(.set(\.homeViewIsActive, !self.viewStore.homeViewIsActive)))
-    }
+    private func toggleHomeViewIsActive() {
 
-    private func backButtonPressed() {
-        // TODO: - fix this to a state
+        // TODO: - Change to Add/Edit state
         self.viewStore.send(.form(.set(\.homeViewIsActive, !self.viewStore.homeViewIsActive)))
     }
 }
@@ -204,7 +199,7 @@ extension MomoAddMoodView {
 extension MomoAddMoodView {
     private var addEmotionButton: some View {
         ZStack {
-            Button(action: self.addEmotionButtonPressed) {
+            Button(action: self.toggleHomeViewIsActive) {
                 Text(self.addEditStatus.text)
                     .opacity(self.buttonTextOn ? 1 : 0)
                     .animation(self.buttonTextOn ? Animation.ease.delay(0.5) : nil)
@@ -231,20 +226,19 @@ extension MomoAddMoodView {
 
     private var topNavigation: some View {
         HStack {
-            MomoToolbarButton(.backButton, action: self.backButtonPressed)
+            MomoToolbarButton(.backButton, action: self.toggleHomeViewIsActive)
 
             Spacer()
 
+            // TODO: - fix the isActive
             MomoButton(
                 button: self.isEditMode ? .doneConfirmed : .done,
                 action: {
                     self.viewStore.send(.form(.set(\.currentStatus, .edit)))
                 },
-                isActive: self.viewStore.binding(
-                    get: \.doneButtonOn,
-                    send: AppAction.form(
-                        .set(\.doneButtonOn, !self.viewStore.emotionText.isEmpty)
-                    )
+                disabled: self.viewStore.binding(
+                    get: \.doneButtonDisabled,
+                    send: AppAction.form(.set(\.doneButtonDisabled, self.viewStore.emotionText.isEmpty))
                 )
             )
             .animation(.ease, value: self.viewStore.emotionText.isEmpty)
@@ -267,16 +261,16 @@ extension MomoAddMoodView {
             keyPath: \.emotionText,
             send: AppAction.form
         ), isFocused: self.viewStore.binding(
-            get: \.emotionTextFieldFocused,
-            send: .form(.set(\.emotionTextFieldFocused, !self.viewStore.emotionTextFieldFocused))
-        ))
+            keyPath: \.emotionTextFieldFocused,
+            send: AppAction.form)
+        )
     }
 
     private var textFieldBorder: some View {
         MomoTextFieldBorder(isFocused: self.viewStore.binding(
-            get: \.emotionTextFieldFocused,
-            send: .form(.set(\.emotionTextFieldFocused, !self.viewStore.emotionTextFieldFocused))
-        ))
+            keyPath: \.emotionTextFieldFocused,
+            send: AppAction.form)
+        )
     }
 }
 
@@ -288,9 +282,9 @@ extension MomoAddMoodView {
     var resistanceDrag: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged(self.onDragChanged(drag:))
-//            .updating(self.$dragState) { value, state, _ in
-//                state = .active(location: value.location, translation: value.translation)
-//            }
+            .updating(self.$dragState) { value, state, _ in
+                state = .active(location: value.location, translation: value.translation)
+            }
             .onEnded(self.onDragEnded(drag:))
     }
 
@@ -332,8 +326,6 @@ extension MomoAddMoodView {
 
     private func onDragEnded(drag: DragGesture.Value) {
         self.viewStore.send(.form(.set(\.joystickIsDragging, false)))
-        self.viewStore.send(.joystickDragValueChanged(.zero))
-        self.viewStore.send(.form(.set(\.colorWheelOn, false)))
     }
 
     // MARK: - Helper vars

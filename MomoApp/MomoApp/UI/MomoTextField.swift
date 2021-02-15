@@ -19,14 +19,13 @@ struct MomoTextField: View {
             placeholder
                 .opacity(self.text.isEmpty ? textFieldStyle.placeholderOpacity : 0)
                 .animation(nil, value: self.text)
-
                 // Dim text when text field is focused
-                .opacity(self.isFocused ? 0.1 : textFieldStyle.placeholderOpacity)
-                .animation(.ease, value: self.isFocused)
+                .opacity(self.isFocused ? 0.4 : textFieldStyle.placeholderOpacity)
+                .animation(.easeInOut, value: self.isFocused)
             textField
-                .onReceive(self.text.publisher.collect()) { _ in
-                    self.text = self.text.applyCharLimit(textFieldStyle.charLimit)
-                }
+//                .onReceive(self.text.publisher.collect()) { _ in
+//                    self.text = self.text.applyCharLimit(textFieldStyle.charLimit)
+//                }
         }
     }
 }
@@ -77,7 +76,7 @@ struct MomoTextFieldStyle: TextFieldStyle {
             .autocapitalization(.none)
             .disableAutocorrection(true)
             .accentColor(.momo)
-            .minimumScaleFactor(0.8)
+            //.minimumScaleFactor(0.8)
     }
 }
 

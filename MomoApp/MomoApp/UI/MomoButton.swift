@@ -12,17 +12,16 @@ import SwiftUI
 struct MomoButton: View {
     let button: ButtonType
     let action: () -> Void
-    @Binding var isActive: Bool
+    @Binding var disabled: Bool
     
     var body: some View {
-        Button(action: action) {
+        Button(action: self.action) {
             HStack {
-                Text(button.text)
-                Image(systemName: button.imageName)
+                Text(self.button.text)
+                Image(systemName: self.button.imageName)
             }
         }
-        .msk_applyMomoButtonStyle(button: button, isActive: isActive)
-        .disabled(!isActive)
+        .msk_applyMomoButtonStyle(button: self.button, isActive: !self.disabled)
     }
 }
 
@@ -52,6 +51,7 @@ struct MomoButtonStyle: ButtonStyle {
             .background(Color.momo)
             .cornerRadius(cornerRadius)
             .opacity(isActive ? buttonStyle.activeOpacity : buttonStyle.inactiveOpacity)
+            .disabled(!self.isActive)
 
             // Activate isPressed opacity if the button is not the joystick
 //            .opacity(buttonIsJoystick ? 1 :

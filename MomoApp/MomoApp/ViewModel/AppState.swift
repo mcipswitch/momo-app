@@ -41,11 +41,8 @@ struct AppState: Equatable {
 
     var blobValue: CGFloat = .zero
     var emotionText: String = ""
-    var doneButtonOn: Bool = false
+    var doneButtonDisabled: Bool = true
     var emotionTextFieldFocused = false
-
-
-
 
     var reversedEntries: [Entry] {
         self.entries.reversed()
@@ -69,7 +66,6 @@ enum AppAction: Equatable {
 
     case joystickDegreesChanged(CGFloat)
     case joystickDragValueChanged(CGSize)
-
     case dismissKeyboard
 }
 
@@ -147,13 +143,24 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 
             return .none
 
-
         case let .joystickDragValueChanged(dragValue):
             state.dragValue = dragValue
             return .none
 
 
 
+        // TODO: - why doesn't this work????
+        case .form(\.emotionText):
+            state.emotionText = state.emotionText.applyCharLimit(16)
+            return .none
+
+
+        case .form(\.joystickIsDragging):
+            if !state.joystickIsDragging {
+                state.colorWheelOn = false
+                state.dragValue = .zero
+            }
+            return .none
 
         case .form(\.activePage):
             struct CancelDelayID: Hashable {}

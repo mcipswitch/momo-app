@@ -65,6 +65,30 @@ struct AnimateSlideOut: ViewModifier {
     }
 }
 
+// test
+struct SlideIn: ViewModifier {
+    @Binding var value: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .offset(y: value ? 0 : 5)
+            .opacity(value ? 1 : 0)
+            .animation(Animation.ease, value: value)
+    }
+}
+
+// test
+struct SlideOut: ViewModifier {
+    @Binding var value: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .offset(y: value ? -5 : 0)
+            .opacity(value ? 0 : 1)
+            .animation(Animation.ease, value: value)
+    }
+}
+
 
 // MARK: - View+Extension
 
@@ -88,6 +112,15 @@ extension View {
 
     func slideOutAnimation(value: Binding<Bool>) -> some View {
         return modifier(AnimateSlideOut(value: value))
+    }
+
+    // test
+    func slideIn(value: Binding<Bool>) -> some View {
+        return modifier(SlideIn(value: value))
+    }
+
+    func slideOut(value: Binding<Bool>) -> some View {
+        return modifier(SlideIn(value: value))
     }
 }
 
