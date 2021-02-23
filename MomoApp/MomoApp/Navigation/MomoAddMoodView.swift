@@ -12,7 +12,7 @@ struct MomoAddMoodView: View {
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
     var viewLogic = AddMoodViewLogic()
 
-    @State private var buttonTextOn = true
+    //@State private var buttonTextOn = true
     @State private var dragStart = CGPoint.zero
     @State private var buttonLocation: CGPoint? = nil
 
@@ -170,27 +170,7 @@ struct MomoAddMoodView: View {
         }
         .padding(.vertical)
         .addMomoBackground()
-
-        // TODO: - fix this now
-        .onChange(of: self.viewStore.homeViewIsActive) { isHome in
-            // This state is needed to animate button text opacity
-            self.buttonTextOn.toggle()
-
-            if isHome {
-                self.viewStore.send(.dismissKeyboard)
-            }
-        }
         .ignoresKeyboard()
-    }
-}
-
-// MARK: - Internal Methods
-
-extension MomoAddMoodView {
-    private func toggleHomeViewIsActive() {
-
-        // TODO: - Change to Add/Edit state
-        self.viewStore.send(.form(.set(\.homeViewIsActive, !self.viewStore.homeViewIsActive)))
     }
 }
 
@@ -199,11 +179,12 @@ extension MomoAddMoodView {
 extension MomoAddMoodView {
     private var addEmotionButton: some View {
         ZStack {
-            Button(action: self.toggleHomeViewIsActive) {
+            Button(action: {
+                self.viewStore.send(.toggleHomeViewIsActive)
+            }, label: {
                 Text(self.addEditStatus.text)
-                    .opacity(self.buttonTextOn ? 1 : 0)
-                    .animation(self.buttonTextOn ? Animation.ease.delay(0.5) : nil)
-            }
+                    .opacity(self.viewStore.addEmotionButtonTextOn ? 1 : 0)
+            })
             .msk_applyMomoButtonStyle(button: self.viewStore.homeViewIsActive ? .standard : .joystick)
             ColorRing(
                 homeViewActive: self.viewStore.binding(
@@ -226,11 +207,13 @@ extension MomoAddMoodView {
 
     private var topNavigation: some View {
         HStack {
-            MomoToolbarButton(.backButton, action: self.toggleHomeViewIsActive)
+            MomoToolbarButton(.backButton) {
+                self.viewStore.send(.toggleHomeViewIsActive)
+            }
 
             Spacer()
 
-            // TODO: - fix the isActive
+            // TODO: - Fix the done button
             MomoButton(
                 button: self.isEditMode ? .doneConfirmed : .done,
                 action: {

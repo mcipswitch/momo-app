@@ -8,8 +8,6 @@
 import SwiftUI
 import ComposableArchitecture
 
-// MARK: - Domain
-
 enum EntryStatus: Equatable {
     case add
     case edit
@@ -23,6 +21,7 @@ struct AppState: Equatable {
 
     // MomoAddMoodView
     var homeViewIsActive = true
+    var addEmotionButtonTextOn = true
 
     var joystickIsDragging = false
     var dragValue = CGSize.zero
@@ -36,6 +35,9 @@ struct AppState: Equatable {
     var lineChartAnimationOn = false
     var selectionLineAnimationOn = false
 
+
+
+
     var newIdx: Int = 0
     var selectedIdx: Int = 0
 
@@ -43,10 +45,6 @@ struct AppState: Equatable {
     var emotionText: String = ""
     var doneButtonDisabled: Bool = true
     var emotionTextFieldFocused = false
-
-    var reversedEntries: [Entry] {
-        self.entries.reversed()
-    }
 
     /// Last week (7) of entries
     var journalEntries: [Entry] {
@@ -67,12 +65,14 @@ enum AppAction: Equatable {
     case joystickDegreesChanged(CGFloat)
     case joystickDragValueChanged(CGSize)
     case dismissKeyboard
+
+    case toggleHomeViewIsActive
+    case toggleAddEmotionButtonText
 }
 
-struct AppEnvironment {
-//    var mainQueue: AnySchedulerOf<DispatchQueue>
-//    var uuid: () -> UUID
-}
+struct AppEnvironment { }
+//var mainQueue: AnySchedulerOf<DispatchQueue>
+//var uuid: () -> UUID
 
 // MARK: - EntryReducer
 
@@ -116,18 +116,30 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         case .entry(index: let index, action: let action):
             return .none
 
-        case .lineChart(action: .startLineChartAnimation):
-            state.lineChartAnimationOn.toggle()
+        case .toggleHomeViewIsActive:
+            state.homeViewIsActive.toggle()
 
-            struct CancelDelayID: Hashable {}
-            return
-                Effect(value: AppAction.lineChart(action: .startSelectionLineAnimation))
-                .debounce(id: CancelDelayID(),
-                          for: 1.8,
-                          scheduler: DispatchQueue.main)
-        case .lineChart(action: .startSelectionLineAnimation):
-            state.selectionLineAnimationOn.toggle()
+            return Effect.merge(
+                Effect(value: AppAction.toggleAddEmotionButtonText)
+                    .delay(for: 0, scheduler: DispatchQueue.main.animation(
+                        state.addEmotionButtonTextOn
+                            ? nil
+                            : Animation.ease.delay(0.6)
+                    ))
+                    .eraseToEffect(),
+                state.homeViewIsActive
+                    ? Effect(value: AppAction.dismissKeyboard)
+                    : .none
+            )
+
+        case .toggleAddEmotionButtonText:
+            state.addEmotionButtonTextOn.toggle()
             return .none
+
+
+
+
+
 
 
 
@@ -168,7 +180,20 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
                 Effect(value: AppAction.lineChart(action: .startLineChartAnimation))
                 .debounce(id: CancelDelayID(),
                           for: 0.4,
-                          scheduler: DispatchQueue.main)
+                          scheduler: DispatchQueue.main.animation(.easeInOut(duration: 2.0)))
+
+        case .lineChart(action: .startLineChartAnimation):
+            state.lineChartAnimationOn.toggle()
+
+            struct CancelDelayID: Hashable {}
+            return
+                Effect(value: AppAction.lineChart(action: .startSelectionLineAnimation))
+                .debounce(id: CancelDelayID(),
+                          for: 1.8,
+                          scheduler: DispatchQueue.main.animation(.easeInOut(duration: 1.0)))
+        case .lineChart(action: .startSelectionLineAnimation):
+            state.selectionLineAnimationOn.toggle()
+            return .none
 
         case .form:
             return .none
@@ -182,50 +207,11 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 .form(action: /AppAction.form)
 .debug()
 
-
 // MARK: - Enums
 
 enum Page {
     case home
     case journal
-}
-
-// MARK: - Reducer + Extension
-
-func ~= <Root, Value> (
-    keyPath: WritableKeyPath<Root, Value>,
-    formAction: FormAction<Root>
-) -> Bool {
-    formAction.keyPath == keyPath
-}
-
-extension Reducer {
-    func form(
-        action formAction: CasePath<Action, FormAction<State>>
-    ) -> Self {
-        Self { state, action, environment in
-            guard let formAction = formAction.extract(from: action) else {
-                return self.run(&state, action, environment)
-            }
-
-            formAction.setter(&state)
-            return self.run(&state, action, environment)
-        }
-    }
-}
-
-// MARK: - ViewStore + Extension
-
-extension ViewStore {
-    func binding<Value>(
-        keyPath: WritableKeyPath<State, Value>,
-        send action: @escaping (FormAction<State>) -> Action
-    ) -> Binding<Value> where Value: Hashable {
-        self.binding(
-            get: { $0[keyPath: keyPath] },
-            send: { action(.init(keyPath, $0)) }
-        )
-    }
 }
 
 // MARK: - FormAction

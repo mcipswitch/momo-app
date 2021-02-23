@@ -14,7 +14,6 @@ struct MiniChartView: View {
     @Environment(\.lineChartStyle) var lineChartStyle
     @State private var selectedIdx = Int()
     @State private var newIdx = Int()
-    @State private var selectionLineOn = false
     @State private var lineGraphBottomPadding: CGFloat = 0
     @State private var layout = [GridItem]()
     @State private var lineFrameSpacing: CGFloat = .zero
@@ -60,7 +59,7 @@ struct MiniChartView: View {
                         .frame(width: self.lineChartStyle.lineFrameWidth, height: geo.h)
                         .overlayPreferenceValue(SelectionPreferenceKey.self) { preferences in
                             SelectionLine(preferences: preferences)
-                                .opacity(self.selectionLineOn ? 1 : 0)
+                                .opacity(self.viewStore.selectionLineAnimationOn ? 1 : 0)
                                 .draggableSelection(
                                     lines: self.viewStore.journalEntries.count,
                                     lineFrameWidth: self.lineChartStyle.lineFrameWidth,
@@ -72,11 +71,6 @@ struct MiniChartView: View {
                         }
                         .onTapGesture {
                             self.changeSelectedIdx(to: idx)
-                        }
-                        .onChange(of: self.viewStore.selectionLineAnimationOn) { _ in
-                            withAnimation(Animation.easeInOut(duration: 1.0)) {
-                                self.selectionLineOn.toggle()
-                            }
                         }
                     }
                 }

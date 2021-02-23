@@ -10,15 +10,14 @@ import ComposableArchitecture
 
 struct JournalListView: View {
     let store: Store<AppState, AppAction>
-    @Environment(\.journalStyle) var journalStyle
 
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: self.journalStyle.listLayout) {
+            LazyVGrid(columns: [GridItem(.flexible())]) {
                 WithViewStore(self.store) { viewStore in
                     ForEachStore(
                         self.store.scope(
-                            state: \.reversedEntries,
+                            state: { $0.entries.reversed() },
                             action: AppAction.entry(index:action:)
                         ),
                         content: EntryRow.init(store:)

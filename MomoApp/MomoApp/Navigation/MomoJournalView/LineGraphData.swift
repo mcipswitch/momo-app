@@ -19,22 +19,16 @@ import ComposableArchitecture
 struct LineGraphData: View {
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
     @Environment(\.lineChartStyle) var lineChartStyle
-    @State var lineOn = false
     let dataPoints: [CGFloat]
 
     var body: some View {
         LinearGradient(.momoTriColorGradient, direction: .vertical)
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
-                    .trim(to: self.lineOn ? 1 : 0)
+                    .trim(to: self.viewStore.lineChartAnimationOn ? 1 : 0)
                     .stroke(style: .lineGraphStrokeStyle)
             )
             .dropShadow()
-            .onChange(of: self.viewStore.lineChartAnimationOn) { _ in
-                withAnimation(Animation.easeInOut(duration: 2.0)) {
-                    self.lineOn.toggle()
-                }
-            }
     }
 }
 
