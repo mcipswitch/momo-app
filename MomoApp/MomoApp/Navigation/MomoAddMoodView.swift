@@ -10,14 +10,10 @@ import ComposableArchitecture
 
 struct MomoAddMoodView: View {
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
-    var viewLogic = AddMoodViewLogic()
-
-    //@State private var buttonTextOn = true
-    @State private var dragStart = CGPoint.zero
-    @State private var buttonLocation: CGPoint? = nil
-
     @GestureState private var dragState = DragState.inactive
-    @State private var addEditStatus: Status = .add
+
+    // TODO: - remove this eventually
+    @State private var dragStart = CGPoint.zero
 
     private var isEditMode: Bool {
         self.viewStore.currentStatus == .edit
@@ -139,7 +135,7 @@ struct MomoAddMoodView: View {
                             x: self.viewStore.dragValue.width * 0.8,
                             y: self.viewStore.dragValue.height * 0.8
                         )
-                        .position(self.buttonLocation ?? centerPoint)
+                        .position(self.viewStore.addEmotionButtonPosition ?? centerPoint)
                         .highPriorityGesture(self.viewStore.homeViewIsActive ? nil : self.resistanceDrag)
 
                         #if DEBUG
@@ -153,7 +149,7 @@ struct MomoAddMoodView: View {
                     .frame(height: 160)
                     .onAppear {
                         self.dragStart = centerPoint
-                        self.buttonLocation = self.dragStart
+                        self.viewStore.send(.addEmotionButtonLocationChanged(self.dragStart))
                     }
                 }
                 // END: - Main View
@@ -182,7 +178,7 @@ extension MomoAddMoodView {
             Button(action: {
                 self.viewStore.send(.toggleHomeViewIsActive)
             }, label: {
-                Text(self.addEditStatus.text)
+                Text(self.viewStore.currentStatus.text)
                     .opacity(self.viewStore.addEmotionButtonTextOn ? 1 : 0)
             })
             .msk_applyMomoButtonStyle(button: self.viewStore.homeViewIsActive ? .standard : .joystick)
@@ -281,11 +277,9 @@ extension MomoAddMoodView {
         let dist = sqrt(xOff*xOff + yOff*yOff);
         let factor = 1 / (dist / limit + 1)
 
-
         self.viewStore.send(
             .joystickDragValueChanged(CGSize(width: xOff * factor,
-                                             height: yOff * factor)
-            )
+                                             height: yOff * factor))
         )
 
         // Do nothing if joystick is just tapped
@@ -300,11 +294,14 @@ extension MomoAddMoodView {
         newLocation.y += yOff
         let distance = self.dragStart.distance(to: newLocation)
 
-        self.viewStore.send(.form(.set(\.colorWheelOn, distance > minDistance)))
-
-        // Calculate the degrees to activate corresponding color wheel section
+        // Calculate degrees to activate corresponding color wheel section
         let degrees = newLocation.angle(to: self.dragStart)
-        self.viewStore.send(.joystickDegreesChanged(degrees))
+
+        // Activate the color wheel if joystick is passed minimum distance
+        var activateColorWheel: Bool {
+            distance > minDistance
+        }
+        self.viewStore.send(.joystickDegreesChanged(degrees, activateColorWheel))
     }
 
     private func onDragEnded(drag: DragGesture.Value) {

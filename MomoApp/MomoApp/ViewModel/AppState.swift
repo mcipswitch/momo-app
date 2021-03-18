@@ -8,14 +8,9 @@
 import SwiftUI
 import ComposableArchitecture
 
-enum EntryStatus: Equatable {
-    case add
-    case edit
-}
-
 struct AppState: Equatable {
     var entries: [Entry]
-    var currentStatus: EntryStatus = .add
+    var currentStatus: Status = .add
     var activePage: Page = .home
     var activeJournal: JournalType = .chart
 
@@ -23,13 +18,16 @@ struct AppState: Equatable {
     var homeViewIsActive = true
     var addEmotionButtonTextOn = true
 
+    // Joystick
+    var addEmotionButtonPosition: CGPoint? = nil
+
     var joystickIsDragging = false
     var dragValue = CGSize.zero
     var joystickDegrees: CGFloat = 0
     var colorWheelSection: ColorWheelSection = .momo
     var colorWheelOn = false
 
-    // JournalChartView
+    // Line Chart
     var numOfEntries: Int = 7
     var selectedEntry: Entry = .default
     var lineChartAnimationOn = false
@@ -46,7 +44,13 @@ struct AppState: Equatable {
     var doneButtonDisabled: Bool = true
     var emotionTextFieldFocused = false
 
-    /// Last week (7) of entries
+
+}
+
+// MARK: - Helper vars
+
+extension AppState {
+    /// Last 7 entries
     var journalEntries: [Entry] {
         self.entries.suffix(self.numOfEntries)
     }
@@ -57,14 +61,18 @@ struct AppState: Equatable {
     }
 }
 
+// MARK: - AppAction
+
 enum AppAction: Equatable {
     case entry(index: Int, action: EntryAction)
     case lineChart(action: LineChartAction)
     case form(FormAction<AppState>)
 
-    case joystickDegreesChanged(CGFloat)
+    case joystickDegreesChanged(CGFloat, Bool)
     case joystickDragValueChanged(CGSize)
     case dismissKeyboard
+
+    case addEmotionButtonLocationChanged(CGPoint)
 
     case toggleHomeViewIsActive
     case toggleAddEmotionButtonText
@@ -113,6 +121,10 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 
     Reducer { state, action, env in
         switch action {
+        case let .addEmotionButtonLocationChanged(position):
+            state.addEmotionButtonPosition = position
+            return .none
+
         case .entry(index: let index, action: let action):
             return .none
 
@@ -144,22 +156,20 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 
 
         // Joystick
-        case let .joystickDegreesChanged(degrees):
+        case .joystickDegreesChanged(let degrees, let activateColorWheel):
             state.joystickDegrees = degrees
+            state.colorWheelSection = JoystickLogic.colorWheelSection(degrees)
+            state.blobValue = JoystickLogic.blobValue(degrees)
 
-            // .colorWheelSectionChanged
-            state.colorWheelSection = AddMoodViewLogic.colorWheelSection(degrees)
+            state.colorWheelOn = activateColorWheel
 
-            // .blobValueChanged
-            state.blobValue = AddMoodViewLogic.blobValue(degrees)
+            // TODO: - add animation here to the colorWheelSection, can remove from the view
 
             return .none
 
         case let .joystickDragValueChanged(dragValue):
             state.dragValue = dragValue
             return .none
-
-
 
         // TODO: - why doesn't this work????
         case .form(\.emotionText):
@@ -175,6 +185,9 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             return .none
 
         case .form(\.activePage):
+            state.lineChartAnimationOn = false
+            state.selectionLineAnimationOn = false
+
             struct CancelDelayID: Hashable {}
             return
                 Effect(value: AppAction.lineChart(action: .startLineChartAnimation))

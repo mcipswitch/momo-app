@@ -80,7 +80,7 @@ struct MiniChartView: View {
             }
         }
         .onAppear {
-            /// Always reset selection to current day
+            // Always reset selection to current day
             self.changeSelectedIdx(to: self.viewStore.numOfEntries - 1)
         }
         .padding(EdgeInsets(top: 16,
@@ -111,6 +111,7 @@ extension MiniChartView {
 
     private func changeNewIdx(to idx: Int) {
         self.newIdx = idx
+        self.viewStore.send(.form(.set(\.selectedEntry, self.viewStore.journalEntries[idx])))
     }
 
     private func changeSelectedIdx(to idx: Int) {

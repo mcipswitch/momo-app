@@ -115,10 +115,10 @@ enum ColorWheelSection {
 
 // MARK: - Status
 
-enum Status {
+enum Status: Equatable {
     case add
-    case edit(emotion: String)
-    case done(emotion: String)
+    case edit
+    case done
 
     var text: String {
         switch self {

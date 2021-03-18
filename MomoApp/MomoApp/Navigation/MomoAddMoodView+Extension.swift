@@ -126,7 +126,7 @@ extension View {
 
 // MARK: - AddMoodViewLogic
 
-struct AddMoodViewLogic {
+struct JoystickLogic {
 
     /// Activate the corresponding color wheel section.
     /// - Parameter degrees: The angle of the joystick in degrees.

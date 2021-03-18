@@ -13,11 +13,14 @@ struct JournalChartView: View {
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            VStack(spacing: 8) {
+            VStack {
                 MiniChartView(
                     store: self.store,
                     viewStore: viewStore
                 )
+
+                Spacer()
+
                 MiniBlobView(viewStore: viewStore)
             }
         }
