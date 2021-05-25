@@ -2,7 +2,7 @@
 
 A colour journal app for logging daily emotions.
 
-Built using XCode 12.4) ![simulator_screenshot_DE16D7ED-3362-4479-B1D8-52D20083AABC](https://user-images.githubusercontent.com/54000453/119433626-9ac37c00-bce4-11eb-8325-065160c25710.png)
+Built using XCode 12.4 ![simulator_screenshot_DE16D7ED-3362-4479-B1D8-52D20083AABC](https://user-images.githubusercontent.com/54000453/119433626-9ac37c00-bce4-11eb-8325-065160c25710.png)
 ![simulator_screenshot_5023C4F0-BADF-4741-B79D-F5C478695D0A](https://user-images.githubusercontent.com/54000453/119433738-d8280980-bce4-11eb-9ea6-0c62df9ecd0f.png)
 
 
