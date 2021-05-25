@@ -1,8 +1,8 @@
 # MomoApp
 
-A SwiftUI app to log your daily emotion.
+A colour journal app for logging daily emotions.
 
-Built using XCode 12.0 beta 3 (SwiftUI 2.0)
+Built using XCode 12.4
 
 Code by [Priscilla Ip](https://www.prsclla.com) | Design by: [Naomi Fontaine](https://www.behance.net/naomifontaine)
 
@@ -18,10 +18,13 @@ iOS version 14.0+
 
 ## Technologies
 
-* SwiftUI, Combine and MVVM architecture
+* SwiftUI, Composable Architecture
 
 # Screenshots
 
 <p float="left">
-  <img src="https://github.com/mcipswitch/momo-app/blob/master/Screenshots/peak.png" width="250">
+  <img src="https://github.com/mcipswitch/momo-app/blob/master/Screenshots/momoHome.png" width="250">
+  <img src="https://github.com/mcipswitch/momo-app/blob/master/Screenshots/momoAddEntry.png" width="250">
+  <img src="https://github.com/mcipswitch/momo-app/blob/master/Screenshots/momoJournalChart.png" width="250">
+  <img src="https://github.com/mcipswitch/momo-app/blob/master/Screenshots/momoJournalList.png" width="250">
 </p>
