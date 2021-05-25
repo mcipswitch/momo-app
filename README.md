@@ -1,4 +1,4 @@
-# MomoApp
+# Momo
 
 A colour journal app for logging daily emotions.
 
