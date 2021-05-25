@@ -28,7 +28,7 @@ struct MomoText: ViewModifier {
 // MARK: - View+Extensions
 
 extension View {
-    func msk_applyTextStyle(_ textStyle: MomoTextStyle) -> some View {
+    func momoText(_ textStyle: MomoTextStyle) -> some View {
         return self.modifier(MomoText(textStyle))
     }
 }

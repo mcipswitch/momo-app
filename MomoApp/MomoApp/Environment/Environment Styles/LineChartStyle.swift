@@ -16,7 +16,6 @@ import SwiftUI
 public struct LineChartStyle {
     let lineFrameWidth: CGFloat
     let selectionLineWidth: CGFloat
-    let dateLabelPadding: CGFloat
 
     let duration: Double = 2.0
     let delay: Double = 0.4
@@ -27,12 +26,11 @@ public struct LineChartStyle {
 
     public init(
         lineFrameWidth: CGFloat = 25.0,
-        selectionLineWidth: CGFloat = 4.0,
-        dateLabelPadding: CGFloat = 8.0
+        selectionLineWidth: CGFloat = 4.0
+        
     ) {
         self.lineFrameWidth = lineFrameWidth
         self.selectionLineWidth = selectionLineWidth
-        self.dateLabelPadding = dateLabelPadding
     }
 }
 

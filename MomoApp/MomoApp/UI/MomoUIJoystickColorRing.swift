@@ -9,12 +9,12 @@
 
 import SwiftUI
 
-// MARK: - MomoUIColorRing
+// MARK: - MomoUIJoystickColorRing
 
 extension MomoUI {
     struct JoystickColorRing: View {
         @Environment(\.joystickStyle) var joystickStyle
-        @Binding var homeViewActive: Bool
+        @Binding var showHomeScreen: Bool
         @Binding var isDragging: Bool
         @State var hueOn: Bool = false
 
@@ -29,33 +29,27 @@ extension MomoUI {
             }
             .onAppear { self.hueOn = true }
             .blur(radius: self.blurRadius)
-            .opacity(self.homeViewActive ? 0 : 1)
+            .opacity(self.showHomeScreen ? 0 : 1)
             .scaleEffect(self.scaleEffect)
             .onChange(of: self.isDragging) { isDragging in
                 self.hueOn = !isDragging
             }
         }
 
-        // MARK: - Helper vars
-
-        private var colorGradient: LinearGradient {
-            LinearGradient(.momo(.joystickColorRing), direction: .diagonal)
-        }
-
-        private var momoGradient: LinearGradient {
-            LinearGradient(.momo(.joystickMomoRing), direction: .diagonal)
-        }
+        // MARK: Helper vars
 
         private var gradient: LinearGradient {
-            self.isDragging ? self.momoGradient : self.colorGradient
+            self.isDragging
+                ? LinearGradient(.momo(.joystickMomoRing), direction: .diagonal)
+                : LinearGradient(.momo(.joystickColorRing), direction: .diagonal)
         }
 
         private var blurRadius: CGFloat {
-            self.homeViewActive ? self.joystickStyle.ringBlurRadius : 0
+            self.showHomeScreen ? self.joystickStyle.ringBlurRadius : 0
         }
 
         private var scaleEffect: CGFloat {
-            self.homeViewActive ? self.joystickStyle.ringScaleEffect : 1
+            self.showHomeScreen ? self.joystickStyle.ringScaleEffect : 1
         }
     }
 }

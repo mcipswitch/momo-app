@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: - MomoBackground
 
-struct MomoBackgroundViewModifier: ViewModifier {
+struct MomoBackgroundModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(
@@ -26,6 +26,6 @@ struct MomoBackgroundViewModifier: ViewModifier {
 
 extension View {
     func momoBackground() -> some View {
-        return self.modifier(MomoBackgroundViewModifier())
+        return self.modifier(MomoBackgroundModifier())
     }
 }

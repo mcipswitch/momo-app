@@ -14,10 +14,10 @@ struct MiniBlobView: View {
     var body: some View {
         VStack {
             VStack(spacing: 12) {
-                Text(viewStore.selectedEntry.date, formatter: .shortDate)
-                    .msk_applyTextStyle(.mainDateFont)
+                Text(viewStore.selectedEntry.date, formatter: .standard)
+                    .momoText(.mainDateFont)
                 Text(viewStore.selectedEntry.emotion)
-                    .msk_applyTextStyle(.mainMessageFont)
+                    .momoText(.mainMessageFont)
             }
 
             Spacer()
@@ -30,7 +30,7 @@ struct MiniBlobView: View {
                     )
                 )
                 .position(x: geo.w / 2, y: geo.h / 2)
-                .msk_applyBlobStyle(
+                .momoBlobStyle(
                     BlobStyle(frameSize: geo.w, scale: 0.40)
                 )
             }

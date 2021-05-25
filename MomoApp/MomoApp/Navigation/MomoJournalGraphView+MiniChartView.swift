@@ -9,7 +9,6 @@ import SwiftUI
 import ComposableArchitecture
 
 struct MiniChartView: View {
-    let store: Store<AppState, AppAction>
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
     @Environment(\.lineChartStyle) var lineChartStyle
     @State private var selectedIdx = Int()
@@ -24,30 +23,13 @@ struct MiniChartView: View {
             LineGraphData(viewStore: self.viewStore,
                           dataPoints: self.viewStore.dataPoints)
                 .padding(EdgeInsets(top: 0,
-                                    leading: 12,
+                                    leading: .momo(.scale3),
                                     bottom: self.lineGraphBottomPadding,
-                                    trailing: 12))
+                                    trailing: .momo(.scale3)))
                 .allowsHitTesting(false)
 
             GeometryReader { geo in
-                LazyVGrid(columns: layout, alignment: .center) {
-                    // WithViewStore(self.store) { viewStore in
-//                        ForEachStore(
-//                            self.store.scope(
-//                                state: \.journalEntries,
-//                                action: AppAction.entry(index:action:)
-//                            )) { viewStore in
-//                            GraphLine(
-//                                store: viewStore,
-//                                //idx: idx,
-//                                //newIdx: self.newIdx,
-//                                //selectedIdx: self.selectedIdx,
-//                                //entry: entry,
-//                                onDateLabelHeightChange: self.updateLineGraphBottomPadding
-//                            )
-//                        }
-//                    }
-
+                LazyVGrid(columns: self.layout, alignment: .center) {
                     ForEach(self.viewStore.journalEntries.indexed(), id: \.1.self) { idx, entry in
                         GraphLine(
                             idx: idx,
@@ -83,10 +65,12 @@ struct MiniChartView: View {
             // Always reset selection to current day
             self.changeSelectedIdx(to: self.viewStore.numOfEntries - 1)
         }
-        .padding(EdgeInsets(top: 16,
-                            leading: 8,
-                            bottom: 16,
-                            trailing: 8))
+        .padding(
+            EdgeInsets(top: .momo(.scale4),
+                       leading: .momo(.scale2),
+                       bottom: .momo(.scale4),
+                       trailing: .momo(.scale2))
+        )
     }
 }
 
@@ -105,6 +89,8 @@ extension MiniChartView {
         self.layout = layout
     }
 
+    /// This adds padding to the line graph data
+    /// so that it sits correctly on the x-axis.
     private func updateLineGraphBottomPadding(_ padding: CGFloat) {
         self.lineGraphBottomPadding = padding
     }
@@ -129,8 +115,6 @@ struct GraphLine: View {
     let selectedIdx: Int
     let entry: Entry
     let onDateLabelHeightChange: (CGFloat) -> Void
-
-    let dateLabelPadding: CGFloat = 8.0
     @State private var on = false
 
     private var selectionSnappedToIdx: Bool {
@@ -138,8 +122,8 @@ struct GraphLine: View {
     }
 
     var body: some View {
-            VStack(spacing: self.dateLabelPadding) {
-                LinearGradient(.graphLineGradient, direction: .vertical)
+        VStack(spacing: .momo(.scale2)) {
+                LinearGradient(.momo(.lineGraph), direction: .vertical)
                     .frame(width: 1)
                     .anchorPreference(
                         key: SelectionPreferenceKey.self,
@@ -153,20 +137,20 @@ struct GraphLine: View {
                     .onChange(of: newIdx) { _ in
                         self.on = true
                     }
-                VStack(spacing: self.dateLabelPadding) {
+            VStack(spacing: .momo(.scale2)) {
                     Text("\(self.entry.date.weekday)")
-                        .msk_applyTextStyle(.graphWeekdayDetailFont)
+                        .momoText(.graphWeekdayDetailFont)
                     Text("\(self.entry.date.day)")
-                        .msk_applyTextStyle(.graphDayDetailFont)
+                        .momoText(.graphDayDetailFont)
                 }
                  // Track the  height of the date label and calculate the correct bottom padding
                  // needed for the line graph to stay within bounds.
-                 // This happens once for every date (7), but this behaviour is expected
+                 // This happens once for every date, but this behaviour is expected
                  // as the sizes are saved into an array.
                 .coordinateSpace(name: "dateLabel")
                 .saveSizes(viewID: 1, coordinateSpace: .named("dateLabel"))
                 .retrieveSizes(viewID: 1) {
-                    self.onDateLabelHeightChange($0.height + dateLabelPadding)
+                    self.onDateLabelHeightChange($0.height + .momo(.scale2))
                 }
             }
             .tappable()

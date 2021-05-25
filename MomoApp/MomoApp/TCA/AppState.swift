@@ -14,9 +14,13 @@ struct AppState: Equatable {
     var activePage: Page = .home
     var activeJournal: JournalType = .chart
 
+    var showJournalView: Bool = false
+
     // MomoAddMoodView
-    var homeViewIsActive = true
+    var showHomeScreen = true
     var addEmotionButtonTextOn = true
+
+    var showSeeYouTomorrowView = false
 
     // Joystick
     var addEmotionButtonPosition: CGPoint? = nil
@@ -43,8 +47,6 @@ struct AppState: Equatable {
     var emotionText: String = ""
     var doneButtonDisabled: Bool = true
     var emotionTextFieldFocused = false
-
-
 }
 
 // MARK: - Helper vars
@@ -58,6 +60,10 @@ extension AppState {
     /// Data points for line chart
     var dataPoints: [CGFloat] {
         self.entries.suffix(self.numOfEntries + 1).map(\.value)
+    }
+
+    var currentButtonStyle: MomoButtonStyle {
+        return self.showHomeScreen ? .mainStandard : .mainJoystick
     }
 }
 
@@ -74,8 +80,12 @@ enum AppAction: Equatable {
 
     case addEmotionButtonLocationChanged(CGPoint)
 
-    case toggleHomeViewIsActive
+    case toggleShowHomeScreen
     case toggleAddEmotionButtonText
+
+    case toggleActiveJournal
+
+    case showThankYouView
 }
 
 struct AppEnvironment { }
@@ -86,7 +96,7 @@ struct AppEnvironment { }
 
 enum EntryAction: Equatable {
     case emotionValueChanged(CGFloat)
-    case emotionTextChanged(String)
+    //case emotionTextChanged(String)
 }
 
 struct EntryEnvironment {}
@@ -96,9 +106,9 @@ let entryReducer = Reducer<Entry, EntryAction, EntryEnvironment> { state, action
     case .emotionValueChanged(let value):
         state.value = value
         return .none
-    case .emotionTextChanged(let text):
-        state.emotion = text
-        return .none
+//    case .emotionTextChanged(let text):
+//        state.emotion = text
+//        return .none
     }
 }
 .debug()
@@ -120,6 +130,10 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     ),
 
     Reducer { state, action, env in
+
+        struct TimerID: Hashable {}
+        struct CancelDelayID: Hashable {}
+
         switch action {
         case let .addEmotionButtonLocationChanged(position):
             state.addEmotionButtonPosition = position
@@ -128,8 +142,8 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         case .entry(index: let index, action: let action):
             return .none
 
-        case .toggleHomeViewIsActive:
-            state.homeViewIsActive.toggle()
+        case .toggleShowHomeScreen:
+            state.showHomeScreen.toggle()
 
             return Effect.merge(
                 Effect(value: AppAction.toggleAddEmotionButtonText)
@@ -139,13 +153,23 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
                             : Animation.ease.delay(0.6)
                     ))
                     .eraseToEffect(),
-                state.homeViewIsActive
+                state.showHomeScreen
                     ? Effect(value: AppAction.dismissKeyboard)
                     : .none
             )
 
         case .toggleAddEmotionButtonText:
             state.addEmotionButtonTextOn.toggle()
+            return .none
+
+        case .toggleActiveJournal:
+            // TODO: Simplify this
+            if state.activeJournal == .chart {
+                state.activeJournal = .list
+            } else {
+                state.activeJournal = .chart
+            }
+
             return .none
 
 
@@ -171,10 +195,19 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             state.dragValue = dragValue
             return .none
 
-        // TODO: - why doesn't this work????
+
         case .form(\.emotionText):
+
+            // TODO: - why doesn't this work????
             state.emotionText = state.emotionText.applyCharLimit(16)
+
+            return Effect(value: AppAction.form(.set(\.doneButtonDisabled, state.emotionText.isEmpty)))
+                .receive(on: DispatchQueue.main.animation(.ease))
+                .eraseToEffect()
+
+        case .form(\.doneButtonDisabled):
             return .none
+
 
 
         case .form(\.joystickIsDragging):
@@ -184,7 +217,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             }
             return .none
 
-        case .form(\.activePage):
+        case .form(\.showJournalView):
             state.lineChartAnimationOn = false
             state.selectionLineAnimationOn = false
 
@@ -208,11 +241,30 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             state.selectionLineAnimationOn.toggle()
             return .none
 
-        case .form:
-            return .none
+
+
+        case .showThankYouView:
+            state.showSeeYouTomorrowView.toggle()
+            state.currentStatus = .edit
+
+            return Effect.merge(
+                Effect(value: AppAction.form(.set(\.showSeeYouTomorrowView, false)))
+                    .delay(for: 3, scheduler: DispatchQueue.main)
+                    .eraseToEffect(),
+                Effect.merge(
+                    Effect(value: AppAction.form(.set(\.showHomeScreen, true))),
+                    Effect(value: AppAction.toggleAddEmotionButtonText)
+                )
+                .delay(for: 0.8, scheduler: DispatchQueue.main)
+                .eraseToEffect()
+            )
 
         case .dismissKeyboard:
             UIApplication.shared.endEditing()
+            return .none
+
+        // Ignore this
+        case .form:
             return .none
         }
     }
@@ -224,7 +276,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 
 enum Page {
     case home
-    case journal
+    case done
 }
 
 // MARK: - FormAction

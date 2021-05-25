@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MiniGraphViewLogic {
-
+    
     func lineFrameSpacing(geo: GeometryProxy, numOfLines: Int, lineWidth: CGFloat, completion: @escaping ([GridItem]) -> Void) -> CGFloat {
 
         let lines = numOfLines.floatValue

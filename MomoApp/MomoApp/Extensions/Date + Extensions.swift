@@ -10,8 +10,8 @@ import SwiftUI
 // MARK: - Formatter+Extension
 
 extension Formatter {
-    /// Sunday, Nov 8
-    static let shortDate: DateFormatter = {
+    /// e.g. Sunday, Nov 8
+    static let standard: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, MMM d"
         return formatter

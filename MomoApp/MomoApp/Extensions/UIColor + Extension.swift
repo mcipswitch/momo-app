@@ -38,29 +38,6 @@ extension Color {
     public static let momoBackgroundDark = Color(#colorLiteral(red: 0.1098039216, green: 0.09411764706, blue: 0.2509803922, alpha: 1))
 }
 
-extension Gradient {
-    static let momoTriColorGradient = Gradient(colors: [Color.momo,
-                                                      Color.momoPurple,
-                                                      Color.momoOrange,
-                                                      Color.momo
-    ])
-
-    static let colorRingGradient = Gradient(colors: [Color(#colorLiteral(red: 0.9843137255, green: 0.8196078431, blue: 1, alpha: 1)),
-                                                     Color(#colorLiteral(red: 0.7960784314, green: 0.5411764706, blue: 1, alpha: 1)),
-                                                     Color(#colorLiteral(red: 0.431372549, green: 0.4901960784, blue: 0.9843137255, alpha: 1))
-    ])
-
-    static let momoRingGradient = Gradient(colors: [.momo])
-
-    static let graphLineGradient = Gradient(colors: [Color.gray.opacity(0.4),
-                                                     Color.gray.opacity(0)
-    ])
-
-    static let momoBackgroundGradient = Gradient(colors: [.momoBackgroundLight,
-                                                          .momoBackgroundDark
-    ])
-}
-
 // MARK: - LinearGradient+Extension
 
 extension LinearGradient {

@@ -103,7 +103,7 @@ extension EnvironmentValues {
 
 extension View {
     /// An extension on View protocol that allows us to insert chart styles into a view hierarchy environment.
-    func msk_applyBlobStyle(_ style: BlobStyle) -> some View {
+    func momoBlobStyle(_ style: BlobStyle) -> some View {
         environment(\.blobStyle, style)
     }
 }

@@ -124,7 +124,7 @@ extension View {
     }
 }
 
-// MARK: - AddMoodViewLogic
+// MARK: - JoystickLogic
 
 struct JoystickLogic {
 

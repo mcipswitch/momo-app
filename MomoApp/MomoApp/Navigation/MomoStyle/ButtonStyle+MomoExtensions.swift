@@ -1,30 +1,11 @@
 //
-//  MomoButton.swift
+//  ButtonStyle+MomoExtensions.swift
 //  MomoApp
 //
-//  Created by Priscilla Ip on 2020-10-28.
+//  Created by Priscilla Ip on 2021-05-24.
 //
 
 import SwiftUI
-
-extension MomoUI {
-    struct Button: View {
-        let style: MomoButtonStyle
-        let action: () -> Void
-
-        var body: some View {
-            Button(action: self.action) {
-                HStack {
-                    Text(self.style.text)
-                    self.style.icon
-                }
-            }
-            .momoButtonStyle(button: self.style)
-        }
-    }
-}
-
-// MARK: - MomoButtonStyle
 
 struct MomoButtonStyle: ButtonStyle {
     typealias SizeTuple = (w: CGFloat, h: CGFloat)
@@ -74,12 +55,11 @@ extension MomoButtonStyle {
                 .foregroundColor(.momo)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)
-                .frame(width: w, height: h)
+                .frame(width: self.w, height: self.h)
                 .background(Color.momo)
                 .cornerRadius(self.cornerRadius)
                 .opacity(self.isEnabled ? 1 : 0.2)
         }
-
     }
 }
 // MARK: - View+Extension
@@ -89,3 +69,4 @@ extension View {
         self.buttonStyle(button)
     }
 }
+

@@ -11,8 +11,10 @@ import SwiftUI
 
 /**
  Animate colors in gradient
- Please see: https://swiftui-lab.com/swiftui-animations-part3/
- And this: https://stackoverflow.com/questions/15032562/ios-find-color-at-point-between-two-colors/59996029#59996029
+
+ Please see:
+ https://swiftui-lab.com/swiftui-animations-part3/
+ https://stackoverflow.com/questions/15032562/ios-find-color-at-point-between-two-colors/59996029#59996029
  */
 struct AnimatableColor: AnimatableModifier {
 

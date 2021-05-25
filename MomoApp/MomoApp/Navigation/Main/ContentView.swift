@@ -14,14 +14,27 @@ struct ContentView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             ZStack {
-                if viewStore.activePage == .journal {
-                    MomoJournalView(store: self.store)
-                        .zIndex(2)
+//                if viewStore.activePage == .journal {
+//                    MomoJournalView(store: self.store)
+//                        .zIndex(2)
+//                        .transition(AnyTransition.opacity.animation(.easeInOut))
+//                }
+
+                MomoAddMoodView(viewStore: viewStore)
+                    .sheet(isPresented: viewStore.binding(
+                        keyPath: \.showJournalView,
+                        send: AppAction.form
+                    )) {
+                        MomoJournalView(store: self.store)
+                    }
+
+                if viewStore.showSeeYouTomorrowView {
+                    MomoSeeYouTomorrowView(viewStore: viewStore)
                         .transition(
-                            AnyTransition.opacity.animation(.easeInOut)
+                            AnyTransition.opacity
+                                .animation(Animation.easeInOut(duration: 0.8))
                         )
                 }
-                MomoAddMoodView(viewStore: viewStore)
             }
         }
     }

@@ -12,7 +12,6 @@ struct Entry: Identifiable, Hashable, Equatable {
     var emotion: String
     var date: Date
     var value: CGFloat
-
     var isSelected = false
 }
 

@@ -13,44 +13,36 @@ struct MomoJournalView: View {
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            VStack {
-                NavToolbar(store: self.store)
+            VStack(spacing: 0) {
+                NavBar(store: self.store)
                     .padding()
 
                 ZStack {
-                    JournalChartView(store: self.store)
+                    MomoJournalGraphView(store: self.store)
                         .opacity(viewStore.activeJournal == .chart ? 1 : 0)
-                    JournalListView(store: self.store)
+                    MomoJournalListView(store: self.store)
                         .opacity(viewStore.activeJournal == .list ? 1 : 0)
                 }
-                
             }
-            .addMomoBackground()
+            .momoBackground()
         }
     }
-}
 
-struct NavToolbar: View {
-    let store: Store<AppState, AppAction>
+    struct NavBar: View {
+        let store: Store<AppState, AppAction>
 
-    var body: some View {
-        WithViewStore(self.store) { viewStore in
-            ZStack {
-                MomoToolbarTitle(viewStore.activeJournal)
-                HStack(alignment: .top) {
-                    MomoToolbarButton(.backButton) {
-                        viewStore.send(.form(.set(\.activePage, .home)))
-                    }
-
-                    Spacer()
-
-                    MomoToolbarButton(viewStore.activeJournal) {
-
-                        var journal: JournalType {
-                            viewStore.activeJournal == .chart ? .list : .chart
+        var body: some View {
+            WithViewStore(self.store) { viewStore in
+                ZStack {
+                    MomoUI.NavBarTitle(viewStore.activeJournal)
+                    HStack(alignment: .center) {
+                        MomoUI.NavBarButton(.momo(.close)) {
+                            viewStore.send(.form(.set(\.showJournalView, false)))
                         }
-
-                        viewStore.send(.form(.set(\.activeJournal, journal)))
+                        Spacer()
+                        MomoUI.NavBarButton(viewStore.activeJournal) {
+                            viewStore.send(.toggleActiveJournal)
+                        }
                     }
                 }
             }

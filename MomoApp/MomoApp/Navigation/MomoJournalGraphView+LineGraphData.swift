@@ -5,28 +5,24 @@
 //  Created by Priscilla Ip on 2020-11-24.
 //
 
-/*
- Resources:
- https://www.objc.io/blog/2020/03/16/swiftui-line-graph-animation/
- https://crustlab.com/blog/ios-development-swiftui-experiment-building-custom-chart/
- */
-
 import SwiftUI
 import ComposableArchitecture
 
-// MARK: - LineGraphData
-
+/**
+ Please see:
+ https://www.objc.io/blog/2020/03/16/swiftui-line-graph-animation/
+ https://crustlab.com/blog/ios-development-swiftui-experiment-building-custom-chart/
+ */
 struct LineGraphData: View {
     @ObservedObject var viewStore: ViewStore<AppState, AppAction>
-    @Environment(\.lineChartStyle) var lineChartStyle
     let dataPoints: [CGFloat]
 
     var body: some View {
-        LinearGradient(.momoTriColorGradient, direction: .vertical)
+        LinearGradient(.momo(.triColor), direction: .vertical)
             .mask(
                 LineGraph(dataPoints: self.dataPoints)
                     .trim(to: self.viewStore.lineChartAnimationOn ? 1 : 0)
-                    .stroke(style: .lineGraphStrokeStyle)
+                    .stroke(style: StrokeStyle(lineWidth: 6, lineCap: .round))
             )
             .dropShadow()
     }
@@ -95,10 +91,4 @@ struct LineGraph: Shape {
             }
         }
     }
-}
-
-// MARK: - StrokeStyle+Extension
-
-extension StrokeStyle {
-    static let lineGraphStrokeStyle = StrokeStyle(lineWidth: 6, lineCap: .round)
 }
