@@ -16,12 +16,12 @@ struct MomoSeeYouTomorrowView: View {
         ZStack {
             if self.showText {
                 VStack(spacing: 30) {
-                    Image(systemName: "checkmark")
+                    Image.momo(.checkmark)
                         .foregroundColor(.momo)
-                        .font(.system(size: 56))
-                    Text("Thank you".localized)
+                        .font(.mediumFont(size: 56))
+                    Text("Thank you!".localized)
                         .foregroundColor(.white)
-                        .font(.system(size: 32, weight: .bold))
+                        .font(.boldFont(size: 32))
                 }
             }
 

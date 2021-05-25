@@ -79,7 +79,7 @@ struct MomoTextFieldStyle: TextFieldStyle {
             .momoText(.mainMessageFont)
             .multilineTextAlignment(.center)
             .lineLimit(1)
-            .autocapitalization(.none)
+            .autocapitalization(.words)
             .disableAutocorrection(true)
             .accentColor(.momo)
             //.minimumScaleFactor(0.8)

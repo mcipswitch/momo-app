@@ -89,13 +89,13 @@ struct MomoAddMoodView: View {
                         .position(self.viewStore.addEmotionButtonPosition ?? centerPoint)
                         .highPriorityGesture(self.viewStore.showHomeScreen ? nil : self.resistanceDrag)
 
-                        #if DEBUG
-                        Circle()
-                            .stroke(Color.red, lineWidth: 2)
-                            .frame(width: 20, height: 20)
-                            .position(self.dragState.location)
-                            .opacity(self.dragState.isActive ? 1 : 0)
-                        #endif
+//                        #if DEBUG
+//                        Circle()
+//                            .stroke(Color.red, lineWidth: 2)
+//                            .frame(width: 20, height: 20)
+//                            .position(self.dragState.location)
+//                            .opacity(self.dragState.isActive ? 1 : 0)
+//                        #endif
                     }
                     .frame(height: 160)
                     .onAppear {

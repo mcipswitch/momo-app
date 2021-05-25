@@ -34,6 +34,6 @@ struct MomoApp: App {
         Entry(emotion: "Candy", date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!, value: 0.88),
         Entry(emotion: "Lights", date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, value: 0.47),
         Entry(emotion: "Hummingbird", date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, value: 0.15),
-        Entry(id: UUID(), emotion: "Sunflower", date: Date(), value: 0.37)
+        Entry(id: UUID(), emotion: "Confident", date: Date(), value: 0.65)
     ]
 }
